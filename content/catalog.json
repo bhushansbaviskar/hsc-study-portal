@@ -1,0 +1,31 @@
+{
+  "examDate": "2027-02-01",
+  "books": {
+    "xii": { "label": "Std XII Physics", "driveUrl": "https://drive.google.com/file/d/1qNIdDxwykUw9iDD38k5HBPWNuuZbEVss/view", "pdfPageOffset": 10 },
+    "xi":  { "label": "Std XI Physics",  "driveUrl": "https://drive.google.com/file/d/1z-Ra-Nh0ATDWKW8DDE-Z3fXH3BIwT5ZC/view", "pdfPageOffset": 10 }
+  },
+  "subjects": [
+    {
+      "id": "physics",
+      "title": "Physics",
+      "chapters": [
+        { "id": "ch01", "number": 1, "title": "Rotational Dynamics", "file": "content/physics/ch01-rotational-dynamics.json" },
+        { "id": "ch02", "number": 2, "title": "Mechanical Properties of Fluids" },
+        { "id": "ch03", "number": 3, "title": "Kinetic Theory of Gases and Radiation" },
+        { "id": "ch04", "number": 4, "title": "Thermodynamics" },
+        { "id": "ch05", "number": 5, "title": "Oscillations" },
+        { "id": "ch06", "number": 6, "title": "Superposition of Waves" },
+        { "id": "ch07", "number": 7, "title": "Wave Optics" },
+        { "id": "ch08", "number": 8, "title": "Electrostatics" },
+        { "id": "ch09", "number": 9, "title": "Current Electricity" },
+        { "id": "ch10", "number": 10, "title": "Magnetic Fields due to Electric Current" },
+        { "id": "ch11", "number": 11, "title": "Magnetic Materials" },
+        { "id": "ch12", "number": 12, "title": "Electromagnetic Induction" },
+        { "id": "ch13", "number": 13, "title": "AC Circuits" },
+        { "id": "ch14", "number": 14, "title": "Dual Nature of Radiation and Matter" },
+        { "id": "ch15", "number": 15, "title": "Structure of Atoms and Nuclei" },
+        { "id": "ch16", "number": 16, "title": "Semiconductor Devices" }
+      ]
+    }
+  ]
+}
