@@ -6,6 +6,7 @@
  "printedPages": "1–25",
  "pdfPageOffset": 10,
  "book": "xii",
+ "examMarks": { "avg": 7.7, "basis": "Chapter 1 questions in the 2022, 2023 and 2025 papers: 9, 7 and 7 marks" },
  "stops": [
   {
    "id": "s01",

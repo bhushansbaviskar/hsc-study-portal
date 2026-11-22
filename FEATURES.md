@@ -10,5 +10,11 @@ Features 2-6 were built together for Physics Ch 1 at the owner's request (awaiti
 4. [x] Derivation drills + formula card
 5. [x] Mistake bank (spaced repeats)
 6. [x] Section notes + "My notes" page (device-only for now)
-7. [ ] Drive sync (Apps Script + Sheet) + live teacher view
+7. [ ] Drive sync + live teacher view + rewards set by the parent
 8. [ ] Email progress report
+9. [x] Resume + mid-quest saving (awaiting review)
+10. [x] Confidence tap (awaiting review)
+11. [x] Predicted board marks (awaiting review)
+12. [x] Plan worked back from exam (awaiting review)
+13. [ ] Board round: final stop of each chapter, open from day one; by marks / most asked first / timed mock; examiner-point self-marking feeds the gauge and mistake bank; chapter complete at 80%+
+14. [ ] Extra practice (optional, separate from the main flow): SCERT question banks 2021-22 and 2022-23, and 2017-2020 paper questions still in the syllabus, tagged "older pattern"

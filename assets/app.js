@@ -5,7 +5,7 @@
 (function () {
   "use strict";
 
-  var DAILY_TARGET = 2;            // stops per day
+  var PLAN_DEFAULT_STOPS = 14;     // estimated stops for chapters that have no content yet
   var STORE_KEY = "hscPrep.v2", OLD_KEY = "hscPrep.v1";
   var XP_FIRST = 10, XP_SECOND = 5, HINT_COST = 2, PASS_MARK = 2, TOL = 0.02;
   var SUBJ = "physics", CHID = "ch01";
@@ -35,7 +35,7 @@
 
   /* ---------- storage (never throws) ---------- */
   var mem = null;
-  function blank() { return { v: 2, done: {}, xp: 0, quest: {}, bank: {}, notes: {}, board: {}, theme: "quest" }; }
+  function blank() { return { v: 2, done: {}, xp: 0, quest: {}, bank: {}, notes: {}, board: {}, theme: "quest", qp: {}, drill: {}, planStart: "" }; }
   function isObj(x) { return x && typeof x === "object" && !Array.isArray(x); }
   function load() {
     if (mem) return mem;
@@ -52,6 +52,7 @@
     for (var k in b) if (s[k] == null || typeof s[k] !== typeof b[k]) s[k] = b[k];
     if (s.theme !== "quest" && s.theme !== "focus") s.theme = "quest";
     s.v = 2;
+    if (!s.planStart) { s.planStart = today(); fresh = true; }   // plan clock starts the first time the app runs
     mem = s;
     if (fresh) save();
     return mem;
@@ -131,19 +132,143 @@
   function getBoard(id) { return CH.board.filter(function (b) { return b.id === id; })[0]; }
   function getDeriv(id) { return CH.derivations.filter(function (d) { return d.id === id; })[0]; }
 
+  /* ---------- plan worked back from the exam ---------- */
+  function dayDiff(a, b) { return Math.round((parseDate(b) - parseDate(a)) / 86400000); }
+  function planInfo() {
+    var total = 0, st = load(), t = today();
+    catalog.subjects.forEach(function (sub) {
+      sub.chapters.forEach(function (c) {
+        total += (sub.id === SUBJ && c.id === CHID) ? CH.stops.length : (c.estStops || PLAN_DEFAULT_STOPS);
+      });
+    });
+    var done = Object.keys(st.done).length, left = Math.max(0, total - done);
+    var span = Math.max(1, dayDiff(st.planStart, catalog.planEnd));
+    var since = Math.min(span, Math.max(0, dayDiff(st.planStart, t)));
+    var daysLeft = Math.max(0, dayDiff(t, catalog.planEnd));
+    var pace = Math.max(1, Math.ceil(left / Math.max(1, daysLeft)));
+    var expected = total * since / span, diff = done - expected;
+    var status = diff >= 1 ? "ahead" : diff <= -1 ? "behind" : "on";
+    return { total: total, done: done, left: left, span: span, since: since, daysLeft: daysLeft, pace: pace,
+      expected: expected, status: status, n: Math.floor(Math.abs(diff)) };
+  }
+  function planHTML(pl) {
+    var label = pl.status === "on" ? "On track" : pl.status === "ahead" ? "Ahead by " + pl.n + (pl.n === 1 ? " stop" : " stops") : "Behind by " + pl.n + (pl.n === 1 ? " stop" : " stops");
+    return '<div class="card plan-card plan-' + pl.status + '"><div class="row"><h2 class="grow">Your plan</h2><span class="pill plan-pill" data-plan="' + pl.status + '">' + esc(label) + "</span></div>" +
+      '<p class="plan-line"><b>' + pl.pace + (pl.pace === 1 ? " stop" : " stops") + ' a day</b> to finish by ' + niceDate(catalog.planEnd) + ". " + pl.left + " of " + pl.total + " stops left, " + pl.daysLeft + (pl.daysLeft === 1 ? " day" : " days") + " to go.</p>" +
+      '<p class="note">Only Physics is counted until other subjects are added. The last 10 days are kept for revision.</p></div>';
+  }
+
+  /* ---------- predicted board marks ---------- */
+  function drillClean(id) { var r = load().drill[id]; return !!(r && r.clean); }
+  function stopMastery(s) {
+    // Average of the parts that apply to this stop: quest always; board questions and
+    // derivations only if the stop has them. Nothing is credited before it is done.
+    var st = load(), parts = [isDone(s.id) ? 1 : 0];
+    var bq = boardFor(s.id);
+    if (bq.length) parts.push(bq.filter(function (b) { return st.board[b.id] === "got"; }).length / bq.length);
+    var ds = CH.derivations.filter(function (d) { return d.stop === s.id; });
+    if (ds.length) parts.push(ds.filter(function (d) { return drillClean(d.id); }).length / ds.length);
+    return parts.reduce(function (a, b) { return a + b; }, 0) / parts.length;
+  }
+  function stopWeight(s) { return 1 + askedCount(s.id); }
+  function gaugeData() {
+    var em = CH.examMarks || { avg: 0, basis: "" }, tw = 0, sw = 0;
+    var rows = CH.stops.map(function (s, i) {
+      var w = stopWeight(s), m = stopMastery(s);
+      tw += w; sw += w * m;
+      return { s: s, i: i, w: w, m: m };
+    });
+    var M = tw ? sw / tw : 0;
+    rows.forEach(function (r) { r.gain = em.avg * r.w / tw * (1 - r.m); });
+    var top = rows.filter(function (r) { return r.gain > 0.0001; })
+      .sort(function (a, b) { return b.gain - a.gain || a.i - b.i; }).slice(0, 2);
+    return { avg: em.avg, basis: em.basis, M: M, pred: Math.round(em.avg * M * 2) / 2, top: top };
+  }
+  function gaugeHTML() {
+    if (!CH.examMarks) return "";
+    var g = gaugeData(), pct = Math.round(g.M * 1000) / 10;
+    var line = "About " + g.pred + " of ~" + Math.round(g.avg) + " marks secured";
+    var gain = g.top.length ? '<p class="small gain">Biggest gain next: <b>' + g.top.map(function (r) { return esc(r.s.title); }).join(", then ") + "</b></p>" : "";
+    var how = '<details class="how"><summary>How this is worked out</summary><p class="small">An estimate based on past papers: the average marks this chapter carried (' + esc(g.basis) +
+      ') times how much of the chapter you have mastered (quest, board questions, derivations), counting often-asked stops more.</p></details>';
+    var h;
+    if (isFocus()) {
+      h = '<div class="card gauge-card gauge-line"><div class="g-text" data-gauge="' + g.pred + '">' + line + "</div>" +
+        '<div class="bar thin amber" role="progressbar" aria-valuenow="' + Math.round(pct) + '" aria-valuemin="0" aria-valuemax="100" aria-label="Predicted marks"><i style="width:' + pct + '%"></i></div>' + gain + how + "</div>";
+    } else {
+      h = '<div class="card gauge-card"><h2>Predicted board marks</h2><div class="gauge">' +
+        '<svg viewBox="0 0 120 68" role="img" aria-label="' + esc(line) + '"><path class="g-track" d="M10 60 A50 50 0 0 1 110 60" pathLength="100"/>' +
+        '<path class="g-fill" d="M10 60 A50 50 0 0 1 110 60" pathLength="100" stroke-dasharray="' + pct + ' 100"/></svg>' +
+        '<div class="g-num"><b>' + g.pred + '</b><span>of ~' + Math.round(g.avg) + "</span></div></div>" +
+        '<p class="g-text center" data-gauge="' + g.pred + '">' + line + "</p>" + gain + how + "</div>";
+    }
+    return h;
+  }
+
+  /* ---------- mid-quest saving ---------- */
+  function saveQuest() {
+    if (!Q || Q.phase === "result") return;
+    var ce = Q.ce;
+    load().qp[K(Q.stop.id)] = { phase: Q.phase, ci: Q.ci, ki: Q.ki, results: Q.results, xp: Q.xp, added: Q.added, at: Date.now(),
+      ce: ce ? { attempt: ce.attempt, hint: ce.hint, sel: ce.sel, val: ce.val, status: ce.status, gain: ce.gain, conf: ce.conf, flag: ce.flag || "" } : null };
+    save();
+  }
+  function restoreQuest(s) {
+    var r = load().qp[K(s.id)], cards = s.quest.cards, checks = s.quest.checks;
+    if (!isObj(r) || (r.phase !== "cards" && r.phase !== "check")) return null;
+    if (!(r.ci >= 0 && r.ci < cards.length) || !(r.ki >= 0 && r.ki < checks.length) || !Array.isArray(r.results)) return null;
+    var q = { stop: s, phase: r.phase, ci: r.ci, ki: r.ki, ce: null, results: r.results, xp: +r.xp || 0, added: +r.added || 0, resumed: true };
+    if (r.phase === "check") {
+      if (r.results.length !== r.ki) return null;
+      var ce = newCE(checks[r.ki], "quest"), c = isObj(r.ce) ? r.ce : {};
+      ce.attempt = c.attempt === 1 ? 1 : 0; ce.hint = !!c.hint; ce.sel = typeof c.sel === "number" ? c.sel : null;
+      ce.val = typeof c.val === "string" ? c.val : ""; ce.gain = +c.gain || 0; ce.conf = c.conf === "sure" || c.conf === "guess" ? c.conf : null;
+      ce.flag = c.flag === "guessed" || c.flag === "sure" ? c.flag : "";
+      ce.status = ["ask", "wrong", "right", "failed"].indexOf(c.status) >= 0 ? c.status : "ask";
+      q.ce = ce;
+    }
+    return q;
+  }
+  function resumeInfo() {
+    var qp = load().qp, best = null;
+    for (var k in qp) {
+      var id = k.split("/")[2], s = stopById(id);
+      if (!s) continue;
+      var q = restoreQuest(s);
+      if (!q) continue;
+      if (!best || (qp[k].at || 0) > best.at) best = { s: s, q: q, at: qp[k].at || 0 };
+    }
+    return best;
+  }
+  function progressText(q) {
+    return q.phase === "check" ? "check " + (q.ki + 1) + " of " + q.stop.quest.checks.length : "concept " + (q.ci + 1) + " of " + q.stop.quest.cards.length;
+  }
+
   /* ---------- XP ---------- */
   function addXP(n) { if (n > 0) { load().xp += n; save(); updateChrome(); } }
 
   /* ---------- mistake bank (spaced review) ---------- */
-  function bankAdd(id) {
+  var REASON = { "guessed": "Guessed", "confident mistake": "Confident mistake", "missed": "Missed", "need practice": "Need practice", "slip": "Slip" };
+  function bankAdd(id, reason) {
     var b = load().bank, old = b[id];
-    b[id] = { due: addDays(today(), 1), streak: 0, added: old ? old.added : today() };
+    if (reason === "guessed" && old) return false;   // already in the bank: leave its schedule alone
+    var keep = old && old.prio && reason !== "confident mistake";
+    b[id] = { due: addDays(today(), 1), streak: 0, added: old ? old.added : today(),
+      reason: keep ? old.reason : (reason || "missed"), prio: reason === "confident mistake" || !!keep };
     save(); updateChrome();
+    return true;
+  }
+  function reasonTag(id) {
+    var it = load().bank[id];
+    if (!it) return "";
+    var r = it.reason || "missed";
+    return '<span class="tag rtag' + (it.prio ? " prio" : "") + '">' + esc(REASON[r] || r) + (it.prio ? " · priority" : "") + "</span>";
   }
   function bankReview(id, ok) {
     var b = load().bank, it = b[id];
     if (!it) return;
     if (ok) {
+      it.prio = false;
       it.streak = (it.streak || 0) + 1;
       if (it.streak >= 2) delete b[id]; else it.due = addDays(today(), 2);
     } else { it.streak = 0; it.due = addDays(today(), 1); }
@@ -153,7 +278,10 @@
   function dueIds() {
     var t = today(), b = load().bank;
     return bankIds().filter(function (id) { return b[id].due <= t; })
-      .sort(function (x, y) { return b[x].due < b[y].due ? -1 : b[x].due > b[y].due ? 1 : (x < y ? -1 : 1); });
+      .sort(function (x, y) {
+        if (!!b[x].prio !== !!b[y].prio) return b[x].prio ? -1 : 1;   // confident mistakes first
+        return b[x].due < b[y].due ? -1 : b[x].due > b[y].due ? 1 : (x < y ? -1 : 1);
+      });
   }
   function nextDueDate() {
     var b = load().bank, ids = bankIds();
@@ -208,9 +336,14 @@
   /* ---------- home ---------- */
   function homeView() {
     setHeader("HSC Board Prep", null, { tab: "home" });
-    var left = daysLeft(catalog.examDate), dt = doneToday(), remaining = Math.max(0, DAILY_TARGET - dt);
+    var left = daysLeft(catalog.examDate), dt = doneToday(), pl = planInfo(), remaining = Math.max(0, pl.pace - dt);
     var prog = chapterProgress(), st = load(), due = dueIds().filter(itemExists).length;
-    var h = "";
+    var h = "", ri = resumeInfo(), nextStop = CH.stops.filter(function (s) { return !isDone(s.id); })[0];
+    if (ri) {
+      h += '<a class="card cont-card" href="' + BASE + "/" + ri.s.id + '/quest"><span class="num">' + ICON.play + '</span><span class="grow"><b>Continue: ' + esc(ri.s.title) + " · " + progressText(ri.q) + '</b><br><span class="small">Pick up where you stopped</span></span>' + ICON.chev + "</a>";
+    } else if (nextStop) {
+      h += '<a class="card cont-card" href="' + BASE + "/" + nextStop.id + '/quest"><span class="num">' + ICON.play + '</span><span class="grow"><b>Next up: ' + esc(nextStop.title) + '</b><br><span class="small">Stop ' + (stopIndex(nextStop.id) + 1) + " · textbook p. " + esc(nextStop.page) + " · start the quest</span></span>" + ICON.chev + "</a>";
+    }
     if (isFocus()) {
       h += '<div class="card countdown"><div class="cd-num">' + left + '</div><div class="cd-lab">days to the board exam · 1 February 2027</div>' +
         '<div class="bar thin amber" role="progressbar" aria-valuenow="' + prog.pct + '" aria-valuemin="0" aria-valuemax="100" aria-label="Chapter 1 progress"><i style="width:' + prog.pct + '%"></i></div>' +
@@ -223,10 +356,13 @@
     if (due > 0) {
       h += '<a class="card review-card" href="#/review"><span class="num amber">' + due + '</span><span class="grow"><b>Review: ' + due + ' due</b><br><span class="muted small">Redo what you got wrong, a few minutes</span></span>' + ICON.chev + "</a>";
     }
-    var next = CH.stops.filter(function (s) { return !isDone(s.id); }).slice(0, remaining || 1);
+    h += planHTML(pl) + gaugeHTML();
+    var shownId = ri ? ri.s.id : (nextStop && nextStop.id);
+    var next = CH.stops.filter(function (s) { return !isDone(s.id) && s.id !== shownId; }).slice(0, Math.max(0, (remaining || 1) - 1));
     h += '<div class="card"><h2>' + (remaining ? "Today's target" : "Target done for today") + "</h2>";
-    h += '<p class="muted small">Today: ' + Math.min(dt, DAILY_TARGET) + " of " + DAILY_TARGET + " stops</p>";
-    if (!next.length) h += "<p>Chapter 1 complete. More chapters are coming soon.</p>";
+    h += '<p class="muted small">Today: ' + Math.min(dt, pl.pace) + " of " + pl.pace + " stops</p>";
+    if (!nextStop) h += "<p>Chapter 1 complete. More chapters are coming soon.</p>";
+    else if (!next.length) h += '<p class="muted small">Start with the card at the top.</p>';
     h += '<ul class="list">' + next.map(function (s) {
       var n = stopIndex(s.id) + 1;
       return '<li><a class="item" href="' + BASE + "/" + s.id + '"><span class="num">' + n + '</span>' +
@@ -265,6 +401,7 @@
       '<div class="bar" style="margin-top:6px"><i style="width:' + prog.pct + '%"></i></div></div><b>' + prog.pct + '%</b></div>' +
       '<div class="chips">' + bookChip(CH.book, 1, "Chapter in textbook") + "</div>" +
       '<p class="note">Textbook pages ' + esc(CH.printedPages) + ". The Drive viewer can't jump to a page, so use the PDF page number shown.</p></div>";
+    h += gaugeHTML();
     h += '<div class="tiles"><a class="tile" href="' + BASE + '/board"><b>Board questions</b><span class="muted small">' + CH.board.length + ' from 2022–2025</span></a>' +
       '<a class="tile" href="' + BASE + '/derive"><b>Derivation drills</b><span class="muted small">' + CH.derivations.length + ' derivations</span></a>' +
       '<a class="tile" href="#/formulas"><b>Formula card</b><span class="muted small">All of Chapter 1</span></a></div>';
@@ -335,14 +472,15 @@
   function stopView(stopId) {
     var i = stopIndex(stopId);
     if (i < 0) return errorView("That stop doesn't exist.");
-    var s = CH.stops[i], done = isDone(s.id), qr = load().quest[K(s.id)];
+    var s = CH.stops[i], done = isDone(s.id), qr = load().quest[K(s.id)], sq = restoreQuest(s);
     setHeader((i + 1) + ". " + s.title, BASE, { xp: true, tab: "map" });
     var h = '<div class="card"><h2>In short</h2><p>' + fm(s.inShort) + "</p></div>";
     var nChecks = s.quest.checks.length;
     h += '<div class="card quest-card"><div class="row"><div class="grow"><h2>Quest' + (done ? ' <span class="pill ok">' + ICON.checkS + " Done</span>" : "") + "</h2>" +
       '<p class="muted small">' + s.quest.cards.length + " concept cards, then " + nChecks + " checks. Up to " + nChecks * XP_FIRST + " XP." +
       (qr ? " Best score: <b>" + qr.best + "/" + nChecks + "</b>." : "") + "</p></div></div>" +
-      '<a class="btn primary block" href="' + BASE + "/" + s.id + '/quest">' + (qr ? "Replay quest" : "Start quest") + "</a>" +
+      (sq ? '<a class="btn primary block" href="' + BASE + "/" + s.id + '/quest">Resume quest · ' + progressText(sq) + '</a><button type="button" class="btn ghost block" style="margin-top:8px" data-act="q-over" data-stop="' + esc(s.id) + '">Start over</button>' :
+        '<a class="btn primary block" href="' + BASE + "/" + s.id + '/quest">' + (qr ? "Replay quest" : "Start quest") + "</a>") +
       (done ? '<p class="note">Completed ' + niceDate(load().done[K(s.id)]) + ". Finish with at least " + PASS_MARK + " of " + nChecks + " correct to count a stop as done.</p>" :
         '<p class="note">Finish with at least ' + PASS_MARK + " of " + nChecks + " correct to complete this stop. Read the textbook section first for the full story.</p>") + "</div>";
     h += '<div class="card"><h2>Textbook sections</h2><ul class="sections">' +
@@ -367,7 +505,7 @@
   }
 
   /* ---------- check engine (quests and review) ---------- */
-  function newCE(chk, mode) { return { chk: chk, mode: mode, attempt: 0, hint: false, sel: null, val: "", status: "ask", gain: 0, msg: "" }; }
+  function newCE(chk, mode) { return { chk: chk, mode: mode, attempt: 0, hint: false, sel: null, val: "", status: "ask", gain: 0, msg: "", conf: null, flag: "" }; }
   function ceOptions(chk) { return chk.type === "tf" ? ["True", "False"] : chk.options; }
   function ceAnswerIdx(chk) { return chk.type === "tf" ? (chk.answer ? 0 : 1) : chk.answer; }
   function ceAnswerText(chk) {
@@ -407,7 +545,6 @@
     var locked = st !== "ask";
     if (c.type === "num") {
       h += '<div class="numrow"><input id="numin" class="numin" type="text" inputmode="decimal" autocomplete="off" aria-label="Your answer" placeholder="Your answer" value="' + esc(ce.val) + '"' + (locked ? " disabled" : "") + '><span class="unit">' + fm(c.unit) + "</span></div>";
-      if (ce.msg) h += '<p class="small warn-t">' + esc(ce.msg) + "</p>";
     } else {
       h += '<div class="opts" role="radiogroup">' + ceOptions(c).map(function (o, i) {
         var cls = "opt";
@@ -419,21 +556,26 @@
       }).join("") + "</div>";
     }
     if (st === "ask") {
+      if (ce.msg) h += '<p class="small warn-t" role="alert">' + esc(ce.msg) + "</p>";
+      h += '<div class="conf" role="group" aria-label="How sure are you?"><span class="small muted">How sure are you?</span>' +
+        '<button type="button" class="cbtn' + (ce.conf === "sure" ? " on" : "") + '" data-act="ce-conf" data-v="sure" aria-pressed="' + (ce.conf === "sure") + '">Sure</button>' +
+        '<button type="button" class="cbtn' + (ce.conf === "guess" ? " on" : "") + '" data-act="ce-conf" data-v="guess" aria-pressed="' + (ce.conf === "guess") + '">Guessing</button></div>';
       if (ce.hint) h += '<div class="hint"><b>Hint.</b> ' + fm(c.hint) + "</div>";
       h += '<div class="actions">' +
         (ce.mode === "quest" && !ce.hint ? '<button type="button" class="btn amber-g" data-act="ce-hint">Hint (−' + HINT_COST + " XP)</button>" : "<span></span>") +
-        '<button type="button" class="btn primary" data-act="ce-check"' + (c.type !== "num" && ce.sel == null ? " disabled" : "") + ">Check answer</button></div>";
+        '<button type="button" class="btn primary" data-act="ce-check">Check answer</button></div>';
       if (ce.attempt === 1) h += '<p class="small muted">Second try: worth ' + XP_SECOND + " XP.</p>";
     } else if (st === "wrong") {
       h += '<div class="fb bad" role="status"><b>Not quite.</b> ' + (c.hint ? "Hint: " + fm(c.hint) : "Have another look.") +
         ' <span class="small muted">Re-read textbook p. ' + esc(c.page) + ". The full working shows after your next try.</span></div>" +
         '<button type="button" class="btn primary block" data-act="ce-retry">Try again (' + XP_SECOND + " XP)</button>";
     } else if (st === "right") {
-      h += '<div class="fb good" role="status"><b>Correct!' + (ce.mode === "quest" ? " +" + ce.gain + " XP" : "") + "</b> " + fm(c.explain) + '<div class="small muted">Textbook p. ' + esc(c.page) + "</div></div>" +
+      h += '<div class="fb good" role="status"><b>Correct!' + (ce.mode === "quest" ? " +" + ce.gain + " XP" : "") + "</b> " + fm(c.explain) + '<div class="small muted">Textbook p. ' + esc(c.page) + "</div>" +
+        (ce.flag === "guessed" ? '<div class="small">You were guessing, so this is saved to your mistake bank for tomorrow.</div>' : "") + "</div>" +
         '<button type="button" class="btn primary block" data-act="ce-next">Next</button>';
     } else {
       h += '<div class="fb bad" role="status"><b>The answer is ' + fm(ceAnswerText(c)) + ".</b> " + fm(c.explain) + '<div class="small muted">Textbook p. ' + esc(c.page) + "</div>" +
-        (ce.mode === "quest" ? '<div class="small">No XP this time. It is saved to your mistake bank for tomorrow.</div>' : "") + "</div>" +
+        (ce.mode === "quest" ? '<div class="small">No XP this time. It is saved to your mistake bank for tomorrow' + (ce.flag === "sure" ? ", and comes first in review because you were sure" : "") + ".</div>" : "") + "</div>" +
         '<button type="button" class="btn primary block" data-act="ce-next">Next</button>';
     }
     return h + "</div>";
@@ -445,10 +587,11 @@
   }
 
   /* ---------- quest ---------- */
-  function questStart(stopId) {
+  function questStart(stopId, fresh) {
     var s = stopById(stopId);
     if (!s) return errorView("That stop doesn't exist.");
-    Q = { stop: s, phase: "cards", ci: 0, ki: 0, ce: null, results: [], xp: 0, added: 0 };
+    if (fresh) { delete load().qp[K(s.id)]; save(); }
+    Q = (fresh ? null : restoreQuest(s)) || { stop: s, phase: "cards", ci: 0, ki: 0, ce: null, results: [], xp: 0, added: 0 };
     redraw = questRender; questRender();
   }
   function questRender() {
@@ -456,6 +599,8 @@
     var total = cards.length + checks.length;
     setHeader("Quest · " + s.title, BASE + "/" + s.id, { xp: true, tab: "map" });
     var h = "";
+    var started = Q.phase === "check" || Q.ci > 0;
+    if (Q.resumed && Q.phase !== "result") h += '<p class="small muted center resumed">Picking up where you left off.</p>';
     if (Q.phase === "cards") {
       var c = cards[Q.ci];
       h += steps(total, Q.ci);
@@ -463,9 +608,11 @@
         '<div class="chips">' + pageChip(c.page) + "</div></div>";
       h += '<div class="actions two">' + (Q.ci > 0 ? '<button type="button" class="btn ghost" data-act="card-prev">Back</button>' : "<span></span>") +
         '<button type="button" class="btn primary" data-act="card-next">' + (Q.ci === cards.length - 1 ? "Start checks" : "Next") + "</button></div>";
+      if (started) h += '<div class="center"><button type="button" class="btn ghost sm" data-act="q-over">Start over</button></div>';
     } else if (Q.phase === "check") {
       h += steps(total, cards.length + Q.ki);
       h += ceHTML(Q.ce, "Check " + (Q.ki + 1) + " of " + checks.length);
+      h += '<div class="center"><button type="button" class="btn ghost sm" data-act="q-over">Start over</button></div>';
     } else {
       var score = Q.results.filter(function (r) { return r.ok; }).length, passed = score >= PASS_MARK;
       var next = CH.stops[i + 1];
@@ -475,7 +622,7 @@
         '<ul class="res-list">' + Q.results.map(function (r, n) {
           return '<li class="' + (r.ok ? "ok" : "no") + '"><span class="ri">' + (r.ok ? ICON.checkS : ICON.cross) + "</span><span>Check " + (n + 1) + (r.ok ? (r.first ? ": first try" : ": second try") : ": missed") + "</span></li>";
         }).join("") + "</ul>" +
-        (passed ? '<p class="muted">Stop ' + (i + 1) + " is marked done. Today: " + Math.min(doneToday(), DAILY_TARGET) + " of " + DAILY_TARGET + " stops.</p>" :
+        (passed ? '<p class="muted">Stop ' + (i + 1) + " is marked done. Today: " + Math.min(doneToday(), planInfo().pace) + " of " + planInfo().pace + " stops.</p>" :
           '<p class="muted">You need at least ' + PASS_MARK + " of " + checks.length + " correct to complete this stop. Read the cards again and replay.</p>") +
         (Q.added ? '<p class="small muted">' + Q.added + " item" + (Q.added > 1 ? "s" : "") + " added to your mistake bank. They come back for review tomorrow.</p>" : "") +
         "</div>";
@@ -499,9 +646,11 @@
       rec.best = Math.max(rec.best, score); rec.plays++; rec.last = today();
       st.quest[key] = rec;
       if (score >= PASS_MARK && !st.done[key]) st.done[key] = today();
+      delete st.qp[key];
       save(); updateChrome();
       Q.phase = "result";
     }
+    saveQuest();
     questRender();
   }
 
@@ -578,10 +727,15 @@
     var d = D.d, o = stepOptions(d, D.i);
     if (k === o.correct) {
       D.i++; D.wrongPicks = []; D.slipped = false;
-      if (D.i >= d.steps.length) D.done = true;
+      if (D.i >= d.steps.length) {
+        D.done = true;
+        var dr = load().drill[d.id] || { runs: 0, clean: false };
+        dr.runs++; dr.last = today(); if (!D.slips) dr.clean = true;
+        load().drill[d.id] = dr; save();
+      }
     } else {
       D.wrongPicks.push(k);
-      if (!D.slipped) { D.slipped = true; D.slips++; bankAdd("d|" + CHID + "|" + d.id + "|" + D.i); }
+      if (!D.slipped) { D.slipped = true; D.slips++; bankAdd("d|" + CHID + "|" + d.id + "|" + D.i, "slip"); }
     }
     drillRender();
   }
@@ -640,6 +794,7 @@
       var id = R.queue[R.i], p = parseId(id);
       h += steps(R.queue.length, R.i);
       h += '<p class="muted small center">Item ' + (R.i + 1) + " of " + R.queue.length + "</p>";
+      h += '<div class="rtags center">' + reasonTag(id) + (load().bank[id] && load().bank[id].prio ? ' <span class="small muted">You were sure but wrong, so this comes first.</span>' : "") + "</div>";
       if (p.kind === "c") h += ceHTML(R.ce, "Re-check");
       else if (p.kind === "d") h += reviewDrillHTML(getDeriv(p.a), +p.b);
       else h += reviewBoardHTML(getBoard(p.a));
@@ -679,14 +834,17 @@
   }
   function bankListView() {
     setHeader("Mistake bank", "#/review", { tab: "review" });
-    var st = load(), ids = bankIds().filter(itemExists).sort(function (a, b) { return st.bank[a].due < st.bank[b].due ? -1 : st.bank[a].due > st.bank[b].due ? 1 : 0; });
+    var st = load(), ids = bankIds().filter(itemExists).sort(function (a, b) {
+      if (!!st.bank[a].prio !== !!st.bank[b].prio) return st.bank[a].prio ? -1 : 1;
+      return st.bank[a].due < st.bank[b].due ? -1 : st.bank[a].due > st.bank[b].due ? 1 : 0;
+    });
     var t = today(), h = "";
     if (!ids.length) h = '<div class="card center"><h2>The bank is empty</h2><p class="muted">Wrong answers and “Need practice” questions will appear here.</p></div>';
     else {
       h += '<div class="card"><p class="muted small">' + ids.length + " item" + (ids.length > 1 ? "s" : "") + '. Each correct review pushes an item out; two correct reviews in a row remove it.</p><ul class="list bank">' +
         ids.map(function (id) {
           var it = st.bank[id], due = it.due <= t ? "Due now" : "Due " + niceDate(it.due);
-          return '<li class="bank-row"><div class="grow"><div class="bt">' + esc(trunc(itemLabel(id), 110)) + '</div><div class="small muted"><span class="pill ' + (it.due <= t ? "amber" : "") + '">' + due + "</span> " + (it.streak || 0) + " of 2 correct reviews</div></div>" +
+          return '<li class="bank-row"><div class="grow"><div class="bt">' + esc(trunc(itemLabel(id), 110)) + '</div><div class="small muted">' + reasonTag(id) + ' <span class="pill ' + (it.due <= t ? "amber" : "") + '">' + due + "</span> " + (it.streak || 0) + " of 2 correct reviews</div></div>" +
             '<button type="button" class="btn ghost sm" data-act="bank-remove" data-id="' + esc(id) + '" aria-label="Remove from bank">Remove</button></li>';
         }).join("") + "</ul></div>";
     }
@@ -749,21 +907,35 @@
     switch (act) {
       case "card-next":
         if (Q.ci < Q.stop.quest.cards.length - 1) Q.ci++; else { Q.phase = "check"; Q.ki = 0; Q.ce = newCE(Q.stop.quest.checks[0], "quest"); }
-        return questRender();
-      case "card-prev": if (Q.ci > 0) Q.ci--; return questRender();
-      case "q-replay": return questStart(Q.stop.id);
-      case "ce-pick": ce = ctxCE(); if (ce && ce.status === "ask") { ce.sel = dataI(t); redraw(); } return;
-      case "ce-hint": ce = ctxCE(); ce.hint = true; syncNum(ce); return redraw();
+        saveQuest(); return questRender();
+      case "card-prev": if (Q.ci > 0) Q.ci--; saveQuest(); return questRender();
+      case "q-replay": return questStart(Q.stop.id, true);
+      case "q-over":
+        var sid = t.getAttribute("data-stop") || Q.stop.id;
+        delete load().qp[K(sid)]; save();
+        if (Q && Q.stop.id === sid && location.hash === BASE + "/" + sid + "/quest") return questStart(sid, true);
+        location.hash = BASE + "/" + sid + "/quest"; return;
+      case "ce-pick": ce = ctxCE(); if (ce && ce.status === "ask") { ce.sel = dataI(t); ce.msg = ""; if (ce.mode === "quest") saveQuest(); redraw(); } return;
+      case "ce-conf": ce = ctxCE(); if (ce && ce.status === "ask") { syncNum(ce); ce.conf = t.getAttribute("data-v"); ce.msg = ""; if (ce.mode === "quest") saveQuest(); redraw(); } return;
+      case "ce-hint": ce = ctxCE(); ce.hint = true; syncNum(ce); if (ce.mode === "quest") saveQuest(); return redraw();
       case "ce-check":
         ce = ctxCE(); syncNum(ce);
-        if (ce.chk.type === "num" && isNaN(parseNum(ce.val))) { ce.msg = "Type a number first."; return redraw(); }
+        if (ce.chk.type === "num" ? isNaN(parseNum(ce.val)) : ce.sel == null) { ce.msg = ce.chk.type === "num" ? "Type a number first." : "Pick an answer first."; return redraw(); }
+        if (!ce.conf) { ce.msg = "Choose Sure or Guessing first."; return redraw(); }
         ce.msg = "";
-        if (ce.mode === "quest" && ce.attempt === 0 && !ceIsCorrect(ce)) {   // first miss goes to the mistake bank
-          bankAdd("c|" + CHID + "|" + Q.stop.id + "|" + Q.ki); Q.added++;
+        var okNow = ceIsCorrect(ce), cid = ce.mode === "quest" ? "c|" + CHID + "|" + Q.stop.id + "|" + Q.ki : R.queue[R.i];
+        if (ce.mode === "quest") {
+          if (ce.attempt === 0) {   // first try decides what goes to the mistake bank
+            if (!okNow) { if (bankAdd(cid, ce.conf === "sure" ? "confident mistake" : "missed")) Q.added++; ce.flag = ce.conf === "sure" ? "sure" : ""; }
+            else if (ce.conf === "guess") { if (bankAdd(cid, "guessed")) Q.added++; ce.flag = "guessed"; }
+          }
+        } else if (!okNow && ce.conf === "sure" && load().bank[cid]) {
+          load().bank[cid].prio = true; load().bank[cid].reason = "confident mistake"; save();
         }
         ceSubmit(ce);
+        if (ce.mode === "quest") saveQuest();
         return redraw();
-      case "ce-retry": ce = ctxCE(); ce.attempt = 1; ce.sel = null; ce.val = ""; ce.status = "ask"; return redraw();
+      case "ce-retry": ce = ctxCE(); ce.attempt = 1; ce.sel = null; ce.val = ""; ce.status = "ask"; ce.conf = null; if (ce.mode === "quest") saveQuest(); return redraw();
       case "ce-next":
         if (R && location.hash.indexOf("#/review") === 0) return reviewAdvance(R.ce.status === "right");
         return questNext();
@@ -775,7 +947,7 @@
       case "rate-got": case "rate-need":
         q = t.closest(".bq"); var id = q.getAttribute("data-q");
         load().board[id] = act === "rate-got" ? "got" : "need";
-        if (act === "rate-need") bankAdd("b|" + CHID + "|" + id); else save();
+        if (act === "rate-need") bankAdd("b|" + CHID + "|" + id, "need practice"); else save();
         q.outerHTML = boardCard(getBoard(id), location.hash.slice(-5) === "board");
         return;
       case "drill-pick": return drillPick(dataI(t));
@@ -795,7 +967,7 @@
   function syncNum(ce) { var el = document.getElementById("numin"); if (el) ce.val = el.value; }
   app.addEventListener("input", function (e) {
     var t = e.target;
-    if (t.id === "numin") { var ce = R && R.ce && location.hash.indexOf("#/review") === 0 ? R.ce : Q && Q.ce; if (ce) ce.val = t.value; }
+    if (t.id === "numin") { var ce = R && R.ce && location.hash.indexOf("#/review") === 0 ? R.ce : Q && Q.ce; if (ce) { ce.val = t.value; if (ce.mode === "quest") saveQuest(); } }
     if (t.classList && t.classList.contains("note-ta")) onNoteInput(t);
   });
   app.addEventListener("keydown", function (e) {
