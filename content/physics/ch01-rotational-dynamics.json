@@ -1,137 +1,1809 @@
 {
-  "id": "ch01",
-  "subject": "physics",
-  "number": 1,
-  "title": "Rotational Dynamics",
-  "printedPages": "1–25",
-  "pdfPageOffset": 10,
-  "book": "xii",
-  "stops": [
+ "id": "ch01",
+ "subject": "physics",
+ "number": 1,
+ "title": "Rotational Dynamics",
+ "printedPages": "1–25",
+ "pdfPageOffset": 10,
+ "book": "xii",
+ "stops": [
+  {
+   "id": "s01",
+   "title": "Circular motion basics",
+   "sections": [
+    "1.1 Introduction",
+    "1.2 Characteristics of Circular Motion",
+    "1.2.1 Kinematics of Circular Motion"
+   ],
+   "page": 1,
+   "figs": [
+    "Fig 1.1",
+    "Fig 1.2"
+   ],
+   "inShort": "Revolution is motion about a point outside the body; rotation is about an axis through it. Circular motion is accelerated and periodic. v = ωr, ω = 2π/T = 2πn, and in UCM the centripetal acceleration is v²/r = ω²r towards the centre.",
+   "xi": [
     {
-      "id": "s01",
-      "title": "Circular motion basics",
-      "sections": ["1.1 Introduction", "1.2 Characteristics of Circular Motion", "1.2.1 Kinematics of Circular Motion"],
-      "page": 1,
-      "figs": ["Fig 1.1", "Fig 1.2"],
-      "inShort": "Revolution is motion about a point outside the body; rotation is about an axis through it. Circular motion is accelerated and periodic. v = ωr, ω = 2π/T = 2πn, and in UCM the centripetal acceleration is v²/r = ω²r towards the centre.",
-      "xi": [{ "label": "XI 3.4 Uniform Circular Motion", "page": 41 }]
-    },
-    {
-      "id": "s02",
-      "title": "Dynamics of circular motion",
-      "sections": ["1.2.2 Dynamics of Circular Motion"],
-      "page": 2,
-      "figs": ["Fig 1.3"],
-      "inShort": "A centripetal force mv²/r must be supplied by real forces (tension, friction, gravity, normal reaction). Centrifugal force is a pseudo force felt only in the rotating frame.",
-      "xi": [{ "label": "XI 3.4.1 Centripetal acceleration", "page": 42 }, { "label": "XI Ch 4 Laws of Motion", "page": 47 }]
-    },
-    {
-      "id": "s03",
-      "title": "Car on a flat curved road",
-      "sections": ["1.3 Applications of Uniform Circular Motion", "1.3.1 Vehicle Along a Horizontal Circular Track"],
-      "page": 3,
-      "figs": ["Fig 1.4"],
-      "inShort": "On a level curve, static friction supplies the centripetal force. Maximum safe speed: v = √(μs r g).",
-      "xi": []
-    },
-    {
-      "id": "s04",
-      "title": "Well of death",
-      "sections": ["1.3.2 Well (or Wall) of Death"],
-      "page": 4,
-      "figs": ["Fig 1.5"],
-      "inShort": "The wall's normal reaction gives the centripetal force and friction holds the rider up against gravity. Minimum speed: v = √(r g / μs).",
-      "xi": []
-    },
-    {
-      "id": "s05",
-      "title": "Banked road",
-      "sections": ["1.3.3 Vehicle on a Banked Road"],
-      "page": 5,
-      "figs": ["Fig 1.6", "Fig 1.7", "Fig 1.8"],
-      "inShort": "Banking tilts the normal reaction so its horizontal part supplies the centripetal force. Most safe speed without friction: v = √(r g tanθ). With friction there is a maximum and a minimum safe speed.",
-      "xi": []
-    },
-    {
-      "id": "s06",
-      "title": "Conical pendulum",
-      "sections": ["1.3.4 Conical Pendulum"],
-      "page": 7,
-      "figs": ["Fig 1.9"],
-      "inShort": "The bob moves in a horizontal circle while the string traces a cone. tanθ = v²/(r g) and period T = 2π√(L cosθ / g).",
-      "xi": []
-    },
-    {
-      "id": "s07",
-      "title": "Vertical circular motion",
-      "sections": ["1.4 Vertical Circular Motion", "1.4.1 Point Mass Undergoing Vertical Circular Motion Under Gravity"],
-      "page": 9,
-      "figs": ["Fig 1.10"],
-      "inShort": "Gravity changes the speed, so the motion is non-uniform. On a string: minimum speed √(rg) at the top and √(5rg) at the bottom, and tension at the bottom exceeds the top by 6mg. On a rod the speed at the top can be zero.",
-      "xi": []
-    },
-    {
-      "id": "s08",
-      "title": "Sphere of death and over-bridge",
-      "sections": ["1.4.2 Sphere of Death", "1.4.3 Vehicle at the Top of a Convex Over-Bridge"],
-      "page": 11,
-      "figs": ["Fig 1.11"],
-      "inShort": "In the sphere of death the rider needs at least √(rg) at the top. On a convex bridge, mg − N = mv²/r, so the vehicle leaves the road if v > √(rg).",
-      "xi": []
-    },
-    {
-      "id": "s09",
-      "title": "Moment of inertia",
-      "sections": ["1.5 Moment of Inertia as an Analogous Quantity for Mass", "1.5.1 Uniform Ring", "1.5.2 Uniform Disc", "1.6 Radius of Gyration"],
-      "page": 12,
-      "figs": ["Fig 1.12", "Fig 1.13", "Fig 1.14"],
-      "inShort": "I = Σ m r² plays the role of mass in rotation, and rotational KE = ½ I ω². Ring: I = MR². Disc: I = ½ MR². Radius of gyration K is defined by I = MK².",
-      "xi": [{ "label": "XI 3.4.1 Angular quantities", "page": 42 }]
-    },
-    {
-      "id": "s10",
-      "title": "Parallel and perpendicular axes",
-      "sections": ["1.7 Theorems of Parallel and Perpendicular Axes", "1.7.1 Theorem of Parallel Axes", "1.7.2 Theorem of Perpendicular Axes"],
-      "page": 14,
-      "figs": ["Fig 1.15", "Fig 1.16"],
-      "inShort": "Parallel axes: I = Ic + Mh², where Ic is about a parallel axis through the centre of mass. Perpendicular axes (flat bodies only): Iz = Ix + Iy.",
-      "xi": []
-    },
-    {
-      "id": "s11",
-      "title": "Angular momentum and torque",
-      "sections": ["1.8 Angular Momentum", "1.8.1 Angular Momentum in Terms of Moment of Inertia", "1.9 Torque in Terms of Moment of Inertia"],
-      "page": 16,
-      "figs": ["Fig 1.17"],
-      "inShort": "Angular momentum L = r × p, which for a rigid body is L = Iω. Torque τ = Iα is the rotational form of F = ma.",
-      "xi": [{ "label": "XI Ch 2 Torque (vector product)", "page": 24 }]
-    },
-    {
-      "id": "s12",
-      "title": "Conservation of angular momentum",
-      "sections": ["1.10 Conservation of Angular Momentum"],
-      "page": 18,
-      "figs": [],
-      "inShort": "With no external torque, Iω stays constant. A dancer pulling in her arms lowers I, so ω rises.",
-      "xi": [{ "label": "XI 4.7 Conservation of linear momentum", "page": 47 }]
-    },
-    {
-      "id": "s13",
-      "title": "Rolling motion",
-      "sections": ["1.11 Rolling Motion", "1.11.1 Pure Rolling Down an Inclined Plane"],
-      "page": 19,
-      "figs": ["Fig 1.18"],
-      "inShort": "Rolling = translation + rotation, with KE = ½Mv²(1 + K²/R²). Down an incline: a = g sinθ / (1 + K²/R²), so bodies with smaller K²/R² reach the bottom first.",
-      "xi": [{ "label": "XI Ch 4 Centre of mass", "page": 47 }]
-    },
-    {
-      "id": "s14",
-      "title": "Chapter exercises",
-      "sections": ["Exercises"],
-      "page": 23,
-      "figs": [],
-      "inShort": "End-of-chapter MCQs, short answers and numericals. Do these after all the stops.",
-      "xi": []
+     "label": "XI 3.4 Uniform Circular Motion",
+     "page": 41
     }
-  ]
+   ],
+   "quest": {
+    "cards": [
+     {
+      "t": "Revolution and rotation",
+      "text": "Revolution is motion about a point outside the body; rotation is motion about an axis that passes through the body. Circular motion is accelerated, because the direction of velocity changes at every instant, and it is periodic.",
+      "page": 1
+     },
+     {
+      "t": "Linear and angular speed",
+      "text": "The tangential (linear) speed of a particle is v = ωr, where ω is the angular velocity and r the radius. With period T and frequency n, ω = 2π/T = 2πn.",
+      "page": 1
+     },
+     {
+      "t": "Uniform circular motion",
+      "text": "In uniform circular motion (UCM) the speed is constant but the direction of velocity keeps changing. The acceleration is centripetal, a_{r} = v²/r = ω²r, always directed towards the centre.",
+      "page": 1
+     }
+    ],
+    "checks": [
+     {
+      "type": "mcq",
+      "q": "Which statement about uniform circular motion (UCM) is correct?",
+      "options": [
+       "The velocity is constant because the speed is constant",
+       "The speed is constant, but the velocity changes direction every instant, so there is a centripetal acceleration",
+       "The acceleration is zero because the speed does not change",
+       "The acceleration is along the direction of the velocity"
+      ],
+      "answer": 1,
+      "hint": "Velocity is a vector. Ask whether its direction stays the same.",
+      "explain": "In UCM the speed is constant but the direction of velocity changes at every instant, so the motion is accelerated. The acceleration is centripetal: a_{r} = v²/r = ω²r, towards the centre.",
+      "page": 1
+     },
+     {
+      "type": "num",
+      "q": "A wheel turns at 3 revolutions per second. Find its angular velocity ω.",
+      "answer": 18.85,
+      "unit": "rad/s",
+      "hint": "Use ω = 2πn, where n is the frequency in revolutions per second.",
+      "explain": "ω = 2πn = 2π × 3 = 18.85 rad/s.",
+      "page": 1
+     },
+     {
+      "type": "tf",
+      "q": "Rotation is motion about an axis passing through the body, while revolution is motion about a point or axis outside the body.",
+      "answer": true,
+      "hint": "Think of a spinning top compared with the Earth going round the Sun.",
+      "explain": "That is exactly the textbook distinction: rotation is about an axis through the object, revolution is about a point outside it.",
+      "page": 1
+     }
+    ]
+   }
+  },
+  {
+   "id": "s02",
+   "title": "Dynamics of circular motion",
+   "sections": [
+    "1.2.2 Dynamics of Circular Motion"
+   ],
+   "page": 2,
+   "figs": [
+    "Fig 1.3"
+   ],
+   "inShort": "A centripetal force mv²/r must be supplied by real forces (tension, friction, gravity, normal reaction). Centrifugal force is a pseudo force felt only in the rotating frame.",
+   "xi": [
+    {
+     "label": "XI 3.4.1 Centripetal acceleration",
+     "page": 42
+    },
+    {
+     "label": "XI Ch 4 Laws of Motion",
+     "page": 47
+    }
+   ],
+   "quest": {
+    "cards": [
+     {
+      "t": "Centripetal force",
+      "text": "For a body moving in a circle, the resultant of all the real forces on it points towards the centre. This resultant is the centripetal force, F = mv²/r = mω²r.",
+      "page": 2
+     },
+     {
+      "t": "Centripetal is not a new force",
+      "text": "'Centripetal' tells you the direction of the force (towards the centre); it is not a separate type of force like gravity. Real forces such as tension, friction, weight or the normal reaction supply it, so do not add it as an extra force.",
+      "page": 2
+     },
+     {
+      "t": "Centrifugal force",
+      "text": "Centrifugal force mω²r, directed away from the centre, is a pseudo force. It is used only in the rotating frame of reference, where it balances the resultant real force.",
+      "page": 3
+     }
+    ],
+    "checks": [
+     {
+      "type": "mcq",
+      "q": "A stone is whirled in a horizontal circle on a string. What supplies the centripetal force?",
+      "options": [
+       "The tension in the string",
+       "A separate force called centripetal force",
+       "The centrifugal force",
+       "The weight of the stone"
+      ],
+      "answer": 0,
+      "hint": "Which real force acts along the string towards the centre?",
+      "explain": "The centripetal force is the resultant of the real forces towards the centre. Here the tension in the string provides it.",
+      "page": 2
+     },
+     {
+      "type": "num",
+      "q": "A 0.2 kg ball moves in a circle of radius 0.5 m with a speed of 5 m/s. Find the centripetal force.",
+      "answer": 10.0,
+      "unit": "N",
+      "hint": "Use F = mv²/r.",
+      "explain": "F = mv²/r = 0.2 × 5² / 0.5 = 10 N.",
+      "page": 2
+     },
+     {
+      "type": "tf",
+      "q": "Centrifugal force is a real force acting on the body, as seen from an inertial frame.",
+      "answer": false,
+      "hint": "Is it present in the inertial frame, or only in the rotating frame?",
+      "explain": "Centrifugal force is a pseudo force. It appears only in the rotating (non-inertial) frame of reference.",
+      "page": 3
+     }
+    ]
+   }
+  },
+  {
+   "id": "s03",
+   "title": "Car on a flat curved road",
+   "sections": [
+    "1.3 Applications of Uniform Circular Motion",
+    "1.3.1 Vehicle Along a Horizontal Circular Track"
+   ],
+   "page": 3,
+   "figs": [
+    "Fig 1.4"
+   ],
+   "inShort": "On a level curve, static friction supplies the centripetal force. Maximum safe speed: v = √(μs r g).",
+   "xi": [],
+   "quest": {
+    "cards": [
+     {
+      "t": "Friction gives the centripetal force",
+      "text": "On a level circular track the weight mg is balanced by the normal reaction N. The force of static friction between tyres and road is the centripetal force: f_{s} = mv²/r. It is static friction because it stops the car skidding outwards.",
+      "page": 3
+     },
+     {
+      "t": "Maximum safe speed",
+      "text": "Static friction has an upper limit f_{s(max)} = μ_{s}N = μ_{s}mg. Putting this equal to mv²/r gives the maximum safe speed v_{max} = √(μ_{s}rg).",
+      "page": 4
+     },
+     {
+      "t": "What it depends on",
+      "text": "The mass cancels, so v_{max} does not depend on the mass of the vehicle. A larger radius or a rougher road (larger μ_{s}) allows a higher speed.",
+      "page": 4
+     }
+    ],
+    "checks": [
+     {
+      "type": "num",
+      "q": "A car takes a flat circular turn of radius 40 m. The coefficient of static friction is μ_{s} = 0.4. Find the maximum safe speed. (g = 10 m/s²)",
+      "answer": 12.65,
+      "unit": "m/s",
+      "hint": "v_{max} = √(μ_{s}rg).",
+      "explain": "v_{max} = √(μ_{s}rg) = √(0.4 × 40 × 10) = √160 = 12.65 m/s.",
+      "page": 4
+     },
+     {
+      "type": "mcq",
+      "q": "On a flat road with the same μ_{s}, a driver wants to double the safe speed. By what factor must the radius of the turn increase?",
+      "options": [
+       "2 times",
+       "4 times",
+       "Half",
+       "No change is needed"
+      ],
+      "answer": 1,
+      "hint": "v_{max}² = μ_{s}rg, so how does r depend on v²?",
+      "explain": "v_{max}² = μ_{s}rg means r is proportional to v². Doubling v needs r to become 2² = 4 times.",
+      "page": 4
+     },
+     {
+      "type": "step",
+      "q": "A car moves on a flat circular road at the limiting speed. Which equation do you write first?",
+      "options": [
+       "μ_{s}mg = mv²/r",
+       "mg = mv²/r",
+       "μ_{s}N = mg tanθ",
+       "N = mv²/r"
+      ],
+      "answer": 0,
+      "hint": "Which force is the centripetal force on a flat road, and what is its largest value?",
+      "explain": "On a flat road static friction supplies the centripetal force. At the limit, f_{s(max)} = μ_{s}N = μ_{s}mg equals mv²/r.",
+      "page": 4
+     }
+    ]
+   }
+  },
+  {
+   "id": "s04",
+   "title": "Well of death",
+   "sections": [
+    "1.3.2 Well (or Wall) of Death"
+   ],
+   "page": 4,
+   "figs": [
+    "Fig 1.5"
+   ],
+   "inShort": "The wall's normal reaction gives the centripetal force and friction holds the rider up against gravity. Minimum speed: v = √(r g / μs).",
+   "xi": [],
+   "quest": {
+    "cards": [
+     {
+      "t": "Forces in the well of death",
+      "text": "The rider moves in horizontal circles on the inside of a vertical cylindrical wall of radius r. The forces are the normal reaction N (horizontal, towards the centre), the weight mg (down) and static friction f_{s} (up along the wall).",
+      "page": 4
+     },
+     {
+      "t": "Two equations",
+      "text": "Horizontally, N = mv²/r is the centripetal force. Vertically, friction balances the weight, f_{s} = mg. Since f_{s} ≤ μ_{s}N, we need mg ≤ μ_{s}mv²/r.",
+      "page": 5
+     },
+     {
+      "t": "Minimum speed",
+      "text": "This gives the minimum speed v_{min} = √(rg/μ_{s}). Below it, N is too small for friction to hold the rider up against gravity.",
+      "page": 5
+     }
+    ],
+    "checks": [
+     {
+      "type": "num",
+      "q": "A motor cyclist rides horizontal circles inside a well of radius 4 m. The coefficient of static friction between tyres and wall is 0.4. Find the minimum speed. (g = 10 m/s²)",
+      "answer": 10.0,
+      "unit": "m/s",
+      "hint": "v_{min} = √(rg/μ_{s}).",
+      "explain": "v_{min} = √(rg/μ_{s}) = √(4 × 10 / 0.4) = √100 = 10 m/s.",
+      "page": 5
+     },
+     {
+      "type": "mcq",
+      "q": "In the well of death, which force balances the weight of the rider?",
+      "options": [
+       "The normal reaction",
+       "Static friction",
+       "The centripetal force",
+       "The centrifugal force"
+      ],
+      "answer": 1,
+      "hint": "The weight acts vertically down. Which force acts vertically up along the wall?",
+      "explain": "The normal reaction is horizontal and gives the centripetal force. The upward force along the wall is static friction, f_{s} = mg.",
+      "page": 5
+     },
+     {
+      "type": "tf",
+      "q": "If the coefficient of static friction μ_{s} increases, the minimum speed needed in the well of death also increases.",
+      "answer": false,
+      "hint": "Look at v_{min} = √(rg/μ_{s}): μ_{s} is in the denominator.",
+      "explain": "v_{min} = √(rg/μ_{s}), so a larger μ_{s} gives a smaller minimum speed.",
+      "page": 5
+     }
+    ]
+   }
+  },
+  {
+   "id": "s05",
+   "title": "Banked road",
+   "sections": [
+    "1.3.3 Vehicle on a Banked Road"
+   ],
+   "page": 5,
+   "figs": [
+    "Fig 1.6",
+    "Fig 1.7",
+    "Fig 1.8"
+   ],
+   "inShort": "Banking tilts the normal reaction so its horizontal part supplies the centripetal force. Most safe speed without friction: v = √(r g tanθ). With friction there is a maximum and a minimum safe speed.",
+   "xi": [],
+   "quest": {
+    "cards": [
+     {
+      "t": "Banking without friction",
+      "text": "On a road banked at angle θ the normal reaction N is tilted. Its vertical part balances the weight, N cosθ = mg, and its horizontal part is the centripetal force, N sinθ = mv²/r. Dividing gives tanθ = v²/(rg).",
+      "page": 6
+     },
+     {
+      "t": "Most safe speed",
+      "text": "The most safe speed is v_{s} = √(rg tanθ), and the angle of banking is θ = tan⁻¹(v²/rg). It is the speed at which no friction is needed.",
+      "page": 6
+     },
+     {
+      "t": "With friction",
+      "text": "With friction there are limits: v_{min} = √(rg(tanθ − μ_{s})/(1 + μ_{s}tanθ)) and v_{max} = √(rg(tanθ + μ_{s})/(1 − μ_{s}tanθ)). For μ_{s} = 0 both reduce to √(rg tanθ).",
+      "page": 7
+     }
+    ],
+    "checks": [
+     {
+      "type": "num",
+      "q": "A frictionless road of radius 40 m is banked so that tanθ = 0.25. Find the most safe speed. (g = 10 m/s²)",
+      "answer": 10.0,
+      "unit": "m/s",
+      "hint": "v_{s} = √(rg tanθ).",
+      "explain": "v_{s} = √(rg tanθ) = √(40 × 10 × 0.25) = √100 = 10 m/s.",
+      "page": 6
+     },
+     {
+      "type": "mcq",
+      "q": "Which expression gives the angle of banking θ for a vehicle at the most safe speed v on a road of radius r?",
+      "options": [
+       "tanθ = rg/v²",
+       "tanθ = v²/(rg)",
+       "sinθ = v²/(rg)",
+       "tanθ = v/(rg)"
+      ],
+      "answer": 1,
+      "hint": "Divide N sinθ = mv²/r by N cosθ = mg.",
+      "explain": "N sinθ / N cosθ = (mv²/r)/(mg), so tanθ = v²/(rg).",
+      "page": 6
+     },
+     {
+      "type": "tf",
+      "q": "A vehicle can move safely on a frictionless banked road if it travels at the most safe speed.",
+      "answer": true,
+      "hint": "At this speed the horizontal part of N alone supplies the centripetal force.",
+      "explain": "True. At v = √(rg tanθ), the horizontal component N sinθ provides exactly the required centripetal force, so no friction is needed.",
+      "page": 6
+     }
+    ]
+   }
+  },
+  {
+   "id": "s06",
+   "title": "Conical pendulum",
+   "sections": [
+    "1.3.4 Conical Pendulum"
+   ],
+   "page": 7,
+   "figs": [
+    "Fig 1.9"
+   ],
+   "inShort": "The bob moves in a horizontal circle while the string traces a cone. tanθ = v²/(r g) and period T = 2π√(L cosθ / g).",
+   "xi": [],
+   "quest": {
+    "cards": [
+     {
+      "t": "Forces on the bob",
+      "text": "In a conical pendulum a bob of mass m on a string of length L moves in a horizontal circle, and the string sweeps out a cone of semi-vertical angle θ. The tension T_{0} is resolved: T_{0}cosθ balances mg and T_{0}sinθ is the centripetal force.",
+      "page": 8
+     },
+     {
+      "t": "The angle",
+      "text": "So T_{0}sinθ = mrω² and T_{0}cosθ = mg. Dividing, tanθ = rω²/g, where r = L sinθ. This gives ω² = g/(L cosθ).",
+      "page": 8
+     },
+     {
+      "t": "Period",
+      "text": "The period is T = 2π√(L cosθ/g) and the frequency is n = (1/2π)√(g/(L cosθ)). The string can never become horizontal, since T_{0}cosθ must balance mg.",
+      "page": 8
+     }
+    ],
+    "checks": [
+     {
+      "type": "num",
+      "q": "A conical pendulum has string length L = 1 m and the string makes θ = 60° with the vertical. Find its period. (g = 10 m/s²)",
+      "answer": 1.405,
+      "unit": "s",
+      "hint": "T = 2π√(L cosθ/g). cos 60° = 0.5.",
+      "explain": "T = 2π√(L cosθ/g) = 2π√(1 × 0.5/10) = 2π × 0.2236 = 1.405 s.",
+      "page": 8
+     },
+     {
+      "type": "mcq",
+      "q": "On which quantities does the period of a conical pendulum depend?",
+      "options": [
+       "L and θ (and g), but not on the mass m",
+       "m, L and g",
+       "m and θ only",
+       "L only"
+      ],
+      "answer": 0,
+      "hint": "Look at T = 2π√(L cosθ/g). Is m there?",
+      "explain": "T = 2π√(L cosθ/g) contains L, θ and g. The mass cancels out.",
+      "page": 8
+     },
+     {
+      "type": "tf",
+      "q": "If the bob is whirled fast enough, the string of a conical pendulum can become horizontal.",
+      "answer": false,
+      "hint": "What would balance the weight if the tension were horizontal?",
+      "explain": "False. For a horizontal string, T_{0}cosθ = 0 and nothing would balance mg. Also θ = 90° would give T = 0, which is impossible.",
+      "page": 8
+     }
+    ]
+   }
+  },
+  {
+   "id": "s07",
+   "title": "Vertical circular motion",
+   "sections": [
+    "1.4 Vertical Circular Motion",
+    "1.4.1 Point Mass Undergoing Vertical Circular Motion Under Gravity"
+   ],
+   "page": 9,
+   "figs": [
+    "Fig 1.10"
+   ],
+   "inShort": "Gravity changes the speed, so the motion is non-uniform. On a string: minimum speed √(rg) at the top and √(5rg) at the bottom, and tension at the bottom exceeds the top by 6mg. On a rod the speed at the top can be zero.",
+   "xi": [],
+   "quest": {
+    "cards": [
+     {
+      "t": "Non-uniform motion",
+      "text": "In vertical circular motion under gravity, kinetic energy and gravitational potential energy keep changing into each other, so the speed is not constant. Only at the top and bottom does the resultant of tension and weight point towards the centre.",
+      "page": 10
+     },
+     {
+      "t": "String: top and bottom",
+      "text": "At the top, mg + T_{A} = mv_{A}²/r. For just completing the circle T_{A} = 0, so v_{A} = √(rg). Energy conservation over a fall of 2r gives v_{B} = √(5rg), and T_{B} − T_{A} = 6mg.",
+      "page": 10
+     },
+     {
+      "t": "Rod instead of string",
+      "text": "A rigid rod does not need tension at the top, so the speed at the top can be (practically) zero. For a rod the minimum speed at the lowest point is 2√(rg).",
+      "page": 11
+     }
+    ],
+    "checks": [
+     {
+      "type": "num",
+      "q": "A bob on a string of length 0.8 m is whirled in a vertical circle. Find the minimum speed at the lowest point so that the string never slackens. (g = 10 m/s²)",
+      "answer": 6.325,
+      "unit": "m/s",
+      "hint": "v_{B(min)} = √(5rg).",
+      "explain": "v_{B(min)} = √(5rg) = √(5 × 0.8 × 10) = √40 = 6.32 m/s.",
+      "page": 10
+     },
+     {
+      "type": "mcq",
+      "q": "For a bob on a string in a vertical circle, what is T_{bottom} − T_{top}?",
+      "options": [
+       "mg",
+       "2mg",
+       "4mg",
+       "6mg"
+      ],
+      "answer": 3,
+      "hint": "Subtract the equation at the top from the equation at the bottom, then use energy conservation.",
+      "explain": "T_{B} − T_{A} = 2mg + m(v_{B}² − v_{A}²)/r, and v_{B}² − v_{A}² = 4rg, so the difference is 6mg.",
+      "page": 10
+     },
+     {
+      "type": "tf",
+      "q": "For a bob tied to a light rigid rod, it is possible for the speed at the top to be zero.",
+      "answer": true,
+      "hint": "Does a rod need tension to stay straight the way a string does?",
+      "explain": "True. A rigid rod can push as well as pull, so no minimum speed is needed at the top. A string needs v ≥ √(rg).",
+      "page": 11
+     }
+    ]
+   }
+  },
+  {
+   "id": "s08",
+   "title": "Sphere of death and over-bridge",
+   "sections": [
+    "1.4.2 Sphere of Death",
+    "1.4.3 Vehicle at the Top of a Convex Over-Bridge"
+   ],
+   "page": 11,
+   "figs": [
+    "Fig 1.11"
+   ],
+   "inShort": "In the sphere of death the rider needs at least √(rg) at the top. On a convex bridge, mg − N = mv²/r, so the vehicle leaves the road if v > √(rg).",
+   "xi": [],
+   "quest": {
+    "cards": [
+     {
+      "t": "Sphere of death",
+      "text": "A rider going in vertical circles inside a hollow sphere follows the same dynamics as the bob on a string, with the tension T replaced by the normal reaction N. So the minimum speed is √(rg) at the top and √(5rg) at the bottom.",
+      "page": 11
+     },
+     {
+      "t": "Convex over-bridge",
+      "text": "At the top of a convex bridge of radius r the weight and normal reaction are both vertical. The resultant is the centripetal force: mg − N = mv²/r.",
+      "page": 11
+     },
+     {
+      "t": "Leaving the road",
+      "text": "As v increases, N decreases, and N = 0 marks the limit of contact. This gives v_{max} = √(rg); above this speed the vehicle leaves the surface.",
+      "page": 11
+     }
+    ],
+    "checks": [
+     {
+      "type": "num",
+      "q": "A convex bridge has radius of curvature 40 m. Find the maximum speed at which a vehicle can cross the top without losing contact. (g = 10 m/s²)",
+      "answer": 20.0,
+      "unit": "m/s",
+      "hint": "At the limit N = 0, so mg = mv²/r.",
+      "explain": "At the limit N = 0, so v_{max} = √(rg) = √(40 × 10) = 20 m/s.",
+      "page": 11
+     },
+     {
+      "type": "mcq",
+      "q": "A vehicle is at the top of a convex over-bridge of radius r moving at speed v. Which relation holds for the normal reaction N?",
+      "options": [
+       "N = mg + mv²/r",
+       "N = mg − mv²/r",
+       "N = mv²/r",
+       "N = mg"
+      ],
+      "answer": 1,
+      "hint": "The centre of the circle is below the vehicle. Which force is larger, weight or N?",
+      "explain": "Taking downward (towards the centre) as positive, mg − N = mv²/r, so N = mg − mv²/r.",
+      "page": 11
+     },
+     {
+      "type": "tf",
+      "q": "In the sphere of death, the rider at the top with the minimum speed √(rg) has zero normal reaction there.",
+      "answer": true,
+      "hint": "In the string case, the minimum speed corresponds to T = 0. N plays the role of T.",
+      "explain": "True. N replaces T, and just completing the circle means N = 0 at the top, giving v = √(rg).",
+      "page": 11
+     }
+    ]
+   }
+  },
+  {
+   "id": "s09",
+   "title": "Moment of inertia",
+   "sections": [
+    "1.5 Moment of Inertia as an Analogous Quantity for Mass",
+    "1.5.1 Uniform Ring",
+    "1.5.2 Uniform Disc",
+    "1.6 Radius of Gyration"
+   ],
+   "page": 12,
+   "figs": [
+    "Fig 1.12",
+    "Fig 1.13",
+    "Fig 1.14"
+   ],
+   "inShort": "I = Σ m r² plays the role of mass in rotation, and rotational KE = ½ I ω². Ring: I = MR². Disc: I = ½ MR². Radius of gyration K is defined by I = MK².",
+   "xi": [
+    {
+     "label": "XI 3.4.1 Angular quantities",
+     "page": 42
+    }
+   ],
+   "quest": {
+    "cards": [
+     {
+      "t": "Moment of inertia",
+      "text": "Moment of inertia I = Σ m_{i}r_{i}² is the rotational analogue of mass. It depends on the mass and on how it is spread about the axis. The SI unit is kg m² and the dimensions are [M¹L²T⁰]. Rotational KE = ½Iω².",
+      "page": 12
+     },
+     {
+      "t": "Ring and disc",
+      "text": "For a uniform ring of mass M and radius R about its own axis (perpendicular to its plane through the centre), I = MR². For a uniform disc about the same kind of axis, I = ½MR².",
+      "page": 14
+     },
+     {
+      "t": "Radius of gyration",
+      "text": "The radius of gyration K is defined by I = MK². It is the distance from the axis at which the whole mass could sit to give the same I. A larger K means the mass is farther from the axis.",
+      "page": 14
+     }
+    ],
+    "checks": [
+     {
+      "type": "num",
+      "q": "Find the moment of inertia of a uniform disc of mass 4 kg and radius 0.5 m about its own axis.",
+      "answer": 0.5,
+      "unit": "kg m²",
+      "hint": "I = ½MR² for a disc.",
+      "explain": "I = ½MR² = ½ × 4 × (0.5)² = 0.5 kg m².",
+      "page": 14
+     },
+     {
+      "type": "mcq",
+      "q": "A ring and a disc have the same mass and radius. About their own axes, which has the larger moment of inertia?",
+      "options": [
+       "The disc",
+       "The ring",
+       "Both are equal",
+       "It depends on the thickness only"
+      ],
+      "answer": 1,
+      "hint": "Compare MR² with ½MR².",
+      "explain": "I_{ring} = MR² and I_{disc} = ½MR². The ring has all its mass at distance R, so its I is larger.",
+      "page": 14
+     },
+     {
+      "type": "tf",
+      "q": "The radius of gyration K is the distance of the centre of mass from the axis of rotation.",
+      "answer": false,
+      "hint": "K is defined through I = MK².",
+      "explain": "False. K is defined by I = MK²: the distance at which all the mass could be placed to give the same moment of inertia. It is not simply the position of the centre of mass.",
+      "page": 14
+     }
+    ]
+   }
+  },
+  {
+   "id": "s10",
+   "title": "Parallel and perpendicular axes",
+   "sections": [
+    "1.7 Theorems of Parallel and Perpendicular Axes",
+    "1.7.1 Theorem of Parallel Axes",
+    "1.7.2 Theorem of Perpendicular Axes"
+   ],
+   "page": 14,
+   "figs": [
+    "Fig 1.15",
+    "Fig 1.16"
+   ],
+   "inShort": "Parallel axes: I = Ic + Mh², where Ic is about a parallel axis through the centre of mass. Perpendicular axes (flat bodies only): Iz = Ix + Iy.",
+   "xi": [],
+   "quest": {
+    "cards": [
+     {
+      "t": "Theorem of parallel axes",
+      "text": "I = I_{c} + Mh². Here I_{c} is the moment of inertia about an axis through the centre of mass, and I is that about a parallel axis at perpendicular distance h. M is the mass of the body.",
+      "page": 15
+     },
+     {
+      "t": "Theorem of perpendicular axes",
+      "text": "For a laminar (flat, plane) body, I_{z} = I_{x} + I_{y}. The x and y axes lie in the plane of the body and meet at a point, and the z axis is perpendicular to the plane through that point.",
+      "page": 15
+     },
+     {
+      "t": "Ring about a diameter",
+      "text": "A ring has I_{z} = MR² about its own axis. By symmetry I_{x} = I_{y}, so MR² = 2I_{x} and the moment of inertia about a diameter is ½MR².",
+      "page": 21
+     }
+    ],
+    "checks": [
+     {
+      "type": "num",
+      "q": "A body of mass 4 kg has I_{c} = 2 kg m² about an axis through its centre of mass. Find I about a parallel axis 0.5 m away.",
+      "answer": 3.0,
+      "unit": "kg m²",
+      "hint": "I = I_{c} + Mh².",
+      "explain": "I = I_{c} + Mh² = 2 + 4 × (0.5)² = 3 kg m².",
+      "page": 15
+     },
+     {
+      "type": "mcq",
+      "q": "Which relation is the theorem of perpendicular axes for a flat body?",
+      "options": [
+       "I = I_{c} + Mh²",
+       "I_{z} = I_{x} − I_{y}",
+       "I_{z} = I_{x} + I_{y}",
+       "I_{z} = I_{x}I_{y}"
+      ],
+      "answer": 2,
+      "hint": "The axes x and y are in the plane; z is perpendicular to it.",
+      "explain": "For a laminar body I_{z} = I_{x} + I_{y}. The first option is the parallel axes theorem.",
+      "page": 15
+     },
+     {
+      "type": "tf",
+      "q": "The theorem of perpendicular axes can be applied to any three-dimensional body, such as a solid sphere.",
+      "answer": false,
+      "hint": "Remember the word 'laminar'.",
+      "explain": "False. It holds only for laminar (flat, plane) bodies.",
+      "page": 15
+     }
+    ]
+   }
+  },
+  {
+   "id": "s11",
+   "title": "Angular momentum and torque",
+   "sections": [
+    "1.8 Angular Momentum",
+    "1.8.1 Angular Momentum in Terms of Moment of Inertia",
+    "1.9 Torque in Terms of Moment of Inertia"
+   ],
+   "page": 16,
+   "figs": [
+    "Fig 1.17"
+   ],
+   "inShort": "Angular momentum L = r × p, which for a rigid body is L = Iω. Torque τ = Iα is the rotational form of F = ma.",
+   "xi": [
+    {
+     "label": "XI Ch 2 Torque (vector product)",
+     "page": 24
+    }
+   ],
+   "quest": {
+    "cards": [
+     {
+      "t": "Angular momentum",
+      "text": "Angular momentum is the moment of linear momentum, L = r × p. Its magnitude is L = pr sinθ, and for a particle moving in a circle of radius r it is L = mvr.",
+      "page": 17
+     },
+     {
+      "t": "L = Iω",
+      "text": "For a rigid body turning about a fixed axis, adding m_{i}r_{i}²ω over all particles gives L = Iω. It is the analogue of p = mv, with I in place of m.",
+      "page": 17
+     },
+     {
+      "t": "τ = Iα, work and power",
+      "text": "Torque τ = Iα is the analogue of F = ma. For a constant torque, rotational work is W = τθ and power is P = τω.",
+      "page": 21
+     }
+    ],
+    "checks": [
+     {
+      "type": "num",
+      "q": "A particle of mass 0.5 kg moves in a circle of radius 2 m at a speed of 3 m/s. Find its angular momentum.",
+      "answer": 3.0,
+      "unit": "kg m²/s",
+      "hint": "For circular motion L = mvr.",
+      "explain": "L = mvr = 0.5 × 3 × 2 = 3 kg m²/s.",
+      "page": 17
+     },
+     {
+      "type": "num",
+      "q": "A torque of 10 N m acts on a body whose moment of inertia is 2 kg m². Find its angular acceleration.",
+      "answer": 5.0,
+      "unit": "rad/s²",
+      "hint": "Use τ = Iα.",
+      "explain": "α = τ/I = 10/2 = 5 rad/s².",
+      "page": 17
+     },
+     {
+      "type": "tf",
+      "q": "L = Iω and τ = Iα are the rotational analogues of p = mv and F = ma, with moment of inertia replacing mass.",
+      "answer": true,
+      "hint": "Match each rotational quantity with its translational partner.",
+      "explain": "True. Moment of inertia I plays the role of mass in rotational motion.",
+      "page": 17
+     }
+    ]
+   }
+  },
+  {
+   "id": "s12",
+   "title": "Conservation of angular momentum",
+   "sections": [
+    "1.10 Conservation of Angular Momentum"
+   ],
+   "page": 18,
+   "figs": [],
+   "inShort": "With no external torque, Iω stays constant. A dancer pulling in her arms lowers I, so ω rises.",
+   "xi": [
+    {
+     "label": "XI 4.7 Conservation of linear momentum",
+     "page": 47
+    }
+   ],
+   "quest": {
+    "cards": [
+     {
+      "t": "The principle",
+      "text": "Differentiating L = r × p gives dL/dt = r × F = τ, the net external torque. If the net external torque is zero, dL/dt = 0, so angular momentum is constant: Iω = constant, or I_{1}ω_{1} = I_{2}ω_{2}.",
+      "page": 18
+     },
+     {
+      "t": "Changing I",
+      "text": "If the moment of inertia of a system decreases without an external torque, ω increases in the same proportion. A dancer pulling in her arms spins faster.",
+      "page": 18
+     },
+     {
+      "t": "In terms of frequency",
+      "text": "Since ω = 2πn, the law can also be written I_{1}n_{1} = I_{2}n_{2}. This is convenient when speeds are given in rpm or rps.",
+      "page": 18
+     }
+    ],
+    "checks": [
+     {
+      "type": "num",
+      "q": "A skater with moment of inertia 3 kg m² spins at 2 revolutions per second. She pulls in her arms so that I becomes 1.5 kg m². Find her new frequency.",
+      "answer": 4.0,
+      "unit": "rev/s",
+      "hint": "I_{1}n_{1} = I_{2}n_{2}.",
+      "explain": "n_{2} = I_{1}n_{1}/I_{2} = 3 × 2 / 1.5 = 4 rev/s.",
+      "page": 18
+     },
+     {
+      "type": "mcq",
+      "q": "Which statement is the principle of conservation of angular momentum?",
+      "options": [
+       "If the net external force is zero, kinetic energy is constant",
+       "If the net external torque is zero, the angular momentum of the system is constant",
+       "Angular momentum is always zero for a rigid body",
+       "Angular momentum equals torque multiplied by time in all cases"
+      ],
+      "answer": 1,
+      "hint": "Angular momentum is to torque as linear momentum is to force.",
+      "explain": "With zero net external torque, dL/dt = 0, so L = Iω stays constant.",
+      "page": 18
+     },
+     {
+      "type": "step",
+      "q": "In the proof you have written τ = dL/dt. What is the next step?",
+      "options": [
+       "Put τ = 0, so dL/dt = 0 and L = Iω = constant",
+       "Put L = 0 so τ is zero",
+       "Put I = constant so ω = 0",
+       "Put ω = 0 so L is constant"
+      ],
+      "answer": 0,
+      "hint": "The principle applies when the net external torque is zero.",
+      "explain": "If τ = 0 then dL/dt = 0, so L is constant. For a rigid body L = Iω, giving I_{1}ω_{1} = I_{2}ω_{2}.",
+      "page": 18
+     }
+    ]
+   }
+  },
+  {
+   "id": "s13",
+   "title": "Rolling motion",
+   "sections": [
+    "1.11 Rolling Motion",
+    "1.11.1 Pure Rolling Down an Inclined Plane"
+   ],
+   "page": 19,
+   "figs": [
+    "Fig 1.18"
+   ],
+   "inShort": "Rolling = translation + rotation, with KE = ½Mv²(1 + K²/R²). Down an incline: a = g sinθ / (1 + K²/R²), so bodies with smaller K²/R² reach the bottom first.",
+   "xi": [
+    {
+     "label": "XI Ch 4 Centre of mass",
+     "page": 47
+    }
+   ],
+   "quest": {
+    "cards": [
+     {
+      "t": "Translation plus rotation",
+      "text": "In pure rolling the centre of mass moves with speed v while the body rotates with ω = v/R. The body therefore has translational and rotational kinetic energy. Static friction is needed so that it does not slide.",
+      "page": 19
+     },
+     {
+      "t": "Kinetic energy of rolling",
+      "text": "Total KE = ½Mv² + ½Iω². With I = MK² and ω = v/R this becomes ½Mv²(1 + K²/R²).",
+      "page": 19
+     },
+     {
+      "t": "Down an incline",
+      "text": "For a body rolling down an incline of angle θ, a = g sinθ/(1 + K²/R²). A smaller K²/R² gives a larger acceleration, so a solid disc (K²/R² = ½) beats a ring (K²/R² = 1).",
+      "page": 20
+     }
+    ],
+    "checks": [
+     {
+      "type": "num",
+      "q": "A uniform disc rolls without slipping down an incline of 30°. For a disc K²/R² = 1/2. Find its acceleration. (g = 10 m/s²)",
+      "answer": 3.333,
+      "unit": "m/s²",
+      "hint": "a = g sinθ/(1 + K²/R²).",
+      "explain": "a = g sinθ/(1 + K²/R²) = 10 × 0.5 / 1.5 = 3.33 m/s².",
+      "page": 20
+     },
+     {
+      "type": "mcq",
+      "q": "A uniform solid disc rolls without slipping. What fraction of its total kinetic energy is rotational?",
+      "options": [
+       "1/2",
+       "1/3",
+       "2/3",
+       "1/4"
+      ],
+      "answer": 1,
+      "hint": "Rotational : total = (K²/R²) : (1 + K²/R²), with K²/R² = 1/2.",
+      "explain": "Translational = ½Mv², rotational = ½Mv² × ½, total = ½Mv² × 3/2. The rotational fraction is (1/2)/(3/2) = 1/3.",
+      "page": 20
+     },
+     {
+      "type": "tf",
+      "q": "A ring and a solid disc of equal mass and radius are released together from the top of an incline. The ring reaches the bottom first.",
+      "answer": false,
+      "hint": "Compare K²/R² for the two: the smaller one rolls faster.",
+      "explain": "False. The ring has K²/R² = 1 and the disc ½, so the disc has the larger acceleration and arrives first.",
+      "page": 20
+     }
+    ]
+   }
+  },
+  {
+   "id": "s14",
+   "title": "Chapter exercises",
+   "sections": [
+    "Exercises"
+   ],
+   "page": 23,
+   "figs": [],
+   "inShort": "End-of-chapter MCQs, short answers and numericals. Do these after all the stops.",
+   "xi": [],
+   "quest": {
+    "cards": [
+     {
+      "t": "Circular motion formulas",
+      "text": "Keep these ready: v = ωr, F = mv²/r, v_{max} = √(μ_{s}rg) (flat road), v_{s} = √(rg tanθ) (banked road), T = 2π√(L cosθ/g) (conical pendulum), v_{top} ≥ √(rg) and v_{bottom} ≥ √(5rg) (string).",
+      "page": "1–11",
+      "needsCheck": true
+     },
+     {
+      "t": "Rotational formulas",
+      "text": "Keep these ready: I = Σ m_{i}r_{i}², ring MR², disc ½MR², I = I_{c} + Mh², I_{z} = I_{x} + I_{y} (flat bodies only), L = Iω, τ = Iα, I_{1}ω_{1} = I_{2}ω_{2}, KE = ½Mv²(1 + K²/R²).",
+      "page": "12–20",
+      "needsCheck": true
+     },
+     {
+      "t": "How to use the exercises",
+      "text": "Draw a free-body diagram first, decide which force is the centripetal force, then write the equation. For numericals, check units and that you used the correct axis for I.",
+      "page": 23,
+      "needsCheck": true
+     }
+    ],
+    "checks": [
+     {
+      "type": "mcq",
+      "q": "Which formula gives the most safe speed on a frictionless banked road?",
+      "options": [
+       "v = √(μ_{s}rg)",
+       "v = √(rg tanθ)",
+       "v = √(rg/μ_{s})",
+       "v = √(5rg)"
+      ],
+      "answer": 1,
+      "hint": "Frictionless means no μ_{s}. The angle must appear.",
+      "explain": "On a banked road without friction, v_{s} = √(rg tanθ). The first option is for a flat road, the third for the well of death, the fourth for the bottom of a vertical circle.",
+      "page": 6
+     },
+     {
+      "type": "num",
+      "q": "A metallic ring of mass 1 kg has I = 1 kg m² about a diameter. It is melted and remoulded into a thin uniform disc of the same radius. Find I of the disc about its own axis.",
+      "answer": 1.0,
+      "unit": "kg m²",
+      "hint": "Ring about a diameter: I = ½MR². Find R² first, then use ½MR² for the disc.",
+      "explain": "Ring about a diameter: ½MR² = 1, so with M = 1 kg, R² = 2 m². The disc about its own axis: I = ½MR² = ½ × 1 × 2 = 1 kg m².",
+      "page": 25
+     },
+     {
+      "type": "tf",
+      "q": "For a bob on a string in a vertical circle, the tension at the bottom exceeds the tension at the top by 6mg.",
+      "answer": true,
+      "hint": "This difference does not depend on v or r.",
+      "explain": "True. T_{B} − T_{A} = 6mg, independent of the speed and the radius.",
+      "page": 10
+     }
+    ]
+   }
+  }
+ ],
+ "board": [
+  {
+   "id": "2022-Q1vii",
+   "year": 2022,
+   "qno": "Q1(vii)",
+   "marks": 1,
+   "stop": "s07",
+   "kind": "MCQ",
+   "text": "A bob performs vertical circular motion on a string. The difference in tension in the string at the horizontal position and at the uppermost position is:",
+   "options": [
+    "(a) mg",
+    "(b) 2mg",
+    "(c) 3mg",
+    "(d) 6mg"
+   ],
+   "answer": "(c) 3mg. Reason: T_{top} = mv_{t}²/r − mg and T_{horizontal} = mv_{h}²/r. Also v_{h}² = v_{t}² + 2gr, so T_{h} − T_{top} = 2mg + mg = 3mg."
+  },
+  {
+   "id": "2022-Q2viii",
+   "year": 2022,
+   "qno": "Q2(viii)",
+   "marks": 1,
+   "stop": "s09",
+   "text": "Calculate the moment of inertia of a uniform disc of mass 10 kg and radius 60 cm about an axis perpendicular to its plane through its centre.",
+   "answer": "I = ½MR² = ½ × 10 × (0.6)² = 1.8 kg m²."
+  },
+  {
+   "id": "2022-Q3",
+   "year": 2022,
+   "qno": "Q3",
+   "marks": 2,
+   "stop": "s09",
+   "text": "Define moment of inertia of a rotating rigid body. State its SI unit and dimensions.",
+   "answer": "Moment of inertia is the sum of the products of the mass of each particle and the square of its perpendicular distance from the axis of rotation, I = Σ m r². SI unit: kg m². Dimensions: [M¹L²T⁰]."
+  },
+  {
+   "id": "2022-Q10",
+   "year": 2022,
+   "qno": "Q10",
+   "marks": 2,
+   "stop": "s11",
+   "text": "An electron revolves round the nucleus in a circular orbit of radius 5.3 × 10^{-11} m with speed 3 × 10^{6} m/s. Find its angular momentum. (mass of electron = 9.1 × 10^{-31} kg)",
+   "answer": "L = mvr = 9.1 × 10^{-31} × 3 × 10^{6} × 5.3 × 10^{-11} = 1.447 × 10^{-34} kg m²/s."
+  },
+  {
+   "id": "2022-Q19",
+   "year": 2022,
+   "qno": "Q19",
+   "marks": 3,
+   "stop": "s09",
+   "text": "Derive an expression for the kinetic energy of a body rotating with a uniform angular speed.",
+   "answer": "Each particle has v_{i} = r_{i}ω, so KE_{i} = ½m_{i}r_{i}²ω². Summing over all particles: KE = ½(Σ m_{i}r_{i}²)ω² = ½Iω². Draw a diagram of a rigid body rotating about a fixed axis."
+  },
+  {
+   "id": "2023-Q2v",
+   "year": 2023,
+   "qno": "Q2(v)",
+   "marks": 1,
+   "stop": "s05",
+   "text": "If friction is made zero for a road, can a vehicle move safely on this road?",
+   "answer": "Yes, only if the road is banked and the vehicle moves at the most safe speed v = √(rg tanθ). The horizontal component of the normal reaction then supplies the centripetal force."
+  },
+  {
+   "id": "2023-Q5",
+   "year": 2023,
+   "qno": "Q5",
+   "marks": 2,
+   "stop": "s12",
+   "text": "State and prove the principle of conservation of angular momentum.",
+   "answer": "Statement: if the net external torque on a system is zero, its angular momentum stays constant. Proof: τ = dL/dt. If τ = 0 then dL/dt = 0, so L = Iω = constant, i.e. I_{1}ω_{1} = I_{2}ω_{2}."
+  },
+  {
+   "id": "2023-Q31",
+   "year": 2023,
+   "qno": "Q31",
+   "marks": 4,
+   "stop": "s07",
+   "text": "Derive expressions for the linear velocity at the lowest position, midway position and topmost position for a particle revolving in a vertical circle, if it has to just complete circular motion without the string slackening at the top.",
+   "answer": "At the top, the critical case is T = 0, so mg = mv_{t}²/r and v_{t} = √(rg). Top to midway (fall r): v_{m}² = v_{t}² + 2gr = 3rg, so v_{m} = √(3rg). Top to bottom (fall 2r): v_{b}² = v_{t}² + 4gr = 5rg, so v_{b} = √(5rg)."
+  },
+  {
+   "id": "2025-Q1viii",
+   "year": 2025,
+   "qno": "Q1(viii)",
+   "marks": 1,
+   "stop": "s11",
+   "kind": "MCQ",
+   "text": "The power rating of a ceiling fan rotating with a constant torque of 2 N m at an angular speed of 2π rad/s is:",
+   "options": [
+    "(a) π W",
+    "(b) 2π W",
+    "(c) 3π W",
+    "(d) 4π W"
+   ],
+   "answer": "(d) 4π W, since P = τω = 2 × 2π."
+  },
+  {
+   "id": "2025-Q2vi",
+   "year": 2025,
+   "qno": "Q2(vi)",
+   "marks": 1,
+   "stop": "s05",
+   "text": "State the formula for the angle of banking.",
+   "answer": "tanθ = v²/(rg), i.e. θ = tan⁻¹(v²/rg)."
+  },
+  {
+   "id": "2025-Q6",
+   "year": 2025,
+   "qno": "Q6",
+   "marks": 2,
+   "stop": "s12",
+   "text": "State and prove the law of conservation of angular momentum.",
+   "answer": "Statement: if the net external torque on a system is zero, its angular momentum stays constant. Proof: τ = dL/dt. If τ = 0 then dL/dt = 0, so L = Iω = constant, i.e. I_{1}ω_{1} = I_{2}ω_{2}."
+  },
+  {
+   "id": "2025-Q23",
+   "year": 2025,
+   "qno": "Q23",
+   "marks": 3,
+   "stop": "s11",
+   "text": "A flywheel of a motor has mass 100 kg and radius 1.5 m. The motor develops a constant torque of 2000 N m. The flywheel starts from rest. Calculate the work done during the first 4 revolutions.",
+   "answer": "θ = 4 × 2π = 8π rad. W = τθ = 2000 × 8π = 16000π J ≈ 5.03 × 10^{4} J (with π = 3.142, W = 50 272 J). The mass and radius are not needed."
+  }
+ ],
+ "derivations": [
+  {
+   "id": "d1",
+   "stop": "s07",
+   "title": "Speeds in a vertical circle (just completing the circle)",
+   "page": 10,
+   "asked": [
+    "2023 Q31"
+   ],
+   "given": "A particle of mass m is tied to a string of length r and whirled in a vertical circle. It just completes the circle, so the tension at the top is zero. Positions: A = top, C = midway (string horizontal), B = bottom.",
+   "steps": [
+    {
+     "line": "At the top: mg + T_{A} = mv_{A}²/r",
+     "wrong": [
+      "mg − T_{A} = mv_{A}²/r",
+      "T_{A} = mv_{A}²/r + mg"
+     ],
+     "note": "Tension and weight both point down, towards the centre."
+    },
+    {
+     "line": "Just completing the circle: T_{A} = 0, so mg = mv_{A}²/r and v_{A} = √(rg)",
+     "wrong": [
+      "T_{A} = mg, so v_{A} = 0",
+      "T_{A} = 0, so mv_{A}²/r = 0 and v_{A} = 0"
+     ],
+     "note": "This is the minimum speed at the top."
+    },
+    {
+     "line": "Top to midway the bob falls through r: v_{C}² = v_{A}² + 2gr = 3rg, so v_{C} = √(3rg)",
+     "wrong": [
+      "Top to midway the bob falls through r: v_{C}² = v_{A}² + gr = 2rg, so v_{C} = √(2rg)",
+      "Top to midway the bob falls through 2r: v_{C}² = v_{A}² + 4gr = 5rg, so v_{C} = √(5rg)"
+     ],
+     "note": "Energy conservation: ½mv_{C}² = ½mv_{A}² + mgr."
+    },
+    {
+     "line": "Top to bottom the bob falls through 2r: v_{B}² = v_{A}² + 4gr = 5rg, so v_{B} = √(5rg)",
+     "wrong": [
+      "Top to bottom the bob falls through r: v_{B}² = v_{A}² + 2gr = 3rg, so v_{B} = √(3rg)",
+      "Top to bottom the bob falls through 2r: v_{B}² = v_{A}² − 4gr, so v_{B} = 0"
+     ],
+     "note": "Energy conservation: ½mv_{B}² = ½mv_{A}² + mg(2r)."
+    },
+    {
+     "line": "Check at the bottom: T_{B} − mg = mv_{B}²/r = 5mg, so T_{B} = 6mg, which agrees with T_{B} − T_{A} = 6mg",
+     "wrong": [
+      "Check at the bottom: T_{B} + mg = mv_{B}²/r = 5mg, so T_{B} = 4mg",
+      "Check at the bottom: T_{B} = mv_{B}²/r = 5mg, so T_{B} − T_{A} = 5mg"
+     ],
+     "note": "At the bottom tension is up and weight is down."
+    }
+   ]
+  },
+  {
+   "id": "d2",
+   "stop": "s09",
+   "title": "Kinetic energy of a rotating body, ½Iω²",
+   "page": 13,
+   "asked": [
+    "2022 Q19"
+   ],
+   "given": "A rigid body rotates with uniform angular speed ω about a fixed axis. Particle i has mass m_{i} and is at perpendicular distance r_{i} from the axis.",
+   "steps": [
+    {
+     "line": "Every particle moves in a circle with the same ω, so v_{i} = r_{i}ω",
+     "wrong": [
+      "v_{i} = ω/r_{i}",
+      "v_{i} = r_{i}ω²"
+     ]
+    },
+    {
+     "line": "KE of particle i: KE_{i} = ½m_{i}v_{i}² = ½m_{i}r_{i}²ω²",
+     "wrong": [
+      "KE_{i} = m_{i}v_{i}² = m_{i}r_{i}²ω²",
+      "KE_{i} = ½m_{i}r_{i}ω²"
+     ]
+    },
+    {
+     "line": "Total KE = Σ KE_{i} = ½(Σ m_{i}r_{i}²)ω²",
+     "wrong": [
+      "Total KE = Σ KE_{i} = ½(Σ m_{i}r_{i})ω²",
+      "Total KE = Σ KE_{i} = ½(Σ m_{i})(Σ r_{i})²ω²"
+     ],
+     "note": "ω is the same for all particles, so it comes out of the sum."
+    },
+    {
+     "line": "Σ m_{i}r_{i}² is the moment of inertia I of the body about the axis",
+     "wrong": [
+      "Σ m_{i}r_{i}² is the total mass times the radius, MR",
+      "Σ m_{i}r_{i}² is the angular momentum L"
+     ]
+    },
+    {
+     "line": "Therefore KE = ½Iω², analogous to ½mv² with I in place of m",
+     "wrong": [
+      "Therefore KE = Iω²",
+      "Therefore KE = ½I²ω"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "d3",
+   "stop": "s12",
+   "title": "Conservation of angular momentum",
+   "page": 18,
+   "asked": [
+    "2023 Q5",
+    "2025 Q6"
+   ],
+   "given": "Statement: if the net external torque on a system is zero, its angular momentum is constant. Start from the angular momentum of a particle, L = r × p.",
+   "steps": [
+    {
+     "line": "Differentiate with time: dL/dt = r × (dp/dt) + (dr/dt) × p",
+     "wrong": [
+      "dL/dt = (dr/dt) × (dp/dt)",
+      "dL/dt = r × p / dt"
+     ]
+    },
+    {
+     "line": "dr/dt = v is parallel to p = mv, so (dr/dt) × p = 0",
+     "wrong": [
+      "dr/dt = v is perpendicular to p, so (dr/dt) × p = vp",
+      "dr/dt = 0 because the particle's position is fixed"
+     ]
+    },
+    {
+     "line": "Hence dL/dt = r × F = τ, the net external torque (F = dp/dt)",
+     "wrong": [
+      "Hence dL/dt = r · F, a scalar product",
+      "Hence dL/dt = F/r"
+     ]
+    },
+    {
+     "line": "If the net external torque is zero, dL/dt = 0, so L is constant",
+     "wrong": [
+      "If the net external force is non-zero, dL/dt = 0",
+      "If the torque is zero, L must be zero"
+     ]
+    },
+    {
+     "line": "For a rigid body L = Iω, so Iω = constant, i.e. I_{1}ω_{1} = I_{2}ω_{2}",
+     "wrong": [
+      "For a rigid body L = Iω, so I/ω = constant",
+      "For a rigid body ω stays constant whatever happens to I"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "d4",
+   "stop": "s05",
+   "title": "Most safe speed and angle of banking",
+   "page": 6,
+   "asked": [],
+   "related": [
+    "2023 Q2(v)",
+    "2025 Q2(vi)"
+   ],
+   "given": "A vehicle of mass m moves on a road of radius r banked at angle θ. Friction is ignored. The only forces are the weight mg and the normal reaction N, perpendicular to the road surface.",
+   "steps": [
+    {
+     "line": "Resolve N: N cosθ is vertical and N sinθ is horizontal, towards the centre",
+     "wrong": [
+      "N sinθ is vertical and N cosθ is horizontal",
+      "N is already vertical, so it needs no resolving"
+     ]
+    },
+    {
+     "line": "Vertical balance: N cosθ = mg",
+     "wrong": [
+      "N sinθ = mg",
+      "N cosθ = mg + mv²/r"
+     ]
+    },
+    {
+     "line": "Horizontal: N sinθ = mv²/r, the centripetal force",
+     "wrong": [
+      "N cosθ = mv²/r",
+      "N sinθ = mv/r"
+     ]
+    },
+    {
+     "line": "Divide the two equations: tanθ = v²/(rg)",
+     "wrong": [
+      "Divide the two equations: tanθ = rg/v²",
+      "Divide the two equations: tanθ = v/(rg)"
+     ]
+    },
+    {
+     "line": "Most safe speed v = √(rg tanθ); angle of banking θ = tan⁻¹(v²/rg)",
+     "wrong": [
+      "Most safe speed v = √(rg/tanθ); angle of banking θ = tan⁻¹(rg/v²)",
+      "Most safe speed v = rg tanθ; angle of banking θ = sin⁻¹(v²/rg)"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "d5",
+   "stop": "s06",
+   "title": "Period of a conical pendulum",
+   "page": 8,
+   "asked": [],
+   "given": "A bob of mass m on a string of length L moves in a horizontal circle of radius r. The string makes angle θ with the vertical. The forces are the weight mg and the tension T_{0} along the string.",
+   "steps": [
+    {
+     "line": "Resolve T_{0}: T_{0}cosθ is vertical and T_{0}sinθ is horizontal, towards the centre",
+     "wrong": [
+      "T_{0}sinθ is vertical and T_{0}cosθ is horizontal",
+      "T_{0} acts vertically, so no resolving is needed"
+     ]
+    },
+    {
+     "line": "Vertical balance: T_{0}cosθ = mg",
+     "wrong": [
+      "T_{0}sinθ = mg",
+      "T_{0}cosθ = mrω²"
+     ]
+    },
+    {
+     "line": "Horizontal: T_{0}sinθ = mrω²",
+     "wrong": [
+      "T_{0}cosθ = mrω²",
+      "T_{0}sinθ = mrω"
+     ]
+    },
+    {
+     "line": "Divide: tanθ = rω²/g. With r = L sinθ this gives ω² = g/(L cosθ)",
+     "wrong": [
+      "Divide: tanθ = rω²/g. With r = L sinθ this gives ω² = g/(L sinθ)",
+      "Divide: tanθ = rω²/g. With r = L sinθ this gives ω² = gL cosθ"
+     ]
+    },
+    {
+     "line": "T = 2π/ω = 2π√(L cosθ/g)",
+     "wrong": [
+      "T = 2π/ω = 2π√(L sinθ/g)",
+      "T = 2π/ω = 2π√(g/(L cosθ))"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "d6",
+   "stop": "s11",
+   "title": "Angular momentum L = Iω",
+   "page": 17,
+   "asked": [],
+   "given": "A rigid body rotates with angular speed ω about a fixed axis. Particle i has mass m_{i} and is at perpendicular distance r_{i} from the axis.",
+   "steps": [
+    {
+     "line": "Each particle performs UCM with the same ω, so v_{i} = r_{i}ω",
+     "wrong": [
+      "v_{i} = ω/r_{i}",
+      "v_{i} = r_{i}/ω"
+     ]
+    },
+    {
+     "line": "Linear momentum of particle i: p_{i} = m_{i}v_{i} = m_{i}r_{i}ω",
+     "wrong": [
+      "p_{i} = m_{i}r_{i}ω²",
+      "p_{i} = ½m_{i}v_{i}"
+     ]
+    },
+    {
+     "line": "Its angular momentum: L_{i} = p_{i}r_{i} = m_{i}r_{i}²ω",
+     "wrong": [
+      "L_{i} = p_{i}/r_{i} = m_{i}ω",
+      "L_{i} = p_{i}r_{i}² = m_{i}r_{i}³ω"
+     ]
+    },
+    {
+     "line": "All L_{i} point along the axis, so their magnitudes add: L = (Σ m_{i}r_{i}²)ω",
+     "wrong": [
+      "The L_{i} cancel in pairs, so L = 0",
+      "L = (Σ m_{i}r_{i})ω²"
+     ]
+    },
+    {
+     "line": "Σ m_{i}r_{i}² = I, so L = Iω, analogous to p = mv",
+     "wrong": [
+      "Σ m_{i}r_{i}² = I, so L = I/ω",
+      "Σ m_{i}r_{i}² = I, so L = ½Iω²"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "d7",
+   "stop": "s11",
+   "title": "Torque τ = Iα",
+   "page": 17,
+   "asked": [],
+   "given": "A rigid body rotates with constant angular acceleration α about a fixed axis. Particle i has mass m_{i} and is at perpendicular distance r_{i} from the axis.",
+   "steps": [
+    {
+     "line": "Every particle has the same α, so its tangential acceleration is a_{i} = r_{i}α",
+     "wrong": [
+      "a_{i} = r_{i}/α",
+      "a_{i} = r_{i}ω²"
+     ]
+    },
+    {
+     "line": "Tangential force on particle i: f_{i} = m_{i}a_{i} = m_{i}r_{i}α",
+     "wrong": [
+      "f_{i} = m_{i}r_{i}α²",
+      "f_{i} = ½m_{i}a_{i}"
+     ]
+    },
+    {
+     "line": "Torque of this force about the axis: τ_{i} = f_{i}r_{i} = m_{i}r_{i}²α",
+     "wrong": [
+      "τ_{i} = f_{i}/r_{i} = m_{i}α",
+      "τ_{i} = f_{i}r_{i}² = m_{i}r_{i}³α"
+     ]
+    },
+    {
+     "line": "All torques are along the axis, so they add: τ = (Σ m_{i}r_{i}²)α",
+     "wrong": [
+      "The torques cancel in pairs, so τ = 0",
+      "τ = (Σ m_{i}r_{i})α²"
+     ]
+    },
+    {
+     "line": "Σ m_{i}r_{i}² = I, so τ = Iα, analogous to F = ma",
+     "wrong": [
+      "Σ m_{i}r_{i}² = I, so τ = I/α",
+      "Σ m_{i}r_{i}² = I, so τ = ½Iα²"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "d8",
+   "stop": "s13",
+   "title": "Acceleration of a body rolling down an incline",
+   "page": 20,
+   "asked": [],
+   "given": "A body of mass M, radius R and radius of gyration K rolls without slipping from rest down an incline of angle θ. It falls through a vertical height h while moving a distance s along the incline.",
+   "steps": [
+    {
+     "line": "Rolling KE: ½Mv² + ½Iω² = ½Mv²(1 + K²/R²), using I = MK² and ω = v/R",
+     "wrong": [
+      "Rolling KE: ½Mv² + ½Iω² = ½Mv²(1 − K²/R²)",
+      "Rolling KE: ½Mv² + ½Iω² = ½Mv²(K²/R²)"
+     ]
+    },
+    {
+     "line": "Energy conservation: Mgh = ½Mv²(1 + K²/R²)",
+     "wrong": [
+      "Energy conservation: Mgh = ½Mv²",
+      "Energy conservation: Mgh = ½Mv²(1 + K²/R²) + ½Iω²"
+     ]
+    },
+    {
+     "line": "So v² = 2gh/(1 + K²/R²)",
+     "wrong": [
+      "So v² = 2gh(1 + K²/R²)",
+      "So v² = gh/(1 + K²/R²)"
+     ]
+    },
+    {
+     "line": "Distance along the incline s = h/sinθ, and v² = 2as (starting from rest), so v² = 2ah/sinθ",
+     "wrong": [
+      "Distance along the incline s = h sinθ, so v² = 2ah sinθ",
+      "Distance along the incline s = h cosθ, so v² = 2ah cosθ"
+     ]
+    },
+    {
+     "line": "Equate the two expressions for v²: a = g sinθ/(1 + K²/R²)",
+     "wrong": [
+      "Equate the two expressions for v²: a = g sinθ(1 + K²/R²)",
+      "Equate the two expressions for v²: a = g cosθ/(1 + K²/R²)"
+     ],
+     "note": "Without rolling (pure sliding, no friction) the factor is absent and a = g sinθ."
+    }
+   ]
+  }
+ ],
+ "formulas": [
+  {
+   "stop": "s01",
+   "items": [
+    {
+     "n": "Linear speed",
+     "f": "v = ωr",
+     "s": "v: linear (tangential) speed, ω: angular velocity, r: radius",
+     "p": 1
+    },
+    {
+     "n": "Angular velocity",
+     "f": "ω = 2π/T = 2πn",
+     "s": "T: period, n: frequency",
+     "p": 1
+    },
+    {
+     "n": "Centripetal acceleration (UCM)",
+     "f": "a_{r} = v²/r = ω²r",
+     "s": "directed towards the centre",
+     "p": 1
+    }
+   ]
+  },
+  {
+   "stop": "s02",
+   "items": [
+    {
+     "n": "Centripetal force",
+     "f": "F = mv²/r = mω²r",
+     "s": "m: mass; resultant of the real forces towards the centre",
+     "p": 2
+    },
+    {
+     "n": "Centrifugal force (pseudo)",
+     "f": "F = mω²r, away from the centre",
+     "s": "used only in the rotating frame",
+     "p": 3
+    }
+   ]
+  },
+  {
+   "stop": "s03",
+   "items": [
+    {
+     "n": "Friction on a flat road",
+     "f": "f_{s} = mv²/r",
+     "s": "f_{s}: force of static friction",
+     "p": 3
+    },
+    {
+     "n": "Maximum safe speed",
+     "f": "v_{max} = √(μ_{s}rg)",
+     "s": "μ_{s}: coefficient of static friction, g: acceleration due to gravity",
+     "p": 4
+    }
+   ]
+  },
+  {
+   "stop": "s04",
+   "items": [
+    {
+     "n": "Normal reaction and friction",
+     "f": "N = mv²/r and f_{s} = mg",
+     "s": "N: normal reaction from the wall",
+     "p": 5
+    },
+    {
+     "n": "Minimum speed",
+     "f": "v_{min} = √(rg/μ_{s})",
+     "s": "r: radius of the well",
+     "p": 5
+    }
+   ]
+  },
+  {
+   "stop": "s05",
+   "items": [
+    {
+     "n": "Banking condition",
+     "f": "tanθ = v²/(rg)",
+     "s": "θ: angle of banking",
+     "p": 6
+    },
+    {
+     "n": "Most safe speed",
+     "f": "v_{s} = √(rg tanθ)",
+     "s": "no friction needed at this speed",
+     "p": 6
+    },
+    {
+     "n": "Angle of banking",
+     "f": "θ = tan⁻¹(v²/rg)",
+     "s": "",
+     "p": 6
+    },
+    {
+     "n": "Minimum speed with friction",
+     "f": "v_{min} = √(rg(tanθ − μ_{s})/(1 + μ_{s}tanθ))",
+     "s": "zero if μ_{s} ≥ tanθ",
+     "p": 7
+    },
+    {
+     "n": "Maximum speed with friction",
+     "f": "v_{max} = √(rg(tanθ + μ_{s})/(1 − μ_{s}tanθ))",
+     "s": "infinite if μ_{s} = cotθ",
+     "p": 7
+    }
+   ]
+  },
+  {
+   "stop": "s06",
+   "items": [
+    {
+     "n": "Conical pendulum angle",
+     "f": "tanθ = rω²/g = v²/(rg)",
+     "s": "θ: angle of string with the vertical; r = L sinθ",
+     "p": 8
+    },
+    {
+     "n": "Period",
+     "f": "T = 2π√(L cosθ/g)",
+     "s": "L: string length",
+     "p": 8
+    },
+    {
+     "n": "Frequency",
+     "f": "n = (1/2π)√(g/(L cosθ))",
+     "s": "",
+     "p": 8
+    }
+   ]
+  },
+  {
+   "stop": "s07",
+   "items": [
+    {
+     "n": "Minimum speed at the top (string)",
+     "f": "v_{A} = √(rg)",
+     "s": "tension T_{A} = 0 at this speed",
+     "p": 10
+    },
+    {
+     "n": "Minimum speed at the bottom (string)",
+     "f": "v_{B} = √(5rg)",
+     "s": "",
+     "p": 10
+    },
+    {
+     "n": "Tension difference",
+     "f": "T_{B} − T_{A} = 6mg",
+     "s": "independent of v and r",
+     "p": 10
+    },
+    {
+     "n": "Minimum speed, string horizontal",
+     "f": "v = √(3rg)",
+     "s": "",
+     "p": 10
+    },
+    {
+     "n": "Rod: top and bottom",
+     "f": "v_{top} can be 0; v_{bottom(min)} = 2√(rg)",
+     "s": "rigid rod needs no tension at the top",
+     "p": 11
+    }
+   ]
+  },
+  {
+   "stop": "s08",
+   "items": [
+    {
+     "n": "Sphere of death",
+     "f": "v_{top(min)} = √(rg), v_{bottom(min)} = √(5rg)",
+     "s": "same as a string, with N in place of T",
+     "p": 11
+    },
+    {
+     "n": "Convex over-bridge",
+     "f": "mg − N = mv²/r",
+     "s": "N: normal reaction at the top",
+     "p": 11
+    },
+    {
+     "n": "Maximum speed on the bridge",
+     "f": "v_{max} = √(rg)",
+     "s": "N = 0: vehicle just keeps contact",
+     "p": 11
+    }
+   ]
+  },
+  {
+   "stop": "s09",
+   "items": [
+    {
+     "n": "Moment of inertia",
+     "f": "I = Σ m_{i}r_{i}²",
+     "s": "unit kg m², dimensions [M¹L²T⁰]",
+     "p": 12
+    },
+    {
+     "n": "Rotational kinetic energy",
+     "f": "KE = ½Iω²",
+     "s": "",
+     "p": 13
+    },
+    {
+     "n": "Uniform ring (own axis)",
+     "f": "I = MR²",
+     "s": "M: mass, R: radius",
+     "p": 13
+    },
+    {
+     "n": "Uniform disc (own axis)",
+     "f": "I = ½MR²",
+     "s": "",
+     "p": 14
+    },
+    {
+     "n": "Radius of gyration",
+     "f": "I = MK²",
+     "s": "K: radius of gyration",
+     "p": 14
+    }
+   ]
+  },
+  {
+   "stop": "s10",
+   "items": [
+    {
+     "n": "Parallel axes",
+     "f": "I = I_{c} + Mh²",
+     "s": "I_{c}: about axis through centre of mass, h: distance between the parallel axes",
+     "p": 15
+    },
+    {
+     "n": "Perpendicular axes (laminar bodies only)",
+     "f": "I_{z} = I_{x} + I_{y}",
+     "s": "x, y in the plane of the body; z perpendicular to it",
+     "p": 15
+    },
+    {
+     "n": "Ring about a diameter",
+     "f": "I = ½MR²",
+     "s": "from Table 3",
+     "p": 21
+    }
+   ]
+  },
+  {
+   "stop": "s11",
+   "items": [
+    {
+     "n": "Angular momentum of a particle",
+     "f": "L = r × p, L = mvr",
+     "s": "for circular motion",
+     "p": 17
+    },
+    {
+     "n": "Angular momentum of a rigid body",
+     "f": "L = Iω",
+     "s": "",
+     "p": 17
+    },
+    {
+     "n": "Torque",
+     "f": "τ = Iα",
+     "s": "α: angular acceleration",
+     "p": 17
+    },
+    {
+     "n": "Rotational work and power",
+     "f": "W = τθ, P = τω",
+     "s": "θ: angular displacement (radian)",
+     "p": 21
+    }
+   ]
+  },
+  {
+   "stop": "s12",
+   "items": [
+    {
+     "n": "Conservation of angular momentum",
+     "f": "Iω = constant, I_{1}ω_{1} = I_{2}ω_{2}",
+     "s": "valid when the net external torque is zero",
+     "p": 18
+    },
+    {
+     "n": "In terms of frequency",
+     "f": "I_{1}n_{1} = I_{2}n_{2}",
+     "s": "",
+     "p": 18
+    }
+   ]
+  },
+  {
+   "stop": "s13",
+   "items": [
+    {
+     "n": "KE of rolling",
+     "f": "KE = ½Mv²(1 + K²/R²)",
+     "s": "v: speed of centre of mass, K: radius of gyration",
+     "p": 19
+    },
+    {
+     "n": "Speed after falling through h",
+     "f": "v² = 2gh/(1 + K²/R²)",
+     "s": "",
+     "p": 20
+    },
+    {
+     "n": "Acceleration down an incline",
+     "f": "a = g sinθ/(1 + K²/R²)",
+     "s": "θ: inclination of the plane",
+     "p": 20
+    },
+    {
+     "n": "K²/R² values",
+     "f": "ring 1, disc ½, solid sphere 2/5, hollow sphere 2/3",
+     "s": "smaller value rolls faster",
+     "p": 20
+    }
+   ]
+  }
+ ]
 }
