@@ -16,5 +16,5 @@ Features 2-6 were built together for Physics Ch 1 at the owner's request (awaiti
 10. [x] Confidence tap (awaiting review)
 11. [x] Predicted board marks (awaiting review)
 12. [x] Plan worked back from exam (awaiting review)
-13. [ ] Board round: final stop of each chapter, open from day one; by marks / most asked first / timed mock; examiner-point self-marking feeds the gauge and mistake bank; chapter complete at 80%+
+13. [x] Board round (awaiting review): final stop of each chapter, open from day one; by marks / most asked first / timed mock; examiner-point self-marking feeds the gauge and mistake bank; chapter complete at 80%+
 14. [ ] Extra practice (optional, separate from the main flow): SCERT question banks 2021-22 and 2022-23, and 2017-2020 paper questions still in the syllabus, tagged "older pattern"

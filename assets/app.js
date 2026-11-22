@@ -30,12 +30,14 @@
     play: '<svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg>',
     bolt: '<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M13 2L5 13.5h6L10 22l9-12h-6z" fill="currentColor"/></svg>',
     cross: '<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>',
+    trophy: '<svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true"><path d="M7 3.5h10v5.5a5 5 0 0 1-10 0z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M7 5.5H4v2a3.5 3.5 0 0 0 3.5 3.5M17 5.5h3v2a3.5 3.5 0 0 1-3.5 3.5M12 14v4M8 20.5h8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
     chev: '<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>'
   };
 
   /* ---------- storage (never throws) ---------- */
   var mem = null;
-  function blank() { return { v: 2, done: {}, xp: 0, quest: {}, bank: {}, notes: {}, board: {}, theme: "quest", qp: {}, drill: {}, planStart: "" }; }
+  function blank() { return { v: 2, done: {}, xp: 0, quest: {}, bank: {}, notes: {}, board: {}, theme: "quest", qp: {}, drill: {}, planStart: "", round: blankRound() }; }
+  function blankRound() { return { modes: {}, complete: false, bestFull: 0, run: null, last: null }; }
   function isObj(x) { return x && typeof x === "object" && !Array.isArray(x); }
   function load() {
     if (mem) return mem;
@@ -52,6 +54,10 @@
     for (var k in b) if (s[k] == null || typeof s[k] !== typeof b[k]) s[k] = b[k];
     if (s.theme !== "quest" && s.theme !== "focus") s.theme = "quest";
     s.v = 2;
+    if (!isObj(s.round)) s.round = blankRound();
+    var rd = s.round, rb = blankRound();
+    for (var rk in rb) if (rd[rk] === undefined || (rb[rk] !== null && typeof rd[rk] !== typeof rb[rk]) || (rb[rk] === null && rd[rk] !== null && !isObj(rd[rk]))) rd[rk] = rb[rk];
+    if (!isObj(rd.modes)) rd.modes = {};
     if (!s.planStart) { s.planStart = today(); fresh = true; }   // plan clock starts the first time the app runs
     mem = s;
     if (fresh) save();
@@ -248,7 +254,7 @@
   function addXP(n) { if (n > 0) { load().xp += n; save(); updateChrome(); } }
 
   /* ---------- mistake bank (spaced review) ---------- */
-  var REASON = { "guessed": "Guessed", "confident mistake": "Confident mistake", "missed": "Missed", "need practice": "Need practice", "slip": "Slip" };
+  var REASON = { "guessed": "Guessed", "confident mistake": "Confident mistake", "missed": "Missed", "need practice": "Need practice", "slip": "Slip", "below full marks": "Below full marks" };
   function bankAdd(id, reason) {
     var b = load().bank, old = b[id];
     if (reason === "guessed" && old) return false;   // already in the bank: leave its schedule alone
@@ -338,8 +344,11 @@
     setHeader("HSC Board Prep", null, { tab: "home" });
     var left = daysLeft(catalog.examDate), dt = doneToday(), pl = planInfo(), remaining = Math.max(0, pl.pace - dt);
     var prog = chapterProgress(), st = load(), due = dueIds().filter(itemExists).length;
-    var h = "", ri = resumeInfo(), nextStop = CH.stops.filter(function (s) { return !isDone(s.id); })[0];
-    if (ri) {
+    var h = "", ri = resumeInfo(), rr = roundRestore(), nextStop = CH.stops.filter(function (s) { return !isDone(s.id); })[0];
+    var showRound = !!rr && (!ri || (rr.at || 0) > ri.at);
+    if (showRound) {
+      h += '<a class="card cont-card" href="' + BASE + '/round/run"><span class="num">' + ICON.play + '</span><span class="grow"><b>Continue: Board round · question ' + (rr.i + 1) + " of " + rr.ids.length + '</b><br><span class="small">Pick up where you stopped</span></span>' + ICON.chev + "</a>";
+    } else if (ri) {
       h += '<a class="card cont-card" href="' + BASE + "/" + ri.s.id + '/quest"><span class="num">' + ICON.play + '</span><span class="grow"><b>Continue: ' + esc(ri.s.title) + " · " + progressText(ri.q) + '</b><br><span class="small">Pick up where you stopped</span></span>' + ICON.chev + "</a>";
     } else if (nextStop) {
       h += '<a class="card cont-card" href="' + BASE + "/" + nextStop.id + '/quest"><span class="num">' + ICON.play + '</span><span class="grow"><b>Next up: ' + esc(nextStop.title) + '</b><br><span class="small">Stop ' + (stopIndex(nextStop.id) + 1) + " · textbook p. " + esc(nextStop.page) + " · start the quest</span></span>" + ICON.chev + "</a>";
@@ -357,7 +366,7 @@
       h += '<a class="card review-card" href="#/review"><span class="num amber">' + due + '</span><span class="grow"><b>Review: ' + due + ' due</b><br><span class="muted small">Redo what you got wrong, a few minutes</span></span>' + ICON.chev + "</a>";
     }
     h += planHTML(pl) + gaugeHTML();
-    var shownId = ri ? ri.s.id : (nextStop && nextStop.id);
+    var shownId = showRound ? null : ri ? ri.s.id : (nextStop && nextStop.id);
     var next = CH.stops.filter(function (s) { return !isDone(s.id) && s.id !== shownId; }).slice(0, Math.max(0, (remaining || 1) - 1));
     h += '<div class="card"><h2>' + (remaining ? "Today's target" : "Target done for today") + "</h2>";
     h += '<p class="muted small">Today: ' + Math.min(dt, pl.pace) + " of " + pl.pace + " stops</p>";
@@ -373,7 +382,8 @@
       if (!c.file) return '<li><div class="soon"><span class="num">' + c.number + '</span><span class="grow">' + esc(c.title) + '<br><span class="small">Coming soon</span></span></div></li>';
       return '<li><a class="item" href="#/' + SUBJ + "/" + c.id + '"><span class="num">' + c.number + '</span>' +
         '<span class="grow"><b>' + esc(c.title) + '</b><div class="bar" style="margin-top:6px"><i style="width:' + prog.pct + '%"></i></div>' +
-        '<span class="muted small">' + prog.done + " of " + prog.total + " stops</span></span>" + ICON.chev + "</a></li>";
+        '<span class="muted small">' + prog.done + " of " + prog.total + " stops</span></span>" + ICON.chev + "</a>" +
+        '<a class="rlink" href="' + BASE + '/round"><span class="ricon">' + ICON.trophy + '</span><span class="grow"><b>Board round</b><br><span class="muted small">' + CH.board.length + " past-paper questions · open now</span>" + (roundComplete() ? "<br>" + badgeHTML("home") : "") + "</span>" + ICON.chev + "</a></li>";
     }).join("") + "</ul></div>";
     if (!isFocus()) {
       h += '<div class="stats"><div class="stat"><b>' + st.xp + '</b><span>XP</span></div><div class="stat"><b>' + prog.done + "/" + prog.total + '</b><span>stops done</span></div><div class="stat"><b>' + bankIds().length + '</b><span>in mistake bank</span></div></div>';
@@ -399,6 +409,7 @@
     var firstOpen = CH.stops.filter(function (s) { return !isDone(s.id); })[0];
     var h = '<div class="card"><div class="row"><div class="grow"><b>' + prog.done + " of " + prog.total + ' stops</b>' +
       '<div class="bar" style="margin-top:6px"><i style="width:' + prog.pct + '%"></i></div></div><b>' + prog.pct + '%</b></div>' +
+      (roundComplete() ? '<div class="cb-row">' + badgeHTML("page") + "</div>" : "") +
       '<div class="chips">' + bookChip(CH.book, 1, "Chapter in textbook") + "</div>" +
       '<p class="note">Textbook pages ' + esc(CH.printedPages) + ". The Drive viewer can't jump to a page, so use the PDF page number shown.</p></div>";
     h += gaugeHTML();
@@ -408,6 +419,7 @@
     if (isFocus()) {
       var order = CH.stops.map(function (s, i) { return { s: s, i: i, c: askedCount(s.id) }; })
         .sort(function (a, b) { return b.c - a.c || a.i - b.i; });
+      h += '<a class="card round-card" href="' + BASE + '/round"><span class="ricon">' + ICON.trophy + '</span><span class="grow"><b>Board round</b><br><span class="small muted">' + CH.board.length + " past-paper questions · by marks, most asked first or timed mock</span>" + (roundComplete() ? "<br>" + badgeHTML("map") : "") + "</span>" + ICON.chev + "</a>";
       h += '<div class="card flist-card"><h2>Stops, most asked first</h2><ul class="flist">' + order.map(function (o) {
         var s = o.s, d = isDone(s.id);
         return '<li><a class="frow" href="' + BASE + "/" + s.id + '"><span class="fnum' + (d ? " done" : "") + '">' + (d ? ICON.checkS : o.i + 1) + "</span>" +
@@ -415,8 +427,8 @@
           (o.c ? '<span class="tags">' + boardFor(s.id).map(function (b) { return tag(boardTag(b)); }).join("") + "</span>" : "") + "</span></a></li>";
       }).join("") + "</ul></div>";
     } else {
-      var doneArr = CH.stops.map(function (s) { return isDone(s.id); });
-      h += '<div class="card zig-card"><div class="zig" style="height:' + (CH.stops.length * ZH) + 'px">' + zigPath(CH.stops.length, doneArr) +
+      var doneArr = CH.stops.map(function (s) { return isDone(s.id); }), rn = CH.stops.length;
+      h += '<div class="card zig-card"><div class="zig" style="height:' + ((rn + 1) * ZH) + 'px">' + zigPath(rn + 1, doneArr.concat([roundComplete()])) +
         CH.stops.map(function (s, i) {
           var d = doneArr[i], cur = s === firstOpen, c = askedCount(s.id);
           var cls = d ? "done" : cur ? "cur" : "";
@@ -424,7 +436,10 @@
             '<span class="zn"><span class="node ' + cls + '">' + (d ? ICON.check : cur ? ICON.play : i + 1) + "</span></span>" +
             '<span class="zl"><span class="t">' + esc(s.title) + '</span><span class="muted small">p. ' + s.page + (cur ? " · up next" : "") + "</span>" +
             (c ? '<span class="tag">asked ' + c + "×</span>" : "") + "</span></a>";
-        }).join("") + "</div></div>";
+        }).join("") +
+        '<a class="rrow ' + (rn % 2 ? "r" : "l") + '" style="top:' + (rn * ZH) + 'px" href="' + BASE + '/round"><span class="zn"><span class="node rn' + (roundComplete() ? " done" : "") + '">' + ICON.trophy + "</span></span>" +
+        '<span class="zl"><span class="t">Board round</span><span class="muted small">' + CH.board.length + " questions · open now</span>" + badgeHTML("map") + "</span></a>" +
+        "</div></div>";
     }
     app.innerHTML = h;
   }
@@ -463,8 +478,8 @@
     h += '<button type="button" class="btn ghost" data-act="reveal" aria-expanded="' + open + '">' + (open ? "Hide model answer" : "Show model answer") + "</button>";
     h += '<div class="answer"' + (open ? "" : " hidden") + "><b>Model answer</b><p>" + fm(q.answer) + "</p></div>";
     h += '<div class="rate"><button type="button" class="btn ok' + (r === "got" ? "" : " ghost") + '" data-act="rate-got" aria-pressed="' + (r === "got") + '">Got it</button>' +
-      '<button type="button" class="btn warn' + (r === "need" ? "" : " ghost") + '" data-act="rate-need" aria-pressed="' + (r === "need") + '">Need practice</button></div>';
-    if (r === "need" && inBank) h += '<p class="small muted">In your mistake bank. Review: ' + niceDate(load().bank["b|" + CHID + "|" + q.id].due) + ".</p>";
+      '<button type="button" class="btn warn' + (r === "need" || r === "practice" ? "" : " ghost") + '" data-act="rate-need" aria-pressed="' + (r === "need" || r === "practice") + '">Need practice</button></div>';
+    if ((r === "need" || r === "practice") && inBank) h += '<p class="small muted">In your mistake bank. Review: ' + niceDate(load().bank["b|" + CHID + "|" + q.id].due) + ".</p>";
     return h + "</article>";
   }
 
@@ -668,6 +683,249 @@
     app.innerHTML = h;
   }
 
+
+  /* ---------- board round (final stop of the chapter, not one of the 14 stops) ---------- */
+  var RD = null;                   // { run, phase: "run" | "result" } for the round on screen
+  var rTimer = null, tOff = 0;     // 1 s interval for the mock clock; test hook offset (ms)
+  var MIN_PER_MARK = 90;           // seconds per mark in the timed mock
+  var PASS_PCT = 80;
+  var MODE_NAME = { m1: "1-mark questions", m2: "2-mark questions", m3: "3-mark questions", m4: "4-mark questions", most: "Most asked first", mock: "Timed mock" };
+  function nowMs() { return Date.now() + tOff; }
+  function RS() { return load().round; }
+  function validMode(m) { return Object.prototype.hasOwnProperty.call(MODE_NAME, m); }
+  function totalMarks(ids) { return ids.reduce(function (a, id) { var q = getBoard(id); return a + (q ? q.marks : 0); }, 0); }
+  function qPoints(q) {
+    var p = q.points;
+    if (Array.isArray(p) && p.length && p.reduce(function (a, x) { return a + (+x.marks || 0); }, 0) === q.marks) return p;
+    return [{ text: "My answer matches the model answer", marks: q.marks }];
+  }
+  function pointsNeedCheck(q) { return qPoints(q).some(function (x) { return x.needsCheck; }); }
+  function modeIds(mode) {
+    var all = CH.board.map(function (b, i) { return { b: b, i: i }; });
+    if (/^m[1-4]$/.test(mode)) all = all.filter(function (x) { return x.b.marks === +mode.charAt(1); });
+    else if (mode === "most") all.sort(function (a, b) {
+      return askedCount(b.b.stop) - askedCount(a.b.stop) || b.b.marks - a.b.marks || a.b.year - b.b.year || a.i - b.i;
+    });
+    else if (mode === "mock") all.sort(function (a, b) { return a.b.marks - b.b.marks || a.i - b.i; });
+    return all.map(function (x) { return x.b.id; });
+  }
+  function fmtDur(sec) {
+    sec = Math.max(0, Math.round(sec));
+    var m = Math.floor(sec / 60), r = sec % 60;
+    return (m ? m + " min" : "") + (m && r ? " " : "") + (r || !m ? r + " s" : "");
+  }
+  function fmtClock(sec) { sec = Math.max(0, sec); return Math.floor(sec / 60) + ":" + pad(sec % 60); }
+  function marksWord(n) { return n + (n === 1 ? " mark" : " marks"); }
+  function pctOf(got, of) { return of ? Math.round(100 * got / of) : 0; }
+  function modeRec(mode) { var m = RS().modes[mode]; return isObj(m) ? m : {}; }
+  function scoreLine(mode) {
+    var m = modeRec(mode);
+    if (!isObj(m.last)) return '<span class="rscores">Not tried yet</span>';
+    return '<span class="rscores">Best <b>' + (isObj(m.best) ? m.best.pct : m.last.pct) + '%</b> · Last <b>' + m.last.pct + "%</b></span>";
+  }
+  function roundComplete() { return !!RS().complete; }
+  function badgeText() { return "Chapter " + CH.number + " complete · best board round " + RS().bestFull + "%"; }
+  function badgeHTML(where) {
+    return roundComplete() ? '<span class="cbadge" data-badge="' + where + '">' + ICON.trophy.replace('width="28" height="28"', 'width="16" height="16"') + " " + esc(badgeText()) + "</span>" : "";
+  }
+
+  /* clock: elapsed is counted from timestamps, so it stays right if the tab sleeps */
+  function runElapsed(r) { return r.elapsed + (r.since ? nowMs() - r.since : 0); }
+  function rebase(r) { if (r.since) { r.elapsed = runElapsed(r); r.since = nowMs(); } }
+  function saveRound() {
+    var run = RD && RD.phase === "run" ? RD.run : null;
+    if (!run) return;
+    rebase(run); run.at = Date.now();
+    RS().run = run; save();
+  }
+  function roundRestore() {
+    var rs = RS(), r = rs.run;
+    if (!r) return null;
+    var ok = isObj(r) && validMode(r.mode) && Array.isArray(r.ids) && r.ids.length && r.ids.every(function (id) { return !!getBoard(id); }) &&
+      typeof r.i === "number" && r.i >= 0 && r.i < r.ids.length && Array.isArray(r.results) && r.results.length === r.i;
+    if (!ok) { rs.run = null; save(); return null; }
+    var q = getBoard(r.ids[r.i]), np = qPoints(q).length;
+    if (!Array.isArray(r.ticks)) r.ticks = [];
+    r.ticks = r.ticks.slice(0, np).map(function (x) { return !!x; });
+    while (r.ticks.length < np) r.ticks.push(false);
+    r.rev = !!r.rev;
+    if (!(RD && RD.run === r)) { r.since = 0; r.resumed = true; }   // a reloaded mock comes back paused
+    r.elapsed = +r.elapsed > 0 ? +r.elapsed : 0;
+    if (r.mode === "mock") { r.limit = totalMarks(r.ids) * MIN_PER_MARK; r.timeUp = !!r.timeUp; }
+    return r;
+  }
+  function roundLeave() {
+    if (rTimer) { clearInterval(rTimer); rTimer = null; }
+    var run = RD && RD.phase === "run" ? RD.run : null;
+    if (run && run.since) { rebase(run); run.since = 0; saveRound(); }   // leaving the page pauses the mock clock
+  }
+  function roundTick() {
+    var run = RD && RD.phase === "run" ? RD.run : null;
+    if (!run || !run.limit) return;
+    if (run.since) {
+      var el = runElapsed(run);
+      if (el >= run.limit * 1000) {
+        run.elapsed = run.limit * 1000; run.since = 0; run.timeUp = true;
+        saveRound(); roundRender(false); return;
+      }
+      saveRound();
+    }
+    var c = document.getElementById("rclock");
+    if (c) c.textContent = fmtClock(Math.ceil((run.limit * 1000 - runElapsed(run)) / 1000));
+  }
+  window.__roundAdvance = function (sec) { tOff += sec * 1000; roundTick(); };   // test hook: fake the passing of time
+
+  function roundStart(mode) {
+    if (!validMode(mode)) return;
+    var ids = modeIds(mode);
+    if (!ids.length) return;
+    var run = { mode: mode, ids: ids, i: 0, results: [], ticks: qPoints(getBoard(ids[0])).map(function () { return false; }), rev: false,
+      elapsed: 0, since: 0, at: Date.now() };
+    if (mode === "mock") { run.limit = totalMarks(ids) * MIN_PER_MARK; run.timeUp = false; run.since = nowMs(); }
+    RD = { run: run, phase: "run" };
+    saveRound();
+    if (location.hash === BASE + "/round/run") route(false); else location.hash = BASE + "/round/run";
+  }
+  function roundNext() {
+    var run = RD.run, q = getBoard(run.ids[run.i]), pts = qPoints(q), got = 0;
+    pts.forEach(function (x, k) { if (run.ticks[k]) got += +x.marks || 0; });
+    run.results.push({ id: q.id, got: got, of: q.marks }); run.resumed = false;
+    var st = load();
+    if (got >= q.marks) { st.board[q.id] = "got"; save(); }
+    else { st.board[q.id] = "practice"; bankAdd("b|" + CHID + "|" + q.id, "below full marks"); }
+    if (run.i < run.ids.length - 1) {
+      run.i++; run.rev = false; run.ticks = qPoints(getBoard(run.ids[run.i])).map(function () { return false; });
+      saveRound(); roundRender(true);
+    } else roundFinish();
+  }
+  function roundFinish() {
+    var run = RD.run, rs = RS(), got = 0, of = 0;
+    run.results.forEach(function (r) { got += r.got; of += r.of; });
+    rebase(run);
+    var rec = { mode: run.mode, ids: run.ids, results: run.results, got: got, of: of, pct: pctOf(got, of), date: today(), newlyComplete: false };
+    if (run.limit) { rec.secs = Math.min(Math.round(run.elapsed / 1000), run.limit); rec.limit = run.limit; rec.timeUp = !!run.timeUp; }
+    var m = isObj(rs.modes[run.mode]) ? rs.modes[run.mode] : (rs.modes[run.mode] = {});
+    m.last = { got: got, of: of, pct: rec.pct, date: rec.date };
+    if (!isObj(m.best) || rec.pct > m.best.pct) m.best = { got: got, of: of, pct: rec.pct, date: rec.date };
+    var full = run.ids.length === CH.board.length && (run.mode === "most" || run.mode === "mock");
+    if (full) {
+      rs.bestFull = Math.max(rs.bestFull, rec.pct);
+      if (got * 100 >= PASS_PCT * of) { if (!rs.complete) rec.newlyComplete = true; rs.complete = true; }
+    }
+    rec.full = full;
+    rs.last = rec; rs.run = null; save(); updateChrome();
+    RD = { run: null, phase: "result", rec: rec };
+    roundRender(true);
+  }
+
+  /* ---------- board round: pages ---------- */
+  function roundPickerView() {
+    setHeader("Board round", BASE, { tab: "map" });
+    var rs = RS(), run = roundRestore(), f = isFocus(), n = CH.board.length, tm = totalMarks(modeIds("most"));
+    var h = '<div class="card round-intro' + (f ? " dense" : "") + '">' + (f ? "" : '<div class="r-art" aria-hidden="true">' + ICON.trophy.replace('width="28" height="28"', 'width="64" height="64"') + "</div>") +
+      '<div class="grow"><h2>Board round</h2><p class="small muted">' + n + " real board questions from Chapter " + CH.number + ", marked by you against examiner points. Try it any time.</p></div></div>";
+    h += '<div class="card round-status" data-complete="' + roundComplete() + '">' + (roundComplete() ? '<p class="status-line">' + badgeHTML("page") + "</p>" :
+      '<p class="status-line"><b>Chapter ' + CH.number + " is not complete yet.</b></p>") +
+      '<p class="small muted">' + (roundComplete() ? "Keep practising to raise your best score." : "Score " + PASS_PCT + "% or more on a full round (Most asked first or Timed mock) to complete the chapter. By-marks rounds never count towards it.") + "</p></div>";
+    if (run) {
+      h += '<div class="card resume-card"><div class="row"><span class="num">' + ICON.play + '</span><div class="grow"><b>Round in progress</b><br><span class="small muted">' + esc(MODE_NAME[run.mode]) + " · question " + (run.i + 1) + " of " + run.ids.length + '</span></div></div>' +
+        '<div class="actions two"><button type="button" class="btn ghost" data-act="round-discard">Discard</button><a class="btn primary" href="' + BASE + '/round/run">Resume</a></div></div>';
+    }
+    h += '<div class="card rmode" data-mode-card="marks"><h2>By marks</h2><p class="small muted">Practise one kind of question at a time.</p><div class="mk-grid">' +
+      [1, 2, 3, 4].map(function (m) {
+        var c = CH.board.filter(function (b) { return b.marks === m; }).length;
+        return '<button type="button" class="mk" data-act="round-start" data-mode="m' + m + '"' + (c ? "" : " disabled") + '><b>' + marksWord(m) + '</b><span class="small muted">' + c + (c === 1 ? " question" : " questions") + "</span>" + scoreLine("m" + m) + "</button>";
+      }).join("") + "</div></div>";
+    h += '<div class="card rmode" data-mode-card="most"><div class="row"><div class="grow"><h2>Most asked first</h2><p class="small muted">All ' + n + " questions. Topics the papers ask most come first.</p>" + scoreLine("most") +
+      '</div></div><button type="button" class="btn primary block" data-act="round-start" data-mode="most">Start</button></div>';
+    h += '<div class="card rmode" data-mode-card="mock"><div class="row"><div class="grow"><h2>Timed mock</h2><p class="small muted">All ' + n + ' questions, 1-mark ones first, then 2, 3 and 4. <b class="mockinfo">' + tm + " marks · " + fmtDur(tm * MIN_PER_MARK) + "</b> (1.5 minutes a mark).</p>" + scoreLine("mock") +
+      '</div></div><button type="button" class="btn primary block" data-act="round-start" data-mode="mock">Start the clock</button></div>';
+    if (run) h += '<p class="note">Starting a new round replaces the one in progress.</p>';
+    app.innerHTML = h;
+  }
+  function roundRunRoute(rerender) {
+    var run = roundRestore();
+    if (RD && RD.phase === "result" && !run) { redraw = function () { roundRender(false); }; return roundRender(true); }
+    if (!run) {
+      if (RS().last) { RD = { run: null, phase: "result", rec: RS().last }; redraw = function () { roundRender(false); }; return roundRender(true); }
+      location.hash = BASE + "/round"; return;
+    }
+    if (!(RD && RD.phase === "run" && RD.run === run)) RD = { run: run, phase: "run" };
+    redraw = function () { roundRender(false); };
+    roundRender(!rerender);
+  }
+  function roundOptionsHTML(q) {
+    return q.options ? '<ul class="bq-opts">' + q.options.map(function (o) { return "<li>" + fm(o) + "</li>"; }).join("") + "</ul>" : "";
+  }
+  function pointsHTML(q, ticks, attr) {
+    var pts = qPoints(q), got = 0;
+    pts.forEach(function (x, k) { if (ticks[k]) got += +x.marks || 0; });
+    return '<div class="pts"><b>Examiner points</b><p class="small muted">Tick each point you earned on paper.</p><ul class="plist">' + pts.map(function (x, k) {
+      return '<li><button type="button" class="ptick' + (ticks[k] ? " on" : "") + '" role="checkbox" aria-checked="' + !!ticks[k] + '" data-act="' + attr + '" data-i="' + k + '">' +
+        '<span class="box">' + (ticks[k] ? ICON.checkS : "") + '</span><span class="ptxt">' + fm(x.text) + '</span><span class="pm">' + marksWord(+x.marks) + "</span></button></li>";
+    }).join("") + '</ul><p class="rscore" data-got="' + got + '">You scored <b>' + got + " of " + q.marks + "</b></p>" +
+      '<p class="small muted">Mark splits follow the board pattern but are our estimate, not the official scheme.</p>' + "</div>";
+  }
+  function roundRender(scroll) {
+    if (rTimer) { clearInterval(rTimer); rTimer = null; }
+    if (!RD) return roundPickerView();
+    var f = isFocus(), h = "";
+    if (RD.phase === "result") {
+      setHeader("Board round · result", BASE + "/round", { tab: "map" });
+      app.innerHTML = roundResultHTML(RD.rec, f);
+      if (scroll) window.scrollTo(0, 0);
+      return;
+    }
+    var run = RD.run, q = getBoard(run.ids[run.i]), n = run.ids.length;
+    setHeader("Board round · " + (run.i + 1) + " of " + n, BASE + "/round", { tab: "map" });
+    h += steps(n, run.i);
+    h += '<p class="small muted center rmeta">' + esc(MODE_NAME[run.mode]) + " · question " + (run.i + 1) + " of " + n + (run.resumed ? " · picking up where you left off" : "") + "</p>";
+    if (run.limit) {
+      var left = Math.ceil((run.limit * 1000 - runElapsed(run)) / 1000), paused = !run.since && !run.timeUp;
+      h += '<div class="card rtimer' + (paused ? " paused" : "") + (run.timeUp ? " up" : "") + '"><div class="rt-main"><span id="rclock" class="rt-clock" role="timer" aria-label="Time left">' + fmtClock(left) + '</span><span class="small muted">of ' + fmtDur(run.limit) + "</span></div>" +
+        (run.timeUp ? "" : '<button type="button" class="btn ghost sm" data-act="' + (paused ? "round-resume" : "round-pause") + '">' + (paused ? "Resume" : "Pause") + "</button>") + "</div>";
+      if (run.timeUp) h += '<div class="fb timeup" role="status"><b>Time\'s up — finish marking</b><div class="small">Your answers are kept. Mark the questions you have written, then see your result.</div></div>';
+      if (paused) {
+        h += '<div class="card center"><h2>Paused</h2><p class="muted">The clock is stopped and the question is hidden. Press Resume when you are ready.</p></div>';
+        app.innerHTML = h; if (scroll) window.scrollTo(0, 0);
+        return;
+      }
+    }
+    h += '<article class="card rq" data-q="' + esc(q.id) + '"><div class="bq-top">' + tag(boardTag(q)) + '<span class="marks">' + marksWord(q.marks) + "</span>" + (q.kind ? '<span class="kind">' + esc(q.kind) + "</span>" : "") + "</div>" +
+      '<p class="bq-text">' + fm(q.text) + "</p>" + roundOptionsHTML(q);
+    if (!run.rev) {
+      h += '<p class="rinst">Write your answer on paper first.</p><button type="button" class="btn primary block" data-act="round-reveal">I\'ve written my answer</button>';
+    } else {
+      h += '<div class="answer"><b>Model answer</b><p>' + fm(q.answer) + "</p></div>" + pointsHTML(q, run.ticks, "round-tick") +
+        '<button type="button" class="btn primary block" data-act="round-next">' + (run.i < n - 1 ? "Next question" : "See result") + "</button>";
+    }
+    h += "</article>";
+    h += '<div class="center"><button type="button" class="btn ghost sm" data-act="round-discard">Stop this round</button></div>';
+    app.innerHTML = h;
+    if (scroll) window.scrollTo(0, 0);
+    if (run.limit && run.since && !run.timeUp) rTimer = setInterval(roundTick, 1000);
+  }
+  function roundResultHTML(rec, f) {
+    var missed = rec.results.filter(function (r) { return r.got < r.of; });
+    var h = '<div class="card result rres ' + (rec.pct >= PASS_PCT ? "pass" : "fail") + (f ? " dense" : "") + '">' +
+      (!f && rec.newlyComplete ? '<div class="r-art" aria-hidden="true">' + ICON.trophy.replace('width="28" height="28"', 'width="56" height="56"') + "</div>" : "") +
+      '<p class="small muted">' + esc(MODE_NAME[rec.mode]) + '</p><div class="score" data-score="' + rec.got + "/" + rec.of + '">' + rec.got + " / " + rec.of + '</div><p class="rpct"><b>' + rec.pct + "%</b> of the marks you attempted</p>";
+    if (rec.limit) h += '<p class="rtime">Time taken: <b>' + fmtDur(rec.secs) + "</b> of " + fmtDur(rec.limit) + (rec.timeUp ? ". Time ran out." : ".") + "</p>";
+    if (rec.newlyComplete) h += '<p class="rdone"><b>Chapter ' + CH.number + " complete.</b> " + badgeHTML("result") + "</p>";
+    else if (rec.full && rec.pct < PASS_PCT && !roundComplete()) h += '<p class="small muted">Score ' + PASS_PCT + "% or more on a full round to complete the chapter.</p>";
+    else if (!rec.full) h += '<p class="small muted">This round does not count towards chapter completion.</p>';
+    h += '<ul class="res-list rlist">' + rec.results.map(function (r) {
+      var q = getBoard(r.id), ok = r.got >= r.of;
+      return '<li class="' + (ok ? "ok" : "no") + '"><span class="ri">' + (ok ? ICON.checkS : ICON.cross) + '</span><span class="grow">' + esc(q ? boardTag(q) : r.id) + '</span><b>' + r.got + " of " + r.of + "</b></li>";
+    }).join("") + "</ul>";
+    if (missed.length) h += '<p class="small muted">' + missed.length + " question" + (missed.length > 1 ? "s" : "") + " below full marks " + (missed.length > 1 ? "are" : "is") + " in your mistake bank for tomorrow.</p>";
+    h += "</div>";
+    h += '<div class="stack">' + (missed.length ? '<a class="btn primary block" href="#/review/round">Review these (' + missed.length + ")</a>" : "") +
+      '<button type="button" class="btn ' + (missed.length ? "ghost" : "primary") + ' block" data-act="round-start" data-mode="' + esc(rec.mode) + '">Practise this again</button>' +
+      '<a class="btn ghost block" href="' + BASE + '/round">Back to Board round</a></div>';
+    return h;
+  }
+
   /* ---------- derivations ---------- */
   function shuffle3(id, idx, n) {   // deterministic position for the correct line
     var x = 0, s = id + idx;
@@ -771,11 +1029,20 @@
     reviewSetup(); reviewRender();
   }
   function reviewSetup() {
-    R.shown = false; R.ds = null; R.ce = null;
+    R.shown = false; R.ds = null; R.ce = null; R.ticks = [];
     if (R.i >= R.queue.length) return;
     var p = parseId(R.queue[R.i]);
     if (p.kind === "c") R.ce = newCE(stopById(p.a).quest.checks[+p.b], "review");
     if (p.kind === "d") R.ds = { picked: null };
+    if (p.kind === "b") R.ticks = qPoints(getBoard(p.a)).map(function () { return false; });
+  }
+  function reviewByPoints(id) { var it = load().bank[id]; return !!(it && it.reason === "below full marks"); }
+  function reviewRoundStart() {
+    var rec = RS().last, ids = [];
+    if (rec && Array.isArray(rec.results)) ids = rec.results.filter(function (r) { return r.got < r.of; }).map(function (r) { return "b|" + CHID + "|" + r.id; }).filter(function (id) { return itemExists(id) && load().bank[id]; });
+    R = { queue: ids, i: 0, ok: 0, bad: 0, ce: null, ds: null, shown: false, ticks: [] };
+    redraw = reviewRender;
+    reviewSetup(); reviewRender();
   }
   function reviewRender() {
     setHeader("Review", null, { tab: "review" });
@@ -822,10 +1089,16 @@
     var h = '<div class="card"><div class="bq-top">' + tag(boardTag(q)) + '<span class="marks">' + q.marks + (q.marks === 1 ? " mark" : " marks") + "</span></div>" +
       '<p class="bq-text">' + fm(q.text) + "</p>";
     if (q.options) h += '<ul class="bq-opts">' + q.options.map(function (o) { return "<li>" + fm(o) + "</li>"; }).join("") + "</ul>";
+    if (reviewByPoints("b|" + CHID + "|" + q.id)) {
+      if (!R.shown) h += '<p class="rinst">Write your answer on paper first.</p><button type="button" class="btn primary block" data-act="rv-written">I\'ve written my answer</button>';
+      else h += '<div class="answer"><b>Model answer</b><p>' + fm(q.answer) + "</p></div>" + pointsHTML(q, R.ticks, "rv-tick") + '<button type="button" class="btn primary block" data-act="rv-score">Done</button>';
+      return h + "</div>";
+    }
     if (!R.shown) h += '<button type="button" class="btn primary block" data-act="rv-show">Show model answer</button>';
     else h += '<div class="answer"><b>Model answer</b><p>' + fm(q.answer) + '</p></div><p class="small muted">How did you do without looking?</p><div class="rate"><button type="button" class="btn ok" data-act="rv-got">Got it</button><button type="button" class="btn warn ghost" data-act="rv-need">Need practice</button></div>';
     return h + "</div>";
   }
+  function reviewKeep() { var y = window.scrollY; reviewRender(); window.scrollTo(0, y); }
   function reviewAdvance(ok) {
     bankReview(R.queue[R.i], ok);
     if (ok) R.ok++; else R.bad++;
@@ -955,7 +1228,21 @@
       case "rv-pick":
         R.ds.picked = dataI(t); return reviewRender();
       case "rv-next": var pd = parseId(R.queue[R.i]); return reviewAdvance(R.ds.picked === stepOptions(getDeriv(pd.a), +pd.b).correct);
-      case "rv-show": R.shown = true; return reviewRender();
+      case "rv-show": case "rv-written": R.shown = true; return reviewRender();
+      case "rv-tick": R.ticks[dataI(t)] = !R.ticks[dataI(t)]; return reviewKeep();
+      case "rv-score":
+        var rq = getBoard(parseId(R.queue[R.i]).a), rg = 0;
+        qPoints(rq).forEach(function (x, k) { if (R.ticks[k]) rg += +x.marks || 0; });
+        return reviewAdvance(rg >= rq.marks);
+      case "round-start": return roundStart(t.getAttribute("data-mode"));
+      case "round-reveal": RD.run.rev = true; saveRound(); return roundRender(false);
+      case "round-tick": RD.run.ticks[dataI(t)] = !RD.run.ticks[dataI(t)]; saveRound(); return roundRender(false);
+      case "round-next": return roundNext();
+      case "round-pause": rebase(RD.run); RD.run.elapsed = runElapsed(RD.run); RD.run.since = 0; saveRound(); return roundRender(false);
+      case "round-resume": RD.run.since = nowMs(); saveRound(); return roundRender(false);
+      case "round-discard":
+        if (RS().run) { RS().run = null; save(); }
+        RD = null; if (location.hash === BASE + "/round") return roundPickerView(); location.hash = BASE + "/round"; return;
       case "rv-got": return reviewAdvance(true);
       case "rv-need": return reviewAdvance(false);
       case "bank-remove": delete load().bank[t.getAttribute("data-id")]; save(); updateChrome(); return bankListView();
@@ -974,8 +1261,8 @@
     if (e.key === "Enter" && e.target.id === "numin") { var b = app.querySelector('[data-act="ce-check"]'); if (b) b.click(); }
   });
   app.addEventListener("focusout", function (e) { if (e.target.classList && e.target.classList.contains("note-ta")) flushNote(); });
-  window.addEventListener("pagehide", flushNote);
-  document.addEventListener("visibilitychange", function () { if (document.hidden) flushNote(); });
+  window.addEventListener("pagehide", function () { flushNote(); saveRound(); });
+  document.addEventListener("visibilitychange", function () { if (document.hidden) { flushNote(); saveRound(); } });
   document.querySelector(".themebar").addEventListener("click", function (e) {
     var b = e.target.closest("[data-theme-set]");
     if (!b) return;
@@ -994,9 +1281,12 @@
     if (!rerender) window.scrollTo(0, 0);
     redraw = null;
     var p0 = parts[0];
+    if (rTimer) { clearInterval(rTimer); rTimer = null; }
+    if (!(p0 === SUBJ && parts[1] === CHID && parts[2] === "round" && parts[3] === "run")) roundLeave();
     if (!parts.length) return homeView();
     if (p0 === "review") {
       if (parts[1] === "all") return bankListView();
+      if (parts[1] === "round") { if (rerender && R) { redraw = reviewRender; return reviewRender(); } return reviewRoundStart(); }
       if (rerender && R) { redraw = reviewRender; return reviewRender(); }
       return reviewStart();
     }
@@ -1006,6 +1296,10 @@
       var p2 = parts[2], p3 = parts[3];
       if (!p2) return chapterView();
       if (p2 === "board") return boardView();
+      if (p2 === "round") {
+        if (!p3) { redraw = roundPickerView; return roundPickerView(); }
+        if (p3 === "run") return roundRunRoute(rerender);
+      }
       if (p2 === "derive") {
         if (!p3) return deriveListView();
         if (rerender && D && D.d.id === p3) { redraw = drillRender; return drillRender(); }
