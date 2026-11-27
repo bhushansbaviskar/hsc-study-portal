@@ -1,0 +1,1946 @@
+{
+  "id": "ch01",
+  "subject": "maths2",
+  "number": 1,
+  "title": "Differentiation",
+  "printedPages": "1–64",
+  "startPage": 1,
+  "pdfPageOffset": 10,
+  "book": "maths2_xii",
+  "drillLabel": "Proof & method drills",
+  "formulaLabel": "Derivative formulas",
+  "boardNote": "No 2024 Maths paper available yet.",
+  "examMarks": {
+    "avg": 9,
+    "basis": "Chapter 1 questions in the 2022, 2023 and 2025 papers: 9, 9 and 9 marks (MCQ 2 + 3-mark + 4-mark each year)"
+  },
+  "stops": [
+    {
+      "id": "s01",
+      "title": "Chain rule for composite functions",
+      "sections": [
+        "1.1.1 Derivatives of Composite Functions",
+        "1.1.2 Theorem (Chain rule)"
+      ],
+      "page": 2,
+      "figs": [],
+      "inShort": "If y = f(u) and u = g(x) are both differentiable, then y is a differentiable function of x and dy/dx = (dy/du)·(du/dx). Differentiate the outer function first, keep the inside unchanged, then multiply by the derivative of the inside.",
+      "xi": [],
+      "quest": {
+        "cards": [
+          {
+            "t": "Composite function",
+            "text": "A composite (function of a function) has one function sitting inside another, e.g. sin(log x) or e^{tan x}. Writing y = f[g(x)], g is the inner function and f is the outer function.",
+            "page": 2
+          },
+          {
+            "t": "The chain rule",
+            "text": "If y = f(u) is differentiable in u and u = g(x) is differentiable in x, then dy/dx = (dy/du)·(du/dx). In function notation: d/dx f[g(x)] = f '[g(x)]·g '(x). The proof uses δy/δx = (δy/δu)·(δu/δx) and the fact that δu → 0 as δx → 0 because u is continuous.",
+            "page": 2
+          },
+          {
+            "t": "Longer chains",
+            "text": "The rule extends to any number of links: if y = f(v), v = g(u), u = h(x) then dy/dx = (dy/dv)·(dv/du)·(du/dx). Peel the layers from outside to inside, multiplying one derivative per layer.",
+            "page": 3
+          }
+        ],
+        "checks": [
+          {
+            "type": "mcq",
+            "q": "If y = sin(log x), then dy/dx equals",
+            "options": [
+              "cos(log x)",
+              "cos(log x)/x",
+              "−cos(log x)/x",
+              "sin(1/x)"
+            ],
+            "answer": 1,
+            "hint": "Outer function sin, inner function log x.",
+            "explain": "dy/dx = cos(log x)·d/dx(log x) = cos(log x)/x.",
+            "page": 5
+          },
+          {
+            "type": "tf",
+            "q": "For y = e^{tan x}, the chain rule gives dy/dx = e^{tan x}·sec²x.",
+            "answer": true,
+            "hint": "Derivative of e^{u} is e^{u}·du/dx.",
+            "explain": "True. The outer function e^{u} differentiates to itself; multiply by d/dx(tan x) = sec²x.",
+            "page": 5
+          },
+          {
+            "type": "num",
+            "q": "If F(x) = G{3G[5G(x)]}, G(0) = 0 and G'(0) = 3, find F'(0).",
+            "answer": 405,
+            "hint": "Apply the chain rule layer by layer: F'(x) = 15·G'{3G[5G(x)]}·G'[5G(x)]·G'(x).",
+            "explain": "Since G(0) = 0, every inner argument becomes 0 at x = 0, so F'(0) = 15·G'(0)·G'(0)·G'(0) = 15 × 3 × 3 × 3 = 405.",
+            "page": 11
+          }
+        ]
+      }
+    },
+    {
+      "id": "s02",
+      "title": "Standard composite derivatives and value tables",
+      "sections": [
+        "1.1.3 Derivatives of some standard Composite Functions",
+        "Exercise 1.1"
+      ],
+      "page": 4,
+      "figs": [],
+      "inShort": "Table 1.1.2 lists ready results such as d/dx [f(x)]^{n} = n[f(x)]^{n−1}·f '(x), d/dx √f(x) = f '(x)/(2√f(x)), d/dx log f(x) = f '(x)/f(x) and d/dx a^{f(x)} = a^{f(x)}·log a·f '(x). Value-table questions just substitute the given f, g, f ', g ' values into the chain rule.",
+      "xi": [],
+      "quest": {
+        "cards": [
+          {
+            "t": "Power and root forms",
+            "text": "d/dx [f(x)]^{n} = n[f(x)]^{n−1}·f '(x) and d/dx √f(x) = f '(x)/(2√f(x)). Example: d/dx √(x² + 5) = 2x/(2√(x² + 5)) = x/√(x² + 5).",
+            "page": 4
+          },
+          {
+            "t": "Log and exponential forms",
+            "text": "d/dx log f(x) = f '(x)/f(x); d/dx e^{f(x)} = e^{f(x)}·f '(x); d/dx a^{f(x)} = a^{f(x)}·log a·f '(x). Simplify logs first: log[tan³x·sin⁴x] = 3 log tan x + 4 log sin x makes differentiation much shorter.",
+            "page": 4
+          },
+          {
+            "t": "Table-value questions",
+            "text": "When only values are given, write the chain rule first, then substitute. For r(x) = f[g(x)], r '(a) = f '[g(a)]·g '(a): find g(a) in the table, read f ' at that new input, then multiply by g '(a).",
+            "page": 10
+          }
+        ],
+        "checks": [
+          {
+            "type": "mcq",
+            "q": "d/dx log[cos(x³ − 5)] equals",
+            "options": [
+              "−3x² tan(x³ − 5)",
+              "3x² tan(x³ − 5)",
+              "−tan(x³ − 5)",
+              "−3x² cot(x³ − 5)"
+            ],
+            "answer": 0,
+            "hint": "Use d/dx log f = f '/f, then the chain rule on cos.",
+            "explain": "d/dx log[cos(x³ − 5)] = [−sin(x³ − 5)·3x²]/cos(x³ − 5) = −3x² tan(x³ − 5).",
+            "page": 12
+          },
+          {
+            "type": "num",
+            "q": "If f(x) = √(7g(x) − 3), g(3) = 4 and g'(3) = 5, find f '(3). (Enter as a decimal.)",
+            "answer": 3.5,
+            "hint": "f '(x) = 7g '(x)/(2√(7g(x) − 3)).",
+            "explain": "f '(3) = 7 × g'(3)/(2√(7 × 4 − 3)) = 35/(2√25) = 35/10 = 3.5 (i.e. 7/2).",
+            "page": 10
+          },
+          {
+            "type": "tf",
+            "q": "d/dx [5^{sin x}] = 5^{sin x}·cos x.",
+            "answer": false,
+            "hint": "Do not forget the log a factor for a^{f(x)}.",
+            "explain": "False. d/dx a^{f(x)} = a^{f(x)}·log a·f '(x), so the correct derivative is 5^{sin x}·log 5·cos x.",
+            "page": 4
+          }
+        ]
+      }
+    },
+    {
+      "id": "s03",
+      "title": "Slope meaning and derivative of an inverse function",
+      "sections": [
+        "1.2.1 Geometrical meaning of Derivative",
+        "1.2.2 Derivatives of Inverse Functions",
+        "1.2.3 Theorem"
+      ],
+      "page": 13,
+      "figs": [
+        "Fig. 1.2.1"
+      ],
+      "inShort": "f '(a) is the slope of the tangent to y = f(x) at x = a (limit of secant slopes). If y = f(x) has an inverse x = f^{−1}(y), then dx/dy = 1/(dy/dx), provided dy/dx ≠ 0. To find (f^{−1})'(b): solve f(a) = b, then (f^{−1})'(b) = 1/f '(a).",
+      "xi": [],
+      "quest": {
+        "cards": [
+          {
+            "t": "Derivative as slope",
+            "text": "The secant through P(a, f(a)) and Q(a + h, f(a + h)) has slope [f(a + h) − f(a)]/h. As h → 0, Q slides to P and the secant becomes the tangent, so slope of tangent at P = f '(a). Example: for y = x² + 3x + 2, dy/dx = 2x + 3, so the tangent at x = 2 has slope 2(2) + 3 = 7.",
+            "page": 13
+          },
+          {
+            "t": "Inverse function theorem",
+            "text": "If y = f(x) is differentiable with dy/dx ≠ 0 and x = f^{−1}(y) exists, then x is a differentiable function of y and dx/dy = 1/(dy/dx). Alternative proof: differentiate f^{−1}[f(x)] = x by the chain rule to get (f^{−1})'[f(x)]·f '(x) = 1.",
+            "page": 14
+          },
+          {
+            "t": "Evaluating (f⁻¹)' at a point",
+            "text": "To find (f^{−1})'(b) you need the x for which f(x) = b, not x = b. Example: f(x) = x⁵ + 2x − 3 gives f(x) = −3 at x = 0, so (f^{−1})'(−3) = 1/f '(0) = 1/2. In general g '(x) = 1/f '[g(x)] when g = f^{−1}.",
+            "page": 17
+          }
+        ],
+        "checks": [
+          {
+            "type": "mcq",
+            "q": "If y = log x, the derivative found through its inverse x = e^{y} is",
+            "options": [
+              "e^{y}",
+              "1/e^{y} = 1/x",
+              "x",
+              "log x"
+            ],
+            "answer": 1,
+            "hint": "dy/dx = 1/(dx/dy).",
+            "explain": "x = e^{y} gives dx/dy = e^{y}, so dy/dx = 1/e^{y} = 1/x.",
+            "page": 16
+          },
+          {
+            "type": "tf",
+            "q": "If f(x) = x³ + x − 2, then (f^{−1})'(0) = 1/f '(0) = 1.",
+            "answer": false,
+            "hint": "First solve f(x) = 0 to find which x maps to 0.",
+            "explain": "False. f(1) = 0, so (f^{−1})'(0) = 1/f '(1) = 1/(3 + 1) = 1/4. Using f '(0) is the classic trap.",
+            "page": 29
+          },
+          {
+            "type": "num",
+            "q": "For y = 2x³ − 6x, the derivative of the inverse function at x = −2 is dx/dy = 1/k. Find k.",
+            "answer": 18,
+            "hint": "dx/dy = 1/(dy/dx) and dy/dx = 6x² − 6.",
+            "explain": "dy/dx = 6(−2)² − 6 = 18 at x = −2, so dx/dy = 1/18 and k = 18.",
+            "page": 16
+          }
+        ]
+      }
+    },
+    {
+      "id": "s04",
+      "title": "Derivatives of inverse trigonometric functions",
+      "sections": [
+        "1.2.4 Derivatives of Standard Inverse trigonometric Functions",
+        "1.2.5 Table 1.2.1",
+        "1.2.6 Inverse trigonometric Composite Functions"
+      ],
+      "page": 17,
+      "figs": [],
+      "inShort": "d/dx sin^{−1}x = 1/√(1 − x²), d/dx cos^{−1}x = −1/√(1 − x²) (|x| < 1); d/dx tan^{−1}x = 1/(1 + x²), d/dx cot^{−1}x = −1/(1 + x²); d/dx sec^{−1}x = 1/(x√(x² − 1)), d/dx cosec^{−1}x = −1/(x√(x² − 1)) for x > 1. The 'co-' functions carry a minus sign.",
+      "xi": [],
+      "quest": {
+        "cards": [
+          {
+            "t": "Proof pattern",
+            "text": "For y = sin^{−1}x write x = sin y, so dx/dy = cos y = √(1 − sin²y) = √(1 − x²) (positive because −π/2 ≤ y ≤ π/2). Then dy/dx = 1/√(1 − x²). The same 'invert, differentiate, reciprocate' idea proves every row of Table 1.2.1.",
+            "page": 17
+          },
+          {
+            "t": "Sign rule",
+            "text": "cos^{−1}, cot^{−1} and cosec^{−1} have derivatives that are the negatives of sin^{−1}, tan^{−1} and sec^{−1}. That is why sin^{−1}x + cos^{−1}x, tan^{−1}x + cot^{−1}x and sec^{−1}x + cosec^{−1}x each have derivative 0 and equal the constant π/2.",
+            "page": 19
+          },
+          {
+            "t": "Composite inverse trig",
+            "text": "Combine with the chain rule: d/dx sin^{−1}[f(x)] = f '(x)/√(1 − [f(x)]²), d/dx tan^{−1}[f(x)] = f '(x)/(1 + [f(x)]²), and so on (Table 1.2.2). Example: d/dx sin^{−1}(x³) = 3x²/√(1 − x⁶).",
+            "page": 20
+          }
+        ],
+        "checks": [
+          {
+            "type": "mcq",
+            "q": "d/dx tan^{−1}(log x) equals",
+            "options": [
+              "1/(1 + (log x)²)",
+              "1/[x(1 + (log x)²)]",
+              "x/(1 + (log x)²)",
+              "−1/[x(1 + (log x)²)]"
+            ],
+            "answer": 1,
+            "hint": "Chain rule: f(x) = log x, f '(x) = 1/x.",
+            "explain": "d/dx tan^{−1}(log x) = (1/x)/(1 + (log x)²) = 1/[x(1 + (log x)²)].",
+            "page": 29
+          },
+          {
+            "type": "tf",
+            "q": "The derivative of sec^{−1}x is negative for x > 1.",
+            "answer": false,
+            "hint": "Look at the sign in Table 1.2.1 and Note 2 on p. 19.",
+            "explain": "False. d/dx sec^{−1}x = 1/(x√(x² − 1)) > 0 for x > 1; the graph of sec^{−1}x is increasing. It is cosec^{−1}x whose derivative is negative.",
+            "page": 19
+          },
+          {
+            "type": "mcq",
+            "q": "Using derivatives, why is sin^{−1}x + cos^{−1}x constant on (−1, 1)?",
+            "options": [
+              "Because both functions are periodic",
+              "Because its derivative 1/√(1 − x²) − 1/√(1 − x²) = 0",
+              "Because sin and cos are complementary",
+              "Because their sum is always 0"
+            ],
+            "answer": 1,
+            "hint": "A function whose derivative is zero everywhere on an interval is constant.",
+            "explain": "f '(x) = 0, so f is constant; putting x = 0 gives f(0) = 0 + π/2, hence the constant is π/2.",
+            "page": 21
+          }
+        ]
+      }
+    },
+    {
+      "id": "s05",
+      "title": "Simplifying inverse trig by substitution",
+      "sections": [
+        "Table 1.2.3 Important formulae",
+        "Table 1.2.4 Important substitutions",
+        "Exercise 1.2"
+      ],
+      "page": 20,
+      "figs": [],
+      "inShort": "Before differentiating messy inverse-trig expressions, substitute to simplify: √(1 − x²) → x = sin θ or cos θ; 2x/(1 + x²), (1 − x²)/(1 + x²), 2x/(1 − x²) → x = tan θ; 3x − 4x³ → x = sin θ; (1 − cos x)/(1 + cos x) → use half-angle identities. Then use sin^{−1}(sin θ) = θ and differentiate the simple result.",
+      "xi": [],
+      "quest": {
+        "cards": [
+          {
+            "t": "Why substitute?",
+            "text": "Expressions like sin^{−1}(2x√(1 − x²)) are painful by the chain rule. With x = sin θ the inside becomes sin 2θ, so y = 2θ = 2 sin^{−1}x and dy/dx = 2/√(1 − x²) in one line (for |x| < 1/√2).",
+            "page": 21
+          },
+          {
+            "t": "Key identities used",
+            "text": "sin 2θ = 2 tan θ/(1 + tan²θ), cos 2θ = (1 − tan²θ)/(1 + tan²θ), tan 2θ = 2 tan θ/(1 − tan²θ), sin 3θ = 3 sin θ − 4 sin³θ, cos 3θ = 4 cos³θ − 3 cos θ, 1 + cos x = 2cos²(x/2), 1 − cos x = 2sin²(x/2), sin x = 2 sin(x/2) cos(x/2).",
+            "page": 21
+          },
+          {
+            "t": "Complementary forms",
+            "text": "sin^{−1}(cos θ) = π/2 − θ and tan^{−1}(cot θ) = π/2 − θ (Table 1.2.3). These turn cos^{−1} into sin^{−1} and cot into tan before simplifying. Remember the constant π/2 disappears on differentiation.",
+            "page": 20
+          }
+        ],
+        "checks": [
+          {
+            "type": "mcq",
+            "q": "If y = tan^{−1}[2x/(1 − x²)] for |x| < 1, then dy/dx =",
+            "options": [
+              "1/(1 + x²)",
+              "2/(1 + x²)",
+              "2x/(1 + x²)",
+              "−2/(1 + x²)"
+            ],
+            "answer": 1,
+            "hint": "Put x = tan θ.",
+            "explain": "x = tan θ gives 2x/(1 − x²) = tan 2θ, so y = 2θ = 2 tan^{−1}x and dy/dx = 2/(1 + x²).",
+            "page": 21
+          },
+          {
+            "type": "mcq",
+            "q": "Which substitution simplifies cos^{−1}[(1 − x²)/(1 + x²)]?",
+            "options": [
+              "x = sin θ",
+              "x = sec θ",
+              "x = tan θ",
+              "x = cos 2θ"
+            ],
+            "answer": 2,
+            "hint": "Recall the identity for cos 2θ in terms of tan θ.",
+            "explain": "With x = tan θ, (1 − tan²θ)/(1 + tan²θ) = cos 2θ, so y = 2θ = 2 tan^{−1}x (for x ≥ 0) and dy/dx = 2/(1 + x²).",
+            "page": 21
+          },
+          {
+            "type": "step",
+            "q": "For y = tan^{−1}[(1 − cos x)/sin x], 0 < x < π, which line is the correct simplification?",
+            "options": [
+              "tan^{−1}[tan(x/2)] = x/2",
+              "tan^{−1}[cot(x/2)] = π/2 − x/2",
+              "tan^{−1}[tan x] = x",
+              "tan^{−1}[sin x] = x"
+            ],
+            "answer": 0,
+            "hint": "Write 1 − cos x = 2 sin²(x/2) and sin x = 2 sin(x/2) cos(x/2).",
+            "explain": "(1 − cos x)/sin x = 2sin²(x/2)/[2 sin(x/2) cos(x/2)] = tan(x/2), so y = x/2 and dy/dx = 1/2.",
+            "page": 22
+          }
+        ]
+      }
+    },
+    {
+      "id": "s06",
+      "title": "Logarithmic differentiation",
+      "sections": [
+        "1.3.1 Logarithmic Differentiation"
+      ],
+      "page": 30,
+      "figs": [],
+      "inShort": "Take log on both sides when y is a variable power [f(x)]^{g(x)} or a big product/quotient. Then log y = g(x)·log f(x), differentiate implicitly: (1/y)·dy/dx = ..., and multiply back by y. Shortcut: d/dx f^{g} = f^{g}[g·f '/f + log f·g'].",
+      "xi": [],
+      "quest": {
+        "cards": [
+          {
+            "t": "When to use it",
+            "text": "Use logarithmic differentiation for (i) functions like x^{x}, (sin x)^{x}, x^{tan x}, where both base and power vary, and (ii) long products/quotients/roots such as (x + 1)²/[(x + 2)³(x + 3)⁴], where logs turn products into sums.",
+            "page": 30
+          },
+          {
+            "t": "Method",
+            "text": "Step 1: y = [f(x)]^{g(x)} ⇒ log y = g(x) log f(x). Step 2: differentiate: (1/y)(dy/dx) = g(x)·f '(x)/f(x) + log f(x)·g '(x). Step 3: dy/dx = y[ ... ], and replace y by the original function.",
+            "page": 30
+          },
+          {
+            "t": "Sums of power functions",
+            "text": "For y = x^{x} + (sin x)^{x} you cannot take log of the whole sum usefully. Put u = x^{x}, v = (sin x)^{x}, find du/dx and dv/dx separately by logs, then dy/dx = du/dx + dv/dx.",
+            "page": 32
+          }
+        ],
+        "checks": [
+          {
+            "type": "mcq",
+            "q": "If y = x^{x}, then dy/dx =",
+            "options": [
+              "x·x^{x − 1}",
+              "x^{x} log x",
+              "x^{x}(1 + log x)",
+              "x^{x}/log x"
+            ],
+            "answer": 2,
+            "hint": "log y = x log x.",
+            "explain": "(1/y) dy/dx = log x + x·(1/x) = 1 + log x, so dy/dx = x^{x}(1 + log x).",
+            "page": 30
+          },
+          {
+            "type": "tf",
+            "q": "To differentiate y = x^{sin x} + (log x)^{x}, it is best to take log of both sides of the whole equation at once.",
+            "answer": false,
+            "hint": "log(u + v) does not split.",
+            "explain": "False. log(u + v) ≠ log u + log v, so treat u = x^{sin x} and v = (log x)^{x} separately and add their derivatives.",
+            "page": 32
+          },
+          {
+            "type": "step",
+            "q": "If log y = tan x·log x, then (1/y)·dy/dx =",
+            "options": [
+              "sec²x/x",
+              "tan x/x + sec²x·log x",
+              "tan x·log x",
+              "sec²x·log x"
+            ],
+            "answer": 1,
+            "hint": "Product rule on tan x·log x.",
+            "explain": "d/dx(tan x·log x) = tan x·(1/x) + log x·sec²x.",
+            "page": 39
+          }
+        ]
+      }
+    },
+    {
+      "id": "s07",
+      "title": "Implicit functions",
+      "sections": [
+        "1.3.2 Implicit Functions",
+        "1.3.3 Derivatives of Implicit Functions"
+      ],
+      "page": 34,
+      "figs": [],
+      "inShort": "When x and y are mixed in one equation (e.g. x³ + y³ = 3axy), differentiate every term w.r.t. x, treating y as a function of x so that d/dx(y^{n}) = n y^{n−1}·dy/dx. Collect all dy/dx terms on one side and solve. Taking logs first often helps (e.g. x^{y} = e^{x−y}).",
+      "xi": [],
+      "quest": {
+        "cards": [
+          {
+            "t": "Explicit vs implicit",
+            "text": "y = x² + 3 is explicit (y alone on one side). x² + xy + y² = 7 is implicit: y cannot easily be isolated. We still find dy/dx by differentiating both sides directly.",
+            "page": 34
+          },
+          {
+            "t": "Differentiating y-terms",
+            "text": "Every y-term picks up a factor dy/dx: d/dx(y²) = 2y·y', d/dx(sin y) = cos y·y', d/dx(xy) = x·y' + y (product rule), d/dx(e^{y}) = e^{y}·y'.",
+            "page": 34
+          },
+          {
+            "t": "Use logs or values smartly",
+            "text": "For x^{y} = e^{x − y}, take log: y log x = x − y ⇒ y = x/(1 + log x), then differentiate explicitly. For y'(a) questions, first find y at x = a from the original equation, then substitute both into the differentiated equation.",
+            "page": 35
+          }
+        ],
+        "checks": [
+          {
+            "type": "mcq",
+            "q": "If x² + y² = 25, then dy/dx =",
+            "options": [
+              "x/y",
+              "−x/y",
+              "−y/x",
+              "2x"
+            ],
+            "answer": 1,
+            "hint": "Differentiate: 2x + 2y·y' = 0.",
+            "explain": "2x + 2y y' = 0 ⇒ y' = −x/y.",
+            "page": 34
+          },
+          {
+            "type": "tf",
+            "q": "d/dx (xy) = y·dy/dx.",
+            "answer": false,
+            "hint": "xy is a product of two functions of x.",
+            "explain": "False. By the product rule d/dx(xy) = x·dy/dx + y.",
+            "page": 34
+          },
+          {
+            "type": "mcq",
+            "q": "If e^{x} + e^{y} = e^{x + y}, then dy/dx =",
+            "options": [
+              "e^{y − x}",
+              "−e^{y − x}",
+              "−e^{x − y}",
+              "e^{x + y}"
+            ],
+            "answer": 1,
+            "hint": "Differentiate, then use e^{x + y} = e^{x} + e^{y} to simplify.",
+            "explain": "e^{x} + e^{y}y' = e^{x+y}(1 + y'). Solving and simplifying with e^{x + y} = e^{x} + e^{y} gives dy/dx = −e^{y − x}.",
+            "page": 40
+          }
+        ]
+      }
+    },
+    {
+      "id": "s08",
+      "title": "Special implicit forms and infinite expressions",
+      "sections": [
+        "1.3.3 Solved Ex. 2 to 6",
+        "Exercise 1.3"
+      ],
+      "page": 36,
+      "figs": [],
+      "inShort": "x^{m}y^{n} = (x + y)^{m+n} always gives dy/dx = y/x (and d²y/dx² = 0). If any function of (x^{n} − y^{n})/(x^{n} + y^{n}) equals a constant, that fraction itself is a constant, so y^{n} = c·x^{n}. For an infinite radical y = √(f(x) + y), square to get y² = f(x) + y and differentiate.",
+      "xi": [],
+      "quest": {
+        "cards": [
+          {
+            "t": "Homogeneous form result",
+            "text": "Take log of x^{m}y^{n} = (x + y)^{m+n}: m log x + n log y = (m + n) log(x + y). Differentiating and collecting dy/dx terms produces the same factor (nx − my) on both sides; cancelling it leaves dy/dx = y/x. Board examiners expect you to show the working, not just quote the result.",
+            "page": 36
+          },
+          {
+            "t": "Constant-function trick",
+            "text": "If f[(x^{n} − y^{n})/(x^{n} + y^{n})] = constant, then (x^{n} − y^{n})/(x^{n} + y^{n}) = k (a constant). Cross-multiply and use componendo-dividendo to get y^{n} = c·x^{n}, then differentiate: dy/dx = (y/x) or a multiple like 99x²/(101y²).",
+            "page": 37
+          },
+          {
+            "t": "Infinite radicals",
+            "text": "If y = √(tan x + √(tan x + √(tan x + ... ∞))), the tail after the first term is y itself, so y = √(tan x + y) ⇒ y² = tan x + y. Then 2y y' = sec²x + y' ⇒ dy/dx = sec²x/(2y − 1).",
+            "page": 38
+          }
+        ],
+        "checks": [
+          {
+            "type": "mcq",
+            "q": "If x⁷y⁵ = (x + y)^{12}, then dy/dx =",
+            "options": [
+              "x/y",
+              "y/x",
+              "−y/x",
+              "12/(x + y)"
+            ],
+            "answer": 1,
+            "hint": "Here m = 7, n = 5 and m + n = 12.",
+            "explain": "This is the form x^{m}y^{n} = (x + y)^{m+n}, which gives dy/dx = y/x.",
+            "page": 40
+          },
+          {
+            "type": "mcq",
+            "q": "If y = √(cos x + √(cos x + √(cos x + ... ∞))), then dy/dx =",
+            "options": [
+              "sin x/(1 − 2y)",
+              "sin x/(2y − 1)",
+              "cos x/(2y − 1)",
+              "−sin x/(1 − 2y)"
+            ],
+            "answer": 0,
+            "hint": "y² = cos x + y; differentiate both sides.",
+            "explain": "2y y' = −sin x + y' ⇒ y'(2y − 1) = −sin x ⇒ y' = sin x/(1 − 2y).",
+            "page": 40
+          },
+          {
+            "type": "tf",
+            "q": "For an implicit relation x^{m}y^{n} = (x + y)^{m+n}, the second derivative d²y/dx² is 0.",
+            "answer": true,
+            "hint": "If dy/dx = y/x, then y/x is constant.",
+            "explain": "True. dy/dx = y/x means y = cx (a straight line through the origin), so d²y/dx² = 0 (Let us Remember, p. 61).",
+            "page": 61
+          }
+        ]
+      }
+    },
+    {
+      "id": "s09",
+      "title": "Derivatives of parametric functions",
+      "sections": [
+        "1.4.1 Derivatives of Parametric Functions",
+        "1.4.2 Theorem"
+      ],
+      "page": 41,
+      "figs": [],
+      "inShort": "If x = f(t) and y = g(t) are differentiable and dx/dt ≠ 0, then dy/dx = (dy/dt)/(dx/dt). Differentiate x and y separately w.r.t. the parameter, then divide. This theorem with its proof is a regular 4-mark board question.",
+      "xi": [],
+      "quest": {
+        "cards": [
+          {
+            "t": "Parameter",
+            "text": "Sometimes x and y are both given in terms of a third variable t (or θ) called a parameter, e.g. x = at², y = 2at (a parabola) or x = a cos θ, y = b sin θ (an ellipse).",
+            "page": 41
+          },
+          {
+            "t": "The theorem and proof idea",
+            "text": "Give t an increment δt; x and y change by δx and δy. Then δy/δx = (δy/δt)/(δx/δt). As δt → 0, δx → 0 and δy → 0 (x and y are continuous), so taking limits gives dy/dx = (dy/dt)/(dx/dt), provided dx/dt ≠ 0.",
+            "page": 41
+          },
+          {
+            "t": "Value at a parameter",
+            "text": "To find dy/dx at θ = π/6 etc., first get the general expression in t or θ, then substitute the parameter value. Example: x = at², y = 2at gives dy/dx = 2a/(2at) = 1/t.",
+            "page": 42
+          }
+        ],
+        "checks": [
+          {
+            "type": "mcq",
+            "q": "If x = a cos θ, y = b sin θ, then dy/dx =",
+            "options": [
+              "−(b/a) cot θ",
+              "(b/a) cot θ",
+              "−(a/b) tan θ",
+              "(b/a) tan θ"
+            ],
+            "answer": 0,
+            "hint": "dx/dθ = −a sin θ, dy/dθ = b cos θ.",
+            "explain": "dy/dx = b cos θ/(−a sin θ) = −(b/a) cot θ.",
+            "page": 42
+          },
+          {
+            "type": "num",
+            "q": "If x = at², y = 2at, find dy/dx at t = 2. (Enter as a decimal.)",
+            "answer": 0.5,
+            "hint": "dy/dx = (dy/dt)/(dx/dt).",
+            "explain": "dy/dt = 2a, dx/dt = 2at, so dy/dx = 1/t = 1/2 = 0.5 at t = 2.",
+            "page": 42
+          },
+          {
+            "type": "tf",
+            "q": "In the parametric theorem, the condition dx/dt ≠ 0 is needed because dx/dt appears in the denominator.",
+            "answer": true,
+            "hint": "Look at the formula's denominator.",
+            "explain": "True. dy/dx = (dy/dt)/(dx/dt) is undefined if dx/dt = 0 (tangent is vertical there).",
+            "page": 41
+          }
+        ]
+      }
+    },
+    {
+      "id": "s10",
+      "title": "Derivative of one function with respect to another",
+      "sections": [
+        "1.4.3 Differentiation of one function with respect to another function",
+        "Exercise 1.4"
+      ],
+      "page": 46,
+      "figs": [],
+      "inShort": "To differentiate u = f(x) w.r.t. v = g(x), treat x as the parameter: du/dv = (du/dx)/(dv/dx), with dv/dx ≠ 0. For inverse-trig pairs, simplify both u and v by the same substitution first — the answer is often a constant.",
+      "xi": [],
+      "quest": {
+        "cards": [
+          {
+            "t": "Rule",
+            "text": "If u = f(x) and v = g(x) are differentiable and dv/dx ≠ 0, then du/dv = (du/dx)/(dv/dx). This is just the parametric theorem with x playing the role of the parameter.",
+            "page": 46
+          },
+          {
+            "t": "Standard example",
+            "text": "Derivative of 7^{x} w.r.t. x⁷: u = 7^{x} gives du/dx = 7^{x} log 7; v = x⁷ gives dv/dx = 7x⁶. So du/dv = 7^{x} log 7/(7x⁶).",
+            "page": 46
+          },
+          {
+            "t": "Inverse-trig pairs",
+            "text": "Differentiate tan^{−1}[2x/(1 − x²)] w.r.t. sin^{−1}[2x/(1 + x²)]: with x = tan θ, u = 2θ and v = 2θ (for |x| < 1), so du/dv = 1. Always state the range of x for which the simplification holds.",
+            "page": 47
+          }
+        ],
+        "checks": [
+          {
+            "type": "mcq",
+            "q": "The derivative of sin²x w.r.t. cos²x is",
+            "options": [
+              "1",
+              "−1",
+              "tan²x",
+              "−tan²x"
+            ],
+            "answer": 1,
+            "hint": "du/dx = 2 sin x cos x, dv/dx = −2 cos x sin x.",
+            "explain": "du/dv = (2 sin x cos x)/(−2 sin x cos x) = −1. (Also: sin²x = 1 − cos²x.)",
+            "page": 48
+          },
+          {
+            "type": "mcq",
+            "q": "The derivative of x^{x} w.r.t. x is x^{x}(1 + log x). Hence the derivative of x^{x} w.r.t. log x is",
+            "options": [
+              "x^{x}(1 + log x)",
+              "x^{x + 1}(1 + log x)",
+              "x^{x}/x",
+              "(1 + log x)/x"
+            ],
+            "answer": 1,
+            "hint": "Divide by d/dx(log x) = 1/x.",
+            "explain": "du/dv = x^{x}(1 + log x)/(1/x) = x^{x+1}(1 + log x).",
+            "page": 48
+          },
+          {
+            "type": "tf",
+            "q": "To differentiate f(x) w.r.t. g(x), you compute f '(x)·g '(x).",
+            "answer": false,
+            "hint": "It is a quotient, not a product.",
+            "explain": "False. The derivative of f w.r.t. g is f '(x)/g '(x), provided g '(x) ≠ 0.",
+            "page": 46
+          }
+        ]
+      }
+    },
+    {
+      "id": "s11",
+      "title": "Second order derivatives",
+      "sections": [
+        "1.5.1 Higher order derivatives",
+        "Exercise 1.5 Q1–Q3"
+      ],
+      "page": 49,
+      "figs": [],
+      "inShort": "d²y/dx² = d/dx(dy/dx), also written y'' or y₂. For parametric curves, d²y/dx² = d/dt(dy/dx) ÷ (dx/dt) — never (d²y/dt²)/(d²x/dt²). 'Show that (1 − x²)y₂ − xy₁ + m²y = 0' type questions: get y₁, clear the root/denominator, square if needed, then differentiate again.",
+      "xi": [],
+      "quest": {
+        "cards": [
+          {
+            "t": "Notation",
+            "text": "If y = f(x), then y₁ = dy/dx = f '(x), y₂ = d²y/dx² = f ''(x), y₃ = d³y/dx³, ..., y_{n} = dⁿy/dxⁿ = f^{(n)}(x). Each is the derivative of the previous one.",
+            "page": 49
+          },
+          {
+            "t": "Parametric second derivative",
+            "text": "For x = f(t), y = g(t): first find dy/dx as a function of t. Then d²y/dx² = [d/dt(dy/dx)]·(dt/dx) = [d/dt(dy/dx)]/(dx/dt). Example: x = at², y = 2at ⇒ dy/dx = 1/t ⇒ d²y/dx² = (−1/t²)/(2at) = −1/(2at³).",
+            "page": 52
+          },
+          {
+            "t": "Proving differential relations",
+            "text": "For y = e^{m tan⁻¹x}: y₁ = my/(1 + x²) ⇒ (1 + x²)y₁ = my. Differentiate again with the product rule: (1 + x²)y₂ + 2xy₁ = my₁. Clearing denominators before the second differentiation keeps the algebra short.",
+            "page": 54
+          }
+        ],
+        "checks": [
+          {
+            "type": "mcq",
+            "q": "If y = x³ log x, then d²y/dx² =",
+            "options": [
+              "x(5 + 6 log x)",
+              "3x² log x + x²",
+              "6x log x",
+              "x(1 + 6 log x)"
+            ],
+            "answer": 0,
+            "hint": "y₁ = 3x² log x + x².",
+            "explain": "y₁ = 3x² log x + x², so y₂ = 6x log x + 3x + 2x = x(5 + 6 log x).",
+            "page": 60
+          },
+          {
+            "type": "tf",
+            "q": "For x = at², y = 2at, d²y/dx² = (d²y/dt²)/(d²x/dt²) = 0/(2a) = 0.",
+            "answer": false,
+            "hint": "The correct method is d/dt(dy/dx) divided by dx/dt.",
+            "explain": "False. dy/dx = 1/t, so d²y/dx² = (−1/t²)/(2at) = −1/(2at³), which is not 0.",
+            "page": 52
+          },
+          {
+            "type": "mcq",
+            "q": "If ax² + 2hxy + by² = 0, then d²y/dx² equals",
+            "options": [
+              "0",
+              "y/x",
+              "−a/b",
+              "h/b"
+            ],
+            "answer": 0,
+            "hint": "This homogeneous equation represents a pair of lines through the origin, so dy/dx = y/x.",
+            "explain": "Differentiating gives dy/dx = y/x; then d²y/dx² = (x·y' − y)/x² = (x·(y/x) − y)/x² = 0.",
+            "page": 54
+          }
+        ]
+      }
+    },
+    {
+      "id": "s12",
+      "title": "nth order derivatives and the miscellaneous exercise",
+      "sections": [
+        "1.5.2 Successive differentiation (nth order derivative)",
+        "Exercise 1.5 Q4",
+        "Miscellaneous Exercise 1"
+      ],
+      "page": 56,
+      "figs": [],
+      "inShort": "For the nth derivative: find y₁, y₂, y₃, spot the pattern in coefficients, powers and signs, then write y_{n}. Key results: (ax + b)^{−1} → (−1)ⁿ n! aⁿ/(ax + b)^{n+1}; log(ax + b) → (−1)^{n−1}(n − 1)! aⁿ/(ax + b)ⁿ; sin(ax + b) → aⁿ sin(ax + b + nπ/2); e^{ax+b} → aⁿ e^{ax+b}.",
+      "xi": [],
+      "quest": {
+        "cards": [
+          {
+            "t": "Three-step algorithm",
+            "text": "Step 1: differentiate 3 times. Step 2: observe how the coefficient, angle, power and sign change. Step 3: write the nth derivative from the pattern. Textbook uses (−1)ⁿ for alternating signs and n! for growing products.",
+            "page": 56
+          },
+          {
+            "t": "Powers and logs",
+            "text": "y = 1/(ax + b): y₁ = −a/(ax + b)², y₂ = 2a²/(ax + b)³, y₃ = −6a³/(ax + b)⁴ ⇒ y_{n} = (−1)ⁿ n! aⁿ/(ax + b)^{n+1}. Since log x has first derivative 1/x, y = log x gives y_{n} = (−1)^{n−1}(n − 1)!/xⁿ.",
+            "page": 57
+          },
+          {
+            "t": "Trig and exponential",
+            "text": "Each derivative of sin x shifts the angle by π/2: d/dx sin x = cos x = sin(x + π/2). Hence dⁿ/dxⁿ sin(ax + b) = aⁿ sin(ax + b + nπ/2) and dⁿ/dxⁿ cos(ax + b) = aⁿ cos(ax + b + nπ/2). For e^{ax} sin(bx + c), write a = r cos α, b = r sin α to get rⁿ e^{ax} sin(bx + c + nα).",
+            "page": 58
+          }
+        ],
+        "checks": [
+          {
+            "type": "mcq",
+            "q": "The nth derivative of e^{3x + 2} is",
+            "options": [
+              "e^{3x + 2}",
+              "3ⁿ e^{3x + 2}",
+              "n·3 e^{3x + 2}",
+              "3^{n−1} e^{3x + 2}"
+            ],
+            "answer": 1,
+            "hint": "Each differentiation multiplies by 3.",
+            "explain": "y₁ = 3e^{3x+2}, y₂ = 3²e^{3x+2}, ..., y_{n} = 3ⁿ e^{3x+2}.",
+            "page": 60
+          },
+          {
+            "type": "mcq",
+            "q": "The nth derivative of log x is",
+            "options": [
+              "(−1)ⁿ n!/xⁿ",
+              "(−1)^{n−1}(n − 1)!/xⁿ",
+              "(n − 1)!/xⁿ",
+              "(−1)^{n−1} n!/x^{n+1}"
+            ],
+            "answer": 1,
+            "hint": "Start from y₁ = 1/x and apply the 1/x pattern n − 1 more times.",
+            "explain": "y₁ = x^{−1}, y₂ = −1/x², y₃ = 2!/x³, y₄ = −3!/x⁴ ⇒ y_{n} = (−1)^{n−1}(n − 1)!/xⁿ.",
+            "page": 57
+          },
+          {
+            "type": "tf",
+            "q": "dⁿ/dxⁿ (cos x) = cos(x + nπ/2).",
+            "answer": true,
+            "hint": "Each derivative of cos x is cos shifted by π/2.",
+            "explain": "True. d/dx cos x = −sin x = cos(x + π/2); repeating n times adds nπ/2 to the angle.",
+            "page": 58
+          }
+        ]
+      }
+    }
+  ],
+  "board": [
+    {
+      "id": "m2c1-2025-Q1v",
+      "year": 2025,
+      "qno": "Q1(v)",
+      "marks": 2,
+      "stop": "s02",
+      "kind": "MCQ",
+      "text": "Let f(1) = 3, f '(1) = −1/3, g(1) = −4 and g '(1) = −8/3. The derivative of √([f(x)]² + [g(x)]²) w.r.t. x at x = 1 is ______.",
+      "options": [
+        "(a) −29/15",
+        "(b) 7/3",
+        "(c) 31/15",
+        "(d) 29/15"
+      ],
+      "answer": "(d) 29/15. Let h(x) = √([f(x)]² + [g(x)]²). By the chain rule h '(x) = [f(x)f '(x) + g(x)g '(x)]/√([f(x)]² + [g(x)]²). At x = 1: numerator = 3(−1/3) + (−4)(−8/3) = −1 + 32/3 = 29/3; denominator = √(9 + 16) = 5. So h '(1) = (29/3)/5 = 29/15.",
+      "points": [
+        {
+          "text": "Chain rule: h '(x) = [f f ' + g g ']/√(f² + g²); substitute to get (29/3)/5",
+          "marks": 1
+        },
+        {
+          "text": "Write the correct option with letter: (d) 29/15",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "m2c1-2025-Q21",
+      "year": 2025,
+      "qno": "Q21",
+      "marks": 3,
+      "stop": "s12",
+      "text": "Find the nth order derivative of log x.",
+      "answer": "Let y = log x. Then y₁ = 1/x = x^{−1}, y₂ = (−1)x^{−2} = −1/x², y₃ = (−1)(−2)x^{−3} = 2!/x³, y₄ = (−1)(−2)(−3)x^{−4} = −3!/x⁴. Observing the pattern (sign alternates starting with +, coefficient (n − 1)!, power of x is n): dⁿy/dxⁿ = (−1)^{n−1}(n − 1)!/xⁿ.",
+      "points": [
+        {
+          "text": "Find y₁ = 1/x, y₂ = −1/x², y₃ = 2!/x³ (at least three derivatives)",
+          "marks": 1
+        },
+        {
+          "text": "Identify the pattern of signs, factorial coefficient and powers",
+          "marks": 1
+        },
+        {
+          "text": "Conclude dⁿy/dxⁿ = (−1)^{n−1}(n − 1)!/xⁿ",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "m2c1-2025-Q31",
+      "year": 2025,
+      "qno": "Q31",
+      "marks": 4,
+      "stop": "s10",
+      "text": "If x = f(t) and y = g(t) are differentiable functions of t so that y is a function of x and if dx/dt ≠ 0, then prove that dy/dx = (dy/dt)/(dx/dt). Hence find the derivative of 7^{x} w.r.t. x⁷.",
+      "answer": "Proof: Let δt be a small increment in t, and δx, δy the corresponding increments in x and y (δt, δx, δy ≠ 0). Then δy/δx = (δy/δt)/(δx/δt). Since x and y are differentiable (hence continuous) functions of t, δx → 0 and δy → 0 as δt → 0. Taking limits, lim_{δx→0} δy/δx = [lim_{δt→0} δy/δt]/[lim_{δt→0} δx/δt] = (dy/dt)/(dx/dt). As dy/dt and dx/dt exist and dx/dt ≠ 0, the right side is finite, so dy/dx exists and dy/dx = (dy/dt)/(dx/dt). Hence: let u = 7^{x} and v = x⁷. du/dx = 7^{x} log 7, dv/dx = 7x⁶. Treating x as the parameter, du/dv = (du/dx)/(dv/dx) = 7^{x} log 7/(7x⁶) = 7^{x−1} log 7/x⁶.",
+      "points": [
+        {
+          "text": "Take increments δt, δx, δy and write δy/δx = (δy/δt)/(δx/δt)",
+          "marks": 1
+        },
+        {
+          "text": "Use continuity: δx → 0, δy → 0 as δt → 0 and take limits",
+          "marks": 1
+        },
+        {
+          "text": "Conclude dy/dx = (dy/dt)/(dx/dt) with dx/dt ≠ 0",
+          "marks": 1
+        },
+        {
+          "text": "Hence: du/dv = 7^{x} log 7/(7x⁶)",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "m2c1-2023-Q1v",
+      "year": 2023,
+      "qno": "Q1(v)",
+      "marks": 2,
+      "stop": "s07",
+      "kind": "MCQ",
+      "text": "If y is a function of x and log(x + y) = 2xy, then the value of y'(0) = ______.",
+      "options": [
+        "(a) 2",
+        "(b) 0",
+        "(c) −1",
+        "(d) 1"
+      ],
+      "answer": "(d) 1. At x = 0: log(0 + y) = 0 ⇒ y = 1. Differentiating implicitly: (1 + y')/(x + y) = 2y + 2xy'. At (0, 1): (1 + y')/1 = 2(1) + 0 ⇒ y'(0) = 1.",
+      "points": [
+        {
+          "text": "Find y = 1 at x = 0 and differentiate: (1 + y')/(x + y) = 2y + 2xy'",
+          "marks": 1
+        },
+        {
+          "text": "Substitute (0, 1) to get y'(0) = 1 and write option (d) 1",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "m2c1-2023-Q21",
+      "year": 2023,
+      "qno": "Q21",
+      "marks": 3,
+      "stop": "s08",
+      "text": "If y = √(tan x + √(tan x + √(tan x + ... + ∞))), then show that dy/dx = sec²x/(2y − 1). Find dy/dx at x = 0.",
+      "answer": "Since the expression continues to infinity, y = √(tan x + y). Squaring: y² = tan x + y. Differentiating w.r.t. x: 2y·dy/dx = sec²x + dy/dx ⇒ (2y − 1)·dy/dx = sec²x ⇒ dy/dx = sec²x/(2y − 1). At x = 0: y² = 0 + y ⇒ y = 1 (taking the non-zero value of the infinite expression). Hence dy/dx at x = 0 is sec²0/(2(1) − 1) = 1/1 = 1.",
+      "points": [
+        {
+          "text": "Write y = √(tan x + y), i.e. y² = tan x + y",
+          "marks": 1
+        },
+        {
+          "text": "Differentiate and solve: dy/dx = sec²x/(2y − 1)",
+          "marks": 1
+        },
+        {
+          "text": "At x = 0, y = 1, so dy/dx = 1",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "m2c1-2023-Q31",
+      "year": 2023,
+      "qno": "Q31",
+      "marks": 4,
+      "stop": "s11",
+      "text": "If y = cos(m cos^{−1}x), then show that (1 − x²)·d²y/dx² − x·dy/dx + m²y = 0.",
+      "answer": "y = cos(m cos^{−1}x). Differentiating: dy/dx = −sin(m cos^{−1}x)·m·(−1/√(1 − x²)) = m sin(m cos^{−1}x)/√(1 − x²). So √(1 − x²)·dy/dx = m sin(m cos^{−1}x). Squaring: (1 − x²)(dy/dx)² = m² sin²(m cos^{−1}x) = m²[1 − cos²(m cos^{−1}x)] = m²(1 − y²). Differentiating again: (1 − x²)·2(dy/dx)(d²y/dx²) + (dy/dx)²(−2x) = m²(−2y·dy/dx). Dividing throughout by 2·dy/dx: (1 − x²)·d²y/dx² − x·dy/dx = −m²y, i.e. (1 − x²)·d²y/dx² − x·dy/dx + m²y = 0.",
+      "points": [
+        {
+          "text": "First derivative: dy/dx = m sin(m cos^{−1}x)/√(1 − x²)",
+          "marks": 1
+        },
+        {
+          "text": "Square to get (1 − x²)(dy/dx)² = m²(1 − y²)",
+          "marks": 1
+        },
+        {
+          "text": "Differentiate again using product and chain rules",
+          "marks": 1
+        },
+        {
+          "text": "Divide by 2·dy/dx and arrange to the required result",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "m2c1-2022-Q1v",
+      "year": 2022,
+      "qno": "Q1(v)",
+      "marks": 2,
+      "stop": "s03",
+      "kind": "MCQ",
+      "text": "If f(x) = x⁵ + 2x − 3, then (f^{−1})'(−3) = ______.",
+      "options": [
+        "(a) 0",
+        "(b) −3",
+        "(c) −1/3",
+        "(d) 1/2"
+      ],
+      "answer": "(d) 1/2. f '(x) = 5x⁴ + 2. f(x) = −3 ⇒ x⁵ + 2x = 0 ⇒ x = 0 (only real root). Hence (f^{−1})'(−3) = 1/f '(0) = 1/2.",
+      "points": [
+        {
+          "text": "Note f(0) = −3 and use (f^{−1})'(−3) = 1/f '(0) with f '(x) = 5x⁴ + 2",
+          "marks": 1
+        },
+        {
+          "text": "Write the correct option with letter: (d) 1/2",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "m2c1-2022-Q21",
+      "year": 2022,
+      "qno": "Q21",
+      "marks": 3,
+      "stop": "s11",
+      "text": "If y = e^{m tan^{−1}x}, then show that (1 + x²)·d²y/dx² + (2x − m)·dy/dx = 0.",
+      "answer": "y = e^{m tan^{−1}x}. Differentiating: dy/dx = e^{m tan^{−1}x}·m/(1 + x²) = my/(1 + x²). So (1 + x²)·dy/dx = my. Differentiating again: (1 + x²)·d²y/dx² + 2x·dy/dx = m·dy/dx. Hence (1 + x²)·d²y/dx² + (2x − m)·dy/dx = 0.",
+      "points": [
+        {
+          "text": "dy/dx = my/(1 + x²), i.e. (1 + x²)·dy/dx = my",
+          "marks": 1
+        },
+        {
+          "text": "Differentiate again: (1 + x²)y₂ + 2xy₁ = my₁",
+          "marks": 1
+        },
+        {
+          "text": "Rearrange to (1 + x²)y₂ + (2x − m)y₁ = 0",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "m2c1-2022-Q31",
+      "year": 2022,
+      "qno": "Q31",
+      "marks": 4,
+      "stop": "s09",
+      "text": "If x = f(t) and y = g(t) are differentiable functions of t so that y is a differentiable function of x and dx/dt ≠ 0, then prove that dy/dx = (dy/dt)/(dx/dt). Hence find dy/dx if x = sin t and y = cos t.",
+      "answer": "Proof: Let δt be a small increment in t with corresponding increments δx and δy in x and y (all non-zero). Then δy/δx = (δy/δt)/(δx/δt). As x and y are differentiable, they are continuous, so δx → 0 and δy → 0 as δt → 0. Taking limits: dy/dx = lim_{δx→0} δy/δx = [lim_{δt→0} δy/δt]/[lim_{δt→0} δx/δt] = (dy/dt)/(dx/dt), which is finite because dx/dt ≠ 0. Hence: x = sin t ⇒ dx/dt = cos t; y = cos t ⇒ dy/dt = −sin t. Therefore dy/dx = −sin t/cos t = −tan t.",
+      "points": [
+        {
+          "text": "Take increments δt, δx, δy and write δy/δx = (δy/δt)/(δx/δt)",
+          "marks": 1
+        },
+        {
+          "text": "Use continuity: δx → 0, δy → 0 as δt → 0 and take limits",
+          "marks": 1
+        },
+        {
+          "text": "Conclude dy/dx = (dy/dt)/(dx/dt) with dx/dt ≠ 0",
+          "marks": 1
+        },
+        {
+          "text": "Hence: dx/dt = cos t, dy/dt = −sin t, so dy/dx = −tan t",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "m2c1-imp-s01-table",
+      "stop": "s01",
+      "source": "Important · Balbharati",
+      "marks": 4,
+      "kind": "Short answer",
+      "text": "A table of values is given — at x = 2: f = 1, g = 6, f ' = −3, g ' = 4; at x = 4: f = 3, g = 4, f ' = 5, g ' = −6; at x = 6: f = 5, g = 2, f ' = −4, g ' = 7. (i) If r(x) = f[g(x)], find r '(2). (ii) If R(x) = g[3 + f(x)], find R '(4). (iii) If s(x) = f[9 − f(x)], find s '(4). (iv) If S(x) = g[g(x)], find S '(6).",
+      "answer": "(i) r '(x) = f '[g(x)]·g '(x) ⇒ r '(2) = f '(6)·g '(2) = (−4)(4) = −16. (ii) R '(x) = g '[3 + f(x)]·f '(x) ⇒ R '(4) = g '(3 + 3)·f '(4) = g '(6)·5 = 7 × 5 = 35. (iii) s '(x) = f '[9 − f(x)]·(−f '(x)) ⇒ s '(4) = f '(9 − 3)·(−5) = (−4)(−5) = 20. (iv) S '(x) = g '[g(x)]·g '(x) ⇒ S '(6) = g '(2)·g '(6) = 4 × 7 = 28.",
+      "points": [
+        {
+          "text": "(i) r '(2) = f '(6)·g '(2) = −16",
+          "marks": 1
+        },
+        {
+          "text": "(ii) R '(4) = g '(6)·f '(4) = 35",
+          "marks": 1
+        },
+        {
+          "text": "(iii) s '(4) = f '(6)·(−f '(4)) = 20",
+          "marks": 1
+        },
+        {
+          "text": "(iv) S '(6) = g '(2)·g '(6) = 28",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "m2c1-imp-s04-tancot",
+      "stop": "s04",
+      "source": "Important · Balbharati",
+      "marks": 2,
+      "kind": "Proof",
+      "text": "Using derivative, prove that tan^{−1}x + cot^{−1}x = π/2.",
+      "answer": "Let f(x) = tan^{−1}x + cot^{−1}x. Then f '(x) = 1/(1 + x²) − 1/(1 + x²) = 0 for all x ∈ R, so f(x) is a constant, say c. Putting x = 0: c = f(0) = tan^{−1}0 + cot^{−1}0 = 0 + π/2 = π/2. Hence tan^{−1}x + cot^{−1}x = π/2.",
+      "points": [
+        {
+          "text": "Differentiate: f '(x) = 1/(1 + x²) − 1/(1 + x²) = 0, so f is constant",
+          "marks": 1
+        },
+        {
+          "text": "Evaluate at x = 0 to get the constant π/2",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "m2c1-imp-s04-secmcq",
+      "stop": "s04",
+      "source": "Important · Balbharati",
+      "marks": 2,
+      "kind": "MCQ",
+      "text": "If y = sec(tan^{−1}x), then dy/dx at x = 1 is equal to:",
+      "options": [
+        "(a) 1/2",
+        "(b) 1",
+        "(c) 1/√2",
+        "(d) √2"
+      ],
+      "answer": "(c) 1/√2. dy/dx = sec(tan^{−1}x)·tan(tan^{−1}x)·1/(1 + x²) = sec(tan^{−1}x)·x/(1 + x²). At x = 1: sec(π/4)·1/2 = √2/2 = 1/√2. (Alternatively y = √(1 + x²), so dy/dx = x/√(1 + x²) = 1/√2 at x = 1.)",
+      "points": [
+        {
+          "text": "Differentiate with the chain rule and substitute x = 1: sec(π/4)·(1/2)",
+          "marks": 1
+        },
+        {
+          "text": "Write the correct option with letter: (c) 1/√2",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "m2c1-imp-s05-subst",
+      "stop": "s05",
+      "source": "Important · Balbharati",
+      "marks": 3,
+      "kind": "Short answer",
+      "text": "Differentiate sin^{−1}(2x√(1 − x²)) w.r.t. x, for |x| < 1/√2.",
+      "answer": "Let y = sin^{−1}(2x√(1 − x²)). Put x = sin θ, so θ = sin^{−1}x; since |x| < 1/√2, −π/4 < θ < π/4 and −π/2 < 2θ < π/2. Then 2x√(1 − x²) = 2 sin θ cos θ = sin 2θ, so y = sin^{−1}(sin 2θ) = 2θ = 2 sin^{−1}x. Differentiating: dy/dx = 2/√(1 − x²).",
+      "points": [
+        {
+          "text": "Substitute x = sin θ and simplify to sin 2θ",
+          "marks": 1
+        },
+        {
+          "text": "Use the range to write y = 2θ = 2 sin^{−1}x",
+          "marks": 1
+        },
+        {
+          "text": "Differentiate: dy/dx = 2/√(1 − x²)",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "m2c1-imp-s06-xtanx",
+      "stop": "s06",
+      "source": "Important · Balbharati",
+      "marks": 3,
+      "kind": "Short answer",
+      "text": "Differentiate x^{tan x} w.r.t. x.",
+      "answer": "Let y = x^{tan x}. Taking log: log y = tan x·log x. Differentiating w.r.t. x: (1/y)·dy/dx = tan x·(1/x) + log x·sec²x. Therefore dy/dx = x^{tan x}[tan x/x + sec²x·log x].",
+      "points": [
+        {
+          "text": "Take logarithm: log y = tan x·log x",
+          "marks": 1
+        },
+        {
+          "text": "Differentiate using product rule: (1/y)y' = tan x/x + sec²x log x",
+          "marks": 1
+        },
+        {
+          "text": "Final: dy/dx = x^{tan x}[tan x/x + sec²x log x]",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "m2c1-imp-s07-xy",
+      "stop": "s07",
+      "source": "Important · Balbharati",
+      "marks": 3,
+      "kind": "Proof",
+      "text": "If x^{y} = e^{x − y}, then show that dy/dx = log x/(1 + log x)².",
+      "answer": "Taking log on both sides: y log x = (x − y) log e = x − y. So y(1 + log x) = x, i.e. y = x/(1 + log x). Differentiating by the quotient rule: dy/dx = [(1 + log x)·1 − x·(1/x)]/(1 + log x)² = (1 + log x − 1)/(1 + log x)² = log x/(1 + log x)².",
+      "points": [
+        {
+          "text": "Take log: y log x = x − y",
+          "marks": 1
+        },
+        {
+          "text": "Express y = x/(1 + log x)",
+          "marks": 1
+        },
+        {
+          "text": "Quotient rule to get dy/dx = log x/(1 + log x)²",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "m2c1-imp-s08-x7y5",
+      "stop": "s08",
+      "source": "Important · Balbharati",
+      "marks": 3,
+      "kind": "Proof",
+      "text": "If x⁷·y⁵ = (x + y)^{12}, show that dy/dx = y/x.",
+      "answer": "Taking log: 7 log x + 5 log y = 12 log(x + y). Differentiating: 7/x + (5/y)·dy/dx = [12/(x + y)]·(1 + dy/dx). So dy/dx·[5/y − 12/(x + y)] = 12/(x + y) − 7/x, i.e. dy/dx·(5x + 5y − 12y)/[y(x + y)] = (12x − 7x − 7y)/[x(x + y)], i.e. dy/dx·(5x − 7y)/[y(x + y)] = (5x − 7y)/[x(x + y)]. Cancelling (5x − 7y)/(x + y): dy/dx = y/x.",
+      "points": [
+        {
+          "text": "Take log and differentiate: 7/x + (5/y)y' = 12(1 + y')/(x + y)",
+          "marks": 1
+        },
+        {
+          "text": "Collect y' terms: y'(5x − 7y)/[y(x + y)] = (5x − 7y)/[x(x + y)]",
+          "marks": 1
+        },
+        {
+          "text": "Cancel common factor to get dy/dx = y/x",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "m2c1-imp-s11-cycloid",
+      "stop": "s11",
+      "source": "Important · Balbharati",
+      "marks": 3,
+      "kind": "Short answer",
+      "text": "Find d²y/dx² if x = a(θ − sin θ), y = a(1 − cos θ).",
+      "answer": "dx/dθ = a(1 − cos θ) = 2a sin²(θ/2); dy/dθ = a sin θ = 2a sin(θ/2)cos(θ/2). So dy/dx = cot(θ/2). Then d²y/dx² = d/dθ[cot(θ/2)]·dθ/dx = −(1/2)cosec²(θ/2)·1/(2a sin²(θ/2)) = −1/(4a sin⁴(θ/2)) = −(1/4a)cosec⁴(θ/2).",
+      "points": [
+        {
+          "text": "dx/dθ = 2a sin²(θ/2), dy/dθ = 2a sin(θ/2)cos(θ/2), so dy/dx = cot(θ/2)",
+          "marks": 1
+        },
+        {
+          "text": "Differentiate w.r.t. θ and multiply by dθ/dx",
+          "marks": 1
+        },
+        {
+          "text": "Simplify: d²y/dx² = −(1/4a)cosec⁴(θ/2)",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "m2c1-imp-s12-recip",
+      "stop": "s12",
+      "source": "Important · Balbharati",
+      "marks": 3,
+      "kind": "Short answer",
+      "text": "Find the nth derivative of 1/(3x − 5).",
+      "answer": "Let y = (3x − 5)^{−1}. y₁ = (−1)·3·(3x − 5)^{−2}; y₂ = (−1)(−2)·3²·(3x − 5)^{−3} = (−1)²·2!·3²/(3x − 5)³; y₃ = (−1)(−2)(−3)·3³·(3x − 5)^{−4} = (−1)³·3!·3³/(3x − 5)⁴. In general, dⁿy/dxⁿ = (−1)ⁿ·n!·3ⁿ/(3x − 5)^{n+1}.",
+      "points": [
+        {
+          "text": "Compute y₁, y₂, y₃ with the chain-rule factor 3 each time",
+          "marks": 1
+        },
+        {
+          "text": "Identify the pattern (−1)ⁿ, n!, 3ⁿ and power n + 1",
+          "marks": 1
+        },
+        {
+          "text": "Conclude dⁿy/dxⁿ = (−1)ⁿ n! 3ⁿ/(3x − 5)^{n+1}",
+          "marks": 1
+        }
+      ]
+    }
+  ],
+  "derivations": [
+    {
+      "id": "m2c1-d1",
+      "stop": "s01",
+      "title": "Prove the chain rule dy/dx = (dy/du)·(du/dx)",
+      "page": 2,
+      "asked": [],
+      "given": "y = f(u) is a differentiable function of u and u = g(x) is a differentiable function of x (u not constant). Prove y is a differentiable function of x and dy/dx = (dy/du)·(du/dx).",
+      "steps": [
+        {
+          "line": "Give x an increment δx; let δu, δy be the corresponding increments in u and y (all non-zero)",
+          "wrong": [
+            "Give u an increment δu and keep x fixed",
+            "Assume δy = δx so that the ratio is 1"
+          ],
+          "note": "Start every increment proof by naming all three increments."
+        },
+        {
+          "line": "δy/δx = (δy/δu)·(δu/δx)",
+          "wrong": [
+            "δy/δx = (δy/δu) + (δu/δx)",
+            "δy/δx = (δu/δy)·(δx/δu)"
+          ],
+          "note": "Multiply and divide by δu; this is pure algebra."
+        },
+        {
+          "line": "As δx → 0, δu → 0, because u = g(x) is differentiable and hence continuous",
+          "wrong": [
+            "As δx → 0, δu → ∞",
+            "As δx → 0, δu stays fixed"
+          ],
+          "note": "Continuity is the key justification examiners look for."
+        },
+        {
+          "line": "lim_{δx→0} δy/δx = [lim_{δu→0} δy/δu]·[lim_{δx→0} δu/δx] = (dy/du)·(du/dx)",
+          "wrong": [
+            "lim δy/δx = (dy/du) ÷ (du/dx)",
+            "lim δy/δx = (dy/du)·(dx/du)"
+          ],
+          "note": "Limit of a product is the product of limits."
+        },
+        {
+          "line": "The right side exists and is finite, so dy/dx exists and dy/dx = (dy/du)·(du/dx)",
+          "wrong": [
+            "Hence dy/dx = dy/du only",
+            "Hence y is not differentiable"
+          ],
+          "note": "Conclude explicitly that y is differentiable in x."
+        }
+      ]
+    },
+    {
+      "id": "m2c1-d2",
+      "stop": "s03",
+      "title": "Prove dx/dy = 1/(dy/dx) for an inverse function",
+      "page": 14,
+      "asked": [],
+      "given": "y = f(x) is differentiable with dy/dx ≠ 0 and x = f^{−1}(y) exists. Prove x is a differentiable function of y and dx/dy = 1/(dy/dx).",
+      "steps": [
+        {
+          "line": "Let δx be an increment in x and δy the corresponding increment in y, with δx, δy ≠ 0",
+          "wrong": [
+            "Let δy = 0 for a small increment δx",
+            "Let δx = δy"
+          ],
+          "note": "Non-zero increments let us divide."
+        },
+        {
+          "line": "(δx/δy)·(δy/δx) = 1, so δx/δy = 1/(δy/δx)",
+          "wrong": [
+            "δx/δy = δy/δx",
+            "δx/δy = 1 − δy/δx"
+          ],
+          "note": "The two ratios are reciprocals."
+        },
+        {
+          "line": "As δx → 0, δy → 0 (f is continuous), so lim_{δy→0} δx/δy = 1/lim_{δx→0} (δy/δx)",
+          "wrong": [
+            "As δx → 0, δy → 1",
+            "Take limits only on the left side"
+          ],
+          "note": "Continuity of f links the two limits."
+        },
+        {
+          "line": "Since dy/dx exists and is non-zero, dx/dy exists and dx/dy = 1/(dy/dx)",
+          "wrong": [
+            "Hence dx/dy = dy/dx",
+            "Hence dx/dy = −1/(dy/dx)"
+          ],
+          "note": "The condition dy/dx ≠ 0 makes the reciprocal finite."
+        }
+      ]
+    },
+    {
+      "id": "m2c1-d3",
+      "stop": "s04",
+      "title": "Prove d/dx (sin^{−1}x) = 1/√(1 − x²)",
+      "page": 17,
+      "asked": [],
+      "given": "y = sin^{−1}x, −1 ≤ x ≤ 1, −π/2 ≤ y ≤ π/2. Prove dy/dx = 1/√(1 − x²) for |x| < 1.",
+      "steps": [
+        {
+          "line": "y = sin^{−1}x ⇒ x = sin y",
+          "wrong": [
+            "y = sin^{−1}x ⇒ x = cos y",
+            "y = sin^{−1}x ⇒ y = 1/sin x"
+          ],
+          "note": "Rewrite the inverse function in direct form."
+        },
+        {
+          "line": "dx/dy = cos y = ±√(1 − sin²y) = ±√(1 − x²)",
+          "wrong": [
+            "dx/dy = −cos y",
+            "dx/dy = sin y = x"
+          ],
+          "note": "Differentiate w.r.t. y and use sin y = x."
+        },
+        {
+          "line": "cos y > 0 for −π/2 < y < π/2, so dx/dy = √(1 − x²)",
+          "wrong": [
+            "cos y < 0 in this range, so dx/dy = −√(1 − x²)",
+            "The sign cannot be decided"
+          ],
+          "note": "The principal branch lies in quadrants I and IV where cosine is positive."
+        },
+        {
+          "line": "dy/dx = 1/(dx/dy) = 1/√(1 − x²), |x| < 1",
+          "wrong": [
+            "dy/dx = √(1 − x²)",
+            "dy/dx = −1/√(1 − x²)"
+          ],
+          "note": "Use the inverse function theorem."
+        }
+      ]
+    },
+    {
+      "id": "m2c1-d4",
+      "stop": "s06",
+      "title": "Logarithmic differentiation of [f(x)]^{g(x)}",
+      "page": 30,
+      "asked": [],
+      "given": "Derive the shortcut d/dx [f(x)]^{g(x)} = f^{g}[g·f '/f + log f·g '], then apply it to y = (sin x)^{x}.",
+      "steps": [
+        {
+          "line": "y = f^{g} ⇒ log y = g·log f",
+          "wrong": [
+            "log y = log g·log f",
+            "log y = f·log g"
+          ],
+          "note": "Take natural log of both sides; the power comes down."
+        },
+        {
+          "line": "(1/y)·dy/dx = g·(f '/f) + log f·g '",
+          "wrong": [
+            "(1/y)·dy/dx = g '·f '/f",
+            "dy/dx = g·f '/f + log f·g '"
+          ],
+          "note": "Product rule on the right; chain rule gives (1/y)y' on the left."
+        },
+        {
+          "line": "dy/dx = f^{g}[g·f '/f + log f·g ']",
+          "wrong": [
+            "dy/dx = g·f^{g − 1}·f '",
+            "dy/dx = f^{g}·log f·g '"
+          ],
+          "note": "Multiply by y and substitute y = f^{g}. Note: both the power-rule term and the exponential term appear."
+        },
+        {
+          "line": "For y = (sin x)^{x}: dy/dx = (sin x)^{x}[x cot x + log(sin x)]",
+          "wrong": [
+            "dy/dx = x(sin x)^{x − 1}cos x",
+            "dy/dx = (sin x)^{x}log(sin x)"
+          ],
+          "note": "Here f = sin x, g = x, f '/f = cot x, g ' = 1."
+        }
+      ]
+    },
+    {
+      "id": "m2c1-d5",
+      "stop": "s08",
+      "title": "Show x^{m}y^{n} = (x + y)^{m+n} gives dy/dx = y/x",
+      "page": 36,
+      "asked": [],
+      "given": "If x^{m}·y^{n} = (x + y)^{m+n}, prove that dy/dx = y/x.",
+      "steps": [
+        {
+          "line": "m log x + n log y = (m + n) log(x + y)",
+          "wrong": [
+            "m log x · n log y = (m + n) log(x + y)",
+            "log(mx) + log(ny) = log(m + n)(x + y)"
+          ],
+          "note": "Logs turn the product and powers into sums."
+        },
+        {
+          "line": "m/x + (n/y)·y' = [(m + n)/(x + y)]·(1 + y')",
+          "wrong": [
+            "m/x + n/y = (m + n)/(x + y)",
+            "m/x + (n/y)·y' = (m + n)/(x + y)"
+          ],
+          "note": "Differentiate; do not forget the chain-rule factor (1 + y') on the right."
+        },
+        {
+          "line": "y'·[n/y − (m + n)/(x + y)] = (m + n)/(x + y) − m/x",
+          "wrong": [
+            "y'·[n/y + (m + n)/(x + y)] = m/x",
+            "y' = (m + n)/(x + y) − m/x"
+          ],
+          "note": "Collect all y' terms on the left."
+        },
+        {
+          "line": "y'·(nx − my)/[y(x + y)] = (nx − my)/[x(x + y)]",
+          "wrong": [
+            "y'·(nx + my)/[y(x + y)] = (nx − my)/[x(x + y)]",
+            "y'·(my − nx)/y = (nx − my)/x"
+          ],
+          "note": "Simplify each side over a common denominator — the same factor nx − my appears."
+        },
+        {
+          "line": "Cancel (nx − my)/(x + y): dy/dx = y/x",
+          "wrong": [
+            "dy/dx = x/y",
+            "dy/dx = −y/x"
+          ],
+          "note": "Result is independent of m and n."
+        }
+      ]
+    },
+    {
+      "id": "m2c1-d6",
+      "stop": "s09",
+      "title": "Prove dy/dx = (dy/dt)/(dx/dt) for parametric functions",
+      "page": 41,
+      "asked": [
+        "2022 Q31",
+        "2025 Q31"
+      ],
+      "given": "x = f(t) and y = g(t) are differentiable functions of t, y is a function of x, and dx/dt ≠ 0. Prove dy/dx = (dy/dt)/(dx/dt).",
+      "steps": [
+        {
+          "line": "Let δt be a small increment in t; δx and δy are the corresponding increments in x and y (δt, δx, δy ≠ 0)",
+          "wrong": [
+            "Let δx be an increment in x keeping t fixed",
+            "Let δt = 0"
+          ],
+          "note": "Name all increments first."
+        },
+        {
+          "line": "δy/δx = (δy/δt)/(δx/δt)",
+          "wrong": [
+            "δy/δx = (δy/δt)·(δx/δt)",
+            "δy/δx = (δx/δt)/(δy/δt)"
+          ],
+          "note": "Divide numerator and denominator by δt."
+        },
+        {
+          "line": "As δt → 0, δx → 0 and δy → 0, since x and y are differentiable, hence continuous, functions of t",
+          "wrong": [
+            "As δt → 0, δx → ∞",
+            "As δt → 0, only δy → 0"
+          ],
+          "note": "Continuity justifies changing the limit variable."
+        },
+        {
+          "line": "lim_{δx→0} δy/δx = [lim_{δt→0} δy/δt]/[lim_{δt→0} δx/δt]",
+          "wrong": [
+            "lim δy/δx = lim δy/δt − lim δx/δt",
+            "lim δy/δx = lim δy/δt"
+          ],
+          "note": "Limit of a quotient = quotient of limits (denominator limit non-zero)."
+        },
+        {
+          "line": "dy/dx = (dy/dt)/(dx/dt), finite because dx/dt ≠ 0",
+          "wrong": [
+            "dy/dx = (dy/dt)·(dx/dt)",
+            "dy/dx = (dx/dt)/(dy/dt)"
+          ],
+          "note": "State the condition dx/dt ≠ 0 in the conclusion."
+        }
+      ]
+    },
+    {
+      "id": "m2c1-d7",
+      "stop": "s11",
+      "title": "y = e^{m tan⁻¹x} ⇒ (1 + x²)y₂ + (2x − m)y₁ = 0",
+      "page": 60,
+      "asked": [
+        "2022 Q21"
+      ],
+      "given": "If y = e^{m tan^{−1}x}, show that (1 + x²)·d²y/dx² + (2x − m)·dy/dx = 0.",
+      "steps": [
+        {
+          "line": "dy/dx = e^{m tan^{−1}x}·m/(1 + x²)",
+          "wrong": [
+            "dy/dx = e^{m tan^{−1}x}",
+            "dy/dx = m·e^{m tan^{−1}x}·(1 + x²)"
+          ],
+          "note": "Chain rule: d/dx (m tan^{−1}x) = m/(1 + x²)."
+        },
+        {
+          "line": "(1 + x²)·dy/dx = my",
+          "wrong": [
+            "(1 + x²)·dy/dx = m",
+            "dy/dx = my(1 + x²)"
+          ],
+          "note": "Replace e^{m tan^{−1}x} by y and clear the denominator."
+        },
+        {
+          "line": "(1 + x²)·d²y/dx² + 2x·dy/dx = m·dy/dx",
+          "wrong": [
+            "(1 + x²)·d²y/dx² = m·dy/dx",
+            "(1 + x²)·d²y/dx² + 2x = m"
+          ],
+          "note": "Product rule on the left side."
+        },
+        {
+          "line": "(1 + x²)·d²y/dx² + (2x − m)·dy/dx = 0",
+          "wrong": [
+            "(1 + x²)·d²y/dx² + (2x + m)·dy/dx = 0",
+            "(1 + x²)·d²y/dx² − (2x − m)·dy/dx = 0"
+          ],
+          "note": "Move m·dy/dx to the left."
+        }
+      ]
+    },
+    {
+      "id": "m2c1-d8",
+      "stop": "s11",
+      "title": "y = cos(m cos⁻¹x) ⇒ (1 − x²)y₂ − xy₁ + m²y = 0",
+      "page": 54,
+      "asked": [
+        "2023 Q31"
+      ],
+      "given": "If y = cos(m cos^{−1}x), show that (1 − x²)·d²y/dx² − x·dy/dx + m²y = 0.",
+      "steps": [
+        {
+          "line": "dy/dx = m sin(m cos^{−1}x)/√(1 − x²)",
+          "wrong": [
+            "dy/dx = −m sin(m cos^{−1}x)/√(1 − x²)",
+            "dy/dx = −sin(m cos^{−1}x)"
+          ],
+          "note": "Two minus signs (from cos and from cos^{−1}) cancel."
+        },
+        {
+          "line": "(1 − x²)(dy/dx)² = m² sin²(m cos^{−1}x) = m²(1 − y²)",
+          "wrong": [
+            "(1 − x²)(dy/dx)² = m²y²",
+            "(1 − x²)·dy/dx = m²(1 − y²)"
+          ],
+          "note": "Square to remove the root, then use sin² = 1 − cos²."
+        },
+        {
+          "line": "(1 − x²)·2y₁y₂ − 2x·y₁² = −2m²y·y₁",
+          "wrong": [
+            "(1 − x²)·y₂ − 2x·y₁ = −2m²y",
+            "(1 − x²)·2y₁y₂ = −2m²y·y₁"
+          ],
+          "note": "Differentiate both sides; product rule on the left."
+        },
+        {
+          "line": "Divide by 2y₁: (1 − x²)y₂ − xy₁ + m²y = 0",
+          "wrong": [
+            "(1 − x²)y₂ − 2xy₁ + m²y = 0",
+            "(1 − x²)y₂ + xy₁ − m²y = 0"
+          ],
+          "note": "Every term had a common factor 2y₁."
+        }
+      ]
+    },
+    {
+      "id": "m2c1-d9",
+      "stop": "s12",
+      "title": "nth derivative of log x",
+      "page": 57,
+      "asked": [
+        "2025 Q21"
+      ],
+      "given": "Find dⁿy/dxⁿ for y = log x.",
+      "steps": [
+        {
+          "line": "y₁ = 1/x = x^{−1}",
+          "wrong": [
+            "y₁ = log x/x",
+            "y₁ = −1/x"
+          ],
+          "note": "Standard derivative of log x."
+        },
+        {
+          "line": "y₂ = −x^{−2}, y₃ = 2x^{−3} = 2!/x³",
+          "wrong": [
+            "y₂ = −x^{−2}, y₃ = −2x^{−3}",
+            "y₂ = x^{−2}, y₃ = 2x^{−3}"
+          ],
+          "note": "Power rule each time; signs alternate."
+        },
+        {
+          "line": "y₄ = −6x^{−4} = −3!/x⁴",
+          "wrong": [
+            "y₄ = 6x^{−4}",
+            "y₄ = −4!/x⁴"
+          ],
+          "note": "Coefficient is (n − 1)! for the nth derivative."
+        },
+        {
+          "line": "dⁿy/dxⁿ = (−1)^{n−1}(n − 1)!/xⁿ",
+          "wrong": [
+            "dⁿy/dxⁿ = (−1)ⁿ n!/xⁿ",
+            "dⁿy/dxⁿ = (−1)^{n−1} n!/x^{n+1}"
+          ],
+          "note": "Check: n = 1 gives +0!/x = 1/x ✓."
+        }
+      ]
+    }
+  ],
+  "formulas": [
+    {
+      "stop": "s01",
+      "items": [
+        {
+          "n": "Chain rule",
+          "f": "dy/dx = (dy/du)·(du/dx)",
+          "s": "y = f(u), u = g(x)",
+          "p": 2
+        },
+        {
+          "n": "Function form",
+          "f": "d/dx f[g(x)] = f '[g(x)]·g '(x)",
+          "s": "outer derivative × inner derivative",
+          "p": 3
+        },
+        {
+          "n": "Three links",
+          "f": "dy/dx = (dy/dv)·(dv/du)·(du/dx)",
+          "s": "one factor per layer",
+          "p": 3
+        }
+      ]
+    },
+    {
+      "stop": "s02",
+      "items": [
+        {
+          "n": "Power of a function",
+          "f": "d/dx [f(x)]^{n} = n[f(x)]^{n−1}·f '(x)",
+          "s": "Table 1.1.2",
+          "p": 4
+        },
+        {
+          "n": "Root of a function",
+          "f": "d/dx √f(x) = f '(x)/(2√f(x))",
+          "s": "Table 1.1.2",
+          "p": 4
+        },
+        {
+          "n": "Log of a function",
+          "f": "d/dx log f(x) = f '(x)/f(x); d/dx log_{a} f(x) = f '(x)/(f(x) log a)",
+          "s": "Table 1.1.2",
+          "p": 4
+        },
+        {
+          "n": "Exponential of a function",
+          "f": "d/dx e^{f(x)} = e^{f(x)}·f '(x); d/dx a^{f(x)} = a^{f(x)}·log a·f '(x)",
+          "s": "Table 1.1.2",
+          "p": 4
+        },
+        {
+          "n": "Trig of a function",
+          "f": "d/dx sin f = cos f·f '; d/dx tan f = sec²f·f '; d/dx sec f = sec f tan f·f '",
+          "s": "cos, cot, cosec carry a minus sign",
+          "p": 4
+        }
+      ]
+    },
+    {
+      "stop": "s03",
+      "items": [
+        {
+          "n": "Slope of tangent",
+          "f": "m = f '(a) at x = a",
+          "s": "geometric meaning of derivative",
+          "p": 13
+        },
+        {
+          "n": "Inverse function derivative",
+          "f": "dx/dy = 1/(dy/dx), dy/dx ≠ 0",
+          "s": "Theorem 1.2.3",
+          "p": 14
+        },
+        {
+          "n": "Inverse at a point",
+          "f": "(f^{−1})'(b) = 1/f '(a), where f(a) = b",
+          "s": "g '(x) = 1/f '[g(x)]",
+          "p": 16
+        }
+      ]
+    },
+    {
+      "stop": "s04",
+      "items": [
+        {
+          "n": "sin⁻¹ and cos⁻¹",
+          "f": "d/dx sin^{−1}x = 1/√(1 − x²); d/dx cos^{−1}x = −1/√(1 − x²)",
+          "s": "|x| < 1",
+          "p": 19
+        },
+        {
+          "n": "tan⁻¹ and cot⁻¹",
+          "f": "d/dx tan^{−1}x = 1/(1 + x²); d/dx cot^{−1}x = −1/(1 + x²)",
+          "s": "x ∈ R",
+          "p": 19
+        },
+        {
+          "n": "sec⁻¹ and cosec⁻¹",
+          "f": "d/dx sec^{−1}x = 1/(x√(x² − 1)); d/dx cosec^{−1}x = −1/(x√(x² − 1))",
+          "s": "for x > 1 (signs flip for x < −1)",
+          "p": 19
+        },
+        {
+          "n": "Composite inverse trig",
+          "f": "d/dx sin^{−1}f = f '/√(1 − f²); d/dx tan^{−1}f = f '/(1 + f²)",
+          "s": "Table 1.2.2",
+          "p": 20
+        }
+      ]
+    },
+    {
+      "stop": "s05",
+      "items": [
+        {
+          "n": "Complementary sums",
+          "f": "sin^{−1}x + cos^{−1}x = tan^{−1}x + cot^{−1}x = sec^{−1}x + cosec^{−1}x = π/2",
+          "s": "Table 1.2.3",
+          "p": 20
+        },
+        {
+          "n": "Tan addition",
+          "f": "tan^{−1}x ± tan^{−1}y = tan^{−1}[(x ± y)/(1 ∓ xy)]",
+          "s": "Table 1.2.3",
+          "p": 20
+        },
+        {
+          "n": "x = tan θ forms",
+          "f": "2x/(1 + x²) = sin 2θ; (1 − x²)/(1 + x²) = cos 2θ; 2x/(1 − x²) = tan 2θ",
+          "s": "Table 1.2.4",
+          "p": 21
+        },
+        {
+          "n": "x = sin θ / cos θ forms",
+          "f": "3x − 4x³ = sin 3θ (x = sin θ); 4x³ − 3x = cos 3θ (x = cos θ); √(1 − x²) = cos θ",
+          "s": "Table 1.2.4",
+          "p": 21
+        }
+      ]
+    },
+    {
+      "stop": "s06",
+      "items": [
+        {
+          "n": "Log differentiation shortcut",
+          "f": "d/dx f^{g} = f^{g}[g·f '/f + log f·g ']",
+          "s": "Let us Remember",
+          "p": 61
+        },
+        {
+          "n": "x^x",
+          "f": "d/dx x^{x} = x^{x}(1 + log x)",
+          "s": "standard result",
+          "p": 30
+        }
+      ]
+    },
+    {
+      "stop": "s07",
+      "items": [
+        {
+          "n": "y-terms in implicit differentiation",
+          "f": "d/dx yⁿ = n y^{n−1}·dy/dx; d/dx (xy) = x·dy/dx + y",
+          "s": "treat y as a function of x",
+          "p": 34
+        }
+      ]
+    },
+    {
+      "stop": "s08",
+      "items": [
+        {
+          "n": "Homogeneous implicit form",
+          "f": "x^{m}yⁿ = (x + y)^{m+n} ⇒ dy/dx = y/x, d²y/dx² = 0",
+          "s": "Let us Remember",
+          "p": 61
+        },
+        {
+          "n": "Infinite radical",
+          "f": "y = √(f(x) + y) ⇒ y² = f(x) + y ⇒ dy/dx = f '(x)/(2y − 1)",
+          "s": "e.g. f(x) = tan x",
+          "p": 38
+        }
+      ]
+    },
+    {
+      "stop": "s09",
+      "items": [
+        {
+          "n": "Parametric derivative",
+          "f": "dy/dx = (dy/dt)/(dx/dt), dx/dt ≠ 0",
+          "s": "Theorem 1.4.2",
+          "p": 41
+        }
+      ]
+    },
+    {
+      "stop": "s10",
+      "items": [
+        {
+          "n": "One function w.r.t. another",
+          "f": "du/dv = (du/dx)/(dv/dx), dv/dx ≠ 0",
+          "s": "u = f(x), v = g(x)",
+          "p": 46
+        }
+      ]
+    },
+    {
+      "stop": "s11",
+      "items": [
+        {
+          "n": "Second derivative",
+          "f": "d²y/dx² = d/dx(dy/dx) = y₂ = f ''(x)",
+          "s": "Leibniz notation",
+          "p": 49
+        },
+        {
+          "n": "Parametric second derivative",
+          "f": "d²y/dx² = [d/dt(dy/dx)]/(dx/dt)",
+          "s": "not (d²y/dt²)/(d²x/dt²)",
+          "p": 52
+        }
+      ]
+    },
+    {
+      "stop": "s12",
+      "items": [
+        {
+          "n": "Power",
+          "f": "dⁿ/dxⁿ (ax + b)^{m} = m(m − 1)...(m − n + 1)aⁿ(ax + b)^{m−n}",
+          "s": "when m = n the nth derivative is the constant n!·aⁿ",
+          "p": 56
+        },
+        {
+          "n": "Reciprocal",
+          "f": "dⁿ/dxⁿ 1/(ax + b) = (−1)ⁿ n! aⁿ/(ax + b)^{n+1}",
+          "s": "",
+          "p": 57
+        },
+        {
+          "n": "Logarithm",
+          "f": "dⁿ/dxⁿ log(ax + b) = (−1)^{n−1}(n − 1)! aⁿ/(ax + b)ⁿ",
+          "s": "log x: (−1)^{n−1}(n − 1)!/xⁿ",
+          "p": 57
+        },
+        {
+          "n": "Sine and cosine",
+          "f": "dⁿ/dxⁿ sin(ax + b) = aⁿ sin(ax + b + nπ/2); cos likewise",
+          "s": "",
+          "p": 58
+        },
+        {
+          "n": "Exponential",
+          "f": "dⁿ/dxⁿ e^{ax+b} = aⁿ e^{ax+b}; dⁿ/dxⁿ a^{px+q} = (p log a)ⁿ a^{px+q}",
+          "s": "",
+          "p": 59
+        }
+      ]
+    }
+  ]
+}

@@ -70,7 +70,7 @@
       "id": "maths2",
       "title": "Maths II",
       "chapters": [
-        { "id": "ch01", "number": 1, "title": "Differentiation", "estStops": 12 },
+        { "id": "ch01", "number": 1, "title": "Differentiation", "file": "content/maths2/ch01-differentiation.json" },
         { "id": "ch02", "number": 2, "title": "Applications of Derivatives", "estStops": 12 },
         { "id": "ch03", "number": 3, "title": "Indefinite Integration", "estStops": 12 },
         { "id": "ch04", "number": 4, "title": "Definite Integration", "estStops": 10 },
