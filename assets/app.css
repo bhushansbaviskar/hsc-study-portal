@@ -47,11 +47,19 @@ html[data-theme="focus"] .topbar { border-bottom: 1px solid var(--line); }
 .xp { flex: none; display: inline-flex; align-items: center; gap: 4px; background: #EEEDFE; color: #3C3489;
   font-weight: 700; font-size: 14px; padding: 6px 12px; border-radius: 99px; min-height: 32px; }
 html[data-theme="focus"] .xp { background: transparent; border: 1px solid var(--line); color: var(--ink); }
-.themebar { max-width: 760px; margin: 0 auto; padding: 8px 16px 0; }
+.themebar { max-width: 760px; margin: 0 auto; padding: 8px 16px 0; display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
 .seg { display: inline-flex; border: 1px solid var(--line); background: var(--card); border-radius: 12px; padding: 3px; gap: 3px; }
 .seg button { min-height: 44px; padding: 0 16px; border: 0; border-radius: 9px; background: transparent; color: var(--muted); font-weight: 600; font-size: 14px; cursor: pointer; }
 .seg button[aria-pressed="true"] { background: var(--purple-soft); color: var(--purple-ink); }
 html[data-theme="focus"] .seg button[aria-pressed="true"] { background: var(--amber-soft); color: var(--amber-ink); }
+.sync-pill { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 12px; border-radius: 12px; border: 1px solid var(--line); background: var(--card); color: var(--muted); font-size: 13.5px; font-weight: 600; text-decoration: none; white-space: nowrap; }
+.sync-pill .sdot { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); flex: none; }
+.sync-pill[data-sync="synced"] { color: var(--green-ink); border-color: var(--green); background: var(--green-soft); }
+.sync-pill[data-sync="synced"] .sdot { background: var(--green); }
+.sync-pill[data-sync="syncing"] { color: var(--purple-ink); border-color: var(--purple); background: var(--purple-soft); }
+.sync-pill[data-sync="syncing"] .sdot { background: var(--purple); }
+.sync-pill[data-sync="offline"], .sync-pill[data-sync="error"] { color: var(--amber-ink); border-color: var(--amber); background: var(--amber-soft); }
+.sync-pill[data-sync="offline"] .sdot, .sync-pill[data-sync="error"] .sdot { background: var(--amber); }
 
 main { max-width: 760px; margin: 0 auto; padding: 12px 16px calc(96px + env(safe-area-inset-bottom)); }
 
@@ -351,12 +359,32 @@ html[data-theme="focus"] .ptick, html[data-theme="focus"] .mk { padding: 8px 10p
 html[data-theme="focus"] .rinst { margin: 8px 0; padding: 6px 10px; }
 html[data-theme="focus"] .round-card { border-color: var(--amber); border-width: 2px; }
 
+/* ---- sync & teacher view ---- */
+.field { margin-bottom: 12px; }
+.field label { display: block; font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+.fin { display: block; width: 100%; min-height: 48px; padding: 8px 12px; font: inherit; font-size: 15px;
+  color: var(--ink); background: var(--bg); border: 2px solid var(--line); border-radius: 12px; }
+.fin:focus { outline: none; border-color: var(--purple); }
+.pw-row { display: flex; gap: 8px; align-items: center; }
+.pw-row .fin { flex: 1; min-width: 0; }
+.t-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.t-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 12px; }
+.t-kpi { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 12px; }
+.t-kpi b { display: block; font-size: 24px; line-height: 1.2; color: var(--purple); }
+.t-kpi span { font-size: 13px; color: var(--muted); }
+.t-list { list-style: none; margin: 6px 0 0; padding: 0; }
+.t-list li { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; padding: 6px 0; border-top: 1px solid var(--line); font-size: 14.5px; }
+.t-list li:first-child { border-top: 0; }
+.t-notes summary { min-height: 44px; display: flex; align-items: center; cursor: pointer; font-weight: 600; color: var(--purple); }
+html[data-theme="focus"] .t-notes summary { color: var(--amber); }
+
 @media (min-width: 700px) {
   .card { padding: 20px; }
   html[data-theme="focus"] .card { padding: 14px 18px; }
   .stat b { font-size: 28px; }
   .zrow, .rrow { height: 104px; }
   .tile { min-height: 84px; }
+  .t-grid { grid-template-columns: repeat(4, 1fr); }
 }
 @media (max-width: 380px) {
   .mk-grid { grid-template-columns: 1fr; }

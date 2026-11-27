@@ -17,10 +17,14 @@
   var backEl = document.getElementById("back");
   var xpEl = document.getElementById("xp");
   var dueEl = document.getElementById("due-badge");
+  var syncPillEl = document.getElementById("sync-pill");
+  var syncLabelEl = document.getElementById("sync-label");
+  var SYNC = window.HSCSync || null;
   var catalog = null, CH = null;
   var redraw = null;               // re-renders the interactive view currently on screen
   var Q = null, R = null, D = null; // quest, review and drill sessions (in memory)
   var revealed = {};               // board answers shown this session
+  var TState = { loading: false, error: "", data: null, checkedAt: 0 };
 
   /* ---------- icons ---------- */
   var ICON = {
@@ -36,9 +40,21 @@
 
   /* ---------- storage (never throws) ---------- */
   var mem = null;
-  function blank() { return { v: 2, done: {}, xp: 0, quest: {}, bank: {}, notes: {}, board: {}, theme: "quest", qp: {}, drill: {}, planStart: "", round: blankRound() }; }
-  function blankRound() { return { modes: {}, complete: false, bestFull: 0, run: null, last: null }; }
+  function blank() { return { v: 2, done: {}, xp: 0, quest: {}, bank: {}, bankDel: {}, notes: {}, noteAt: {}, board: {}, boardAt: {}, theme: "quest", qp: {}, qpDel: {}, drill: {}, planStart: "", round: blankRound(), updatedAt: 0 }; }
+  function blankRound() { return { modes: {}, complete: false, bestFull: 0, run: null, runDel: 0, last: null }; }
   function isObj(x) { return x && typeof x === "object" && !Array.isArray(x); }
+  function normalizeState(s) {
+    if (!isObj(s)) s = blank();
+    var b = blank();
+    for (var k in b) if (s[k] == null || typeof s[k] !== typeof b[k]) s[k] = b[k];
+    if (s.theme !== "quest" && s.theme !== "focus") s.theme = "quest";
+    s.v = 2;
+    if (!isObj(s.round)) s.round = blankRound();
+    var rd = s.round, rb = blankRound();
+    for (var rk in rb) if (rd[rk] === undefined || (rb[rk] !== null && typeof rd[rk] !== typeof rb[rk]) || (rb[rk] === null && rd[rk] !== null && !isObj(rd[rk]))) rd[rk] = rb[rk];
+    if (!isObj(rd.modes)) rd.modes = {};
+    return s;
+  }
   function load() {
     if (mem) return mem;
     var s = null, fresh = false;
@@ -50,21 +66,17 @@
       if (isObj(old) && isObj(old.done)) s.done = old.done;   // migrate v1 progress
       fresh = true;
     }
-    var b = blank();
-    for (var k in b) if (s[k] == null || typeof s[k] !== typeof b[k]) s[k] = b[k];
-    if (s.theme !== "quest" && s.theme !== "focus") s.theme = "quest";
-    s.v = 2;
-    if (!isObj(s.round)) s.round = blankRound();
-    var rd = s.round, rb = blankRound();
-    for (var rk in rb) if (rd[rk] === undefined || (rb[rk] !== null && typeof rd[rk] !== typeof rb[rk]) || (rb[rk] === null && rd[rk] !== null && !isObj(rd[rk]))) rd[rk] = rb[rk];
-    if (!isObj(rd.modes)) rd.modes = {};
+    s = normalizeState(s);
     if (!s.planStart) { s.planStart = today(); fresh = true; }   // plan clock starts the first time the app runs
     mem = s;
-    if (fresh) save();
+    if (fresh) save({ silentSync: true });
     return mem;
   }
-  function save() {
+  function save(opts) {
+    opts = opts || {};
+    if (!opts.fromRemote && mem) mem.updatedAt = Date.now();
     try { localStorage.setItem(STORE_KEY, JSON.stringify(mem)); } catch (e) { /* keep in memory only */ }
+    if (SYNC && !opts.fromRemote) SYNC.onLocalSave(opts);
   }
 
   /* ---------- helpers ---------- */
@@ -90,18 +102,29 @@
   }
   function addDays(s, n) { var d = parseDate(s); d.setDate(d.getDate() + n); return fmtDate(d); }
   function niceDate(s) { var d = parseDate(s); return d.getDate() + " " + MONTHS[d.getMonth()] + " " + d.getFullYear(); }
+  function relTime(ms) {
+    if (!ms) return "Never";
+    var sec = Math.max(0, Math.round((Date.now() - ms) / 1000));
+    if (sec < 45) return "just now";
+    var min = Math.round(sec / 60);
+    if (min < 60) return min + " min ago";
+    var hr = Math.round(min / 60);
+    if (hr < 24) return hr + " hr ago";
+    var d = new Date(ms);
+    return d.getDate() + " " + MONTHS[d.getMonth()] + ", " + pad(d.getHours()) + ":" + pad(d.getMinutes());
+  }
   function daysLeft(dateStr) {
     return Math.max(0, Math.round((parseDate(dateStr) - parseDate(today())) / 86400000));
   }
   function K(stopId) { return SUBJ + "/" + CHID + "/" + stopId; }
-  function isDone(stopId) { return !!load().done[K(stopId)]; }
-  function doneToday() {
-    var t = today(), n = 0, d = load().done;
+  function isDone(stopId, st) { return !!((st || load()).done[K(stopId)]); }
+  function doneToday(st) {
+    var t = today(), n = 0, d = (st || load()).done;
     for (var k in d) if (d[k] === t) n++;
     return n;
   }
-  function streak() {
-    var days = {}, d = load().done;
+  function streak(st) {
+    var days = {}, d = (st || load()).done;
     for (var k in d) days[d[k]] = true;
     var cur = today(), n = 0;
     if (!days[cur]) cur = addDays(cur, -1);          // streak stays alive until the end of today
@@ -116,15 +139,15 @@
   }
   function stopIndex(id) { for (var i = 0; i < CH.stops.length; i++) if (CH.stops[i].id === id) return i; return -1; }
   function stopById(id) { var i = stopIndex(id); return i < 0 ? null : CH.stops[i]; }
-  function chapterProgress() {
-    var done = CH.stops.filter(function (s) { return isDone(s.id); }).length;
+  function chapterProgress(st) {
+    var done = CH.stops.filter(function (s) { return isDone(s.id, st); }).length;
     return { done: done, total: CH.stops.length, pct: Math.round(100 * done / CH.stops.length) };
   }
   function pdfOf(p) { return String(p).replace(/\d+/g, function (n) { return +n + (CH.pdfPageOffset || 10); }); }
   function bookChip(bookId, page, label, cls) {
     var b = catalog.books[bookId];
     var pdf = pdfOf(page);
-    return '<a class="chip ' + (cls || "") + '" href="' + esc(b.driveUrl) + '" target="_blank" rel="noopener" ' +
+    return '<a class="chip ' + (cls || "") + '" href="' + esc(b.driveUrl) + '" target="_blank" rel="noopener noreferrer" ' +
       'title="Opens the PDF in Google Drive. Go to PDF page ' + esc(pdf) + '.">' +
       esc(label || b.label) + " · p. " + esc(page) + " (PDF " + esc(pdf) + ")</a>";
   }
@@ -140,16 +163,18 @@
 
   /* ---------- plan worked back from the exam ---------- */
   function dayDiff(a, b) { return Math.round((parseDate(b) - parseDate(a)) / 86400000); }
-  function planInfo() {
-    var total = 0, st = load(), t = today();
+  function planInfo(st) {
+    var total = 0, t = today();
+    st = st || load();
     catalog.subjects.forEach(function (sub) {
       sub.chapters.forEach(function (c) {
         total += (sub.id === SUBJ && c.id === CHID) ? CH.stops.length : (c.estStops || PLAN_DEFAULT_STOPS);
       });
     });
     var done = Object.keys(st.done).length, left = Math.max(0, total - done);
-    var span = Math.max(1, dayDiff(st.planStart, catalog.planEnd));
-    var since = Math.min(span, Math.max(0, dayDiff(st.planStart, t)));
+    var pStart = /^\d{4}-\d{2}-\d{2}$/.test(st.planStart || "") ? st.planStart : t;
+    var span = Math.max(1, dayDiff(pStart, catalog.planEnd));
+    var since = Math.min(span, Math.max(0, dayDiff(pStart, t)));
     var daysLeft = Math.max(0, dayDiff(t, catalog.planEnd));
     var pace = Math.max(1, Math.ceil(left / Math.max(1, daysLeft)));
     var expected = total * since / span, diff = done - expected;
@@ -165,22 +190,23 @@
   }
 
   /* ---------- predicted board marks ---------- */
-  function drillClean(id) { var r = load().drill[id]; return !!(r && r.clean); }
-  function stopMastery(s) {
+  function drillClean(id, st) { var r = (st || load()).drill[id]; return !!(r && r.clean); }
+  function stopMastery(s, st) {
     // Average of the parts that apply to this stop: quest always; board questions and
     // derivations only if the stop has them. Nothing is credited before it is done.
-    var st = load(), parts = [isDone(s.id) ? 1 : 0];
+    st = st || load();
+    var parts = [isDone(s.id, st) ? 1 : 0];
     var bq = boardFor(s.id);
     if (bq.length) parts.push(bq.filter(function (b) { return st.board[b.id] === "got"; }).length / bq.length);
     var ds = CH.derivations.filter(function (d) { return d.stop === s.id; });
-    if (ds.length) parts.push(ds.filter(function (d) { return drillClean(d.id); }).length / ds.length);
+    if (ds.length) parts.push(ds.filter(function (d) { return drillClean(d.id, st); }).length / ds.length);
     return parts.reduce(function (a, b) { return a + b; }, 0) / parts.length;
   }
   function stopWeight(s) { return 1 + askedCount(s.id); }
-  function gaugeData() {
+  function gaugeData(st) {
     var em = CH.examMarks || { avg: 0, basis: "" }, tw = 0, sw = 0;
     var rows = CH.stops.map(function (s, i) {
-      var w = stopWeight(s), m = stopMastery(s);
+      var w = stopWeight(s), m = stopMastery(s, st);
       tw += w; sw += w * m;
       return { s: s, i: i, w: w, m: m };
     });
@@ -190,9 +216,9 @@
       .sort(function (a, b) { return b.gain - a.gain || a.i - b.i; }).slice(0, 2);
     return { avg: em.avg, basis: em.basis, M: M, pred: Math.round(em.avg * M * 2) / 2, top: top };
   }
-  function gaugeHTML() {
+  function gaugeHTML(st) {
     if (!CH.examMarks) return "";
-    var g = gaugeData(), pct = Math.round(g.M * 1000) / 10;
+    var g = gaugeData(st), pct = Math.round(g.M * 1000) / 10;
     var line = "About " + g.pred + " of ~" + Math.round(g.avg) + " marks secured";
     var gain = g.top.length ? '<p class="small gain">Biggest gain next: <b>' + g.top.map(function (r) { return esc(r.s.title); }).join(", then ") + "</b></p>" : "";
     var how = '<details class="how"><summary>How this is worked out</summary><p class="small">An estimate based on past papers: the average marks this chapter carried (' + esc(g.basis) +
@@ -256,41 +282,44 @@
   /* ---------- mistake bank (spaced review) ---------- */
   var REASON = { "guessed": "Guessed", "confident mistake": "Confident mistake", "missed": "Missed", "need practice": "Need practice", "slip": "Slip", "below full marks": "Below full marks" };
   function bankAdd(id, reason) {
-    var b = load().bank, old = b[id];
+    var st = load(), b = st.bank, old = b[id];
     if (reason === "guessed" && old) return false;   // already in the bank: leave its schedule alone
     var keep = old && old.prio && reason !== "confident mistake";
     b[id] = { due: addDays(today(), 1), streak: 0, added: old ? old.added : today(),
-      reason: keep ? old.reason : (reason || "missed"), prio: reason === "confident mistake" || !!keep };
+      reason: keep ? old.reason : (reason || "missed"), prio: reason === "confident mistake" || !!keep, updatedAt: Date.now() };
+    delete st.bankDel[id];
     save(); updateChrome();
     return true;
   }
-  function reasonTag(id) {
-    var it = load().bank[id];
+  function reasonTag(id, st) {
+    var it = (st || load()).bank[id];
     if (!it) return "";
     var r = it.reason || "missed";
     return '<span class="tag rtag' + (it.prio ? " prio" : "") + '">' + esc(REASON[r] || r) + (it.prio ? " · priority" : "") + "</span>";
   }
   function bankReview(id, ok) {
-    var b = load().bank, it = b[id];
+    var st = load(), b = st.bank, it = b[id];
     if (!it) return;
+    var now = Date.now();
     if (ok) {
       it.prio = false;
       it.streak = (it.streak || 0) + 1;
-      if (it.streak >= 2) delete b[id]; else it.due = addDays(today(), 2);
-    } else { it.streak = 0; it.due = addDays(today(), 1); }
+      if (it.streak >= 2) { delete b[id]; st.bankDel[id] = now; }
+      else { it.due = addDays(today(), 2); it.updatedAt = now; }
+    } else { it.streak = 0; it.due = addDays(today(), 1); it.updatedAt = now; }
     save(); updateChrome();
   }
-  function bankIds() { return Object.keys(load().bank); }
-  function dueIds() {
-    var t = today(), b = load().bank;
-    return bankIds().filter(function (id) { return b[id].due <= t; })
+  function bankIds(st) { return Object.keys((st || load()).bank); }
+  function dueIds(st) {
+    var t = today(), b = (st || load()).bank;
+    return Object.keys(b).filter(function (id) { return b[id] && b[id].due <= t; })
       .sort(function (x, y) {
         if (!!b[x].prio !== !!b[y].prio) return b[x].prio ? -1 : 1;   // confident mistakes first
         return b[x].due < b[y].due ? -1 : b[x].due > b[y].due ? 1 : (x < y ? -1 : 1);
       });
   }
-  function nextDueDate() {
-    var b = load().bank, ids = bankIds();
+  function nextDueDate(st) {
+    var b = (st || load()).bank, ids = Object.keys(b);
     if (!ids.length) return null;
     return ids.map(function (i) { return b[i].due; }).sort()[0];
   }
@@ -320,11 +349,34 @@
       else links[i].removeAttribute("aria-current");
     }
   }
+  function updateSyncPill() {
+    if (!syncPillEl || !syncLabelEl || !SYNC) return;
+    var st = SYNC.getStatus();
+    if (!st.linked) {
+      syncPillEl.removeAttribute("data-sync");
+      syncLabelEl.textContent = "Sync";
+      return;
+    }
+    if (st.syncing) {
+      syncPillEl.setAttribute("data-sync", "syncing");
+      syncLabelEl.textContent = "Syncing…";
+    } else if (st.state === "offline") {
+      syncPillEl.setAttribute("data-sync", "offline");
+      syncLabelEl.textContent = "Offline";
+    } else if (st.state === "error") {
+      syncPillEl.setAttribute("data-sync", "error");
+      syncLabelEl.textContent = "Sync issue";
+    } else {
+      syncPillEl.setAttribute("data-sync", "synced");
+      syncLabelEl.textContent = st.dirty ? "Saving…" : "Synced";
+    }
+  }
   function updateChrome() {
     xpEl.innerHTML = ICON.bolt + " " + load().xp + " XP";
     var n = 0;
     try { n = CH ? dueIds().filter(itemExists).length : 0; } catch (e) { n = 0; }
     if (n > 0) { dueEl.hidden = false; dueEl.textContent = n; dueEl.setAttribute("aria-label", n + " due"); } else dueEl.hidden = true;
+    updateSyncPill();
   }
   function applyTheme() {
     var t = load().theme;
@@ -445,24 +497,26 @@
   }
 
   /* ---------- notes box helpers ---------- */
+  function noteSyncCopy() { return SYNC && SYNC.isLinked() ? "Synced across your devices" : "Saved on this device only"; }
   function noteBox(stopId) {
     var v = load().notes[K(stopId)] || "";
-    return '<div class="card"><h2>My notes</h2><label class="small muted" for="note">Saved on this device only</label>' +
+    return '<div class="card"><h2>My notes</h2><label class="small muted" for="note">' + noteSyncCopy() + '</label>' +
       '<textarea id="note" class="note-ta" data-stop="' + esc(stopId) + '" rows="5" placeholder="Write your own reminders, tricks or doubts for this stop">' + esc(v) + "</textarea>" +
       '<div class="note-foot"><span id="saved" class="saved" aria-live="polite"></span><a href="#/notes">All my notes</a></div></div>';
   }
   var noteTimer = null, noteDirty = null;
-  function flushNote() {
+  function flushNote(immediate) {
     if (noteTimer) { clearTimeout(noteTimer); noteTimer = null; }
-    if (noteDirty) { save(); noteDirty = null; var el = document.getElementById("saved"); if (el) el.textContent = "Saved"; }
+    if (noteDirty) { save({ immediate: !!immediate }); noteDirty = null; var el = document.getElementById("saved"); if (el) el.textContent = "Saved"; }
   }
   function onNoteInput(ta) {
     var st = load(), k = K(ta.getAttribute("data-stop")), v = ta.value;
     if (v.trim()) st.notes[k] = v; else delete st.notes[k];
+    st.noteAt[k] = Date.now();
     noteDirty = k;
     var el = document.getElementById("saved"); if (el) el.textContent = "Saving…";
     if (noteTimer) clearTimeout(noteTimer);
-    noteTimer = setTimeout(flushNote, 350);
+    noteTimer = setTimeout(function () { flushNote(false); }, 350);
   }
 
   /* ---------- board question card ---------- */
@@ -605,7 +659,7 @@
   function questStart(stopId, fresh) {
     var s = stopById(stopId);
     if (!s) return errorView("That stop doesn't exist.");
-    if (fresh) { delete load().qp[K(s.id)]; save(); }
+    if (fresh) { var st = load(); delete st.qp[K(s.id)]; st.qpDel[K(s.id)] = Date.now(); save(); }
     Q = (fresh ? null : restoreQuest(s)) || { stop: s, phase: "cards", ci: 0, ki: 0, ce: null, results: [], xp: 0, added: 0 };
     redraw = questRender; questRender();
   }
@@ -662,7 +716,8 @@
       st.quest[key] = rec;
       if (score >= PASS_MARK && !st.done[key]) st.done[key] = today();
       delete st.qp[key];
-      save(); updateChrome();
+      st.qpDel[key] = Date.now();
+      save({ immediate: true }); updateChrome();
       Q.phase = "result";
     }
     saveQuest();
@@ -723,27 +778,27 @@
     if (!isObj(m.last)) return '<span class="rscores">Not tried yet</span>';
     return '<span class="rscores">Best <b>' + (isObj(m.best) ? m.best.pct : m.last.pct) + '%</b> · Last <b>' + m.last.pct + "%</b></span>";
   }
-  function roundComplete() { return !!RS().complete; }
-  function badgeText() { return "Chapter " + CH.number + " complete · best board round " + RS().bestFull + "%"; }
-  function badgeHTML(where) {
-    return roundComplete() ? '<span class="cbadge" data-badge="' + where + '">' + ICON.trophy.replace('width="28" height="28"', 'width="16" height="16"') + " " + esc(badgeText()) + "</span>" : "";
+  function roundComplete(st) { return !!((st ? st.round : RS()).complete); }
+  function badgeText(st) { var r = st ? st.round : RS(); return "Chapter " + CH.number + " complete · best board round " + r.bestFull + "%"; }
+  function badgeHTML(where, st) {
+    return roundComplete(st) ? '<span class="cbadge" data-badge="' + where + '">' + ICON.trophy.replace('width="28" height="28"', 'width="16" height="16"') + " " + esc(badgeText(st)) + "</span>" : "";
   }
 
   /* clock: elapsed is counted from timestamps, so it stays right if the tab sleeps */
   function runElapsed(r) { return r.elapsed + (r.since ? nowMs() - r.since : 0); }
   function rebase(r) { if (r.since) { r.elapsed = runElapsed(r); r.since = nowMs(); } }
-  function saveRound() {
+  function saveRound(silent) {
     var run = RD && RD.phase === "run" ? RD.run : null;
     if (!run) return;
     rebase(run); run.at = Date.now();
-    RS().run = run; save();
+    RS().run = run; save(silent ? { silentSync: true } : {});
   }
   function roundRestore() {
     var rs = RS(), r = rs.run;
     if (!r) return null;
     var ok = isObj(r) && validMode(r.mode) && Array.isArray(r.ids) && r.ids.length && r.ids.every(function (id) { return !!getBoard(id); }) &&
       typeof r.i === "number" && r.i >= 0 && r.i < r.ids.length && Array.isArray(r.results) && r.results.length === r.i;
-    if (!ok) { rs.run = null; save(); return null; }
+    if (!ok) { rs.run = null; rs.runDel = Date.now(); save(); return null; }
     var q = getBoard(r.ids[r.i]), np = qPoints(q).length;
     if (!Array.isArray(r.ticks)) r.ticks = [];
     r.ticks = r.ticks.slice(0, np).map(function (x) { return !!x; });
@@ -757,7 +812,7 @@
   function roundLeave() {
     if (rTimer) { clearInterval(rTimer); rTimer = null; }
     var run = RD && RD.phase === "run" ? RD.run : null;
-    if (run && run.since) { rebase(run); run.since = 0; saveRound(); }   // leaving the page pauses the mock clock
+    if (run && run.since) { rebase(run); run.since = 0; saveRound(false); }   // leaving the page pauses the mock clock
   }
   function roundTick() {
     var run = RD && RD.phase === "run" ? RD.run : null;
@@ -766,9 +821,9 @@
       var el = runElapsed(run);
       if (el >= run.limit * 1000) {
         run.elapsed = run.limit * 1000; run.since = 0; run.timeUp = true;
-        saveRound(); roundRender(false); return;
+        saveRound(false); roundRender(false); return;
       }
-      saveRound();
+      saveRound(true);
     }
     var c = document.getElementById("rclock");
     if (c) c.textContent = fmtClock(Math.ceil((run.limit * 1000 - runElapsed(run)) / 1000));
@@ -783,7 +838,7 @@
       elapsed: 0, since: 0, at: Date.now() };
     if (mode === "mock") { run.limit = totalMarks(ids) * MIN_PER_MARK; run.timeUp = false; run.since = nowMs(); }
     RD = { run: run, phase: "run" };
-    saveRound();
+    saveRound(false);
     if (location.hash === BASE + "/round/run") route(false); else location.hash = BASE + "/round/run";
   }
   function roundNext() {
@@ -791,21 +846,22 @@
     pts.forEach(function (x, k) { if (run.ticks[k]) got += +x.marks || 0; });
     run.results.push({ id: q.id, got: got, of: q.marks }); run.resumed = false;
     var st = load();
+    st.boardAt[q.id] = Date.now();
     if (got >= q.marks) { st.board[q.id] = "got"; save(); }
     else { st.board[q.id] = "practice"; bankAdd("b|" + CHID + "|" + q.id, "below full marks"); }
     if (run.i < run.ids.length - 1) {
       run.i++; run.rev = false; run.ticks = qPoints(getBoard(run.ids[run.i])).map(function () { return false; });
-      saveRound(); roundRender(true);
+      saveRound(false); roundRender(true);
     } else roundFinish();
   }
   function roundFinish() {
-    var run = RD.run, rs = RS(), got = 0, of = 0;
+    var run = RD.run, rs = RS(), got = 0, of = 0, now = Date.now();
     run.results.forEach(function (r) { got += r.got; of += r.of; });
     rebase(run);
-    var rec = { mode: run.mode, ids: run.ids, results: run.results, got: got, of: of, pct: pctOf(got, of), date: today(), newlyComplete: false };
+    var rec = { mode: run.mode, ids: run.ids, results: run.results, got: got, of: of, pct: pctOf(got, of), date: today(), at: now, newlyComplete: false };
     if (run.limit) { rec.secs = Math.min(Math.round(run.elapsed / 1000), run.limit); rec.limit = run.limit; rec.timeUp = !!run.timeUp; }
     var m = isObj(rs.modes[run.mode]) ? rs.modes[run.mode] : (rs.modes[run.mode] = {});
-    m.last = { got: got, of: of, pct: rec.pct, date: rec.date };
+    m.last = { got: got, of: of, pct: rec.pct, date: rec.date, at: now };
     if (!isObj(m.best) || rec.pct > m.best.pct) m.best = { got: got, of: of, pct: rec.pct, date: rec.date };
     var full = run.ids.length === CH.board.length && (run.mode === "most" || run.mode === "mock");
     if (full) {
@@ -813,7 +869,7 @@
       if (got * 100 >= PASS_PCT * of) { if (!rs.complete) rec.newlyComplete = true; rs.complete = true; }
     }
     rec.full = full;
-    rs.last = rec; rs.run = null; save(); updateChrome();
+    rs.last = rec; rs.run = null; rs.runDel = now; save({ immediate: true }); updateChrome();
     RD = { run: null, phase: "result", rec: rec };
     roundRender(true);
   }
@@ -1138,9 +1194,9 @@
     var st = load(), any = CH.stops.filter(function (s) { return st.notes[K(s.id)] && st.notes[K(s.id)].trim(); });
     var h = "";
     if (!any.length) {
-      h = '<div class="card center"><h2>No notes yet</h2><p class="muted">Open any stop and write in the notes box. Notes are saved on this device only.</p><a class="btn primary" href="' + BASE + '">Go to the map</a></div>';
+      h = '<div class="card center"><h2>No notes yet</h2><p class="muted">Open any stop and write in the notes box. ' + noteSyncCopy() + '.</p><a class="btn primary" href="' + BASE + '">Go to the map</a></div>';
     } else {
-      h += '<div class="card"><p class="muted small">Saved on this device only. Nothing is uploaded.</p><div class="actions two"><button type="button" class="btn primary" data-act="notes-copy">Copy all</button><button type="button" class="btn ghost" data-act="notes-dl">Download .txt</button></div><p id="notes-msg" class="small muted" role="status"></p></div>';
+      h += '<div class="card"><p class="muted small">' + (SYNC && SYNC.isLinked() ? "Synced across your devices." : "Saved on this device only. Nothing is uploaded.") + '</p><div class="actions two"><button type="button" class="btn primary" data-act="notes-copy">Copy all</button><button type="button" class="btn ghost" data-act="notes-dl">Download .txt</button></div><p id="notes-msg" class="small muted" role="status"></p></div>';
       h += any.map(function (s) {
         return '<div class="card"><h2><a href="' + BASE + "/" + s.id + '">' + (stopIndex(s.id) + 1) + ". " + esc(s.title) + "</a></h2><p class=\"note-text\">" + esc(st.notes[K(s.id)].trim()) + "</p></div>";
       }).join("");
@@ -1170,6 +1226,167 @@
     } catch (e) { return false; }
   }
 
+  /* ---------- sync page (#/sync) ---------- */
+  var syncMsg = "";
+  function syncView() {
+    setHeader("Sync across devices", "#/", {});
+    if (!SYNC) {
+      app.innerHTML = '<div class="card"><p class="muted">Sync module is not loaded.</p></div>';
+      return;
+    }
+    var st = SYNC.getStatus(), c = SYNC.getConfig();
+    var notice = syncMsg || st.notice || "";
+    var h = "";
+    if (st.linked) {
+      var pillCls = st.state === "error" || st.state === "offline" ? "amber" : "ok";
+      var pillTxt = st.syncing ? "Syncing…" : st.state === "offline" ? "Offline" : st.state === "error" ? "Needs attention" : st.dirty ? "Unsynced changes" : "Synced";
+      h += '<div class="card"><div class="row"><div class="grow"><h2>' + esc(st.studentName || "Student") + '</h2><p class="small muted">Last synced: ' + esc(relTime(st.lastSync)) + (st.rev ? " · rev " + st.rev : "") + '</p></div><span class="pill ' + pillCls + '">' + esc(pillTxt) + "</span></div>";
+      if (st.error) h += '<div class="fb bad" role="alert">' + esc(st.error) + "</div>";
+      if (notice) h += '<p class="small muted" role="status" style="margin-top:8px">' + esc(notice) + "</p>";
+      h += '<div class="stack" style="margin-top:12px">' +
+        '<button type="button" class="btn primary block" data-act="sync-now"' + (st.syncing ? " disabled" : "") + '>' + (st.syncing ? "Syncing…" : "Sync now") + "</button>" +
+        '<button type="button" class="btn ghost block" data-act="sync-copy-link">Copy setup link for another device</button>' +
+        '<button type="button" class="btn ghost block" data-act="sync-unlink">Unlink this device</button></div>' +
+        '<p class="note">Unlinking only disconnects sync. Your progress stays saved on this device.</p></div>';
+    } else {
+      h += '<div class="card"><h2>Link this device</h2><p class="small muted">Sync your progress, notes, mistake bank, and board rounds between phone and tablet using your private Google Drive sync link. Your existing progress on this device will be kept.</p>';
+      if (st.error) h += '<div class="fb bad" role="alert">' + esc(st.error) + "</div>";
+      if (notice) h += '<p class="small warn-t" role="status">' + esc(notice) + "</p>";
+      h += '<div class="field" style="margin-top:12px"><label for="sync-url">Sync Web App URL</label><input id="sync-url" class="fin" type="url" autocomplete="off" spellcheck="false" placeholder="https://script.google.com/macros/s/.../exec" value="' + esc(c.url || "") + '"></div>' +
+        '<div class="field"><label for="sync-code">Student code</label><div class="pw-row"><input id="sync-code" class="fin" type="password" autocomplete="off" spellcheck="false" placeholder="Enter student code" value="' + esc(c.code || "") + '"><button type="button" class="btn ghost sm" data-act="pw-toggle" data-target="sync-code">Show</button></div></div>' +
+        '<button type="button" class="btn primary block" data-act="sync-save">Save &amp; Sync</button></div>';
+    }
+    h += '<div class="card"><div class="row"><div class="grow"><h2>Parent / Teacher view</h2><p class="small muted">Check live study progress, predicted marks, and mistake bank from your own device.</p></div><a class="btn ghost sm" href="#/teacher">Open</a></div></div>';
+    app.innerHTML = h;
+  }
+
+  /* ---------- teacher / parent view (#/teacher) ---------- */
+  function teacherFetch() {
+    if (!SYNC || !SYNC.hasTeacherConfig()) return teacherView();
+    TState.loading = true; TState.error = "";
+    teacherView();
+    SYNC.fetchTeacher().then(function (res) {
+      TState.loading = false;
+      TState.checkedAt = Date.now();
+      if (!res.ok) { TState.error = res.error || "Could not load student status."; }
+      else { TState.data = res; TState.error = ""; }
+      if (location.hash === "#/teacher") teacherView();
+    });
+  }
+  function teacherStudentHTML(entry) {
+    var name = entry.name || entry.id || "Student";
+    if (!entry.state) {
+      return '<div class="card"><h2>' + esc(name) + '</h2><p class="muted">No progress synced yet. Link the student\'s device first.</p></div>';
+    }
+    var st = normalizeState(entry.state);
+    var pl = planInfo(st), prog = chapterProgress(st), dt = doneToday(st), strk = streak(st), left = daysLeft(catalog.examDate);
+    var due = dueIds(st).filter(itemExists);
+    var prio = bankIds(st).filter(function (id) { return itemExists(id) && st.bank[id] && st.bank[id].prio; });
+    var cleanDrills = CH.derivations.filter(function (d) { return drillClean(d.id, st); }).length;
+    var planLabel = pl.status === "on" ? "On track" : pl.status === "ahead" ? "Ahead by " + pl.n : "Behind by " + pl.n;
+
+    var h = '<div class="card"><div class="t-head"><div class="grow"><h2>' + esc(name) + '</h2>' +
+      '<p class="small muted">Student last synced: <b>' + esc(relTime(entry.updatedAt)) + '</b>' + (entry.updatedAt ? " · " + esc(new Date(entry.updatedAt).toLocaleString()) : "") + "</p></div>" +
+      '<span class="pill plan-pill" data-plan="' + pl.status + '">' + esc(planLabel) + "</span></div></div>";
+
+    h += '<div class="t-grid">' +
+      '<div class="t-kpi"><b>' + Math.min(dt, pl.pace) + "/" + pl.pace + '</b><span>stops today</span></div>' +
+      '<div class="t-kpi"><b>' + strk + ' d</b><span>streak</span></div>' +
+      '<div class="t-kpi"><b>' + st.xp + '</b><span>XP</span></div>' +
+      '<div class="t-kpi"><b>' + left + ' d</b><span>to board exam</span></div></div>';
+
+    h += gaugeHTML(st);
+
+    h += '<div class="card"><h2>Chapter ' + CH.number + ": " + esc(CH.title) + '</h2>' +
+      '<div class="row"><div class="grow"><div class="bar"><i style="width:' + prog.pct + '%"></i></div></div><b>' + prog.done + "/" + prog.total + ' stops (' + prog.pct + "%)</b></div>" +
+      '<p class="small muted" style="margin-top:8px">Derivation drills clean: <b>' + cleanDrills + " of " + CH.derivations.length + "</b> · Board round best: <b>" + (st.round.bestFull ? st.round.bestFull + "%" : "Not tried") + "</b></p>" +
+      (roundComplete(st) ? '<div class="cb-row">' + badgeHTML("teacher", st) + "</div>" : "") +
+      (st.round.last ? '<p class="small muted" style="margin-top:6px">Last board round: ' + esc(MODE_NAME[st.round.last.mode] || st.round.last.mode) + " — <b>" + st.round.last.got + "/" + st.round.last.of + " (" + st.round.last.pct + "%)</b> on " + esc(niceDate(st.round.last.date)) + "</p>" : "");
+
+    var doneStops = CH.stops.filter(function (s) { return isDone(s.id, st); });
+    if (doneStops.length) {
+      h += '<details class="how"><summary>Completed stops (' + doneStops.length + ')</summary><ul class="t-list">' +
+        doneStops.map(function (s) {
+          return '<li><span>' + (stopIndex(s.id) + 1) + ". " + esc(s.title) + '</span><span class="small muted">' + esc(niceDate(st.done[K(s.id)])) + "</span></li>";
+        }).join("") + "</ul></details>";
+    }
+    h += "</div>";
+
+    h += '<div class="card"><h2>Mistake bank watchlist</h2><p class="small muted"><b>' + bankIds(st).filter(itemExists).length + "</b> items in bank · <b>" + due.length + "</b> due now · <b>" + prio.length + "</b> confident mistakes (priority)</p>";
+    if (prio.length) {
+      h += '<ul class="t-list">' + prio.slice(0, 8).map(function (id) {
+        return '<li><span>' + esc(trunc(itemLabel(id), 100)) + '</span>' + reasonTag(id, st) + "</li>";
+      }).join("") + "</ul>";
+    } else {
+      h += '<p class="small muted">No confident-mistake alerts right now.</p>';
+    }
+    h += "</div>";
+
+    var noted = CH.stops.filter(function (s) { return st.notes[K(s.id)] && st.notes[K(s.id)].trim(); });
+    if (noted.length) {
+      h += '<div class="card"><details class="t-notes"><summary>Student notes (' + noted.length + ' stops)</summary>' +
+        noted.map(function (s) {
+          return '<div style="margin-top:10px"><b>' + (stopIndex(s.id) + 1) + ". " + esc(s.title) + '</b><p class="note-text small muted">' + esc(st.notes[K(s.id)].trim()) + "</p></div>";
+        }).join("") + "</details></div>";
+    }
+    return h;
+  }
+  function teacherView() {
+    setHeader("Parent / Teacher view", "#/", {});
+    if (!SYNC) {
+      app.innerHTML = '<div class="card"><p class="muted">Sync module is not loaded.</p></div>';
+      return;
+    }
+    var c = SYNC.getConfig();
+    if (!SYNC.hasTeacherConfig()) {
+      var st = SYNC.getStatus();
+      var h = '<div class="card"><h2>Connect Parent / Teacher view</h2><p class="small muted">View live student progress from Google Drive without affecting your own device\'s study data.</p>';
+      if (TState.error || st.notice) h += '<div class="fb bad" role="alert">' + esc(TState.error || st.notice) + "</div>";
+      h += '<div class="field" style="margin-top:12px"><label for="t-url">Sync Web App URL</label><input id="t-url" class="fin" type="url" autocomplete="off" spellcheck="false" placeholder="https://script.google.com/macros/s/.../exec" value="' + esc(c.url || "") + '"></div>' +
+        '<div class="field"><label for="t-key">Teacher key</label><div class="pw-row"><input id="t-key" class="fin" type="password" autocomplete="off" spellcheck="false" placeholder="Enter teacher key"><button type="button" class="btn ghost sm" data-act="pw-toggle" data-target="t-key">Show</button></div></div>' +
+        '<button type="button" class="btn primary block" data-act="t-connect">Connect</button></div>';
+      app.innerHTML = h;
+      return;
+    }
+    var out = '<div class="card"><div class="t-head"><div class="grow"><h2>Live status</h2><p class="small muted">' +
+      (TState.loading ? "Checking Google Drive…" : TState.checkedAt ? "Checked " + esc(relTime(TState.checkedAt)) : "Ready") + '</p></div>' +
+      '<div class="row"><button type="button" class="btn primary sm" data-act="t-refresh"' + (TState.loading ? " disabled" : "") + '>Refresh</button>' +
+      '<button type="button" class="btn ghost sm" data-act="t-signout">Sign out</button></div></div>' +
+      (TState.error ? '<div class="fb bad" role="alert">' + esc(TState.error) + "</div>" : "") + "</div>";
+
+    if (TState.data && Array.isArray(TState.data.students)) {
+      if (!TState.data.students.length) {
+        out += '<div class="card center"><p class="muted">No students configured in Apps Script yet.</p></div>';
+      } else {
+        out += TState.data.students.map(teacherStudentHTML).join("");
+      }
+    } else if (!TState.loading && !TState.error) {
+      out += '<div class="card center"><p class="muted">Tap Refresh to load the latest student status.</p></div>';
+    }
+    app.innerHTML = out;
+  }
+
+  /* ---------- apply merged remote state safely ---------- */
+  function applyRemoteState(merged) {
+    var prevRound = mem ? JSON.stringify(mem.round) : "";
+    mem = normalizeState(merged);
+    save({ fromRemote: true });
+    if (RD && JSON.stringify(mem.round) !== prevRound) {
+      if (rTimer) { clearInterval(rTimer); rTimer = null; }
+      RD = null;
+    }
+    updateChrome();
+    // Never clobber an active note textarea or sync/teacher form inputs
+    var ae = document.activeElement;
+    var editingInput = ae && (ae.id === "note" || ae.tagName === "INPUT" || ae.tagName === "TEXTAREA");
+    var hash = location.hash || "#/";
+    if (!editingInput && hash !== "#/sync" && hash !== "#/teacher") {
+      route(true);
+    } else if (hash === "#/sync" && SYNC && SYNC.isLinked()) {
+      syncView();
+    }
+  }
+
   /* ---------- events ---------- */
   function dataI(t) { return +t.getAttribute("data-i"); }
   app.addEventListener("click", function (e) {
@@ -1185,7 +1402,7 @@
       case "q-replay": return questStart(Q.stop.id, true);
       case "q-over":
         var sid = t.getAttribute("data-stop") || Q.stop.id;
-        delete load().qp[K(sid)]; save();
+        var qst = load(); delete qst.qp[K(sid)]; qst.qpDel[K(sid)] = Date.now(); save();
         if (Q && Q.stop.id === sid && location.hash === BASE + "/" + sid + "/quest") return questStart(sid, true);
         location.hash = BASE + "/" + sid + "/quest"; return;
       case "ce-pick": ce = ctxCE(); if (ce && ce.status === "ask") { ce.sel = dataI(t); ce.msg = ""; if (ce.mode === "quest") saveQuest(); redraw(); } return;
@@ -1203,7 +1420,7 @@
             else if (ce.conf === "guess") { if (bankAdd(cid, "guessed")) Q.added++; ce.flag = "guessed"; }
           }
         } else if (!okNow && ce.conf === "sure" && load().bank[cid]) {
-          load().bank[cid].prio = true; load().bank[cid].reason = "confident mistake"; save();
+          load().bank[cid].prio = true; load().bank[cid].reason = "confident mistake"; load().bank[cid].updatedAt = Date.now(); save();
         }
         ceSubmit(ce);
         if (ce.mode === "quest") saveQuest();
@@ -1219,7 +1436,9 @@
         return;
       case "rate-got": case "rate-need":
         q = t.closest(".bq"); var id = q.getAttribute("data-q");
-        load().board[id] = act === "rate-got" ? "got" : "need";
+        var bst = load();
+        bst.board[id] = act === "rate-got" ? "got" : "need";
+        bst.boardAt[id] = Date.now();
         if (act === "rate-need") bankAdd("b|" + CHID + "|" + id, "need practice"); else save();
         q.outerHTML = boardCard(getBoard(id), location.hash.slice(-5) === "board");
         return;
@@ -1235,20 +1454,68 @@
         qPoints(rq).forEach(function (x, k) { if (R.ticks[k]) rg += +x.marks || 0; });
         return reviewAdvance(rg >= rq.marks);
       case "round-start": return roundStart(t.getAttribute("data-mode"));
-      case "round-reveal": RD.run.rev = true; saveRound(); return roundRender(false);
-      case "round-tick": RD.run.ticks[dataI(t)] = !RD.run.ticks[dataI(t)]; saveRound(); return roundRender(false);
+      case "round-reveal": RD.run.rev = true; saveRound(false); return roundRender(false);
+      case "round-tick": RD.run.ticks[dataI(t)] = !RD.run.ticks[dataI(t)]; saveRound(false); return roundRender(false);
       case "round-next": return roundNext();
-      case "round-pause": rebase(RD.run); RD.run.elapsed = runElapsed(RD.run); RD.run.since = 0; saveRound(); return roundRender(false);
-      case "round-resume": RD.run.since = nowMs(); saveRound(); return roundRender(false);
+      case "round-pause": rebase(RD.run); RD.run.elapsed = runElapsed(RD.run); RD.run.since = 0; saveRound(false); return roundRender(false);
+      case "round-resume": RD.run.since = nowMs(); saveRound(false); return roundRender(false);
       case "round-discard":
-        if (RS().run) { RS().run = null; save(); }
+        if (RS().run) { RS().run = null; RS().runDel = Date.now(); save(); }
         RD = null; if (location.hash === BASE + "/round") return roundPickerView(); location.hash = BASE + "/round"; return;
       case "rv-got": return reviewAdvance(true);
       case "rv-need": return reviewAdvance(false);
-      case "bank-remove": delete load().bank[t.getAttribute("data-id")]; save(); updateChrome(); return bankListView();
+      case "bank-remove":
+        var bid = t.getAttribute("data-id"), bkst = load();
+        delete bkst.bank[bid]; bkst.bankDel[bid] = Date.now(); save(); updateChrome(); return bankListView();
       case "print": return window.print();
       case "notes-copy": return copyText(notesText()).then(function (ok) { setNotesMsg(ok ? "Copied to the clipboard." : "Could not copy. Use Download instead."); });
       case "notes-dl": return setNotesMsg(downloadText("hsc-physics-ch1-notes.txt", notesText()) ? "Downloaded hsc-physics-ch1-notes.txt" : "Could not download on this device.");
+      case "pw-toggle":
+        var inp = document.getElementById(t.getAttribute("data-target"));
+        if (inp) { var show = inp.type === "password"; inp.type = show ? "text" : "password"; t.textContent = show ? "Hide" : "Show"; }
+        return;
+      case "sync-save":
+        if (!SYNC) return;
+        syncMsg = ""; SYNC.clearNotice();
+        var su = document.getElementById("sync-url"), sc = document.getElementById("sync-code");
+        SYNC.linkStudent(su ? su.value : "", sc ? sc.value : "").then(function (res) {
+          syncMsg = res.ok ? "Synced with Google Drive." : (res.error || "Could not sync.");
+          if (location.hash === "#/sync") syncView();
+        });
+        return;
+      case "sync-now":
+        if (!SYNC) return;
+        syncMsg = ""; SYNC.clearNotice();
+        SYNC.syncNow().then(function (res) {
+          syncMsg = res.ok ? "Up to date." : (res.error || "Sync failed.");
+          if (location.hash === "#/sync") syncView();
+        });
+        return;
+      case "sync-copy-link":
+        if (!SYNC) return;
+        var link = SYNC.buildStudentLink();
+        if (!link) return;
+        return copyText(link).then(function (ok) {
+          syncMsg = ok ? "Private setup link copied. Send it only to the student's other device." : "Could not copy link.";
+          if (location.hash === "#/sync") syncView();
+        });
+      case "sync-unlink":
+        if (!SYNC) return;
+        SYNC.unlinkStudent(); syncMsg = "Device unlinked. Local progress was kept.";
+        return syncView();
+      case "t-connect":
+        if (!SYNC) return;
+        SYNC.clearNotice();
+        var tu = document.getElementById("t-url"), tk = document.getElementById("t-key");
+        var tres = SYNC.setTeacherConfig(tu ? tu.value : "", tk ? tk.value : "");
+        if (!tres.ok) { TState.error = tres.error; return teacherView(); }
+        TState.error = ""; TState.data = null;
+        return teacherFetch();
+      case "t-refresh": return teacherFetch();
+      case "t-signout":
+        if (!SYNC) return;
+        SYNC.clearTeacherConfig(); TState = { loading: false, error: "", data: null, checkedAt: 0 };
+        return teacherView();
     }
   });
   function syncNum(ce) { var el = document.getElementById("numin"); if (el) ce.val = el.value; }
@@ -1260,13 +1527,13 @@
   app.addEventListener("keydown", function (e) {
     if (e.key === "Enter" && e.target.id === "numin") { var b = app.querySelector('[data-act="ce-check"]'); if (b) b.click(); }
   });
-  app.addEventListener("focusout", function (e) { if (e.target.classList && e.target.classList.contains("note-ta")) flushNote(); });
-  window.addEventListener("pagehide", function () { flushNote(); saveRound(); });
-  document.addEventListener("visibilitychange", function () { if (document.hidden) { flushNote(); saveRound(); } });
+  app.addEventListener("focusout", function (e) { if (e.target.classList && e.target.classList.contains("note-ta")) flushNote(true); });
+  window.addEventListener("pagehide", function () { flushNote(true); saveRound(false); });
+  document.addEventListener("visibilitychange", function () { if (document.hidden) { flushNote(true); saveRound(false); } });
   document.querySelector(".themebar").addEventListener("click", function (e) {
     var b = e.target.closest("[data-theme-set]");
     if (!b) return;
-    load().theme = b.getAttribute("data-theme-set"); save(); applyTheme(); route(true);
+    load().theme = b.getAttribute("data-theme-set"); save({ silentSync: true }); applyTheme(); route(true);
   });
 
   document.querySelector(".tabs").addEventListener("click", function (e) {
@@ -1276,14 +1543,20 @@
 
   /* ---------- router ---------- */
   function route(rerender) {
-    flushNote();
-    var parts = (location.hash || "#/").replace(/^#\/?/, "").split("/").filter(Boolean);
+    flushNote(false);
+    var rawHash = (location.hash || "#/").split("?")[0];
+    var parts = rawHash.replace(/^#\/?/, "").split("/").filter(Boolean);
     if (!rerender) window.scrollTo(0, 0);
     redraw = null;
     var p0 = parts[0];
     if (rTimer) { clearInterval(rTimer); rTimer = null; }
     if (!(p0 === SUBJ && parts[1] === CHID && parts[2] === "round" && parts[3] === "run")) roundLeave();
     if (!parts.length) return homeView();
+    if (p0 === "sync") return syncView();
+    if (p0 === "teacher") {
+      if (!rerender && SYNC && SYNC.hasTeacherConfig() && !TState.loading) return teacherFetch();
+      return teacherView();
+    }
     if (p0 === "review") {
       if (parts[1] === "all") return bankListView();
       if (parts[1] === "round") { if (rerender && R) { redraw = reviewRender; return reviewRender(); } return reviewRoundStart(); }
@@ -1317,6 +1590,16 @@
   Promise.all([getJSON("content/catalog.json"), getJSON("content/physics/ch01-rotational-dynamics.json")]).then(function (r) {
     catalog = r[0]; CH = r[1];
     load(); applyTheme();
+    if (SYNC) {
+      SYNC.init({
+        getState: function () { return load(); },
+        applyState: applyRemoteState,
+        onStatus: function () {
+          updateSyncPill();
+          if (location.hash === "#/sync" && SYNC.isLinked()) syncView();
+        }
+      });
+    }
     window.addEventListener("hashchange", function () { route(false); });
     route(false);
   }).catch(function (e) {
