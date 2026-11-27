@@ -510,6 +510,17 @@
     var r = it.reason || "missed";
     return '<span class="tag rtag' + (it.prio ? " prio" : "") + '">' + esc(REASON[r] || r) + (it.prio ? " · priority" : "") + "</span>";
   }
+  // Spaced review ladder: after the n-th correct review in a row, next review is REVIEW_GAPS[n] days later.
+  // An item graduates (leaves the bank) only after REVIEW_GAPS.length correct reviews in a row,
+  // so material learnt in December keeps coming back until the exam. Gaps never push past exam eve.
+  var REVIEW_GAPS = [1, 3, 7, 14, 30];
+  function nextReviewDate(streakN) {
+    var gap = REVIEW_GAPS[Math.min(streakN, REVIEW_GAPS.length - 1)];
+    var due = addDays(today(), gap);
+    var eve = catalog && catalog.examDate ? addDays(catalog.examDate, -2) : "";
+    if (eve && due > eve) due = eve > today() ? eve : addDays(today(), 1);
+    return due;
+  }
   function bankReview(id, ok) {
     var st = load(), b = st.bank, it = b[id];
     if (!it) return;
@@ -517,8 +528,8 @@
     if (ok) {
       it.prio = false;
       it.streak = (it.streak || 0) + 1;
-      if (it.streak >= 2) { delete b[id]; st.bankDel[id] = now; }
-      else { it.due = addDays(today(), 2); it.updatedAt = now; }
+      if (it.streak >= REVIEW_GAPS.length) { delete b[id]; st.bankDel[id] = now; }
+      else { it.due = nextReviewDate(it.streak); it.updatedAt = now; }
     } else { it.streak = 0; it.due = addDays(today(), 1); it.updatedAt = now; }
     save(); updateChrome();
   }
@@ -791,7 +802,7 @@
       }
     }
     if (isFocus()) {
-      h += '<div class="card countdown"><div class="cd-num">' + left + '</div><div class="cd-lab">days to the board exam · 1 February 2027</div>' +
+      h += '<div class="card countdown"><div class="cd-num">' + left + '</div><div class="cd-lab">days to the board exam · ' + esc(niceDate(catalog.examDate)) + '</div>' +
         '<div class="bar thin amber" role="progressbar" aria-valuenow="' + totProg.pct + '" aria-valuemin="0" aria-valuemax="100" aria-label="Active chapters progress"><i style="width:' + totProg.pct + '%"></i></div>' +
         '<div class="cd-foot small muted"><span>Active chapters: ' + totProg.done + " of " + totProg.total + ' stops done</span><span>Streak ' + streak(st) + ' d · ' + st.xp + ' XP</span></div></div>';
     } else {
@@ -938,8 +949,9 @@
     if (withStop && s) h += '<p class="small muted">Stop ' + (stopIndex(s.id) + 1) + ': <a href="' + BASE + "/" + s.id + '">' + esc(s.title) + "</a></p>";
     h += '<button type="button" class="btn ghost" data-act="reveal" aria-expanded="' + open + '">' + (open ? "Hide model answer" : "Show model answer") + "</button>";
     h += '<div class="answer"' + (open ? "" : " hidden") + "><b>Model answer</b><p>" + fm(q.answer) + "</p></div>";
-    h += '<div class="rate"><button type="button" class="btn ok' + (r === "got" ? "" : " ghost") + '" data-act="rate-got" aria-pressed="' + (r === "got") + '">Got it</button>' +
+    h += '<div class="rate"><button type="button" class="btn ok' + (r === "got" ? "" : " ghost") + '" data-act="rate-got" aria-pressed="' + (r === "got") + '"' + (open || r === "got" ? "" : ' disabled title="Open the model answer first"') + '>Got it</button>' +
       '<button type="button" class="btn warn' + (r === "need" || r === "practice" ? "" : " ghost") + '" data-act="rate-need" aria-pressed="' + (r === "need" || r === "practice") + '">Need practice</button></div>';
+    if (!open && r !== "got") h += '<p class="small muted">Write your answer first, then open the model answer to compare before tapping Got it.</p>';
     if ((r === "need" || r === "practice") && inBank) h += '<p class="small muted">In your mistake bank. Review: ' + niceDate(load().bank[bkey].due) + ".</p>";
     return h + "</article>";
   }
@@ -984,7 +996,23 @@
   }
 
   /* ---------- check engine (quests and review) ---------- */
-  function newCE(chk, mode) { return { chk: chk, mode: mode, attempt: 0, hint: false, sel: null, val: "", status: "ask", gain: 0, msg: "", conf: null, flag: "" }; }
+  // Options are shown in a fresh random order on every attempt so the student learns the content, not the letter.
+  // Selection is still stored as the ORIGINAL option index, so scoring and saved progress are unaffected.
+  // Options that refer to other options by position ("both of the above", "option A") keep their order.
+  var ORDER_BOUND = /\b(above|below|both of|none of|all of|options? [a-d]\b|\([a-d]\) and)/i;
+  function shuffledOrder(n) {
+    var o = [];
+    for (var i = 0; i < n; i++) o.push(i);
+    for (var j = n - 1; j > 0; j--) { var k = Math.floor(Math.random() * (j + 1)), t = o[j]; o[j] = o[k]; o[k] = t; }
+    return o;
+  }
+  function optionOrder(chk) {
+    var opts = chk.type === "tf" ? null : chk.options;
+    if (!Array.isArray(opts) || opts.length < 3) return null;
+    for (var i = 0; i < opts.length; i++) if (ORDER_BOUND.test(String(opts[i]))) return null;
+    return shuffledOrder(opts.length);
+  }
+  function newCE(chk, mode) { return { chk: chk, mode: mode, attempt: 0, hint: false, sel: null, val: "", status: "ask", gain: 0, msg: "", conf: null, flag: "", order: optionOrder(chk) }; }
   function ceOptions(chk) { return chk.type === "tf" ? ["True", "False"] : chk.options; }
   function ceAnswerIdx(chk) { return chk.type === "tf" ? (chk.answer ? 0 : 1) : chk.answer; }
   function ceAnswerText(chk) {
@@ -1025,13 +1053,14 @@
     if (c.type === "num") {
       h += '<div class="numrow"><input id="numin" class="numin" type="text" inputmode="decimal" autocomplete="off" aria-label="Your answer" placeholder="Your answer" value="' + esc(ce.val) + '"' + (locked ? " disabled" : "") + '><span class="unit">' + fm(c.unit || "") + "</span></div>";
     } else {
-      h += '<div class="opts" role="radiogroup">' + ceOptions(c).map(function (o, i) {
-        var cls = "opt";
+      var allOpts = ceOptions(c), ord = Array.isArray(ce.order) && ce.order.length === allOpts.length ? ce.order : allOpts.map(function (_, n) { return n; });
+      h += '<div class="opts" role="radiogroup">' + ord.map(function (i, pos) {
+        var o = allOpts[i], cls = "opt";
         if (ce.sel === i) cls += " sel";
         if (locked && st === "right" && ce.sel === i) cls += " right";
         if (locked && st !== "right" && ce.sel === i) cls += " wrong";
         if (st === "failed" && ceAnswerIdx(c) === i) cls += " right";
-        return '<button type="button" class="' + cls + '" role="radio" aria-checked="' + (ce.sel === i) + '" data-act="ce-pick" data-i="' + i + '"' + (locked ? " disabled" : "") + '><span class="ltr">' + "ABCD".charAt(i) + "</span><span>" + fm(o) + "</span></button>";
+        return '<button type="button" class="' + cls + '" role="radio" aria-checked="' + (ce.sel === i) + '" data-act="ce-pick" data-i="' + i + '"' + (locked ? " disabled" : "") + '><span class="ltr">' + "ABCDEF".charAt(pos) + "</span><span>" + fm(o) + "</span></button>";
       }).join("") + "</div>";
     }
     if (st === "ask") {
@@ -1421,8 +1450,12 @@
   }
 
   /* ---------- derivations ---------- */
-  function shuffle3(id, idx, n) {   // deterministic position for the correct line
-    var x = 0, s = id + idx;
+  // Salt changes on every drill/review start, so the correct line moves between attempts
+  // but stays put within one attempt (render and pick must agree).
+  var OPT_SALT = String(Date.now());
+  function newOptSalt() { OPT_SALT = String(Date.now()) + Math.random(); }
+  function shuffle3(id, idx, n) {   // position for the correct line, stable within one attempt
+    var x = 0, s = id + idx + OPT_SALT;
     for (var i = 0; i < s.length; i++) x = (x * 31 + s.charCodeAt(i)) % 9973;
     return x % n;
   }
@@ -1446,6 +1479,7 @@
     app.innerHTML = h;
   }
   function drillStart(id) {
+    newOptSalt();
     var d = getDeriv(id);
     if (!d) return errorView("That drill doesn't exist.");
     D = { d: d, chKey: curChKey(), i: 0, slips: 0, slipped: false, wrongPicks: [], done: false };
@@ -1494,21 +1528,8 @@
   }
 
   /* ---------- formula card (multi-chapter) ---------- */
-  function formulasView() {
-    var fKey = formulaChKey && CHAPTERS[formulaChKey] ? formulaChKey : curChKey();
-    var ch = CHAPTERS[fKey] || CH;
-    var label = ch.formulaLabel || "Formula card";
-    setHeader(label + " · " + chShortLabel(ch), null, { xp: true, tab: "formulas" });
-    var h = "";
-    if (CHAPTER_LIST.length > 1) {
-      h += '<div class="pills-row noprint" role="group" aria-label="Choose chapter">' +
-        CHAPTER_LIST.map(function (e) {
-          return '<button type="button" class="pill-btn" data-act="formula-ch" data-ch="' + esc(e.key) + '" aria-pressed="' + (e.key === fKey) + '">' + esc(chShortLabel(e.ch)) + "</button>";
-        }).join("") + "</div>";
-    }
-    h += '<div class="card fhead"><div class="row"><p class="grow"><b>' + esc(chShortLabel(ch)) + ": " + esc(ch.title) + '</b><br><span class="small muted">Grouped by stop, with textbook pages. Balbharati notation.</span></p>' +
-      '<button type="button" class="btn ghost noprint" data-act="print">Print</button></div></div>';
-    h += ch.formulas.map(function (g) {
+  function formulaGroupsHTML(ch) {
+    return ch.formulas.map(function (g) {
       var s = stopById(g.stop, ch);
       return '<section class="card fgroup"><h2><a href="' + chBase(ch) + "/" + g.stop + '">' + (stopIndex(g.stop, ch) + 1) + ". " + esc(s ? s.title : g.stop) + "</a></h2>" +
         g.items.map(function (f) {
@@ -1516,6 +1537,33 @@
             (f.s ? '<div class="fs">' + fm(f.s) + "</div>" : "") + "</div>";
         }).join("") + "</section>";
     }).join("");
+  }
+  function formulasView() {
+    var showAll = formulaChKey === "all" && CHAPTER_LIST.length > 1;
+    var fKey = !showAll && formulaChKey && CHAPTERS[formulaChKey] ? formulaChKey : curChKey();
+    var ch = CHAPTERS[fKey] || CH;
+    var label = ch.formulaLabel || "Formula card";
+    setHeader(showAll ? "Formula sheet · All chapters" : label + " · " + chShortLabel(ch), null, { xp: true, tab: "formulas" });
+    var h = "";
+    if (CHAPTER_LIST.length > 1) {
+      h += '<div class="pills-row noprint" role="group" aria-label="Choose chapter">' +
+        '<button type="button" class="pill-btn" data-act="formula-ch" data-ch="all" aria-pressed="' + showAll + '">All chapters</button>' +
+        CHAPTER_LIST.map(function (e) {
+          return '<button type="button" class="pill-btn" data-act="formula-ch" data-ch="' + esc(e.key) + '" aria-pressed="' + (!showAll && e.key === fKey) + '">' + esc(chShortLabel(e.ch)) + "</button>";
+        }).join("") + "</div>";
+    }
+    if (showAll) {
+      h += '<div class="card fhead"><div class="row"><p class="grow"><b>Formula sheet: all live chapters</b><br><span class="small muted">For last-week revision. Each chapter starts on a new printed page.</span></p>' +
+        '<button type="button" class="btn ghost noprint" data-act="print">Print all</button></div></div>';
+      h += CHAPTER_LIST.filter(function (e) { return e.ch.formulas && e.ch.formulas.length; }).map(function (e, i) {
+        return '<div class="fchap' + (i ? " pbreak" : "") + '"><h2 class="fchap-h">' + esc(chShortLabel(e.ch)) + ": " + esc(e.ch.title) + "</h2>" + formulaGroupsHTML(e.ch) + "</div>";
+      }).join("");
+      app.innerHTML = h;
+      return;
+    }
+    h += '<div class="card fhead"><div class="row"><p class="grow"><b>' + esc(chShortLabel(ch)) + ": " + esc(ch.title) + '</b><br><span class="small muted">Grouped by stop, with textbook pages. Balbharati notation.</span></p>' +
+      '<button type="button" class="btn ghost noprint" data-act="print">Print</button></div></div>';
+    h += formulaGroupsHTML(ch);
     app.innerHTML = h;
   }
 
@@ -1530,6 +1578,7 @@
   }
   function trunc(s, n) { return s.length > n ? s.slice(0, n - 1).replace(/\s+\S*$/, "") + "…" : s; }
   function reviewStart() {
+    newOptSalt();
     var ids = dueIds().filter(itemExists);
     R = { queue: ids, i: 0, ok: 0, bad: 0, ce: null, ds: null, shown: false };
     redraw = reviewRender;
@@ -1546,6 +1595,7 @@
   }
   function reviewByPoints(id) { var it = load().bank[id]; return !!(it && it.reason === "below full marks"); }
   function reviewRoundStart() {
+    newOptSalt();
     var key = lastRoundChKey && CHAPTERS[lastRoundChKey] ? lastRoundChKey : curChKey();
     var ch = CHAPTERS[key] || CH;
     var rec = RS(null, key).last, ids = [];
@@ -1628,10 +1678,10 @@
     var t = today(), h = "";
     if (!ids.length) h = '<div class="card center"><h2>The bank is empty</h2><p class="muted">Wrong answers and “Need practice” questions will appear here.</p></div>';
     else {
-      h += '<div class="card"><p class="muted small">' + ids.length + " item" + (ids.length > 1 ? "s" : "") + '. Each correct review pushes an item out; two correct reviews in a row remove it.</p><ul class="list bank">' +
+      h += '<div class="card"><p class="muted small">' + ids.length + " item" + (ids.length > 1 ? "s" : "") + '. Each correct review pushes an item further out (1 → 3 → 7 → 14 → 30 days, never past exam eve); five correct reviews in a row retire it.</p><ul class="list bank">' +
         ids.map(function (id) {
           var it = st.bank[id], due = it.due <= t ? "Due now" : "Due " + niceDate(it.due);
-          return '<li class="bank-row"><div class="grow"><div class="bt">' + esc(trunc(itemLabel(id), 110)) + '</div><div class="small muted">' + reasonTag(id) + ' <span class="pill ' + (it.due <= t ? "amber" : "") + '">' + due + "</span> " + (it.streak || 0) + " of 2 correct reviews</div></div>" +
+          return '<li class="bank-row"><div class="grow"><div class="bt">' + esc(trunc(itemLabel(id), 110)) + '</div><div class="small muted">' + reasonTag(id) + ' <span class="pill ' + (it.due <= t ? "amber" : "") + '">' + due + "</span> " + (it.streak || 0) + " of " + REVIEW_GAPS.length + " correct reviews</div></div>" +
             '<button type="button" class="btn ghost sm" data-act="bank-remove" data-id="' + esc(id) + '" aria-label="Remove from bank">Remove</button></li>';
         }).join("") + "</ul></div>";
     }
@@ -1744,7 +1794,9 @@
         '<div class="field"><label for="sync-code">Student code</label><div class="pw-row"><input id="sync-code" class="fin" type="password" autocomplete="off" spellcheck="false" placeholder="Enter student code" value="' + esc(c.code || "") + '"><button type="button" class="btn ghost sm" data-act="pw-toggle" data-target="sync-code">Show</button></div></div>' +
         '<button type="button" class="btn primary block" data-act="sync-save">Save &amp; Sync</button></div>';
     }
-    h += '<div class="card"><div class="row"><div class="grow"><h2>Parent / Teacher view</h2><p class="small muted">Check live study progress, predicted marks, and mistake bank from your own device.</p></div><a class="btn ghost sm" href="#/teacher">Open</a></div></div>';
+    // Teacher entry is shown only on a device that already holds the teacher key (owner's device).
+    // Students never see a link to it; the owner uses the private one-tap teacher link to connect.
+    if (SYNC.hasTeacherConfig()) h += '<div class="card"><div class="row"><div class="grow"><h2>Parent / Teacher view</h2><p class="small muted">Check live study progress, predicted marks, and mistake bank.</p></div><a class="btn ghost sm" href="#/teacher">Open</a></div></div>';
     app.innerHTML = h;
   }
 
@@ -1999,13 +2051,11 @@
     var c = SYNC.getConfig();
     if (!SYNC.hasTeacherConfig()) {
       var st = SYNC.getStatus();
-      var h = '<div class="card"><h2>Connect Parent / Teacher view</h2><p class="small muted">View live student progress, study time, preview the student experience, and send focus tasks or rewards from your own device.</p>';
+      var h = '<div class="card"><h2>Teacher sign-in</h2><p class="small muted">This page is only for the teacher. Students do not need it. If you are the teacher, open your private teacher link or enter your teacher key below.</p>';
       if (TState.error || st.notice) h += '<div class="fb bad" role="alert">' + esc(TState.error || st.notice) + "</div>";
       h += '<div class="field" style="margin-top:12px"><label for="t-url">Sync Web App URL</label><input id="t-url" class="fin" type="url" autocomplete="off" spellcheck="false" placeholder="https://script.google.com/macros/s/.../exec" value="' + esc(c.url || "") + '"></div>' +
         '<div class="field"><label for="t-key">Teacher key</label><div class="pw-row"><input id="t-key" class="fin" type="password" autocomplete="off" spellcheck="false" placeholder="Enter teacher key"><button type="button" class="btn ghost sm" data-act="pw-toggle" data-target="t-key">Show</button></div></div>' +
-        '<button type="button" class="btn primary block" data-act="t-connect">Connect</button></div>' +
-        '<div class="card"><div class="row"><div class="grow"><h2>Test student portal</h2><p class="small muted">Try the portal as a brand-new student without changing your device\'s saved progress.</p></div>' +
-        '<button type="button" class="btn ghost sm" data-act="t-preview-blank">Open preview</button></div></div>';
+        '<button type="button" class="btn primary block" data-act="t-connect">Connect</button></div>';
       app.innerHTML = h;
       return;
     }
@@ -2078,9 +2128,9 @@
         location.hash = BASE + "/" + sid + "/quest"; return;
       case "ce-pick": ce = ctxCE(); if (ce && ce.status === "ask") { ce.sel = dataI(t); ce.msg = ""; if (ce.mode === "quest") saveQuest(); redraw(); } return;
       case "ce-conf": ce = ctxCE(); if (ce && ce.status === "ask") { syncNum(ce); ce.conf = t.getAttribute("data-v"); ce.msg = ""; if (ce.mode === "quest") saveQuest(); redraw(); } return;
-      case "ce-hint": ce = ctxCE(); ce.hint = true; syncNum(ce); if (ce.mode === "quest") saveQuest(); return redraw();
+      case "ce-hint": ce = ctxCE(); if (!ce || ce.status !== "ask") return; ce.hint = true; syncNum(ce); if (ce.mode === "quest") saveQuest(); return redraw();
       case "ce-check":
-        ce = ctxCE(); syncNum(ce);
+        ce = ctxCE(); if (!ce || ce.status !== "ask") return; syncNum(ce);
         if (ce.chk.type === "num" ? isNaN(parseNum(ce.val)) : ce.sel == null) { ce.msg = ce.chk.type === "num" ? "Type a number first." : "Pick an answer first."; return redraw(); }
         if (!ce.conf) { ce.msg = "Choose Sure or Guessing first."; return redraw(); }
         ce.msg = "";
@@ -2096,7 +2146,7 @@
         ceSubmit(ce);
         if (ce.mode === "quest") saveQuest();
         return redraw();
-      case "ce-retry": ce = ctxCE(); ce.attempt = 1; ce.sel = null; ce.val = ""; ce.status = "ask"; ce.conf = null; if (ce.mode === "quest") saveQuest(); return redraw();
+      case "ce-retry": ce = ctxCE(); if (!ce || ce.status !== "wrong") return; ce.attempt = 1; ce.order = optionOrder(ce.chk); ce.sel = null; ce.val = ""; ce.status = "ask"; ce.conf = null; if (ce.mode === "quest") saveQuest(); return redraw();
       case "ce-next":
         if (R && location.hash.indexOf("#/review") === 0) return reviewAdvance(R.ce.status === "right");
         return questNext();
@@ -2107,6 +2157,7 @@
         return;
       case "rate-got": case "rate-need":
         q = t.closest(".bq"); var id = q.getAttribute("data-q");
+        if (act === "rate-got" && !revealed[id]) return;   // must compare with the model answer first
         var bst = load();
         bst.board[id] = act === "rate-got" ? "got" : "need";
         bst.boardAt[id] = Date.now();
@@ -2197,8 +2248,10 @@
         save();
         return homeView();
       case "t-preview":
+        if (!SYNC || !SYNC.hasTeacherConfig()) return;
         return enterPreview(findStudentEntry(t.getAttribute("data-sid") || ""), false);
       case "t-preview-blank":
+        if (!SYNC || !SYNC.hasTeacherConfig()) return;
         return enterPreview(findStudentEntry(t.getAttribute("data-sid") || ""), true);
       case "t-send-note": {
         var sid1 = t.getAttribute("data-sid") || "student1";

@@ -455,3 +455,10 @@ html[data-theme="focus"] .teacher-bar { background: var(--amber-soft); border-bo
   a { color: #000; text-decoration: none; }
   .ff { font-size: 12pt; }
 }
+
+/* ---- all-chapter formula sheet ---- */
+.fchap-h { font-size: 1.05rem; margin: 18px 4px 8px; }
+@media print {
+  .pbreak { break-before: page; page-break-before: always; }
+  .fchap-h { margin-top: 0; }
+}
