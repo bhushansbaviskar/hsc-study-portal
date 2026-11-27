@@ -1,7 +1,6 @@
-/* HSC Board Prep — Physics Chapter 1.
-   Shell, themes (Quest / Exam focus), quests, board questions, derivation drills, formula card,
-   mistake bank (spaced review) and notes. Plain JS, no dependencies.
-   Everything is stored on this device only (localStorage key hscPrep.v2, in-memory fallback). */
+/* HSC Board Prep — Multi-subject, multi-chapter portal.
+   Shell, themes (Quest / Exam focus), quests, board questions, derivation/proof drills, formula card,
+   mistake bank (spaced review), notes, Drive sync, and live Parent/Teacher view. Plain JS, no dependencies. */
 (function () {
   "use strict";
 
@@ -21,6 +20,12 @@
   var syncLabelEl = document.getElementById("sync-label");
   var SYNC = window.HSCSync || null;
   var catalog = null, CH = null;
+  var CHAPTERS = {};               // "subj/chId" -> chapter JSON
+  var CHAPTER_LIST = [];           // ordered [{ key, subj, subjTitle, chId, ch }]
+  var homeSubj = "all";            // subject filter pill on Home
+  var formulaChKey = "";           // selected chapter on Formulas page
+  var notesChFilter = "all";       // selected chapter filter on Notes page
+  var lastRoundChKey = "";         // chapter key for #/review/round
   var redraw = null;               // re-renders the interactive view currently on screen
   var Q = null, R = null, D = null; // quest, review and drill sessions (in memory)
   var revealed = {};               // board answers shown this session
@@ -38,21 +43,54 @@
     chev: '<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>'
   };
 
+  /* ---------- chapter context helpers ---------- */
+  function chKeyOf(subj, chid) { return subj + "/" + chid; }
+  function curChKey() { return chKeyOf(SUBJ, CHID); }
+  function chKeyFor(ch) { return ch ? chKeyOf(ch.subject, ch.id) : curChKey(); }
+  function chBase(ch) { return "#/" + (ch ? ch.subject : SUBJ) + "/" + (ch ? ch.id : CHID); }
+  function subjTitle(subjId) {
+    if (!catalog) return subjId;
+    var found = catalog.subjects.filter(function (s) { return s.id === subjId; })[0];
+    return found ? found.title : subjId;
+  }
+  function chShortLabel(ch) { return subjTitle(ch.subject) + " · Ch " + ch.number; }
+  function updateMapTab() {
+    var link = document.querySelector('.tabs a[data-tab="map"]');
+    if (link) link.setAttribute("href", BASE);
+  }
+  function setActiveChapter(subj, chid, persist) {
+    var key = chKeyOf(subj, chid);
+    if (!CHAPTERS[key]) return false;
+    SUBJ = subj; CHID = chid; BASE = "#/" + subj + "/" + chid; CH = CHAPTERS[key];
+    updateMapTab();
+    if (persist) {
+      var st = load();
+      if (st.lastChapter !== key) { st.lastChapter = key; save({ silentSync: true }); }
+    }
+    return true;
+  }
+
   /* ---------- storage (never throws) ---------- */
   var mem = null;
-  function blank() { return { v: 2, done: {}, xp: 0, quest: {}, bank: {}, bankDel: {}, notes: {}, noteAt: {}, board: {}, boardAt: {}, theme: "quest", qp: {}, qpDel: {}, drill: {}, planStart: "", round: blankRound(), updatedAt: 0 }; }
+  function blank() { return { v: 2, done: {}, xp: 0, quest: {}, bank: {}, bankDel: {}, notes: {}, noteAt: {}, board: {}, boardAt: {}, theme: "quest", lastChapter: "", qp: {}, qpDel: {}, drill: {}, planStart: "", round: blankRound(), rounds: {}, updatedAt: 0 }; }
   function blankRound() { return { modes: {}, complete: false, bestFull: 0, run: null, runDel: 0, last: null }; }
   function isObj(x) { return x && typeof x === "object" && !Array.isArray(x); }
+  function normalizeRound(rd) {
+    if (!isObj(rd)) rd = blankRound();
+    var rb = blankRound();
+    for (var rk in rb) if (rd[rk] === undefined || (rb[rk] !== null && typeof rd[rk] !== typeof rb[rk]) || (rb[rk] === null && rd[rk] !== null && !isObj(rd[rk]))) rd[rk] = rb[rk];
+    if (!isObj(rd.modes)) rd.modes = {};
+    return rd;
+  }
   function normalizeState(s) {
     if (!isObj(s)) s = blank();
     var b = blank();
     for (var k in b) if (s[k] == null || typeof s[k] !== typeof b[k]) s[k] = b[k];
     if (s.theme !== "quest" && s.theme !== "focus") s.theme = "quest";
     s.v = 2;
-    if (!isObj(s.round)) s.round = blankRound();
-    var rd = s.round, rb = blankRound();
-    for (var rk in rb) if (rd[rk] === undefined || (rb[rk] !== null && typeof rd[rk] !== typeof rb[rk]) || (rb[rk] === null && rd[rk] !== null && !isObj(rd[rk]))) rd[rk] = rb[rk];
-    if (!isObj(rd.modes)) rd.modes = {};
+    s.round = normalizeRound(s.round);
+    if (!isObj(s.rounds)) s.rounds = {};
+    for (var ck in s.rounds) s.rounds[ck] = normalizeRound(s.rounds[ck]);
     return s;
   }
   function load() {
@@ -116,8 +154,8 @@
   function daysLeft(dateStr) {
     return Math.max(0, Math.round((parseDate(dateStr) - parseDate(today())) / 86400000));
   }
-  function K(stopId) { return SUBJ + "/" + CHID + "/" + stopId; }
-  function isDone(stopId, st) { return !!((st || load()).done[K(stopId)]); }
+  function K(stopId, ch) { return (ch ? ch.subject : SUBJ) + "/" + (ch ? ch.id : CHID) + "/" + stopId; }
+  function isDone(stopId, st, ch) { return !!((st || load()).done[K(stopId, ch)]); }
   function doneToday(st) {
     var t = today(), n = 0, d = (st || load()).done;
     for (var k in d) if (d[k] === t) n++;
@@ -137,21 +175,39 @@
       return r.json();
     });
   }
-  function stopIndex(id) { for (var i = 0; i < CH.stops.length; i++) if (CH.stops[i].id === id) return i; return -1; }
-  function stopById(id) { var i = stopIndex(id); return i < 0 ? null : CH.stops[i]; }
-  function chapterProgress(st) {
-    var done = CH.stops.filter(function (s) { return isDone(s.id, st); }).length;
-    return { done: done, total: CH.stops.length, pct: Math.round(100 * done / CH.stops.length) };
+  function stopIndex(id, ch) {
+    var list = (ch || CH).stops;
+    for (var i = 0; i < list.length; i++) if (list[i].id === id) return i;
+    return -1;
   }
-  function pdfOf(p) { return String(p).replace(/\d+/g, function (n) { return +n + (CH.pdfPageOffset || 10); }); }
-  function bookChip(bookId, page, label, cls) {
+  function stopById(id, ch) { var target = ch || CH, i = stopIndex(id, target); return i < 0 ? null : target.stops[i]; }
+  function chapterProgress(st, ch) {
+    var target = ch || CH;
+    var done = target.stops.filter(function (s) { return isDone(s.id, st, target); }).length;
+    return { done: done, total: target.stops.length, pct: Math.round(100 * done / target.stops.length) };
+  }
+  function totalActiveProgress(st) {
+    var done = 0, total = 0;
+    CHAPTER_LIST.forEach(function (entry) {
+      var p = chapterProgress(st, entry.ch);
+      done += p.done; total += p.total;
+    });
+    return { done: done, total: total, pct: total ? Math.round(100 * done / total) : 0 };
+  }
+  function pdfOf(p, bookId, ch) {
     var b = catalog.books[bookId];
-    var pdf = pdfOf(page);
+    var off = (b && typeof b.pdfPageOffset === "number") ? b.pdfPageOffset : ((ch || CH) && (ch || CH).pdfPageOffset) || 10;
+    return String(p).replace(/\d+/g, function (n) { return +n + off; });
+  }
+  function bookChip(bookId, page, label, cls, ch) {
+    var b = catalog.books[bookId];
+    if (!b) return "";
+    var pdf = pdfOf(page, bookId, ch);
     return '<a class="chip ' + (cls || "") + '" href="' + esc(b.driveUrl) + '" target="_blank" rel="noopener noreferrer" ' +
       'title="Opens the PDF in Google Drive. Go to PDF page ' + esc(pdf) + '.">' +
       esc(label || b.label) + " · p. " + esc(page) + " (PDF " + esc(pdf) + ")</a>";
   }
-  function pageChip(p) { return bookChip(CH.book, p, "Textbook"); }
+  function pageChip(p, ch) { var target = ch || CH; return bookChip(target.book, p, "Textbook", "", target); }
   function tag(t) { return '<span class="tag">' + esc(t) + "</span>"; }
 
   /* ---------- derived data from the chapter file ---------- */
@@ -163,31 +219,46 @@
     if (pa) return pyqAskCount(b) - pyqAskCount(a) || (b.year || 0) - (a.year || 0) || b.marks - a.marks;
     return b.marks - a.marks;
   }
-  function boardFor(stopId) {
-    return CH.board.filter(function (b) { return b.stop === stopId; }).sort(boardPriorityCmp);
+  function boardFor(stopId, ch) {
+    return (ch || CH).board.filter(function (b) { return b.stop === stopId; }).sort(boardPriorityCmp);
   }
   function boardTag(b) {
     if (!isBoardPYQ(b)) return b.source || "Important";
     var base = b.year + " " + b.qno;
     return Array.isArray(b.alsoAsked) && b.alsoAsked.length ? base + " · " + b.alsoAsked.join(" · ") : base;
   }
-  function askedCount(stopId) {
-    return CH.board.reduce(function (n, b) { return b.stop === stopId ? n + pyqAskCount(b) : n; }, 0);
+  function askedCount(stopId, ch) {
+    return (ch || CH).board.reduce(function (n, b) { return b.stop === stopId ? n + pyqAskCount(b) : n; }, 0);
   }
-  function getBoard(id) { return CH.board.filter(function (b) { return b.id === id; })[0]; }
-  function getDeriv(id) { return CH.derivations.filter(function (d) { return d.id === id; })[0]; }
+  function getBoard(id, ch) { return (ch || CH).board.filter(function (b) { return b.id === id; })[0]; }
+  function getDeriv(id, ch) { return (ch || CH).derivations.filter(function (d) { return d.id === id; })[0]; }
 
   /* ---------- plan worked back from the exam ---------- */
   function dayDiff(a, b) { return Math.round((parseDate(b) - parseDate(a)) / 86400000); }
-  function planInfo(st) {
-    var total = 0, t = today();
+  function activeSubjects() {
+    return catalog.subjects.filter(function (sub) {
+      return sub.chapters.some(function (c) { return !!CHAPTERS[chKeyOf(sub.id, c.id)]; });
+    });
+  }
+  function planInfo(st, subjFilter) {
+    var total = 0, done = 0, t = today();
     st = st || load();
-    catalog.subjects.forEach(function (sub) {
+    var subs = subjFilter && subjFilter !== "all"
+      ? catalog.subjects.filter(function (s) { return s.id === subjFilter; })
+      : activeSubjects();
+    var subIds = {};
+    subs.forEach(function (sub) {
+      subIds[sub.id] = true;
       sub.chapters.forEach(function (c) {
-        total += (sub.id === SUBJ && c.id === CHID) ? CH.stops.length : (c.estStops || PLAN_DEFAULT_STOPS);
+        var loaded = CHAPTERS[chKeyOf(sub.id, c.id)];
+        total += loaded ? loaded.stops.length : (c.estStops || PLAN_DEFAULT_STOPS);
       });
     });
-    var done = Object.keys(st.done).length, left = Math.max(0, total - done);
+    for (var k in st.done) {
+      var subId = k.split("/")[0];
+      if (subIds[subId]) done++;
+    }
+    var left = Math.max(0, total - done);
     var pStart = /^\d{4}-\d{2}-\d{2}$/.test(st.planStart || "") ? st.planStart : t;
     var span = Math.max(1, dayDiff(pStart, catalog.planEnd));
     var since = Math.min(span, Math.max(0, dayDiff(pStart, t)));
@@ -195,34 +266,37 @@
     var pace = Math.max(1, Math.ceil(left / Math.max(1, daysLeft)));
     var expected = total * since / span, diff = done - expected;
     var status = diff >= 1 ? "ahead" : diff <= -1 ? "behind" : "on";
+    var scopeNames = subs.map(function (s) { return s.title; }).join(", ");
     return { total: total, done: done, left: left, span: span, since: since, daysLeft: daysLeft, pace: pace,
-      expected: expected, status: status, n: Math.floor(Math.abs(diff)) };
+      expected: expected, status: status, n: Math.floor(Math.abs(diff)), scopeNames: scopeNames };
   }
   function planHTML(pl) {
     var label = pl.status === "on" ? "On track" : pl.status === "ahead" ? "Ahead by " + pl.n + (pl.n === 1 ? " stop" : " stops") : "Behind by " + pl.n + (pl.n === 1 ? " stop" : " stops");
     return '<div class="card plan-card plan-' + pl.status + '"><div class="row"><h2 class="grow">Your plan</h2><span class="pill plan-pill" data-plan="' + pl.status + '">' + esc(label) + "</span></div>" +
       '<p class="plan-line"><b>' + pl.pace + (pl.pace === 1 ? " stop" : " stops") + ' a day</b> to finish by ' + niceDate(catalog.planEnd) + ". " + pl.left + " of " + pl.total + " stops left, " + pl.daysLeft + (pl.daysLeft === 1 ? " day" : " days") + " to go.</p>" +
-      '<p class="note">Only Physics is counted until other subjects are added. The last 10 days are kept for revision.</p></div>';
+      '<p class="note">Counting ' + esc(pl.scopeNames) + '. The last 10 days are kept for revision.</p></div>';
   }
 
   /* ---------- predicted board marks ---------- */
   function drillClean(id, st) { var r = (st || load()).drill[id]; return !!(r && r.clean); }
-  function stopMastery(s, st) {
+  function stopMastery(s, st, ch) {
     // Average of the parts that apply to this stop: quest always; board questions and
     // derivations only if the stop has them. Nothing is credited before it is done.
     st = st || load();
-    var parts = [isDone(s.id, st) ? 1 : 0];
-    var bq = boardFor(s.id);
+    var target = ch || CH;
+    var parts = [isDone(s.id, st, target) ? 1 : 0];
+    var bq = boardFor(s.id, target);
     if (bq.length) parts.push(bq.filter(function (b) { return st.board[b.id] === "got"; }).length / bq.length);
-    var ds = CH.derivations.filter(function (d) { return d.stop === s.id; });
+    var ds = target.derivations.filter(function (d) { return d.stop === s.id; });
     if (ds.length) parts.push(ds.filter(function (d) { return drillClean(d.id, st); }).length / ds.length);
     return parts.reduce(function (a, b) { return a + b; }, 0) / parts.length;
   }
-  function stopWeight(s) { return 1 + askedCount(s.id); }
-  function gaugeData(st) {
-    var em = CH.examMarks || { avg: 0, basis: "" }, tw = 0, sw = 0;
-    var rows = CH.stops.map(function (s, i) {
-      var w = stopWeight(s), m = stopMastery(s, st);
+  function stopWeight(s, ch) { return 1 + askedCount(s.id, ch); }
+  function gaugeData(st, ch) {
+    var target = ch || CH;
+    var em = target.examMarks || { avg: 0, basis: "" }, tw = 0, sw = 0;
+    var rows = target.stops.map(function (s, i) {
+      var w = stopWeight(s, target), m = stopMastery(s, st, target);
       tw += w; sw += w * m;
       return { s: s, i: i, w: w, m: m };
     });
@@ -232,13 +306,14 @@
       .sort(function (a, b) { return b.gain - a.gain || a.i - b.i; }).slice(0, 2);
     return { avg: em.avg, basis: em.basis, M: M, pred: Math.round(em.avg * M * 2) / 2, top: top };
   }
-  function gaugeHTML(st) {
-    if (!CH.examMarks) return "";
-    var g = gaugeData(st), pct = Math.round(g.M * 1000) / 10;
+  function gaugeHTML(st, ch) {
+    var target = ch || CH;
+    if (!target || !target.examMarks) return "";
+    var g = gaugeData(st, target), pct = Math.round(g.M * 1000) / 10;
     var line = "About " + g.pred + " of ~" + Math.round(g.avg) + " marks secured";
     var gain = g.top.length ? '<p class="small gain">Biggest gain next: <b>' + g.top.map(function (r) { return esc(r.s.title); }).join(", then ") + "</b></p>" : "";
     var how = '<details class="how"><summary>How this is worked out</summary><p class="small">An estimate based on past papers: the average marks this chapter carried (' + esc(g.basis) +
-      ') times how much of the chapter you have mastered (quest, board questions, derivations), counting often-asked stops more.</p></details>';
+      ') times how much of the chapter you have mastered (quest, board questions, drills), counting often-asked stops more.</p></details>';
     var h;
     if (isFocus()) {
       h = '<div class="card gauge-card gauge-line"><div class="g-text" data-gauge="' + g.pred + '">' + line + "</div>" +
@@ -252,6 +327,24 @@
     }
     return h;
   }
+  function homeGaugeHTML(st, subjFilter) {
+    var list = CHAPTER_LIST.filter(function (e) {
+      return e.ch.examMarks && (!subjFilter || subjFilter === "all" || e.subj === subjFilter);
+    });
+    if (!list.length) return "";
+    if (list.length === 1) return gaugeHTML(st, list[0].ch);
+    var totalPred = 0, totalAvg = 0;
+    var rowsHTML = list.map(function (e) {
+      var g = gaugeData(st, e.ch), pct = Math.round(g.M * 100);
+      totalPred += g.pred; totalAvg += g.avg;
+      return '<a class="g-row" href="' + chBase(e.ch) + '"><div class="g-row-top"><b>' + esc(chShortLabel(e.ch)) + ' · ' + esc(e.ch.title) + '</b><span class="small muted"><b>' + g.pred + '</b> / ~' + Math.round(g.avg) + '</span></div>' +
+        '<div class="bar"><i style="width:' + pct + '%"></i></div></a>';
+    }).join("");
+    totalPred = Math.round(totalPred * 2) / 2;
+    return '<div class="card gauge-card"><h2>Predicted board marks</h2>' +
+      '<p class="small muted">About <b>' + totalPred + ' of ~' + Math.round(totalAvg) + ' marks</b> secured across ' + list.length + ' active chapters</p>' +
+      '<div class="g-rows">' + rowsHTML + '</div></div>';
+  }
 
   /* ---------- mid-quest saving ---------- */
   function saveQuest() {
@@ -261,8 +354,9 @@
       ce: ce ? { attempt: ce.attempt, hint: ce.hint, sel: ce.sel, val: ce.val, status: ce.status, gain: ce.gain, conf: ce.conf, flag: ce.flag || "" } : null };
     save();
   }
-  function restoreQuest(s) {
-    var r = load().qp[K(s.id)], cards = s.quest.cards, checks = s.quest.checks;
+  function restoreQuest(s, ch) {
+    var target = ch || CH;
+    var r = load().qp[K(s.id, target)], cards = s.quest.cards, checks = s.quest.checks;
     if (!isObj(r) || (r.phase !== "cards" && r.phase !== "check")) return null;
     if (!(r.ci >= 0 && r.ci < cards.length) || !(r.ki >= 0 && r.ki < checks.length) || !Array.isArray(r.results)) return null;
     var q = { stop: s, phase: r.phase, ci: r.ci, ki: r.ki, ce: null, results: r.results, xp: +r.xp || 0, added: +r.added || 0, resumed: true };
@@ -277,14 +371,17 @@
     }
     return q;
   }
-  function resumeInfo() {
+  function resumeInfoAll() {
     var qp = load().qp, best = null;
     for (var k in qp) {
-      var id = k.split("/")[2], s = stopById(id);
+      var parts = k.split("/");
+      var ch = CHAPTERS[chKeyOf(parts[0], parts[1])];
+      if (!ch) continue;
+      var s = stopById(parts[2], ch);
       if (!s) continue;
-      var q = restoreQuest(s);
+      var q = restoreQuest(s, ch);
       if (!q) continue;
-      if (!best || (qp[k].at || 0) > best.at) best = { s: s, q: q, at: qp[k].at || 0 };
+      if (!best || (qp[k].at || 0) > best.at) best = { ch: ch, s: s, q: q, at: qp[k].at || 0 };
     }
     return best;
   }
@@ -297,6 +394,13 @@
 
   /* ---------- mistake bank (spaced review) ---------- */
   var REASON = { "guessed": "Guessed", "confident mistake": "Confident mistake", "missed": "Missed", "need practice": "Need practice", "slip": "Slip", "below full marks": "Below full marks" };
+  function bankChToken(ch) {
+    var target = ch || CH;
+    return (target.subject === "physics" && target.id === "ch01") ? "ch01" : target.subject + ":" + target.id;
+  }
+  function bankId(kind, a, b, ch) {
+    return kind + "|" + bankChToken(ch) + "|" + a + (b != null ? "|" + b : "");
+  }
   function bankAdd(id, reason) {
     var st = load(), b = st.bank, old = b[id];
     if (reason === "guessed" && old) return false;   // already in the bank: leave its schedule alone
@@ -339,12 +443,19 @@
     if (!ids.length) return null;
     return ids.map(function (i) { return b[i].due; }).sort()[0];
   }
-  function parseId(id) { var p = id.split("|"); return { kind: p[0], ch: p[1], a: p[2], b: p[3] }; }
+  function parseId(id) {
+    var p = id.split("|"), tok = p[1] || "ch01";
+    var subj = "physics", chid = tok;
+    if (tok.indexOf(":") >= 0) { var sp = tok.split(":"); subj = sp[0]; chid = sp[1]; }
+    return { kind: p[0], ch: tok, subj: subj, chid: chid, chKey: chKeyOf(subj, chid), a: p[2], b: p[3] };
+  }
+  function itemChapter(id) { return CHAPTERS[parseId(id).chKey] || null; }
   function itemExists(id) {
-    var p = parseId(id);
-    if (p.kind === "c") { var s = stopById(p.a); return !!(s && s.quest.checks[+p.b]); }
-    if (p.kind === "d") { var d = getDeriv(p.a); return !!(d && d.steps[+p.b]); }
-    if (p.kind === "b") return !!getBoard(p.a);
+    var p = parseId(id), ch = CHAPTERS[p.chKey];
+    if (!ch) return false;
+    if (p.kind === "c") { var s = stopById(p.a, ch); return !!(s && s.quest.checks[+p.b]); }
+    if (p.kind === "d") { var d = getDeriv(p.a, ch); return !!(d && d.steps[+p.b]); }
+    if (p.kind === "b") return !!getBoard(p.a, ch);
     return false;
   }
 
@@ -390,7 +501,7 @@
   function updateChrome() {
     xpEl.innerHTML = ICON.bolt + " " + load().xp + " XP";
     var n = 0;
-    try { n = CH ? dueIds().filter(itemExists).length : 0; } catch (e) { n = 0; }
+    try { n = CHAPTER_LIST.length ? dueIds().filter(itemExists).length : 0; } catch (e) { n = 0; }
     if (n > 0) { dueEl.hidden = false; dueEl.textContent = n; dueEl.setAttribute("aria-label", n + " due"); } else dueEl.hidden = true;
     updateSyncPill();
   }
@@ -408,53 +519,96 @@
   function isFocus() { return load().theme === "focus"; }
 
   /* ---------- home ---------- */
+  function pickNextStop(subjFilter) {
+    var st = load();
+    // Prefer the chapter the student was most recently studying (if it matches the filter)
+    var order = CHAPTER_LIST.slice();
+    if (subjFilter && subjFilter !== "all") {
+      order = order.filter(function (e) { return e.subj === subjFilter; });
+    } else if (st.lastChapter && CHAPTERS[st.lastChapter]) {
+      order.sort(function (a, b) { return a.key === st.lastChapter ? -1 : b.key === st.lastChapter ? 1 : 0; });
+    }
+    for (var i = 0; i < order.length; i++) {
+      var ch = order[i].ch;
+      var s = ch.stops.filter(function (x) { return !isDone(x.id, st, ch); })[0];
+      if (s) return { ch: ch, s: s };
+    }
+    return null;
+  }
   function homeView() {
     setHeader("HSC Board Prep", null, { tab: "home" });
-    var left = daysLeft(catalog.examDate), dt = doneToday(), pl = planInfo(), remaining = Math.max(0, pl.pace - dt);
-    var prog = chapterProgress(), st = load(), due = dueIds().filter(itemExists).length;
-    var h = "", ri = resumeInfo(), rr = roundRestore(), nextStop = CH.stops.filter(function (s) { return !isDone(s.id); })[0];
-    var showRound = !!rr && (!ri || (rr.at || 0) > ri.at);
+    var st = load(), left = daysLeft(catalog.examDate), dt = doneToday(st);
+    var pl = planInfo(st, homeSubj), remaining = Math.max(0, pl.pace - dt);
+    var totProg = totalActiveProgress(st), due = dueIds(st).filter(itemExists).length;
+    var h = "";
+
+    // Subject filter pills
+    h += '<div class="pills-row" role="group" aria-label="Filter by subject">' +
+      '<button type="button" class="pill-btn" data-act="home-subj" data-subj="all" aria-pressed="' + (homeSubj === "all") + '">All</button>' +
+      catalog.subjects.map(function (sub) {
+        return '<button type="button" class="pill-btn" data-act="home-subj" data-subj="' + esc(sub.id) + '" aria-pressed="' + (homeSubj === sub.id) + '">' + esc(sub.title) + "</button>";
+      }).join("") + "</div>";
+
+    var ri = resumeInfoAll(), rr = roundRestoreAll(), nextPair = pickNextStop(homeSubj);
+    var showRound = !!rr && (!ri || (rr.run.at || 0) > ri.at);
     if (showRound) {
-      h += '<a class="card cont-card" href="' + BASE + '/round/run"><span class="num">' + ICON.play + '</span><span class="grow"><b>Continue: Board round · question ' + (rr.i + 1) + " of " + rr.ids.length + '</b><br><span class="small">Pick up where you stopped</span></span>' + ICON.chev + "</a>";
+      h += '<a class="card cont-card" href="' + chBase(rr.ch) + '/round/run"><span class="num">' + ICON.play + '</span><span class="grow"><b>Continue: ' + esc(chShortLabel(rr.ch)) + ' Board round · Q' + (rr.run.i + 1) + " of " + rr.run.ids.length + '</b><br><span class="small">Pick up where you stopped</span></span>' + ICON.chev + "</a>";
     } else if (ri) {
-      h += '<a class="card cont-card" href="' + BASE + "/" + ri.s.id + '/quest"><span class="num">' + ICON.play + '</span><span class="grow"><b>Continue: ' + esc(ri.s.title) + " · " + progressText(ri.q) + '</b><br><span class="small">Pick up where you stopped</span></span>' + ICON.chev + "</a>";
-    } else if (nextStop) {
-      h += '<a class="card cont-card" href="' + BASE + "/" + nextStop.id + '/quest"><span class="num">' + ICON.play + '</span><span class="grow"><b>Next up: ' + esc(nextStop.title) + '</b><br><span class="small">Stop ' + (stopIndex(nextStop.id) + 1) + " · textbook p. " + esc(nextStop.page) + " · start the quest</span></span>" + ICON.chev + "</a>";
+      h += '<a class="card cont-card" href="' + chBase(ri.ch) + "/" + ri.s.id + '/quest"><span class="num">' + ICON.play + '</span><span class="grow"><b>Continue: ' + esc(ri.s.title) + " · " + progressText(ri.q) + '</b><br><span class="small">' + esc(chShortLabel(ri.ch)) + ' · pick up where you stopped</span></span>' + ICON.chev + "</a>";
+    } else if (nextPair) {
+      h += '<a class="card cont-card" href="' + chBase(nextPair.ch) + "/" + nextPair.s.id + '/quest"><span class="num">' + ICON.play + '</span><span class="grow"><b>Next up: ' + esc(nextPair.s.title) + '</b><br><span class="small">' + esc(chShortLabel(nextPair.ch)) + ' · Stop ' + (stopIndex(nextPair.s.id, nextPair.ch) + 1) + " · p. " + esc(nextPair.s.page) + "</span></span>" + ICON.chev + "</a>";
     }
     if (isFocus()) {
       h += '<div class="card countdown"><div class="cd-num">' + left + '</div><div class="cd-lab">days to the board exam · 1 February 2027</div>' +
-        '<div class="bar thin amber" role="progressbar" aria-valuenow="' + prog.pct + '" aria-valuemin="0" aria-valuemax="100" aria-label="Chapter 1 progress"><i style="width:' + prog.pct + '%"></i></div>' +
-        '<div class="cd-foot small muted"><span>Chapter 1: ' + prog.done + " of " + prog.total + ' stops done</span><span>Streak ' + streak() + ' d · ' + st.xp + ' XP</span></div></div>';
+        '<div class="bar thin amber" role="progressbar" aria-valuenow="' + totProg.pct + '" aria-valuemin="0" aria-valuemax="100" aria-label="Active chapters progress"><i style="width:' + totProg.pct + '%"></i></div>' +
+        '<div class="cd-foot small muted"><span>Active chapters: ' + totProg.done + " of " + totProg.total + ' stops done</span><span>Streak ' + streak(st) + ' d · ' + st.xp + ' XP</span></div></div>';
     } else {
-      h += '<div class="card streak">' + ICON.flame + '<div class="grow"><b class="s-big">' + streak() + '-day streak</b>' +
+      h += '<div class="card streak">' + ICON.flame + '<div class="grow"><b class="s-big">' + streak(st) + '-day streak</b>' +
         '<div class="muted">' + (remaining ? remaining + " more today" : "Today's target done") + '</div></div>' +
         '<div class="s-days"><b>' + left + '</b><span>days to exam</span></div></div>';
     }
     if (due > 0) {
-      h += '<a class="card review-card" href="#/review"><span class="num amber">' + due + '</span><span class="grow"><b>Review: ' + due + ' due</b><br><span class="muted small">Redo what you got wrong, a few minutes</span></span>' + ICON.chev + "</a>";
+      h += '<a class="card review-card" href="#/review"><span class="num amber">' + due + '</span><span class="grow"><b>Review: ' + due + ' due</b><br><span class="muted small">Redo what you got wrong across subjects</span></span>' + ICON.chev + "</a>";
     }
-    h += planHTML(pl) + gaugeHTML();
-    var shownId = showRound ? null : ri ? ri.s.id : (nextStop && nextStop.id);
-    var next = CH.stops.filter(function (s) { return !isDone(s.id) && s.id !== shownId; }).slice(0, Math.max(0, (remaining || 1) - 1));
+    h += planHTML(pl) + homeGaugeHTML(st, homeSubj);
+
+    // Today's target
+    var shownKey = showRound ? null : ri ? K(ri.s.id, ri.ch) : (nextPair ? K(nextPair.s.id, nextPair.ch) : null);
+    var targetPool = [];
+    CHAPTER_LIST.forEach(function (e) {
+      if (homeSubj !== "all" && e.subj !== homeSubj) return;
+      e.ch.stops.forEach(function (s) {
+        if (!isDone(s.id, st, e.ch) && K(s.id, e.ch) !== shownKey) targetPool.push({ ch: e.ch, s: s });
+      });
+    });
+    var nextItems = targetPool.slice(0, Math.max(0, (remaining || 1) - 1));
     h += '<div class="card"><h2>' + (remaining ? "Today's target" : "Target done for today") + "</h2>";
     h += '<p class="muted small">Today: ' + Math.min(dt, pl.pace) + " of " + pl.pace + " stops</p>";
-    if (!nextStop) h += "<p>Chapter 1 complete. More chapters are coming soon.</p>";
-    else if (!next.length) h += '<p class="muted small">Start with the card at the top.</p>';
-    h += '<ul class="list">' + next.map(function (s) {
-      var n = stopIndex(s.id) + 1;
-      return '<li><a class="item" href="' + BASE + "/" + s.id + '"><span class="num">' + n + '</span>' +
-        '<span class="grow"><b>' + esc(s.title) + '</b><br><span class="muted small">Textbook p. ' + s.page + "</span></span>" + ICON.chev + "</a></li>";
+    if (!nextPair && !targetPool.length) h += "<p>All active chapters here are complete. More chapters are coming soon.</p>";
+    else if (!nextItems.length) h += '<p class="muted small">Start with the card at the top.</p>';
+    h += '<ul class="list">' + nextItems.map(function (it) {
+      var n = stopIndex(it.s.id, it.ch) + 1;
+      return '<li><a class="item" href="' + chBase(it.ch) + "/" + it.s.id + '"><span class="num">' + n + '</span>' +
+        '<span class="grow"><b>' + esc(it.s.title) + '</b><br><span class="muted small">' + esc(chShortLabel(it.ch)) + ' · p. ' + esc(it.s.page) + "</span></span>" + ICON.chev + "</a></li>";
     }).join("") + "</ul></div>";
-    var phy = catalog.subjects.filter(function (s) { return s.id === SUBJ; })[0];
-    h += '<div class="card"><h2>Physics</h2><ul class="list">' + phy.chapters.map(function (c) {
-      if (!c.file) return '<li><div class="soon"><span class="num">' + c.number + '</span><span class="grow">' + esc(c.title) + '<br><span class="small">Coming soon</span></span></div></li>';
-      return '<li><a class="item" href="#/' + SUBJ + "/" + c.id + '"><span class="num">' + c.number + '</span>' +
-        '<span class="grow"><b>' + esc(c.title) + '</b><div class="bar" style="margin-top:6px"><i style="width:' + prog.pct + '%"></i></div>' +
-        '<span class="muted small">' + prog.done + " of " + prog.total + " stops</span></span>" + ICON.chev + "</a>" +
-        '<a class="rlink" href="' + BASE + '/round"><span class="ricon">' + ICON.trophy + '</span><span class="grow"><b>Board round</b><br><span class="muted small">' + CH.board.length + " past-paper questions · open now</span>" + (roundComplete() ? "<br>" + badgeHTML("home") : "") + "</span>" + ICON.chev + "</a></li>";
-    }).join("") + "</ul></div>";
+
+    // Subjects & Chapters
+    var subsToShow = homeSubj === "all" ? catalog.subjects : catalog.subjects.filter(function (s) { return s.id === homeSubj; });
+    subsToShow.forEach(function (sub) {
+      var liveCount = sub.chapters.filter(function (c) { return !!CHAPTERS[chKeyOf(sub.id, c.id)]; }).length;
+      h += '<div class="card"><div class="row"><h2 class="grow">' + esc(sub.title) + '</h2><span class="small muted">' + liveCount + ' of ' + sub.chapters.length + ' live</span></div><ul class="list">' +
+        sub.chapters.map(function (c) {
+          var key = chKeyOf(sub.id, c.id), chObj = CHAPTERS[key];
+          if (!chObj) return '<li><div class="soon"><span class="num">' + c.number + '</span><span class="grow">' + esc(c.title) + '<br><span class="small">Coming soon</span></span></div></li>';
+          var p = chapterProgress(st, chObj), rc = roundComplete(st, key);
+          return '<li><a class="item" href="' + chBase(chObj) + '"><span class="num">' + c.number + '</span>' +
+            '<span class="grow"><b>' + esc(c.title) + '</b><div class="bar" style="margin-top:6px"><i style="width:' + p.pct + '%"></i></div>' +
+            '<span class="muted small">' + p.done + " of " + p.total + " stops</span></span>" + ICON.chev + "</a>" +
+            '<a class="rlink" href="' + chBase(chObj) + '/round"><span class="ricon">' + ICON.trophy + '</span><span class="grow"><b>Board round</b><br><span class="muted small">' + chObj.board.length + " exam questions · open now</span>" + (rc ? "<br>" + badgeHTML("home", st, chObj) : "") + "</span>" + ICON.chev + "</a></li>";
+        }).join("") + "</ul></div>";
+    });
     if (!isFocus()) {
-      h += '<div class="stats"><div class="stat"><b>' + st.xp + '</b><span>XP</span></div><div class="stat"><b>' + prog.done + "/" + prog.total + '</b><span>stops done</span></div><div class="stat"><b>' + bankIds().length + '</b><span>in mistake bank</span></div></div>';
+      h += '<div class="stats"><div class="stat"><b>' + st.xp + '</b><span>XP</span></div><div class="stat"><b>' + totProg.done + "/" + totProg.total + '</b><span>stops done</span></div><div class="stat"><b>' + bankIds(st).filter(itemExists).length + '</b><span>in mistake bank</span></div></div>';
     }
     app.innerHTML = h;
   }
@@ -472,19 +626,22 @@
     return '<svg class="zig-svg" viewBox="0 0 100 ' + (n * ZH) + '" preserveAspectRatio="none" aria-hidden="true">' + segs + "</svg>";
   }
   function chapterView() {
-    setHeader("Ch " + CH.number + " · " + CH.title, "#/", { xp: true, tab: "map" });
+    setHeader(chShortLabel(CH) + " · " + CH.title, "#/", { xp: true, tab: "map" });
     var prog = chapterProgress();
     var firstOpen = CH.stops.filter(function (s) { return !isDone(s.id); })[0];
+    var startPage = CH.startPage || 1;
     var h = '<div class="card"><div class="row"><div class="grow"><b>' + prog.done + " of " + prog.total + ' stops</b>' +
       '<div class="bar" style="margin-top:6px"><i style="width:' + prog.pct + '%"></i></div></div><b>' + prog.pct + '%</b></div>' +
       (roundComplete() ? '<div class="cb-row">' + badgeHTML("page") + "</div>" : "") +
-      '<div class="chips">' + bookChip(CH.book, 1, "Chapter in textbook") + "</div>" +
+      '<div class="chips">' + bookChip(CH.book, startPage, "Chapter in textbook") + "</div>" +
       '<p class="note">Textbook pages ' + esc(CH.printedPages) + ". The Drive viewer can't jump to a page, so use the PDF page number shown.</p></div>";
     h += gaugeHTML();
     var pyqN = CH.board.filter(isBoardPYQ).length, impN = CH.board.length - pyqN;
+    var drillTitle = CH.drillLabel || "Derivation drills";
+    var formTitle = CH.formulaLabel || "Formula card";
     h += '<div class="tiles"><a class="tile" href="' + BASE + '/board"><b>Board questions</b><span class="muted small">' + pyqN + ' PYQs' + (impN ? ' + ' + impN + ' imp' : '') + '</span></a>' +
-      '<a class="tile" href="' + BASE + '/derive"><b>Derivation drills</b><span class="muted small">' + CH.derivations.length + ' derivations</span></a>' +
-      '<a class="tile" href="#/formulas"><b>Formula card</b><span class="muted small">All of Chapter 1</span></a></div>';
+      '<a class="tile" href="' + BASE + '/derive"><b>' + esc(drillTitle) + '</b><span class="muted small">' + CH.derivations.length + ' drills</span></a>' +
+      '<a class="tile" href="#/formulas"><b>' + esc(formTitle) + '</b><span class="muted small">All of Ch ' + CH.number + '</span></a></div>';
     if (isFocus()) {
       var order = CH.stops.map(function (s, i) { return { s: s, i: i, c: askedCount(s.id) }; })
         .sort(function (a, b) { return b.c - a.c || a.i - b.i; });
@@ -538,7 +695,8 @@
 
   /* ---------- board question card ---------- */
   function boardCard(q, withStop) {
-    var r = load().board[q.id], inBank = !!load().bank["b|" + CHID + "|" + q.id], open = !!revealed[q.id];
+    var bkey = bankId("b", q.id);
+    var r = load().board[q.id], inBank = !!load().bank[bkey], open = !!revealed[q.id];
     var s = stopById(q.stop);
     var h = '<article class="bq" data-q="' + esc(q.id) + '"><div class="bq-top">' + tag(boardTag(q)) +
       '<span class="marks">' + q.marks + (q.marks === 1 ? " mark" : " marks") + "</span>" +
@@ -550,7 +708,7 @@
     h += '<div class="answer"' + (open ? "" : " hidden") + "><b>Model answer</b><p>" + fm(q.answer) + "</p></div>";
     h += '<div class="rate"><button type="button" class="btn ok' + (r === "got" ? "" : " ghost") + '" data-act="rate-got" aria-pressed="' + (r === "got") + '">Got it</button>' +
       '<button type="button" class="btn warn' + (r === "need" || r === "practice" ? "" : " ghost") + '" data-act="rate-need" aria-pressed="' + (r === "need" || r === "practice") + '">Need practice</button></div>';
-    if ((r === "need" || r === "practice") && inBank) h += '<p class="small muted">In your mistake bank. Review: ' + niceDate(load().bank["b|" + CHID + "|" + q.id].due) + ".</p>";
+    if ((r === "need" || r === "practice") && inBank) h += '<p class="small muted">In your mistake bank. Review: ' + niceDate(load().bank[bkey].due) + ".</p>";
     return h + "</article>";
   }
 
@@ -571,9 +729,9 @@
         '<p class="note">Finish with at least ' + PASS_MARK + " of " + nChecks + " correct to complete this stop. Read the textbook section first for the full story.</p>") + "</div>";
     h += '<div class="card"><h2>Textbook sections</h2><ul class="sections">' +
       s.sections.map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ul>" +
-      '<div class="chips">' + bookChip(CH.book, s.page, "Std XII") +
-      s.figs.map(function (f) { return '<span class="chip">' + esc(f) + "</span>"; }).join("") + "</div></div>";
-    if (s.xi.length) {
+      '<div class="chips">' + bookChip(CH.book, s.page, (catalog.books[CH.book] && catalog.books[CH.book].label) || "Std XII") +
+      (s.figs || []).map(function (f) { return '<span class="chip">' + esc(f) + "</span>"; }).join("") + "</div></div>";
+    if (s.xi && s.xi.length) {
       h += '<div class="card"><h2>Builds on Std XI</h2><p class="muted small">Quick revision if this feels unfamiliar.</p><div class="chips">' +
         s.xi.map(function (x) { return bookChip("xi", x.page, x.label, "xi"); }).join("") + "</div></div>";
     }
@@ -598,7 +756,7 @@
   function ceOptions(chk) { return chk.type === "tf" ? ["True", "False"] : chk.options; }
   function ceAnswerIdx(chk) { return chk.type === "tf" ? (chk.answer ? 0 : 1) : chk.answer; }
   function ceAnswerText(chk) {
-    if (chk.type === "num") return chk.answer + " " + chk.unit;
+    if (chk.type === "num") return chk.answer + (chk.unit ? " " + chk.unit : "");
     return ceOptions(chk)[ceAnswerIdx(chk)];
   }
   function parseNum(s) {
@@ -610,7 +768,7 @@
     var c = ce.chk;
     if (c.type === "num") {
       var v = parseNum(ce.val);
-      return !isNaN(v) && Math.abs(v - c.answer) <= TOL * Math.abs(c.answer);
+      return !isNaN(v) && (c.answer === 0 ? Math.abs(v) <= 1e-6 : Math.abs(v - c.answer) <= TOL * Math.abs(c.answer));
     }
     return ce.sel === ceAnswerIdx(c);
   }
@@ -633,7 +791,7 @@
     h += '<p class="q">' + fm(c.q) + "</p>";
     var locked = st !== "ask";
     if (c.type === "num") {
-      h += '<div class="numrow"><input id="numin" class="numin" type="text" inputmode="decimal" autocomplete="off" aria-label="Your answer" placeholder="Your answer" value="' + esc(ce.val) + '"' + (locked ? " disabled" : "") + '><span class="unit">' + fm(c.unit) + "</span></div>";
+      h += '<div class="numrow"><input id="numin" class="numin" type="text" inputmode="decimal" autocomplete="off" aria-label="Your answer" placeholder="Your answer" value="' + esc(ce.val) + '"' + (locked ? " disabled" : "") + '><span class="unit">' + fm(c.unit || "") + "</span></div>";
     } else {
       h += '<div class="opts" role="radiogroup">' + ceOptions(c).map(function (o, i) {
         var cls = "opt";
@@ -680,7 +838,8 @@
     var s = stopById(stopId);
     if (!s) return errorView("That stop doesn't exist.");
     if (fresh) { var st = load(); delete st.qp[K(s.id)]; st.qpDel[K(s.id)] = Date.now(); save(); }
-    Q = (fresh ? null : restoreQuest(s)) || { stop: s, phase: "cards", ci: 0, ki: 0, ce: null, results: [], xp: 0, added: 0 };
+    Q = (fresh ? null : restoreQuest(s)) || { stop: s, chKey: curChKey(), phase: "cards", ci: 0, ki: 0, ce: null, results: [], xp: 0, added: 0 };
+    Q.chKey = curChKey();
     redraw = questRender; questRender();
   }
   function questRender() {
@@ -746,9 +905,10 @@
 
   /* ---------- board page ---------- */
   function boardView() {
-    setHeader("Board questions", BASE, { xp: true, tab: "map" });
-    var h = '<div class="card"><p>Previously asked Chapter 1 board questions (2022, 2023 and 2025) come first in every marks group, followed by derived important textbook questions. No duplicates.</p>' +
-      '<p class="note"><b>No 2024 paper available yet.</b> Tap “Need practice” to add a question to your mistake bank.</p></div>';
+    setHeader("Board questions · " + chShortLabel(CH), BASE, { xp: true, tab: "map" });
+    var note = CH.boardNote || "No 2024 paper available yet.";
+    var h = '<div class="card"><p>Previously asked ' + esc(chShortLabel(CH)) + ' board questions come first in every marks group, followed by derived important textbook questions. No duplicates.</p>' +
+      '<p class="note"><b>' + esc(note) + '</b> Tap “Need practice” to add a question to your mistake bank.</p></div>';
     [1, 2, 3, 4].forEach(function (m) {
       var list = CH.board.filter(function (b) { return b.marks === m; }).sort(boardPriorityCmp);
       if (!list.length) return;
@@ -759,16 +919,22 @@
   }
 
 
-  /* ---------- board round (final stop of the chapter, not one of the 14 stops) ---------- */
-  var RD = null;                   // { run, phase: "run" | "result" } for the round on screen
+  /* ---------- board round (final stop of each chapter, per-chapter storage) ---------- */
+  var RD = null;                   // { chKey, run, phase: "run" | "result" } for the round on screen
   var rTimer = null, tOff = 0;     // 1 s interval for the mock clock; test hook offset (ms)
   var MIN_PER_MARK = 90;           // seconds per mark in the timed mock
   var PASS_PCT = 80;
   var MODE_NAME = { m1: "1-mark questions", m2: "2-mark questions", m3: "3-mark questions", m4: "4-mark questions", most: "Most asked first", mock: "Timed mock" };
   function nowMs() { return Date.now() + tOff; }
-  function RS() { return load().round; }
+  function RS(st, chKey) {
+    var s = st || load(), key = chKey || curChKey();
+    if (key === "physics/ch01") return s.round;
+    if (!isObj(s.rounds)) s.rounds = {};
+    if (!isObj(s.rounds[key])) s.rounds[key] = blankRound();
+    return s.rounds[key];
+  }
   function validMode(m) { return Object.prototype.hasOwnProperty.call(MODE_NAME, m); }
-  function totalMarks(ids) { return ids.reduce(function (a, id) { var q = getBoard(id); return a + (q ? q.marks : 0); }, 0); }
+  function totalMarks(ids, ch) { return ids.reduce(function (a, id) { var q = getBoard(id, ch); return a + (q ? q.marks : 0); }, 0); }
   function qPoints(q) {
     var p = q.points;
     if (Array.isArray(p) && p.length && p.reduce(function (a, x) { return a + (+x.marks || 0); }, 0) === q.marks) return p;
@@ -805,10 +971,14 @@
     if (!isObj(m.last)) return '<span class="rscores">Not tried yet</span>';
     return '<span class="rscores">Best <b>' + (isObj(m.best) ? m.best.pct : m.last.pct) + '%</b> · Last <b>' + m.last.pct + "%</b></span>";
   }
-  function roundComplete(st) { return !!((st ? st.round : RS()).complete); }
-  function badgeText(st) { var r = st ? st.round : RS(); return "Chapter " + CH.number + " complete · best board round " + r.bestFull + "%"; }
-  function badgeHTML(where, st) {
-    return roundComplete(st) ? '<span class="cbadge" data-badge="' + where + '">' + ICON.trophy.replace('width="28" height="28"', 'width="16" height="16"') + " " + esc(badgeText(st)) + "</span>" : "";
+  function roundComplete(st, chKey) { return !!(RS(st, chKey).complete); }
+  function badgeText(st, ch) {
+    var target = ch || CH, r = RS(st, chKeyFor(target));
+    return "Chapter " + target.number + " complete · best board round " + r.bestFull + "%";
+  }
+  function badgeHTML(where, st, ch) {
+    var target = ch || CH;
+    return roundComplete(st, chKeyFor(target)) ? '<span class="cbadge" data-badge="' + where + '">' + ICON.trophy.replace('width="28" height="28"', 'width="16" height="16"') + " " + esc(badgeText(st, target)) + "</span>" : "";
   }
 
   /* clock: elapsed is counted from timestamps, so it stays right if the tab sleeps */
@@ -818,23 +988,31 @@
     var run = RD && RD.phase === "run" ? RD.run : null;
     if (!run) return;
     rebase(run); run.at = Date.now();
-    RS().run = run; save(silent ? { silentSync: true } : {});
+    RS(null, RD.chKey).run = run; save(silent ? { silentSync: true } : {});
   }
-  function roundRestore() {
-    var rs = RS(), r = rs.run;
+  function roundRestore(ch) {
+    var target = ch || CH, key = chKeyFor(target), rs = RS(null, key), r = rs.run;
     if (!r) return null;
-    var ok = isObj(r) && validMode(r.mode) && Array.isArray(r.ids) && r.ids.length && r.ids.every(function (id) { return !!getBoard(id); }) &&
+    var ok = isObj(r) && validMode(r.mode) && Array.isArray(r.ids) && r.ids.length && r.ids.every(function (id) { return !!getBoard(id, target); }) &&
       typeof r.i === "number" && r.i >= 0 && r.i < r.ids.length && Array.isArray(r.results) && r.results.length === r.i;
     if (!ok) { rs.run = null; rs.runDel = Date.now(); save(); return null; }
-    var q = getBoard(r.ids[r.i]), np = qPoints(q).length;
+    var q = getBoard(r.ids[r.i], target), np = qPoints(q).length;
     if (!Array.isArray(r.ticks)) r.ticks = [];
     r.ticks = r.ticks.slice(0, np).map(function (x) { return !!x; });
     while (r.ticks.length < np) r.ticks.push(false);
     r.rev = !!r.rev;
-    if (!(RD && RD.run === r)) { r.since = 0; r.resumed = true; }   // a reloaded mock comes back paused
+    if (!(RD && RD.chKey === key && RD.run === r)) { r.since = 0; r.resumed = true; }   // a reloaded mock comes back paused
     r.elapsed = +r.elapsed > 0 ? +r.elapsed : 0;
-    if (r.mode === "mock") { r.limit = totalMarks(r.ids) * MIN_PER_MARK; r.timeUp = !!r.timeUp; }
+    if (r.mode === "mock") { r.limit = totalMarks(r.ids, target) * MIN_PER_MARK; r.timeUp = !!r.timeUp; }
     return r;
+  }
+  function roundRestoreAll() {
+    var best = null;
+    CHAPTER_LIST.forEach(function (e) {
+      var r = roundRestore(e.ch);
+      if (r && (!best || (r.at || 0) > (best.run.at || 0))) best = { ch: e.ch, run: r };
+    });
+    return best;
   }
   function roundLeave() {
     if (rTimer) { clearInterval(rTimer); rTimer = null; }
@@ -864,7 +1042,7 @@
     var run = { mode: mode, ids: ids, i: 0, results: [], ticks: qPoints(getBoard(ids[0])).map(function () { return false; }), rev: false,
       elapsed: 0, since: 0, at: Date.now() };
     if (mode === "mock") { run.limit = totalMarks(ids) * MIN_PER_MARK; run.timeUp = false; run.since = nowMs(); }
-    RD = { run: run, phase: "run" };
+    RD = { chKey: curChKey(), run: run, phase: "run" };
     saveRound(false);
     if (location.hash === BASE + "/round/run") route(false); else location.hash = BASE + "/round/run";
   }
@@ -875,7 +1053,7 @@
     var st = load();
     st.boardAt[q.id] = Date.now();
     if (got >= q.marks) { st.board[q.id] = "got"; save(); }
-    else { st.board[q.id] = "practice"; bankAdd("b|" + CHID + "|" + q.id, "below full marks"); }
+    else { st.board[q.id] = "practice"; bankAdd(bankId("b", q.id), "below full marks"); }
     if (run.i < run.ids.length - 1) {
       run.i++; run.rev = false; run.ticks = qPoints(getBoard(run.ids[run.i])).map(function () { return false; });
       saveRound(false); roundRender(true);
@@ -896,17 +1074,18 @@
       if (got * 100 >= PASS_PCT * of) { if (!rs.complete) rec.newlyComplete = true; rs.complete = true; }
     }
     rec.full = full;
+    lastRoundChKey = curChKey();
     rs.last = rec; rs.run = null; rs.runDel = now; save({ immediate: true }); updateChrome();
-    RD = { run: null, phase: "result", rec: rec };
+    RD = { chKey: curChKey(), run: null, phase: "result", rec: rec };
     roundRender(true);
   }
 
   /* ---------- board round: pages ---------- */
   function roundPickerView() {
-    setHeader("Board round", BASE, { tab: "map" });
+    setHeader("Board round · " + chShortLabel(CH), BASE, { tab: "map" });
     var rs = RS(), run = roundRestore(), f = isFocus(), n = CH.board.length, tm = totalMarks(modeIds("most"));
     var h = '<div class="card round-intro' + (f ? " dense" : "") + '">' + (f ? "" : '<div class="r-art" aria-hidden="true">' + ICON.trophy.replace('width="28" height="28"', 'width="64" height="64"') + "</div>") +
-      '<div class="grow"><h2>Board round</h2><p class="small muted">' + n + " real board questions from Chapter " + CH.number + ", marked by you against examiner points. Try it any time.</p></div></div>";
+      '<div class="grow"><h2>Board round</h2><p class="small muted">' + n + " exam questions from " + esc(chShortLabel(CH)) + ", marked by you against examiner points. Try it any time.</p></div></div>";
     h += '<div class="card round-status" data-complete="' + roundComplete() + '">' + (roundComplete() ? '<p class="status-line">' + badgeHTML("page") + "</p>" :
       '<p class="status-line"><b>Chapter ' + CH.number + " is not complete yet.</b></p>") +
       '<p class="small muted">' + (roundComplete() ? "Keep practising to raise your best score." : "Score " + PASS_PCT + "% or more on a full round (Most asked first or Timed mock) to complete the chapter. By-marks rounds never count towards it.") + "</p></div>";
@@ -919,7 +1098,7 @@
         var c = CH.board.filter(function (b) { return b.marks === m; }).length;
         return '<button type="button" class="mk" data-act="round-start" data-mode="m' + m + '"' + (c ? "" : " disabled") + '><b>' + marksWord(m) + '</b><span class="small muted">' + c + (c === 1 ? " question" : " questions") + "</span>" + scoreLine("m" + m) + "</button>";
       }).join("") + "</div></div>";
-    h += '<div class="card rmode" data-mode-card="most"><div class="row"><div class="grow"><h2>Most asked first</h2><p class="small muted">All ' + n + " questions. Topics the papers ask most come first.</p>" + scoreLine("most") +
+    h += '<div class="card rmode" data-mode-card="most"><div class="row"><div class="grow"><h2>Most asked first</h2><p class="small muted">All ' + n + " questions. Previously asked PYQs come first.</p>" + scoreLine("most") +
       '</div></div><button type="button" class="btn primary block" data-act="round-start" data-mode="most">Start</button></div>';
     h += '<div class="card rmode" data-mode-card="mock"><div class="row"><div class="grow"><h2>Timed mock</h2><p class="small muted">All ' + n + ' questions, 1-mark ones first, then 2, 3 and 4. <b class="mockinfo">' + tm + " marks · " + fmtDur(tm * MIN_PER_MARK) + "</b> (1.5 minutes a mark).</p>" + scoreLine("mock") +
       '</div></div><button type="button" class="btn primary block" data-act="round-start" data-mode="mock">Start the clock</button></div>';
@@ -927,13 +1106,13 @@
     app.innerHTML = h;
   }
   function roundRunRoute(rerender) {
-    var run = roundRestore();
-    if (RD && RD.phase === "result" && !run) { redraw = function () { roundRender(false); }; return roundRender(true); }
+    var key = curChKey(), run = roundRestore();
+    if (RD && RD.chKey === key && RD.phase === "result" && !run) { redraw = function () { roundRender(false); }; return roundRender(true); }
     if (!run) {
-      if (RS().last) { RD = { run: null, phase: "result", rec: RS().last }; redraw = function () { roundRender(false); }; return roundRender(true); }
+      if (RS().last) { lastRoundChKey = key; RD = { chKey: key, run: null, phase: "result", rec: RS().last }; redraw = function () { roundRender(false); }; return roundRender(true); }
       location.hash = BASE + "/round"; return;
     }
-    if (!(RD && RD.phase === "run" && RD.run === run)) RD = { run: run, phase: "run" };
+    if (!(RD && RD.chKey === key && RD.phase === "run" && RD.run === run)) RD = { chKey: key, run: run, phase: "run" };
     redraw = function () { roundRender(false); };
     roundRender(!rerender);
   }
@@ -951,7 +1130,7 @@
   }
   function roundRender(scroll) {
     if (rTimer) { clearInterval(rTimer); rTimer = null; }
-    if (!RD) return roundPickerView();
+    if (!RD || RD.chKey !== curChKey()) return roundPickerView();
     var f = isFocus(), h = "";
     if (RD.phase === "result") {
       setHeader("Board round · result", BASE + "/round", { tab: "map" });
@@ -1021,22 +1200,23 @@
     return { opts: opts, correct: pos };
   }
   function deriveListView() {
-    setHeader("Derivation drills", BASE, { xp: true, tab: "map" });
-    var h = '<div class="card"><p>Build each derivation one line at a time. At every step pick the correct next line from three. Slips go to your mistake bank.</p></div>';
+    var dLabel = CH.drillLabel || "Derivation drills";
+    setHeader(dLabel + " · " + chShortLabel(CH), BASE, { xp: true, tab: "map" });
+    var h = '<div class="card"><p>Build each step-by-step solution one line at a time. At every step pick the correct next line from three. Slips go to your mistake bank.</p></div>';
     h += CH.derivations.map(function (d) {
       var s = stopById(d.stop);
       return '<div class="card"><h2>' + fm(d.title) + "</h2>" +
-        '<p class="small muted">Stop ' + (stopIndex(d.stop) + 1) + ": " + esc(s.title) + " · Textbook p. " + d.page + " · " + d.steps.length + " steps</p>" +
-        (d.asked.length ? '<div class="tags">' + d.asked.map(function (a) { return tag("Asked " + a); }).join("") + "</div>" :
-          '<p class="small muted">Not asked in the papers we have (2024 paper not available).' + (d.related ? " Related questions: " + d.related.join(", ") + "." : "") + "</p>") +
+        '<p class="small muted">Stop ' + (stopIndex(d.stop) + 1) + ": " + esc(s ? s.title : d.stop) + " · Textbook p. " + d.page + " · " + d.steps.length + " steps</p>" +
+        (d.asked && d.asked.length ? '<div class="tags">' + d.asked.map(function (a) { return tag("Asked " + a); }).join("") + "</div>" :
+          '<p class="small muted">High-yield Balbharati drill.' + (d.related ? " Related questions: " + d.related.join(", ") + "." : "") + "</p>") +
         '<a class="btn primary block" style="margin-top:12px" href="' + BASE + "/derive/" + d.id + '">Start drill</a></div>';
     }).join("");
     app.innerHTML = h;
   }
   function drillStart(id) {
     var d = getDeriv(id);
-    if (!d) return errorView("That derivation doesn't exist.");
-    D = { d: d, i: 0, slips: 0, slipped: false, wrongPicks: [], done: false };
+    if (!d) return errorView("That drill doesn't exist.");
+    D = { d: d, chKey: curChKey(), i: 0, slips: 0, slipped: false, wrongPicks: [], done: false };
     redraw = drillRender; drillRender();
   }
   function drillRender() {
@@ -1056,11 +1236,11 @@
         }).join("") + "</div>" +
         (D.wrongPicks.length ? '<div class="fb bad" role="status"><b>Not this one.</b> Look at what the last line gave you and try another option.</div>' : "") + "</div>";
     } else {
-      h += '<div class="card result pass"><h2>Full derivation</h2>' +
+      h += '<div class="card result pass"><h2>Complete solution</h2>' +
         '<ol class="dlines full">' + d.steps.map(function (s) { return "<li>" + fm(s.line) + (s.note ? '<div class="small muted">' + fm(s.note) + "</div>" : "") + "</li>"; }).join("") + "</ol>" +
         '<p class="muted">' + (D.slips ? D.slips + " step" + (D.slips > 1 ? "s" : "") + " needed another try. Added to your mistake bank." : "No slips. Well done.") + "</p>" +
-        (d.asked.length ? '<div class="tags">' + d.asked.map(function (a) { return tag("Asked " + a); }).join("") + "</div>" : "") + "</div>" +
-        '<div class="stack"><button type="button" class="btn primary block" data-act="drill-again">Drill again</button><a class="btn ghost block" href="' + BASE + '/derive">All derivations</a></div>';
+        (d.asked && d.asked.length ? '<div class="tags">' + d.asked.map(function (a) { return tag("Asked " + a); }).join("") + "</div>" : "") + "</div>" +
+        '<div class="stack"><button type="button" class="btn primary block" data-act="drill-again">Drill again</button><a class="btn ghost block" href="' + BASE + '/derive">All drills</a></div>';
     }
     app.innerHTML = h;
   }
@@ -1076,33 +1256,45 @@
       }
     } else {
       D.wrongPicks.push(k);
-      if (!D.slipped) { D.slipped = true; D.slips++; bankAdd("d|" + CHID + "|" + d.id + "|" + D.i, "slip"); }
+      if (!D.slipped) { D.slipped = true; D.slips++; bankAdd(bankId("d", d.id, D.i), "slip"); }
     }
     drillRender();
   }
 
-  /* ---------- formula card ---------- */
+  /* ---------- formula card (multi-chapter) ---------- */
   function formulasView() {
-    setHeader("Formula card · Ch 1", null, { xp: true, tab: "formulas" });
-    var h = '<div class="card fhead"><div class="row"><p class="grow">Every Chapter 1 formula, grouped by stop, with the textbook page. Balbharati notation.</p>' +
+    var fKey = formulaChKey && CHAPTERS[formulaChKey] ? formulaChKey : curChKey();
+    var ch = CHAPTERS[fKey] || CH;
+    var label = ch.formulaLabel || "Formula card";
+    setHeader(label + " · " + chShortLabel(ch), null, { xp: true, tab: "formulas" });
+    var h = "";
+    if (CHAPTER_LIST.length > 1) {
+      h += '<div class="pills-row noprint" role="group" aria-label="Choose chapter">' +
+        CHAPTER_LIST.map(function (e) {
+          return '<button type="button" class="pill-btn" data-act="formula-ch" data-ch="' + esc(e.key) + '" aria-pressed="' + (e.key === fKey) + '">' + esc(chShortLabel(e.ch)) + "</button>";
+        }).join("") + "</div>";
+    }
+    h += '<div class="card fhead"><div class="row"><p class="grow"><b>' + esc(chShortLabel(ch)) + ": " + esc(ch.title) + '</b><br><span class="small muted">Grouped by stop, with textbook pages. Balbharati notation.</span></p>' +
       '<button type="button" class="btn ghost noprint" data-act="print">Print</button></div></div>';
-    h += CH.formulas.map(function (g) {
-      var s = stopById(g.stop);
-      return '<section class="card fgroup"><h2><a href="' + BASE + "/" + s.id + '">' + (stopIndex(s.id) + 1) + ". " + esc(s.title) + "</a></h2>" +
+    h += ch.formulas.map(function (g) {
+      var s = stopById(g.stop, ch);
+      return '<section class="card fgroup"><h2><a href="' + chBase(ch) + "/" + g.stop + '">' + (stopIndex(g.stop, ch) + 1) + ". " + esc(s ? s.title : g.stop) + "</a></h2>" +
         g.items.map(function (f) {
-          return '<div class="frm"><div class="fn">' + esc(f.n) + '<span class="fp">p. ' + f.p + "</span></div><div class=\"ff\">" + fm(f.f) + "</div>" +
+          return '<div class="frm"><div class="fn">' + esc(f.n) + '<span class="fp">p. ' + esc(f.p) + "</span></div><div class=\"ff\">" + fm(f.f) + "</div>" +
             (f.s ? '<div class="fs">' + fm(f.s) + "</div>" : "") + "</div>";
         }).join("") + "</section>";
     }).join("");
     app.innerHTML = h;
   }
 
-  /* ---------- review ---------- */
+  /* ---------- review (unified across all subjects & chapters) ---------- */
   function itemLabel(id) {
-    var p = parseId(id);
-    if (p.kind === "c") { var s = stopById(p.a), c = s.quest.checks[+p.b]; return "Stop " + (stopIndex(s.id) + 1) + ", check " + (+p.b + 1) + ": " + plain(c.q); }
-    if (p.kind === "d") { var d = getDeriv(p.a); return "Derivation: " + plain(d.title) + ", step " + (+p.b + 1); }
-    var b = getBoard(p.a); return "Board " + boardTag(b) + ": " + plain(b.text);
+    var p = parseId(id), ch = CHAPTERS[p.chKey];
+    if (!ch) return id;
+    var prefix = CHAPTER_LIST.length > 1 ? "[" + chShortLabel(ch) + "] " : "";
+    if (p.kind === "c") { var s = stopById(p.a, ch), c = s.quest.checks[+p.b]; return prefix + "Stop " + (stopIndex(s.id, ch) + 1) + ", check " + (+p.b + 1) + ": " + plain(c.q); }
+    if (p.kind === "d") { var d = getDeriv(p.a, ch); return prefix + "Drill: " + plain(d.title) + ", step " + (+p.b + 1); }
+    var b = getBoard(p.a, ch); return prefix + "Board " + boardTag(b) + ": " + plain(b.text);
   }
   function trunc(s, n) { return s.length > n ? s.slice(0, n - 1).replace(/\s+\S*$/, "") + "…" : s; }
   function reviewStart() {
@@ -1114,15 +1306,22 @@
   function reviewSetup() {
     R.shown = false; R.ds = null; R.ce = null; R.ticks = [];
     if (R.i >= R.queue.length) return;
-    var p = parseId(R.queue[R.i]);
-    if (p.kind === "c") R.ce = newCE(stopById(p.a).quest.checks[+p.b], "review");
+    var p = parseId(R.queue[R.i]), ch = CHAPTERS[p.chKey];
+    if (!ch) return;
+    if (p.kind === "c") R.ce = newCE(stopById(p.a, ch).quest.checks[+p.b], "review");
     if (p.kind === "d") R.ds = { picked: null };
-    if (p.kind === "b") R.ticks = qPoints(getBoard(p.a)).map(function () { return false; });
+    if (p.kind === "b") R.ticks = qPoints(getBoard(p.a, ch)).map(function () { return false; });
   }
   function reviewByPoints(id) { var it = load().bank[id]; return !!(it && it.reason === "below full marks"); }
   function reviewRoundStart() {
-    var rec = RS().last, ids = [];
-    if (rec && Array.isArray(rec.results)) ids = rec.results.filter(function (r) { return r.got < r.of; }).map(function (r) { return "b|" + CHID + "|" + r.id; }).filter(function (id) { return itemExists(id) && load().bank[id]; });
+    var key = lastRoundChKey && CHAPTERS[lastRoundChKey] ? lastRoundChKey : curChKey();
+    var ch = CHAPTERS[key] || CH;
+    var rec = RS(null, key).last, ids = [];
+    if (rec && Array.isArray(rec.results)) {
+      ids = rec.results.filter(function (r) { return r.got < r.of; })
+        .map(function (r) { return bankId("b", r.id, null, ch); })
+        .filter(function (id) { return itemExists(id) && load().bank[id]; });
+    }
     R = { queue: ids, i: 0, ok: 0, bad: 0, ce: null, ds: null, shown: false, ticks: [] };
     redraw = reviewRender;
     reviewSetup(); reviewRender();
@@ -1131,7 +1330,7 @@
     setHeader("Review", null, { tab: "review" });
     var h = "";
     if (!R.queue.length) {
-      var nd = nextDueDate(), n = bankIds().length;
+      var nd = nextDueDate(), n = bankIds().filter(itemExists).length;
       h += '<div class="card center empty"><h2>' + (nd ? "Nothing due — next review on " + niceDate(nd) : "Nothing due") + "</h2>" +
         '<p class="muted">' + (n ? "Your mistake bank has " + n + " item" + (n > 1 ? "s" : "") + " waiting for their day." : "Your mistake bank is empty. Wrong answers and “Need practice” questions will show up here.") + "</p>" +
         (n ? '<a class="btn ghost" href="#/review/all">See all items in the bank</a>' : '<a class="btn primary" href="' + BASE + '">Go to the map</a>') + "</div>";
@@ -1141,13 +1340,13 @@
         '<p class="muted">' + R.ok + " correct" + (R.bad ? ", " + R.bad + " to try again tomorrow" : "") + ". " + (nd2 ? "Next review on " + niceDate(nd2) + "." : "Your mistake bank is now empty.") + "</p></div>" +
         '<div class="stack"><a class="btn primary block" href="#/">Home</a><a class="btn ghost block" href="#/review/all">See all items in the bank</a></div>';
     } else {
-      var id = R.queue[R.i], p = parseId(id);
+      var id = R.queue[R.i], p = parseId(id), ch = CHAPTERS[p.chKey];
       h += steps(R.queue.length, R.i);
       h += '<p class="muted small center">Item ' + (R.i + 1) + " of " + R.queue.length + "</p>";
-      h += '<div class="rtags center">' + reasonTag(id) + (load().bank[id] && load().bank[id].prio ? ' <span class="small muted">You were sure but wrong, so this comes first.</span>' : "") + "</div>";
+      h += '<div class="rtags center">' + (ch ? '<span class="ch-tag">' + esc(chShortLabel(ch)) + '</span>' : "") + reasonTag(id) + (load().bank[id] && load().bank[id].prio ? ' <span class="small muted">You were sure but wrong, so this comes first.</span>' : "") + "</div>";
       if (p.kind === "c") h += ceHTML(R.ce, "Re-check");
-      else if (p.kind === "d") h += reviewDrillHTML(getDeriv(p.a), +p.b);
-      else h += reviewBoardHTML(getBoard(p.a));
+      else if (p.kind === "d") h += reviewDrillHTML(getDeriv(p.a, ch), +p.b);
+      else h += reviewBoardHTML(getBoard(p.a, ch), id);
     }
     app.innerHTML = h;
     window.scrollTo(0, 0);
@@ -1168,11 +1367,11 @@
     if (locked) h += '<div class="fb ' + (ds.picked === o.correct ? "good" : "bad") + '" role="status"><b>' + (ds.picked === o.correct ? "Correct." : "Not this one.") + "</b> " + (d.steps[idx].note ? fm(d.steps[idx].note) : "The correct line is marked.") + '</div><button type="button" class="btn primary block" data-act="rv-next">Next</button>';
     return h + "</div>";
   }
-  function reviewBoardHTML(q) {
+  function reviewBoardHTML(q, id) {
     var h = '<div class="card"><div class="bq-top">' + tag(boardTag(q)) + '<span class="marks">' + q.marks + (q.marks === 1 ? " mark" : " marks") + "</span></div>" +
       '<p class="bq-text">' + fm(q.text) + "</p>";
     if (q.options) h += '<ul class="bq-opts">' + q.options.map(function (o) { return "<li>" + fm(o) + "</li>"; }).join("") + "</ul>";
-    if (reviewByPoints("b|" + CHID + "|" + q.id)) {
+    if (reviewByPoints(id)) {
       if (!R.shown) h += '<p class="rinst">Write your answer on paper first.</p><button type="button" class="btn primary block" data-act="rv-written">I\'ve written my answer</button>';
       else h += '<div class="answer"><b>Model answer</b><p>' + fm(q.answer) + "</p></div>" + pointsHTML(q, R.ticks, "rv-tick") + '<button type="button" class="btn primary block" data-act="rv-score">Done</button>';
       return h + "</div>";
@@ -1207,25 +1406,55 @@
     app.innerHTML = h;
   }
 
-  /* ---------- my notes ---------- */
+  /* ---------- my notes (multi-chapter) ---------- */
+  function notesEntries(st, chFilter) {
+    st = st || load();
+    var out = [];
+    CHAPTER_LIST.forEach(function (e) {
+      if (chFilter && chFilter !== "all" && e.key !== chFilter) return;
+      e.ch.stops.forEach(function (s, idx) {
+        var v = st.notes[K(s.id, e.ch)];
+        if (v && v.trim()) out.push({ ch: e.ch, s: s, idx: idx, text: v.trim() });
+      });
+    });
+    return out;
+  }
   function notesText() {
-    var st = load(), out = ["HSC Physics, Chapter " + CH.number + ": " + CH.title + " (my notes)", ""];
-    CH.stops.forEach(function (s, i) {
-      var v = st.notes[K(s.id)];
-      if (v && v.trim()) { out.push((i + 1) + ". " + s.title); out.push(v.trim()); out.push(""); }
+    var st = load(), out = ["HSC Board Prep — My Notes", ""];
+    CHAPTER_LIST.forEach(function (e) {
+      var list = notesEntries(st, e.key);
+      if (!list.length) return;
+      out.push("=== " + chShortLabel(e.ch) + ": " + e.ch.title + " ===");
+      list.forEach(function (it) {
+        out.push((it.idx + 1) + ". " + it.s.title);
+        out.push(it.text);
+        out.push("");
+      });
     });
     return out.join("\n");
   }
   function notesView() {
     setHeader("My notes", null, { tab: "notes" });
-    var st = load(), any = CH.stops.filter(function (s) { return st.notes[K(s.id)] && st.notes[K(s.id)].trim(); });
+    var st = load(), allNotes = notesEntries(st, "all");
     var h = "";
-    if (!any.length) {
+    if (!allNotes.length) {
       h = '<div class="card center"><h2>No notes yet</h2><p class="muted">Open any stop and write in the notes box. ' + noteSyncCopy() + '.</p><a class="btn primary" href="' + BASE + '">Go to the map</a></div>';
     } else {
+      var chWithNotes = CHAPTER_LIST.filter(function (e) { return notesEntries(st, e.key).length > 0; });
+      if (chWithNotes.length > 1) {
+        h += '<div class="pills-row noprint" role="group" aria-label="Filter notes by chapter">' +
+          '<button type="button" class="pill-btn" data-act="notes-ch" data-ch="all" aria-pressed="' + (notesChFilter === "all") + '">All</button>' +
+          chWithNotes.map(function (e) {
+            return '<button type="button" class="pill-btn" data-act="notes-ch" data-ch="' + esc(e.key) + '" aria-pressed="' + (notesChFilter === e.key) + '">' + esc(chShortLabel(e.ch)) + "</button>";
+          }).join("") + "</div>";
+      } else {
+        notesChFilter = "all";
+      }
+      var shown = notesEntries(st, notesChFilter);
       h += '<div class="card"><p class="muted small">' + (SYNC && SYNC.isLinked() ? "Synced across your devices." : "Saved on this device only. Nothing is uploaded.") + '</p><div class="actions two"><button type="button" class="btn primary" data-act="notes-copy">Copy all</button><button type="button" class="btn ghost" data-act="notes-dl">Download .txt</button></div><p id="notes-msg" class="small muted" role="status"></p></div>';
-      h += any.map(function (s) {
-        return '<div class="card"><h2><a href="' + BASE + "/" + s.id + '">' + (stopIndex(s.id) + 1) + ". " + esc(s.title) + "</a></h2><p class=\"note-text\">" + esc(st.notes[K(s.id)].trim()) + "</p></div>";
+      h += shown.map(function (it) {
+        return '<div class="card">' + (CHAPTER_LIST.length > 1 ? '<p class="small muted" style="margin-bottom:4px"><span class="ch-tag">' + esc(chShortLabel(it.ch)) + '</span></p>' : "") +
+          '<h2><a href="' + chBase(it.ch) + "/" + it.s.id + '">' + (it.idx + 1) + ". " + esc(it.s.title) + "</a></h2><p class=\"note-text\">" + esc(it.text) + "</p></div>";
       }).join("");
     }
     app.innerHTML = h;
@@ -1287,7 +1516,7 @@
     app.innerHTML = h;
   }
 
-  /* ---------- teacher / parent view (#/teacher) ---------- */
+  /* ---------- teacher / parent view (#/teacher, multi-chapter) ---------- */
   function teacherFetch() {
     if (!SYNC || !SYNC.hasTeacherConfig()) return teacherView();
     TState.loading = true; TState.error = "";
@@ -1306,10 +1535,9 @@
       return '<div class="card"><h2>' + esc(name) + '</h2><p class="muted">No progress synced yet. Link the student\'s device first.</p></div>';
     }
     var st = normalizeState(entry.state);
-    var pl = planInfo(st), prog = chapterProgress(st), dt = doneToday(st), strk = streak(st), left = daysLeft(catalog.examDate);
+    var pl = planInfo(st, "all"), dt = doneToday(st), strk = streak(st), left = daysLeft(catalog.examDate);
     var due = dueIds(st).filter(itemExists);
     var prio = bankIds(st).filter(function (id) { return itemExists(id) && st.bank[id] && st.bank[id].prio; });
-    var cleanDrills = CH.derivations.filter(function (d) { return drillClean(d.id, st); }).length;
     var planLabel = pl.status === "on" ? "On track" : pl.status === "ahead" ? "Ahead by " + pl.n : "Behind by " + pl.n;
 
     var h = '<div class="card"><div class="t-head"><div class="grow"><h2>' + esc(name) + '</h2>' +
@@ -1322,26 +1550,32 @@
       '<div class="t-kpi"><b>' + st.xp + '</b><span>XP</span></div>' +
       '<div class="t-kpi"><b>' + left + ' d</b><span>to board exam</span></div></div>';
 
-    h += gaugeHTML(st);
+    h += homeGaugeHTML(st, "all");
 
-    h += '<div class="card"><h2>Chapter ' + CH.number + ": " + esc(CH.title) + '</h2>' +
-      '<div class="row"><div class="grow"><div class="bar"><i style="width:' + prog.pct + '%"></i></div></div><b>' + prog.done + "/" + prog.total + ' stops (' + prog.pct + "%)</b></div>" +
-      '<p class="small muted" style="margin-top:8px">Derivation drills clean: <b>' + cleanDrills + " of " + CH.derivations.length + "</b> · Board round best: <b>" + (st.round.bestFull ? st.round.bestFull + "%" : "Not tried") + "</b></p>" +
-      (roundComplete(st) ? '<div class="cb-row">' + badgeHTML("teacher", st) + "</div>" : "") +
-      (st.round.last ? '<p class="small muted" style="margin-top:6px">Last board round: ' + esc(MODE_NAME[st.round.last.mode] || st.round.last.mode) + " — <b>" + st.round.last.got + "/" + st.round.last.of + " (" + st.round.last.pct + "%)</b> on " + esc(niceDate(st.round.last.date)) + "</p>" : "");
-
-    var doneStops = CH.stops.filter(function (s) { return isDone(s.id, st); });
-    if (doneStops.length) {
-      h += '<details class="how"><summary>Completed stops (' + doneStops.length + ')</summary><ul class="t-list">' +
-        doneStops.map(function (s) {
-          return '<li><span>' + (stopIndex(s.id) + 1) + ". " + esc(s.title) + '</span><span class="small muted">' + esc(niceDate(st.done[K(s.id)])) + "</span></li>";
-        }).join("") + "</ul></details>";
-    }
-    h += "</div>";
+    CHAPTER_LIST.forEach(function (e) {
+      var ch = e.ch, prog = chapterProgress(st, ch), rs = RS(st, e.key);
+      var cleanDrills = ch.derivations.filter(function (d) { return drillClean(d.id, st); }).length;
+      var g = ch.examMarks ? gaugeData(st, ch) : null;
+      var doneStops = ch.stops.filter(function (s) { return isDone(s.id, st, ch); });
+      h += '<div class="card"><h2>' + esc(chShortLabel(ch)) + ": " + esc(ch.title) + '</h2>' +
+        '<div class="row"><div class="grow"><div class="bar"><i style="width:' + prog.pct + '%"></i></div></div><b>' + prog.done + "/" + prog.total + ' stops (' + prog.pct + "%)</b></div>" +
+        '<p class="small muted" style="margin-top:8px">' +
+        (g ? "Predicted: <b>" + g.pred + " / ~" + Math.round(g.avg) + " marks</b> · " : "") +
+        'Drills clean: <b>' + cleanDrills + "/" + ch.derivations.length + "</b> · Board round best: <b>" + (rs.bestFull ? rs.bestFull + "%" : "Not tried") + "</b></p>" +
+        (roundComplete(st, e.key) ? '<div class="cb-row">' + badgeHTML("teacher", st, ch) + "</div>" : "") +
+        (rs.last ? '<p class="small muted" style="margin-top:6px">Last board round: ' + esc(MODE_NAME[rs.last.mode] || rs.last.mode) + " — <b>" + rs.last.got + "/" + rs.last.of + " (" + rs.last.pct + "%)</b> on " + esc(niceDate(rs.last.date)) + "</p>" : "");
+      if (doneStops.length) {
+        h += '<details class="how"><summary>Completed stops (' + doneStops.length + ')</summary><ul class="t-list">' +
+          doneStops.map(function (s) {
+            return '<li><span>' + (stopIndex(s.id, ch) + 1) + ". " + esc(s.title) + '</span><span class="small muted">' + esc(niceDate(st.done[K(s.id, ch)])) + "</span></li>";
+          }).join("") + "</ul></details>";
+      }
+      h += "</div>";
+    });
 
     h += '<div class="card"><h2>Mistake bank watchlist</h2><p class="small muted"><b>' + bankIds(st).filter(itemExists).length + "</b> items in bank · <b>" + due.length + "</b> due now · <b>" + prio.length + "</b> confident mistakes (priority)</p>";
     if (prio.length) {
-      h += '<ul class="t-list">' + prio.slice(0, 8).map(function (id) {
+      h += '<ul class="t-list">' + prio.slice(0, 10).map(function (id) {
         return '<li><span>' + esc(trunc(itemLabel(id), 100)) + '</span>' + reasonTag(id, st) + "</li>";
       }).join("") + "</ul>";
     } else {
@@ -1349,11 +1583,11 @@
     }
     h += "</div>";
 
-    var noted = CH.stops.filter(function (s) { return st.notes[K(s.id)] && st.notes[K(s.id)].trim(); });
-    if (noted.length) {
-      h += '<div class="card"><details class="t-notes"><summary>Student notes (' + noted.length + ' stops)</summary>' +
-        noted.map(function (s) {
-          return '<div style="margin-top:10px"><b>' + (stopIndex(s.id) + 1) + ". " + esc(s.title) + '</b><p class="note-text small muted">' + esc(st.notes[K(s.id)].trim()) + "</p></div>";
+    var allNoted = notesEntries(st, "all");
+    if (allNoted.length) {
+      h += '<div class="card"><details class="t-notes"><summary>Student notes (' + allNoted.length + ' stops)</summary>' +
+        allNoted.map(function (it) {
+          return '<div style="margin-top:10px"><b>' + esc(chShortLabel(it.ch)) + " · " + (it.idx + 1) + ". " + esc(it.s.title) + '</b><p class="note-text small muted">' + esc(it.text) + "</p></div>";
         }).join("") + "</details></div>";
     }
     return h;
@@ -1395,10 +1629,10 @@
 
   /* ---------- apply merged remote state safely ---------- */
   function applyRemoteState(merged) {
-    var prevRound = mem ? JSON.stringify(mem.round) : "";
+    var prevRounds = mem ? JSON.stringify({ r: mem.round, rs: mem.rounds }) : "";
     mem = normalizeState(merged);
     save({ fromRemote: true });
-    if (RD && JSON.stringify(mem.round) !== prevRound) {
+    if (RD && JSON.stringify({ r: mem.round, rs: mem.rounds }) !== prevRounds) {
       if (rTimer) { clearInterval(rTimer); rTimer = null; }
       RD = null;
     }
@@ -1422,6 +1656,15 @@
     var act = t.getAttribute("data-act"), ce, q;
     var ctxCE = function () { return R && R.ce && location.hash.indexOf("#/review") === 0 ? R.ce : Q && Q.ce; };
     switch (act) {
+      case "home-subj":
+        homeSubj = t.getAttribute("data-subj") || "all";
+        return homeView();
+      case "formula-ch":
+        formulaChKey = t.getAttribute("data-ch") || curChKey();
+        return formulasView();
+      case "notes-ch":
+        notesChFilter = t.getAttribute("data-ch") || "all";
+        return notesView();
       case "card-next":
         if (Q.ci < Q.stop.quest.cards.length - 1) Q.ci++; else { Q.phase = "check"; Q.ki = 0; Q.ce = newCE(Q.stop.quest.checks[0], "quest"); }
         saveQuest(); return questRender();
@@ -1440,7 +1683,7 @@
         if (ce.chk.type === "num" ? isNaN(parseNum(ce.val)) : ce.sel == null) { ce.msg = ce.chk.type === "num" ? "Type a number first." : "Pick an answer first."; return redraw(); }
         if (!ce.conf) { ce.msg = "Choose Sure or Guessing first."; return redraw(); }
         ce.msg = "";
-        var okNow = ceIsCorrect(ce), cid = ce.mode === "quest" ? "c|" + CHID + "|" + Q.stop.id + "|" + Q.ki : R.queue[R.i];
+        var okNow = ceIsCorrect(ce), cid = ce.mode === "quest" ? bankId("c", Q.stop.id, Q.ki) : R.queue[R.i];
         if (ce.mode === "quest") {
           if (ce.attempt === 0) {   // first try decides what goes to the mistake bank
             if (!okNow) { if (bankAdd(cid, ce.conf === "sure" ? "confident mistake" : "missed")) Q.added++; ce.flag = ce.conf === "sure" ? "sure" : ""; }
@@ -1466,18 +1709,21 @@
         var bst = load();
         bst.board[id] = act === "rate-got" ? "got" : "need";
         bst.boardAt[id] = Date.now();
-        if (act === "rate-need") bankAdd("b|" + CHID + "|" + id, "need practice"); else save();
+        if (act === "rate-need") bankAdd(bankId("b", id), "need practice"); else save();
         q.outerHTML = boardCard(getBoard(id), location.hash.slice(-5) === "board");
         return;
       case "drill-pick": return drillPick(dataI(t));
       case "drill-again": return drillStart(D.d.id);
       case "rv-pick":
         R.ds.picked = dataI(t); return reviewRender();
-      case "rv-next": var pd = parseId(R.queue[R.i]); return reviewAdvance(R.ds.picked === stepOptions(getDeriv(pd.a), +pd.b).correct);
+      case "rv-next":
+        var pd = parseId(R.queue[R.i]), dch = CHAPTERS[pd.chKey];
+        return reviewAdvance(R.ds.picked === stepOptions(getDeriv(pd.a, dch), +pd.b).correct);
       case "rv-show": case "rv-written": R.shown = true; return reviewRender();
       case "rv-tick": R.ticks[dataI(t)] = !R.ticks[dataI(t)]; return reviewKeep();
       case "rv-score":
-        var rq = getBoard(parseId(R.queue[R.i]).a), rg = 0;
+        var pb = parseId(R.queue[R.i]), bch = CHAPTERS[pb.chKey];
+        var rq = getBoard(pb.a, bch), rg = 0;
         qPoints(rq).forEach(function (x, k) { if (R.ticks[k]) rg += +x.marks || 0; });
         return reviewAdvance(rg >= rq.marks);
       case "round-start": return roundStart(t.getAttribute("data-mode"));
@@ -1496,7 +1742,7 @@
         delete bkst.bank[bid]; bkst.bankDel[bid] = Date.now(); save(); updateChrome(); return bankListView();
       case "print": return window.print();
       case "notes-copy": return copyText(notesText()).then(function (ok) { setNotesMsg(ok ? "Copied to the clipboard." : "Could not copy. Use Download instead."); });
-      case "notes-dl": return setNotesMsg(downloadText("hsc-physics-ch1-notes.txt", notesText()) ? "Downloaded hsc-physics-ch1-notes.txt" : "Could not download on this device.");
+      case "notes-dl": return setNotesMsg(downloadText("hsc-study-notes.txt", notesText()) ? "Downloaded hsc-study-notes.txt" : "Could not download on this device.");
       case "pw-toggle":
         var inp = document.getElementById(t.getAttribute("data-target"));
         if (inp) { var show = inp.type === "password"; inp.type = show ? "text" : "password"; t.textContent = show ? "Hide" : "Show"; }
@@ -1575,9 +1821,10 @@
     var parts = rawHash.replace(/^#\/?/, "").split("/").filter(Boolean);
     if (!rerender) window.scrollTo(0, 0);
     redraw = null;
-    var p0 = parts[0];
+    var p0 = parts[0], p1 = parts[1];
     if (rTimer) { clearInterval(rTimer); rTimer = null; }
-    if (!(p0 === SUBJ && parts[1] === CHID && parts[2] === "round" && parts[3] === "run")) roundLeave();
+    var stayingOnSameRun = RD && RD.phase === "run" && p0 && p1 && chKeyOf(p0, p1) === RD.chKey && parts[2] === "round" && parts[3] === "run";
+    if (!stayingOnSameRun) roundLeave();
     if (!parts.length) return homeView();
     if (p0 === "sync") return syncView();
     if (p0 === "teacher") {
@@ -1592,7 +1839,9 @@
     }
     if (p0 === "notes") return notesView();
     if (p0 === "formulas") return formulasView();
-    if (p0 === SUBJ && parts[1] === CHID) {
+    if (p0 && p1 && CHAPTERS[chKeyOf(p0, p1)]) {
+      setActiveChapter(p0, p1, true);
+      formulaChKey = curChKey();
       var p2 = parts[2], p3 = parts[3];
       if (!p2) return chapterView();
       if (p2 === "board") return boardView();
@@ -1602,11 +1851,11 @@
       }
       if (p2 === "derive") {
         if (!p3) return deriveListView();
-        if (rerender && D && D.d.id === p3) { redraw = drillRender; return drillRender(); }
+        if (rerender && D && D.chKey === curChKey() && D.d.id === p3) { redraw = drillRender; return drillRender(); }
         return drillStart(p3);
       }
       if (p3 === "quest") {
-        if (rerender && Q && Q.stop.id === p2) { redraw = questRender; return questRender(); }
+        if (rerender && Q && Q.chKey === curChKey() && Q.stop.id === p2) { redraw = questRender; return questRender(); }
         return questStart(p2);
       }
       if (!p3) return stopView(p2);
@@ -1614,9 +1863,33 @@
     location.hash = "#/";
   }
 
-  Promise.all([getJSON("content/catalog.json"), getJSON("content/physics/ch01-rotational-dynamics.json")]).then(function (r) {
-    catalog = r[0]; CH = r[1];
-    load(); applyTheme();
+  /* ---------- boot: load catalog + all active chapter JSONs in parallel ---------- */
+  getJSON("content/catalog.json").then(function (cat) {
+    catalog = cat;
+    var entries = [];
+    catalog.subjects.forEach(function (sub) {
+      sub.chapters.forEach(function (c) {
+        if (c.file) entries.push({ subj: sub.id, subjTitle: sub.title, chId: c.id, file: c.file });
+      });
+    });
+    return Promise.all(entries.map(function (e) {
+      return getJSON(e.file).then(function (ch) { return { meta: e, ch: ch }; });
+    }));
+  }).then(function (loaded) {
+    CHAPTERS = {};
+    CHAPTER_LIST = [];
+    loaded.forEach(function (item) {
+      var key = chKeyOf(item.meta.subj, item.meta.chId);
+      CHAPTERS[key] = item.ch;
+      CHAPTER_LIST.push({ key: key, subj: item.meta.subj, subjTitle: item.meta.subjTitle, chId: item.meta.chId, ch: item.ch });
+    });
+    var st = load();
+    var initKey = st.lastChapter && CHAPTERS[st.lastChapter] ? st.lastChapter : (CHAPTER_LIST[0] && CHAPTER_LIST[0].key);
+    if (initKey) {
+      var sp = initKey.split("/");
+      setActiveChapter(sp[0], sp[1], false);
+    }
+    applyTheme();
     if (SYNC) {
       SYNC.init({
         getState: function () { return load(); },

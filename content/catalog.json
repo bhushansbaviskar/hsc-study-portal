@@ -3,7 +3,10 @@
   "planEnd": "2027-01-22",
   "books": {
     "xii": { "label": "Std XII Physics", "driveUrl": "https://drive.google.com/file/d/1qNIdDxwykUw9iDD38k5HBPWNuuZbEVss/view", "pdfPageOffset": 10 },
-    "xi":  { "label": "Std XI Physics",  "driveUrl": "https://drive.google.com/file/d/1z-Ra-Nh0ATDWKW8DDE-Z3fXH3BIwT5ZC/view", "pdfPageOffset": 10 }
+    "xi": { "label": "Std XI Physics", "driveUrl": "https://drive.google.com/file/d/1z-Ra-Nh0ATDWKW8DDE-Z3fXH3BIwT5ZC/view", "pdfPageOffset": 10 },
+    "chem_xii": { "label": "Std XII Chemistry", "driveUrl": "https://drive.google.com/file/d/10i08uLrBFrATTWu80nm-qpOibUpXoEH5/view", "pdfPageOffset": 10 },
+    "maths1_xii": { "label": "Std XII Maths Part I", "driveUrl": "https://drive.google.com/file/d/1GG3-6yDwmF35Yh8D-rHRKLB_sj6jVhBq/view", "pdfPageOffset": 10 },
+    "maths2_xii": { "label": "Std XII Maths Part II", "driveUrl": "https://drive.google.com/file/d/19GnPsqpidtbX02hYZj4grm8l4XVomqYr/view", "pdfPageOffset": 10 }
   },
   "subjects": [
     {
@@ -11,7 +14,7 @@
       "title": "Physics",
       "chapters": [
         { "id": "ch01", "number": 1, "title": "Rotational Dynamics", "file": "content/physics/ch01-rotational-dynamics.json" },
-        { "id": "ch02", "number": 2, "title": "Mechanical Properties of Fluids", "estStops": 14 },
+        { "id": "ch02", "number": 2, "title": "Mechanical Properties of Fluids", "file": "content/physics/ch02-mechanical-properties-of-fluids.json" },
         { "id": "ch03", "number": 3, "title": "Kinetic Theory of Gases and Radiation", "estStops": 14 },
         { "id": "ch04", "number": 4, "title": "Thermodynamics", "estStops": 14 },
         { "id": "ch05", "number": 5, "title": "Oscillations", "estStops": 14 },
@@ -26,6 +29,55 @@
         { "id": "ch14", "number": 14, "title": "Dual Nature of Radiation and Matter", "estStops": 14 },
         { "id": "ch15", "number": 15, "title": "Structure of Atoms and Nuclei", "estStops": 14 },
         { "id": "ch16", "number": 16, "title": "Semiconductor Devices", "estStops": 14 }
+      ]
+    },
+    {
+      "id": "chemistry",
+      "title": "Chemistry",
+      "chapters": [
+        { "id": "ch01", "number": 1, "title": "Solid State", "file": "content/chemistry/ch01-solid-state.json" },
+        { "id": "ch02", "number": 2, "title": "Solutions", "estStops": 12 },
+        { "id": "ch03", "number": 3, "title": "Ionic Equilibria", "estStops": 12 },
+        { "id": "ch04", "number": 4, "title": "Chemical Thermodynamics", "estStops": 12 },
+        { "id": "ch05", "number": 5, "title": "Electrochemistry", "estStops": 12 },
+        { "id": "ch06", "number": 6, "title": "Chemical Kinetics", "estStops": 12 },
+        { "id": "ch07", "number": 7, "title": "Elements of Groups 16, 17 and 18", "estStops": 12 },
+        { "id": "ch08", "number": 8, "title": "Transition and Inner Transition Elements", "estStops": 12 },
+        { "id": "ch09", "number": 9, "title": "Coordination Compounds", "estStops": 12 },
+        { "id": "ch10", "number": 10, "title": "Halogen Derivatives", "estStops": 12 },
+        { "id": "ch11", "number": 11, "title": "Alcohols, Phenols and Ethers", "estStops": 12 },
+        { "id": "ch12", "number": 12, "title": "Aldehydes, Ketones and Carboxylic Acids", "estStops": 12 },
+        { "id": "ch13", "number": 13, "title": "Amines", "estStops": 12 },
+        { "id": "ch14", "number": 14, "title": "Biomolecules", "estStops": 12 },
+        { "id": "ch15", "number": 15, "title": "Introduction to Polymer Chemistry", "estStops": 10 },
+        { "id": "ch16", "number": 16, "title": "Green Chemistry and Nanochemistry", "estStops": 10 }
+      ]
+    },
+    {
+      "id": "maths1",
+      "title": "Maths I",
+      "chapters": [
+        { "id": "ch01", "number": 1, "title": "Mathematical Logic", "file": "content/maths1/ch01-mathematical-logic.json" },
+        { "id": "ch02", "number": 2, "title": "Matrices", "estStops": 11 },
+        { "id": "ch03", "number": 3, "title": "Trigonometric Functions", "estStops": 12 },
+        { "id": "ch04", "number": 4, "title": "Pair of Straight Lines", "estStops": 10 },
+        { "id": "ch05", "number": 5, "title": "Vectors", "estStops": 12 },
+        { "id": "ch06", "number": 6, "title": "Line and Plane", "estStops": 12 },
+        { "id": "ch07", "number": 7, "title": "Linear Programming", "estStops": 8 }
+      ]
+    },
+    {
+      "id": "maths2",
+      "title": "Maths II",
+      "chapters": [
+        { "id": "ch01", "number": 1, "title": "Differentiation", "estStops": 12 },
+        { "id": "ch02", "number": 2, "title": "Applications of Derivatives", "estStops": 12 },
+        { "id": "ch03", "number": 3, "title": "Indefinite Integration", "estStops": 12 },
+        { "id": "ch04", "number": 4, "title": "Definite Integration", "estStops": 10 },
+        { "id": "ch05", "number": 5, "title": "Application of Definite Integration", "estStops": 8 },
+        { "id": "ch06", "number": 6, "title": "Differential Equations", "estStops": 12 },
+        { "id": "ch07", "number": 7, "title": "Probability Distributions", "estStops": 10 },
+        { "id": "ch08", "number": 8, "title": "Binomial Distribution", "estStops": 8 }
       ]
     }
   ]

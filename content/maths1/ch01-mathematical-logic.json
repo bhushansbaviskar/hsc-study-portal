@@ -1,0 +1,1658 @@
+{
+  "id": "ch01",
+  "subject": "maths1",
+  "number": 1,
+  "title": "Mathematical Logic",
+  "printedPages": "1–35",
+  "startPage": 1,
+  "pdfPageOffset": 10,
+  "book": "maths1_xii",
+  "drillLabel": "Proof & circuit drills",
+  "formulaLabel": "Laws & truth tables",
+  "boardNote": "No 2024 Maths paper available yet.",
+  "examMarks": {
+    "avg": 8,
+    "basis": "Chapter 1 questions in the 2022, 2023 and 2025 papers: 8, 8 and 8 marks"
+  },
+  "stops": [
+    {
+      "id": "s01",
+      "title": "Statements and truth values",
+      "sections": [
+        "1.1.1 Introduction",
+        "1.1.2 Statement",
+        "1.1.3 Truth Value of a Statement"
+      ],
+      "page": 1,
+      "figs": [],
+      "inShort": "A statement is a declarative sentence that is either true (T) or false (F), never both. Questions, exclamations, commands, requests and open sentences (like x + 6 = 9) are not statements.",
+      "xi": [],
+      "quest": {
+        "cards": [
+          {
+            "t": "What makes a statement",
+            "text": "A statement is a declarative (assertive) sentence which is either true or false, but not both simultaneously. Statements are denoted by lowercase letters p, q, r. If a statement is true its truth value is T; if false, its truth value is F.",
+            "page": 1
+          },
+          {
+            "t": "Sentences that are not statements",
+            "text": "Interrogative sentences (questions), exclamatory sentences, commands, orders, requests and suggestions cannot be assigned a truth value, so they are not statements in logic.",
+            "page": 2
+          },
+          {
+            "t": "Open sentences",
+            "text": "Sentences whose truth depends on an unspecified variable or opinion — such as 'x + 6 = 9', 'He is tall', or 'Mathematics is an interesting subject' — are open sentences. Because their truth value varies with the situation, open sentences are not statements.",
+            "page": 2
+          }
+        ],
+        "checks": [
+          {
+            "type": "mcq",
+            "q": "Which of the following sentences is a statement in logic?",
+            "options": [
+              "x² − 5x + 6 = 0",
+              "Close the window immediately.",
+              "Every equilateral triangle is equiangular.",
+              "Do you enjoy studying logic?"
+            ],
+            "answer": 2,
+            "hint": "Eliminate open sentences (unspecified x), commands, and questions.",
+            "explain": "'Every equilateral triangle is equiangular' is a declarative sentence that is definitely true (truth value T). The first is an open sentence, the second a command, and the fourth a question.",
+            "page": 2
+          },
+          {
+            "type": "tf",
+            "q": "The sentence '5 × 2 = 11' is not a statement in logic because it is mathematically incorrect.",
+            "answer": false,
+            "hint": "Does a statement have to be true, or simply be definitely true or definitely false?",
+            "explain": "False. A declarative sentence that is definitely false is still a valid statement in logic — its truth value is simply F.",
+            "page": 1
+          },
+          {
+            "type": "mcq",
+            "q": "Why is 'x − 3 = 14' NOT a statement in logic?",
+            "options": [
+              "It contains a minus sign",
+              "It is an open sentence whose truth value depends on the value of x",
+              "It is an interrogative sentence",
+              "Its truth value is always F"
+            ],
+            "answer": 1,
+            "hint": "Check what happens when x = 17 compared with x = 5.",
+            "explain": "For x = 17 the equation is true, while for any other x it is false. Since its truth value depends on x, it is an open sentence and not a statement.",
+            "page": 2
+          }
+        ]
+      }
+    },
+    {
+      "id": "s02",
+      "title": "Connectives: conjunction, disjunction and negation",
+      "sections": [
+        "1.1.4 Logical Connectives, Simple and Compound Statements"
+      ],
+      "page": 3,
+      "figs": [],
+      "inShort": "Conjunction p ∧ q ('and', 'but', 'while') is true only when both p and q are T. Disjunction p ∨ q ('or') is false only when both are F. Negation ~p flips T to F and F to T.",
+      "xi": [],
+      "quest": {
+        "cards": [
+          {
+            "t": "Conjunction (∧)",
+            "text": "Combining two simple statements p and q with 'and' (or 'but', 'while', 'yet') gives the conjunction p ∧ q. It is true if and only if both p and q are true (T ∧ T ≡ T); in the other three cases it is false.",
+            "page": 3
+          },
+          {
+            "t": "Disjunction (∨)",
+            "text": "Combining p and q with 'or' gives the disjunction p ∨ q. It is false if and only if both p and q are false (F ∨ F ≡ F); if at least one of p or q is true, p ∨ q is true.",
+            "page": 3
+          },
+          {
+            "t": "Negation (~)",
+            "text": "The negation of a statement p, written ~p, is true when p is false and false when p is true. Negating a statement twice returns the original statement: ~(~p) ≡ p.",
+            "page": 4
+          }
+        ],
+        "checks": [
+          {
+            "type": "mcq",
+            "q": "Let p : 'Delhi is in India' and q : 'Dhaka is in Sri Lanka'. Which symbolic form represents 'Delhi is in India, but Dhaka is not in Sri Lanka'?",
+            "options": [
+              "p ∨ ~q",
+              "p ∧ ~q",
+              "~p ∧ q",
+              "p → ~q"
+            ],
+            "answer": 1,
+            "hint": "In logic, the word 'but' acts like 'and' (∧).",
+            "explain": "'But' denotes conjunction (∧) and 'not' gives ~q, so the compound statement is p ∧ ~q.",
+            "page": 5
+          },
+          {
+            "type": "tf",
+            "q": "The compound statement '4 is odd or 1 is prime' has truth value F.",
+            "answer": true,
+            "hint": "Check the truth value of each simple statement separately before applying ∨.",
+            "explain": "True. Both '4 is odd' (F) and '1 is prime' (F — 1 is neither prime nor composite) are false, and F ∨ F ≡ F.",
+            "page": 7
+          },
+          {
+            "type": "mcq",
+            "q": "If p is T, q is F, and r is F, what is the truth value of (p ∨ q) ∧ ~r?",
+            "options": [
+              "T",
+              "F",
+              "Cannot be determined",
+              "Both T and F"
+            ],
+            "answer": 0,
+            "hint": "Substitute T and F into p ∨ q and ~r first, then combine with ∧.",
+            "explain": "p ∨ q ≡ T ∨ F ≡ T, and ~r ≡ ~F ≡ T. Therefore (p ∨ q) ∧ ~r ≡ T ∧ T ≡ T.",
+            "page": 6
+          }
+        ]
+      }
+    },
+    {
+      "id": "s03",
+      "title": "Conditional and biconditional statements",
+      "sections": [
+        "1.1.4 Conditional and Biconditional Statements",
+        "Exercise 1.1"
+      ],
+      "page": 4,
+      "figs": [],
+      "inShort": "Conditional p → q ('if p then q') is false ONLY when p is T and q is F. Biconditional p ↔ q ('p if and only if q') is true when p and q have the same truth value.",
+      "xi": [],
+      "quest": {
+        "cards": [
+          {
+            "t": "Conditional / Implication (→)",
+            "text": "The statement 'if p then q', written p → q, has hypothesis (antecedent) p and conclusion (consequent) q. It is false ONLY when p is T and q is F (T → F ≡ F). Whenever p is F, p → q is automatically T.",
+            "page": 4
+          },
+          {
+            "t": "English forms of p → q",
+            "text": "All of these translate to p → q: 'p implies q', 'p is sufficient for q', 'q is necessary for p', 'q follows from p', and 'p only if q'. Watch out: 'p only if q' means p → q, whereas 'p if q' means q → p.",
+            "page": 4
+          },
+          {
+            "t": "Biconditional / Double implication (↔)",
+            "text": "The statement 'p if and only if q', written p ↔ q, is true when p and q share the same truth value (T ↔ T ≡ T and F ↔ F ≡ T) and false when they differ (T ↔ F ≡ F and F ↔ T ≡ F).",
+            "page": 4
+          }
+        ],
+        "checks": [
+          {
+            "type": "mcq",
+            "q": "What is the truth value of the conditional statement 'If 3 × 5 = 8, then 3 + 5 = 15'?",
+            "options": [
+              "F, because both parts are false",
+              "T, because F → F ≡ T",
+              "F, because 3 × 5 ≠ 8",
+              "It is not a valid statement"
+            ],
+            "answer": 1,
+            "hint": "Remember the only row where p → q is false.",
+            "explain": "Both p ('3 × 5 = 8') and q ('3 + 5 = 15') are false. A conditional p → q is false only when T → F; here F → F ≡ T.",
+            "page": 7
+          },
+          {
+            "type": "tf",
+            "q": "The English sentence 'q is necessary for p' is symbolically written as q → p.",
+            "answer": false,
+            "hint": "Check Balbharati's note on equivalent English phrasings of p → q on page 4.",
+            "explain": "False. 'q is necessary for p' means p cannot hold without q, so p implies q: p → q. ('p is sufficient for q' also means p → q.)",
+            "page": 4
+          },
+          {
+            "type": "step",
+            "q": "Given p ≡ T, q ≡ T, and r ≡ F, find the truth value of ~(p → q) ↔ (r ∧ q). What is the correct first reduction?",
+            "options": [
+              "~(T → T) ↔ (F ∧ T) ≡ (~T) ↔ F",
+              "~(T → T) ↔ (F ∧ T) ≡ (~F) ↔ T",
+              "~(T → T) ↔ (F ∧ T) ≡ T ↔ F",
+              "~(T → T) ↔ (F ∧ T) ≡ (~T) ↔ T"
+            ],
+            "answer": 0,
+            "hint": "Evaluate the expressions inside each pair of parentheses first: T → T and F ∧ T.",
+            "explain": "T → T ≡ T and F ∧ T ≡ F, so ~(T → T) ↔ (F ∧ T) reduces to (~T) ↔ F ≡ F ↔ F ≡ T.",
+            "page": 6
+          }
+        ]
+      }
+    },
+    {
+      "id": "s04",
+      "title": "Statement patterns and truth tables",
+      "sections": [
+        "1.2.1 Statement Pattern"
+      ],
+      "page": 8,
+      "figs": [],
+      "inShort": "A statement pattern combines prime components (p, q, r) with connectives. With n prime components a truth table has 2^{n} rows (4 for 2 letters, 8 for 3 letters). Evaluate in order ~, ∨, ∧, →, ↔.",
+      "xi": [],
+      "quest": {
+        "cards": [
+          {
+            "t": "Statement patterns and rows",
+            "text": "A proper combination of statement letters and logical connectives is called a statement pattern (proposition), and its letters p, q, r are prime components. A truth table with n prime components has 2^{n} rows — 4 rows for 2 letters, 8 rows for 3 letters.",
+            "page": 8
+          },
+          {
+            "t": "Priority of connectives",
+            "text": "When brackets are omitted, Balbharati lists the connective priority order as ~, ∨, ∧, →, ↔. Negation (~) always binds tightest to the statement immediately following it; parentheses override default priority.",
+            "page": 8
+          },
+          {
+            "t": "Standard row ordering",
+            "text": "For 2 letters list (T,T), (T,F), (F,T), (F,F). For 3 letters put 4 T's then 4 F's under p; pairs TT, FF, TT, FF under q; and alternating T, F under r. Build columns left-to-right from negations to innermost brackets to the full pattern.",
+            "page": 9
+          }
+        ],
+        "checks": [
+          {
+            "type": "num",
+            "q": "How many rows are needed in the truth table of the statement pattern [(~p ∨ q) ∧ (q → r)] → (p → r)?",
+            "answer": 8,
+            "unit": "rows",
+            "hint": "Count the distinct prime components (p, q, r) and compute 2^{n}.",
+            "explain": "There are n = 3 prime components (p, q, r), so the truth table has 2³ = 8 rows.",
+            "page": 9
+          },
+          {
+            "type": "mcq",
+            "q": "For the pattern ~(~p ∧ ~q) ∨ q, what is its truth value in the row where p = F and q = F?",
+            "options": [
+              "T",
+              "F",
+              "Same as ~p",
+              "Undefined"
+            ],
+            "answer": 1,
+            "hint": "Compute ~p and ~q first, then (~p ∧ ~q), then negate it, then take ∨ q.",
+            "explain": "When p = F and q = F: ~p = T, ~q = T, so ~p ∧ ~q = T. Negating gives ~(~p ∧ ~q) = F, and F ∨ F = F.",
+            "page": 9
+          },
+          {
+            "type": "step",
+            "q": "To construct the truth table for (~p ∨ q) ↔ ~(p ∧ q), which columns should you compute immediately after p and q?",
+            "options": [
+              "~p and p ∧ q",
+              "~q and p ∨ q",
+              "p → q and q → p",
+              "Only ~p ∧ ~q"
+            ],
+            "answer": 0,
+            "hint": "Look at the smallest sub-expressions inside the two sides of ↔.",
+            "explain": "The left side needs ~p (to build ~p ∨ q), and the right side needs p ∧ q (to build ~(p ∧ q)).",
+            "page": 9
+          }
+        ]
+      }
+    },
+    {
+      "id": "s05",
+      "title": "Logical equivalence using truth tables",
+      "sections": [
+        "1.2.2 Logical Equivalence"
+      ],
+      "page": 8,
+      "figs": [],
+      "inShort": "Two statement patterns A and B are logically equivalent (A ≡ B) if their final truth-table columns are identical in every row. Always number columns and state which two columns match.",
+      "xi": [],
+      "quest": {
+        "cards": [
+          {
+            "t": "What logical equivalence means",
+            "text": "Two statement patterns A and B are logically equivalent, written A ≡ B, if they have identical truth values for every possible combination of truth values of their prime components.",
+            "page": 8
+          },
+          {
+            "t": "High-yield truth-table equivalences",
+            "text": "Board exams frequently test truth-table proofs of p ∧ q ≡ ~(p → ~q), (p ∧ q) → r ≡ p → (q → r), p → (q ∨ r) ≡ (p → q) ∨ (p → r), and p ↔ q ≡ (p ∧ q) ∨ (~p ∧ ~q).",
+            "page": 10
+          },
+          {
+            "t": "Exam presentation tip",
+            "text": "Label every column with Roman numerals (I, II, III, …) so that at the end you can write cleanly: 'Columns IV and VI are identical, therefore A ≡ B.' Missing this concluding line can cost half a mark.",
+            "page": 10
+          }
+        ],
+        "checks": [
+          {
+            "type": "mcq",
+            "q": "Which statement pattern is logically equivalent to (p ∧ q) → r?",
+            "options": [
+              "p → (q → r)",
+              "(p ∨ q) → r",
+              "(p ∧ q) → ~r",
+              "(~p ∨ ~q) → ~r"
+            ],
+            "answer": 0,
+            "hint": "Check when both patterns are false: only when p = T, q = T, and r = F.",
+            "explain": "(p ∧ q) → r is false only when p = T, q = T, r = F. The same holds for p → (q → r), so their 8-row columns are identical (Table 1.14, p. 11).",
+            "page": 11
+          },
+          {
+            "type": "tf",
+            "q": "If two statement patterns A and B have the same number of T's in their truth-table columns, they must be logically equivalent.",
+            "answer": false,
+            "hint": "Does the order of T's and F's row by row matter?",
+            "explain": "False. For A ≡ B, the truth values must match in EVERY corresponding row, not merely have the same count of T's (for instance, p and ~p both have two T's and two F's, yet p ≢ ~p).",
+            "page": 8
+          },
+          {
+            "type": "step",
+            "q": "While proving p ∧ q ≡ ~(p → ~q) by truth table, you have columns for p, q, ~q, p ∧ q, and p → ~q. What is the truth-value column for ~(p → ~q) from row (T,T) down to (F,F)?",
+            "options": [
+              "T, F, F, F",
+              "F, T, T, T",
+              "T, T, F, F",
+              "T, F, F, T"
+            ],
+            "answer": 0,
+            "hint": "p → ~q is F only when p = T and ~q = F (i.e., q = T), so p → ~q is F, T, T, T.",
+            "explain": "Column p → ~q is F, T, T, T, so its negation ~(p → ~q) is T, F, F, F — identical to p ∧ q.",
+            "page": 10
+          }
+        ]
+      }
+    },
+    {
+      "id": "s06",
+      "title": "Tautology, contradiction and contingency",
+      "sections": [
+        "1.2.3 Tautology, Contradiction and Contingency",
+        "Exercise 1.2"
+      ],
+      "page": 8,
+      "figs": [],
+      "inShort": "A tautology (t) has all T's in its final truth-table column; a contradiction (c) has all F's; a contingency has a mixture of T and F.",
+      "xi": [],
+      "quest": {
+        "cards": [
+          {
+            "t": "Tautology (t)",
+            "text": "A statement pattern whose truth value is T for all possible truth-value combinations of its prime components is a tautology, denoted by t. Classic examples: p ∨ ~p, p → (q → p), and (p → q) ↔ (~p ∨ q).",
+            "page": 8
+          },
+          {
+            "t": "Contradiction (c)",
+            "text": "A statement pattern whose truth value is F for every row of its truth table is a contradiction, denoted by c. Classic examples: p ∧ ~p and (p ∧ q) ∧ (~p ∨ ~q).",
+            "page": 8
+          },
+          {
+            "t": "Contingency",
+            "text": "A statement pattern that is neither a tautology nor a contradiction — meaning its final column contains at least one T and at least one F — is called a contingency. Example: p ∧ q or [p ∧ (p → ~q)] → q.",
+            "page": 8
+          }
+        ],
+        "checks": [
+          {
+            "type": "mcq",
+            "q": "Classify the statement pattern (p ∧ q) ∧ (~p ∨ ~q).",
+            "options": [
+              "Tautology",
+              "Contradiction",
+              "Contingency",
+              "Equivalent to p ∨ q"
+            ],
+            "answer": 1,
+            "hint": "Notice that ~p ∨ ~q ≡ ~(p ∧ q) by De Morgan's law.",
+            "explain": "Since ~p ∨ ~q ≡ ~(p ∧ q), the pattern has the form A ∧ ~A, which is F in every row — a contradiction.",
+            "page": 12
+          },
+          {
+            "type": "tf",
+            "q": "The statement pattern (p → q) ∨ (q → p) is a tautology.",
+            "answer": true,
+            "hint": "Can p → q and q → p be false at the same time?",
+            "explain": "True. p → q is false only at (T, F), where q → p is T; and q → p is false only at (F, T), where p → q is T. So their disjunction is T in all 4 rows.",
+            "page": 33
+          },
+          {
+            "type": "mcq",
+            "q": "Which of the following statement patterns is a contingency?",
+            "options": [
+              "p ∨ ~p",
+              "(p ∧ q) → (q ∨ p)",
+              "(p ∧ ~q) ↔ (p → q)",
+              "[p ∧ (p → ~q)] → q"
+            ],
+            "answer": 3,
+            "hint": "Test the row p = T, q = F on each option.",
+            "explain": "At (T, F), [p ∧ (p → ~q)] → q evaluates to [T ∧ T] → F = F, while at (T, T) it gives F → T = T, so it is a contingency. Options (a) and (b) are tautologies, and (c) is a contradiction.",
+            "page": 12
+          }
+        ]
+      }
+    },
+    {
+      "id": "s07",
+      "title": "Quantifiers, quantified statements and duals",
+      "sections": [
+        "1.3.1 Quantifiers and Quantified Statements",
+        "1.3.2 Dual"
+      ],
+      "page": 14,
+      "figs": [],
+      "inShort": "Universal quantifier ∀ ('for all') needs every element to satisfy the condition; existential quantifier ∃ ('there exists') needs at least one. To form a dual, swap ∨ ↔ ∧ and t ↔ c while keeping ~ unchanged.",
+      "xi": [],
+      "quest": {
+        "cards": [
+          {
+            "t": "Universal quantifier (∀)",
+            "text": "The symbol ∀ stands for 'for all' or 'for every'. A statement ∀x ∈ A, P(x) is true only if EVERY element x in set A satisfies P(x). Finding even one counterexample in A makes the statement false.",
+            "page": 14
+          },
+          {
+            "t": "Existential quantifier (∃)",
+            "text": "The symbol ∃ stands for 'there exists at least one' or 'for some'. A statement ∃x ∈ A such that P(x) is true as soon as AT LEAST ONE element x in A satisfies P(x); it is false only if NO element in A does.",
+            "page": 14
+          },
+          {
+            "t": "Dual of a statement pattern",
+            "text": "For patterns containing ∨, ∧, t and c, the dual is obtained by interchanging ∨ with ∧, ∧ with ∨, t with c, and c with t. Never change ~ or the statement letters p, q, r when writing a dual.",
+            "page": 14
+          }
+        ],
+        "checks": [
+          {
+            "type": "mcq",
+            "q": "What is the dual of the statement pattern c ∨ [p ∧ (q ∨ ~r)]?",
+            "options": [
+              "t ∧ [p ∨ (q ∧ ~r)]",
+              "t ∧ [~p ∨ (~q ∧ r)]",
+              "c ∧ [p ∨ (q ∧ ~r)]",
+              "t ∨ [p ∧ (q ∨ ~r)]"
+            ],
+            "answer": 0,
+            "hint": "Swap c ↔ t and ∨ ↔ ∧, but leave ~r completely untouched.",
+            "explain": "Replacing c → t, ∨ → ∧, and ∧ → ∨ while keeping p, q, ~r unchanged yields t ∧ [p ∨ (q ∧ ~r)].",
+            "page": 15
+          },
+          {
+            "type": "tf",
+            "q": "If A = {3, 5, 7, 9, 11, 12}, then the quantified statement '∀x ∈ A, x² + x is an even number' has truth value T.",
+            "answer": true,
+            "hint": "Factor x² + x as x(x + 1) — the product of two consecutive integers.",
+            "explain": "True. For every integer x, x(x + 1) is the product of two consecutive integers, one of which is always even; hence x² + x is even for every x ∈ A.",
+            "page": 17
+          },
+          {
+            "type": "mcq",
+            "q": "If A = {3, 5, 7, 9, 11, 12}, which quantified statement is FALSE?",
+            "options": [
+              "∃x ∈ A such that x − 8 = 1",
+              "∃x ∈ A such that 3x + 8 > 40",
+              "∀x ∈ A, 2x + 9 > 14",
+              "∃x ∈ A such that x² < 0"
+            ],
+            "answer": 3,
+            "hint": "Can the square of any real number in A ever be negative?",
+            "explain": "For every real number x, x² ≥ 0, so no element of A satisfies x² < 0. The other three are true (x = 9 for (a), x = 11 or 12 for (b), and min 2(3) + 9 = 15 > 14 for (c)).",
+            "page": 17
+          }
+        ]
+      }
+    },
+    {
+      "id": "s08",
+      "title": "Negations of compound and quantified statements",
+      "sections": [
+        "1.3.3 Negations of Compound Statements"
+      ],
+      "page": 15,
+      "figs": [],
+      "inShort": "De Morgan's laws: ~(p ∧ q) ≡ ~p ∨ ~q and ~(p ∨ q) ≡ ~p ∧ ~q. Negation of conditional: ~(p → q) ≡ p ∧ ~q. Negation of biconditional: ~(p ↔ q) ≡ (p ∧ ~q) ∨ (q ∧ ~p). Quantifiers flip ∀ ↔ ∃.",
+      "xi": [],
+      "quest": {
+        "cards": [
+          {
+            "t": "De Morgan's laws",
+            "text": "The negation of a conjunction is the disjunction of negations: ~(p ∧ q) ≡ ~p ∨ ~q. The negation of a disjunction is the conjunction of negations: ~(p ∨ q) ≡ ~p ∧ ~q.",
+            "page": 15
+          },
+          {
+            "t": "Negating → and ↔",
+            "text": "The negation of p → q is NOT an implication: ~(p → q) ≡ p ∧ ~q ('p and not q'). The negation of p ↔ q is ~(p ↔ q) ≡ (p ∧ ~q) ∨ (q ∧ ~p).",
+            "page": 15
+          },
+          {
+            "t": "Negating quantifiers and inequalities",
+            "text": "To negate a quantified statement, replace ∀ ('all' / 'for every') by ∃ ('some' / 'there exists') and vice versa, and negate the condition. Remember: negation of > is ≤, of < is ≥, of = is ≠.",
+            "page": 16
+          }
+        ],
+        "checks": [
+          {
+            "type": "mcq",
+            "q": "What is the negation of 'If it is raining, then we will go and play football'?",
+            "options": [
+              "If it is not raining, then we will not go or not play football.",
+              "It is raining and we will not go or not play football.",
+              "It is not raining and we will go and play football.",
+              "It is raining or we will not go and not play football."
+            ],
+            "answer": 1,
+            "hint": "Write the statement as p → (q ∧ r), then use ~(A → B) ≡ A ∧ ~B and De Morgan's law.",
+            "explain": "~[p → (q ∧ r)] ≡ p ∧ ~(q ∧ r) ≡ p ∧ (~q ∨ ~r): 'It is raining and we will not go or not play football.'",
+            "page": 18
+          },
+          {
+            "type": "tf",
+            "q": "The negation of 'The number is neither odd nor a perfect square' is 'The number is odd or a perfect square'.",
+            "answer": true,
+            "hint": "'Neither p nor q' is symbolically ~p ∧ ~q.",
+            "explain": "True. 'Neither p nor q' is ~p ∧ ~q. Its negation by De Morgan's law is ~(~p ∧ ~q) ≡ p ∨ q.",
+            "page": 16
+          },
+          {
+            "type": "step",
+            "q": "Find the negation of '∀x ∈ N, 2x + 1 is odd'. Which step produces the correct negation?",
+            "options": [
+              "Replace ∀ with ∃ and negate the predicate: ∃x ∈ N such that 2x + 1 is not odd",
+              "Keep ∀ and negate the predicate: ∀x ∈ N, 2x + 1 is not odd",
+              "Replace ∀ with ∃ and keep the predicate: ∃x ∈ N such that 2x + 1 is odd",
+              "Replace ∈ with ∉: ∀x ∉ N, 2x + 1 is odd"
+            ],
+            "answer": 0,
+            "hint": "Negating a universal statement flips ∀ to ∃ and negates the condition.",
+            "explain": "Negating '∀x ∈ N, P(x)' always gives '∃x ∈ N such that ~P(x)': '∃x ∈ N such that 2x + 1 is not odd.'",
+            "page": 17
+          }
+        ]
+      }
+    },
+    {
+      "id": "s09",
+      "title": "Converse, inverse and contrapositive",
+      "sections": [
+        "1.3.4 Converse, Inverse and Contrapositive",
+        "Exercise 1.3"
+      ],
+      "page": 15,
+      "figs": [],
+      "inShort": "From p → q: Converse is q → p, Inverse is ~p → ~q, Contrapositive is ~q → ~p. Note that p → q ≡ ~q → ~p (contrapositive), and q → p ≡ ~p → ~q (converse ≡ inverse).",
+      "xi": [],
+      "quest": {
+        "cards": [
+          {
+            "t": "The three derived implications",
+            "text": "Given a conditional p → q: its converse swaps the two parts (q → p); its inverse negates both parts (~p → ~q); and its contrapositive swaps AND negates both parts (~q → ~p).",
+            "page": 15
+          },
+          {
+            "t": "Equivalent pairs",
+            "text": "Truth tables show two vital equivalences: every implication is logically equivalent to its contrapositive (p → q ≡ ~q → ~p), and the converse is logically equivalent to the inverse (q → p ≡ ~p → ~q).",
+            "page": 16
+          },
+          {
+            "t": "Watch reversed 'if' sentences",
+            "text": "In 'A family becomes literate if the woman in it is literate', the condition after 'if' is p ('the woman is literate') and the result is q ('the family becomes literate'). Always rewrite as 'If p then q' before forming converse, inverse, or contrapositive.",
+            "page": 17
+          }
+        ],
+        "checks": [
+          {
+            "type": "mcq",
+            "q": "What is the contrapositive of 'If a function is differentiable, then it is continuous'?",
+            "options": [
+              "If a function is continuous, then it is differentiable.",
+              "If a function is not differentiable, then it is not continuous.",
+              "If a function is not continuous, then it is not differentiable.",
+              "A function is differentiable and not continuous."
+            ],
+            "answer": 2,
+            "hint": "Contrapositive of p → q is ~q → ~p (swap and negate both).",
+            "explain": "With p : differentiable and q : continuous, ~q → ~p reads 'If a function is not continuous, then it is not differentiable.'",
+            "page": 17
+          },
+          {
+            "type": "tf",
+            "q": "For any statements p and q, the converse (q → p) and the inverse (~p → ~q) are logically equivalent.",
+            "answer": true,
+            "hint": "Think of the inverse ~p → ~q as the contrapositive of q → p.",
+            "explain": "True. Since any conditional is equivalent to its contrapositive, q → p ≡ ~p → ~q.",
+            "page": 16
+          },
+          {
+            "type": "step",
+            "q": "Find the inverse of the statement pattern (p ∨ q) → (p ∧ q). Which simplified form is correct?",
+            "options": [
+              "(~p ∧ ~q) → (~p ∨ ~q)",
+              "(~p ∨ ~q) → (~p ∧ ~q)",
+              "(p ∧ q) → (p ∨ q)",
+              "~(p ∧ q) → ~(p ∨ q)"
+            ],
+            "answer": 0,
+            "hint": "The inverse of A → B is ~A → ~B; then apply De Morgan's laws to both sides.",
+            "explain": "Inverse is ~(p ∨ q) → ~(p ∧ q). Applying De Morgan's laws gives (~p ∧ ~q) → (~p ∨ ~q).",
+            "page": 32
+          }
+        ]
+      }
+    },
+    {
+      "id": "s10",
+      "title": "Algebra of statements — proofs without truth tables",
+      "sections": [
+        "1.4.1 Important Equivalences",
+        "1.4.2 Algebra of Statements",
+        "Exercise 1.4"
+      ],
+      "page": 18,
+      "figs": [],
+      "inShort": "Use the 10 named laws of algebra of statements (Idempotent, Commutative, Associative, Distributive, De Morgan's, Identity, Complement, Absorption, Conditional, Biconditional) to simplify or prove equivalences without truth tables.",
+      "xi": [],
+      "quest": {
+        "cards": [
+          {
+            "t": "Distributive, Absorption and Idempotent laws",
+            "text": "Distributive laws let you factor out or expand across ∧ and ∨: p ∧ (q ∨ r) ≡ (p ∧ q) ∨ (p ∧ r) and p ∨ (q ∧ r) ≡ (p ∨ q) ∧ (p ∨ r). Absorption collapses p ∨ (p ∧ q) ≡ p and p ∧ (p ∨ q) ≡ p. Idempotent gives p ∧ p ≡ p and p ∨ p ≡ p.",
+            "page": 19
+          },
+          {
+            "t": "Complement and Identity laws",
+            "text": "Complement laws produce constants: p ∨ ~p ≡ t and p ∧ ~p ≡ c. Identity laws then remove constants: p ∧ t ≡ p, p ∨ c ≡ p, p ∧ c ≡ c, and p ∨ t ≡ t.",
+            "page": 19
+          },
+          {
+            "t": "Eliminating → and ↔",
+            "text": "Before applying algebra laws, replace arrows using the Conditional law (p → q ≡ ~p ∨ q) and Biconditional law (p ↔ q ≡ (p → q) ∧ (q → p) ≡ (~p ∨ q) ∧ (~q ∨ p)). The Conditional law also rewrites 'If p then q' without 'if...then' as '~p or q'.",
+            "page": 19
+          }
+        ],
+        "checks": [
+          {
+            "type": "mcq",
+            "q": "Rewrite 'If prices increase, then wages rise' without using 'if ... then'.",
+            "options": [
+              "Prices increase or wages rise.",
+              "Prices do not increase or wages rise.",
+              "Prices increase and wages do not rise.",
+              "Prices do not increase and wages rise."
+            ],
+            "answer": 1,
+            "hint": "Use the Conditional law: p → q ≡ ~p ∨ q.",
+            "explain": "Let p : prices increase, q : wages rise. By the Conditional law p → q ≡ ~p ∨ q: 'Prices do not increase or wages rise.'",
+            "page": 20
+          },
+          {
+            "type": "step",
+            "q": "To simplify (p ∨ q) ∧ (p ∨ ~q) without a truth table, what is the best first step?",
+            "options": [
+              "Factor out p using the Distributive law: p ∨ (q ∧ ~q)",
+              "Apply De Morgan's law to both brackets",
+              "Replace ∧ with →",
+              "Use the Idempotent law to drop q"
+            ],
+            "answer": 0,
+            "hint": "Notice both brackets begin with 'p ∨ ...'.",
+            "explain": "By the Distributive law, (p ∨ q) ∧ (p ∨ ~q) ≡ p ∨ (q ∧ ~q) ≡ p ∨ c [Complement law] ≡ p [Identity law].",
+            "page": 21
+          },
+          {
+            "type": "tf",
+            "q": "By the Identity law, p ∨ t ≡ p and p ∧ c ≡ p.",
+            "answer": false,
+            "hint": "Test p = F in p ∨ t and p = T in p ∧ c.",
+            "explain": "False. The Identity law states p ∨ t ≡ t and p ∧ c ≡ c (whereas p ∧ t ≡ p and p ∨ c ≡ p).",
+            "page": 19
+          }
+        ]
+      }
+    },
+    {
+      "id": "s11",
+      "title": "Switching circuits, switching tables and Misc Exercise 1",
+      "sections": [
+        "1.5 Application of Logic to Switching Circuits",
+        "1.5.1 Two Switches in Series",
+        "1.5.2 Two Switches in Parallel",
+        "Exercise 1.5",
+        "Miscellaneous Exercise 1"
+      ],
+      "page": 21,
+      "figs": [
+        "Fig 1.1",
+        "Fig 1.2",
+        "Fig 1.3",
+        "Fig 1.4",
+        "Fig 1.11",
+        "Fig 1.13",
+        "Fig 1.14"
+      ],
+      "inShort": "Switch S_{1} corresponds to p and complementary switch S'_{1} to ~p. Series switches mean ∧, parallel switches mean ∨. In switching tables 1 = closed/ON and 0 = open/OFF; all 1s (t) means lamp always glows, all 0s (c) means it never glows.",
+      "xi": [],
+      "quest": {
+        "cards": [
+          {
+            "t": "Switches and complementary switches",
+            "text": "Each switch S_{1}, S_{2}, S_{3} is represented by a statement letter p, q, r ('switch is closed/ON'). Complementary switches S'_{1}, S'_{2} always have the opposite state and correspond to ~p, ~q. In an input-output (switching) table, 1 means ON/glows and 0 means OFF/does not glow.",
+            "page": 22
+          },
+          {
+            "t": "Series (∧) and parallel (∨)",
+            "text": "Two switches S_{1} and S_{2} connected in series allow current only when both are closed, so they represent conjunction p ∧ q. Two switches in parallel allow current if at least one is closed, so they represent disjunction p ∨ q.",
+            "page": 22
+          },
+          {
+            "t": "Simplifying and interpreting circuits",
+            "text": "To minimise the number of switches, write the symbolic form and simplify it using Algebra of Statements, then draw the simpler circuit. If the final switching-table column is all 1s (≡ t), the lamp always glows; if all 0s (≡ c), the lamp never glows regardless of switch positions.",
+            "page": 26
+          }
+        ],
+        "checks": [
+          {
+            "type": "mcq",
+            "q": "In a switching circuit, a parallel combination of S_{1} and S_{2} is connected in series with S'_{1}. What is its symbolic logical form?",
+            "options": [
+              "(p ∧ q) ∨ ~p",
+              "(p ∨ q) ∧ ~p",
+              "p ∨ (q ∧ ~p)",
+              "(p ∨ ~p) ∧ q"
+            ],
+            "answer": 1,
+            "hint": "Parallel translates to ∨, series translates to ∧, and S'_{1} is ~p.",
+            "explain": "S_{1} and S_{2} in parallel give (p ∨ q). Connecting this block in series with S'_{1} (~p) gives (p ∨ q) ∧ ~p.",
+            "page": 23
+          },
+          {
+            "type": "num",
+            "q": "A switching circuit has symbolic form [p ∨ (~q ∨ ~r)] ∧ [p ∨ (q ∧ r)] using 6 switches. After simplifying it using Algebra of Statements, how many switches are needed in the equivalent minimal circuit?",
+            "answer": 1,
+            "unit": "switch",
+            "hint": "Use the Distributive law to factor out 'p ∨', then apply De Morgan's law to (~q ∨ ~r).",
+            "explain": "[p ∨ (~q ∨ ~r)] ∧ [p ∨ (q ∧ r)] ≡ p ∨ [(~q ∨ ~r) ∧ (q ∧ r)] ≡ p ∨ [~(q ∧ r) ∧ (q ∧ r)] ≡ p ∨ c ≡ p, which requires only 1 switch (S_{1}).",
+            "page": 30
+          },
+          {
+            "type": "tf",
+            "q": "If the final column of a switching table consists entirely of 1s, the lamp will always glow irrespective of the status of the switches.",
+            "answer": true,
+            "hint": "Recall that 1 represents current flowing (lamp ON) and all 1s corresponds to a tautology t.",
+            "explain": "True. Every combination of switch states outputs 1, meaning the circuit is always closed and the lamp always glows.",
+            "page": 24
+          }
+        ]
+      }
+    }
+  ],
+  "board": [
+    {
+      "id": "m1-2025-Q1i",
+      "year": 2025,
+      "qno": "Q1(i)",
+      "marks": 2,
+      "stop": "s07",
+      "kind": "MCQ",
+      "text": "If A = {1, 2, 3, 4, 5} then which of the following is not true?",
+      "options": [
+        "(a) ∃x ∈ A such that x + 3 = 8",
+        "(b) ∃x ∈ A such that x + 2 < 9",
+        "(c) ∀x ∈ A, x + 6 ≥ 9",
+        "(d) ∃x ∈ A such that x + 6 < 10"
+      ],
+      "answer": "(c) ∀x ∈ A, x + 6 ≥ 9. Check each option: (a) true for x = 5 since 5 + 3 = 8; (b) true for x = 1 since 1 + 2 = 3 < 9; (c) false for x = 1 since 1 + 6 = 7 < 9 (and for x = 2, 2 + 6 = 8 < 9); (d) true for x = 1 since 1 + 6 = 7 < 10. Therefore (c) is not true.",
+      "points": [
+        {
+          "text": "Identify counterexample x = 1 ∈ A giving x + 6 = 7 < 9, so ∀x ∈ A, x + 6 ≥ 9 is false",
+          "marks": 1
+        },
+        {
+          "text": "Write the correct option with letter: (c) ∀x ∈ A, x + 6 ≥ 9",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "m1-2025-Q2i",
+      "year": 2025,
+      "qno": "Q2(i)",
+      "marks": 1,
+      "stop": "s08",
+      "text": "Write the negation of the statement : '∃n ∈ N such that n + 8 > 11'",
+      "answer": "∀n ∈ N, n + 8 ≤ 11.",
+      "points": [
+        {
+          "text": "Replace ∃ with ∀ and negate > to ≤: ∀n ∈ N, n + 8 ≤ 11",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "m1-2025-Q3",
+      "year": 2025,
+      "qno": "Q3",
+      "marks": 2,
+      "stop": "s05",
+      "text": "Using truth table, prove that the statement patterns p ↔ q and (p ∧ q) ∨ (~p ∧ ~q) are logically equivalent.",
+      "answer": "Prepare the 4-row truth table with columns I: p, II: q, III: ~p, IV: ~q, V: p ↔ q, VI: p ∧ q, VII: ~p ∧ ~q, VIII: (p ∧ q) ∨ (~p ∧ ~q). Row (T,T): V = T, VI = T, VII = F, VIII = T. Row (T,F): V = F, VI = F, VII = F, VIII = F. Row (F,T): V = F, VI = F, VII = F, VIII = F. Row (F,F): V = T, VI = F, VII = T, VIII = T. Since columns V and VIII are identical (T, F, F, T), p ↔ q ≡ (p ∧ q) ∨ (~p ∧ ~q).",
+      "points": [
+        {
+          "text": "Complete 4-row truth table with accurate columns for p ↔ q, p ∧ q, ~p ∧ ~q, and (p ∧ q) ∨ (~p ∧ ~q)",
+          "marks": 1
+        },
+        {
+          "text": "Note that the columns for p ↔ q and (p ∧ q) ∨ (~p ∧ ~q) are identical (T, F, F, T) and conclude logical equivalence",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "m1-2025-Q15",
+      "year": 2025,
+      "qno": "Q15",
+      "marks": 3,
+      "stop": "s11",
+      "text": "Express the following switching circuit in the symbolic form of logic. Construct the switching table and interpret it : [Circuit: A parallel combination of switch S_{1} (upper branch) and switch S_{2} (lower branch) is connected in series with switch S'_{1} and switch S'_{2}, all wired in a closed loop with a battery and lamp L.]",
+      "answer": "Let p : switch S_{1} is closed, q : switch S_{2} is closed, ~p : switch S'_{1} is closed, ~q : switch S'_{2} is closed. Symbolic form: (p ∨ q) ∧ ~p ∧ ~q. Switching table for (p, q): (1,1) → p ∨ q = 1, ~p = 0, ~q = 0, output = 0; (1,0) → p ∨ q = 1, ~p = 0, ~q = 1, output = 0; (0,1) → p ∨ q = 1, ~p = 1, ~q = 0, output = 0; (0,0) → p ∨ q = 0, ~p = 1, ~q = 1, output = 0. Interpretation: Since all entries in the last column are 0, the lamp will never glow irrespective of the status of the switches.",
+      "points": [
+        {
+          "text": "Define statement letters p, q and write the symbolic form (p ∨ q) ∧ ~p ∧ ~q",
+          "marks": 1
+        },
+        {
+          "text": "Construct the complete 4-row switching table (1/0 entries) obtaining 0 in every row of the final column",
+          "marks": 1
+        },
+        {
+          "text": "Interpretation: the lamp will not glow irrespective of the status of the switches",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "m1-2023-Q1i",
+      "year": 2023,
+      "qno": "Q1(i)",
+      "marks": 2,
+      "stop": "s03",
+      "kind": "MCQ",
+      "text": "If p ∧ q is F, p → q is F then the truth values of p and q are ______ respectively.",
+      "options": [
+        "(a) T, T",
+        "(b) T, F",
+        "(c) F, T",
+        "(d) F, F"
+      ],
+      "answer": "(b) T, F. The implication p → q is false only when p is T and q is F; with p = T and q = F, p ∧ q = T ∧ F = F, satisfying both conditions.",
+      "points": [
+        {
+          "text": "Use conditional truth table: p → q is F only when p ≡ T and q ≡ F (which also makes p ∧ q ≡ F)",
+          "marks": 1
+        },
+        {
+          "text": "Write the correct option with letter: (b) T, F",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "m1-2023-Q3",
+      "year": 2023,
+      "qno": "Q3",
+      "marks": 2,
+      "stop": "s09",
+      "text": "Write inverse and contrapositive of the following statement : If x < y then x² < y²",
+      "answer": "Let p : x < y and q : x² < y². Given statement is p → q. Inverse (~p → ~q): If x ≥ y, then x² ≥ y². Contrapositive (~q → ~p): If x² ≥ y², then x ≥ y.",
+      "points": [
+        {
+          "text": "Inverse (~p → ~q): If x ≥ y, then x² ≥ y²",
+          "marks": 1
+        },
+        {
+          "text": "Contrapositive (~q → ~p): If x² ≥ y², then x ≥ y",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "m1-2023-Q27",
+      "year": 2023,
+      "qno": "Q27",
+      "marks": 4,
+      "stop": "s11",
+      "text": "Simplify the given circuit by writing its logical expression. Also write your conclusion. [Circuit: Switch S_{1} is connected in series with a parallel combination of switch S'_{1} (upper branch) and switch S'_{2} (lower branch), which is then connected in series with switch S_{2}.]",
+      "answer": "Let p : switch S_{1} is closed, q : switch S_{2} is closed, ~p : switch S'_{1} is closed, ~q : switch S'_{2} is closed. Logical expression: p ∧ (~p ∨ ~q) ∧ q. Simplification: p ∧ (~p ∨ ~q) ∧ q ≡ [p ∧ (~p ∨ ~q)] ∧ q [Associative law] ≡ [(p ∧ ~p) ∨ (p ∧ ~q)] ∧ q [Distributive law] ≡ [c ∨ (p ∧ ~q)] ∧ q [Complement law] ≡ (p ∧ ~q) ∧ q [Identity law] ≡ p ∧ (~q ∧ q) [Associative law] ≡ p ∧ c [Complement law] ≡ c [Identity law]. Conclusion: The lamp will not glow irrespective of the status of the switches.",
+      "points": [
+        {
+          "text": "Define p, q and write the logical expression p ∧ (~p ∨ ~q) ∧ q",
+          "marks": 1
+        },
+        {
+          "text": "Apply Associative, Distributive, Complement and Identity laws to simplify to (p ∧ ~q) ∧ q",
+          "marks": 1
+        },
+        {
+          "text": "Apply Associative, Complement and Identity laws to reach c with laws stated",
+          "marks": 1
+        },
+        {
+          "text": "Conclusion: the lamp will never glow irrespective of the status of switches S_{1} and S_{2}",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "m1-2022-Q1i",
+      "year": 2022,
+      "qno": "Q1(i)",
+      "marks": 2,
+      "stop": "s08",
+      "kind": "MCQ",
+      "text": "The negation of p ∧ (q → r) is",
+      "options": [
+        "(a) ~p ∧ (~q → ~r)",
+        "(b) p ∨ (~q ∨ r)",
+        "(c) ~p ∧ (~q → r)",
+        "(d) p → (q ∧ ~r)"
+      ],
+      "answer": "(d) p → (q ∧ ~r). Using De Morgan's law and negation of conditional: ~[p ∧ (q → r)] ≡ ~p ∨ ~(q → r) ≡ ~p ∨ (q ∧ ~r). Applying the conditional law (~p ∨ X ≡ p → X) gives p → (q ∧ ~r).",
+      "points": [
+        {
+          "text": "Apply De Morgan's law and negation of conditional: ~[p ∧ (q → r)] ≡ ~p ∨ (q ∧ ~r)",
+          "marks": 1
+        },
+        {
+          "text": "Rewrite ~p ∨ (q ∧ ~r) ≡ p → (q ∧ ~r) by the Conditional law and state option (d) p → (q ∧ ~r)",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "m1-2022-Q3",
+      "year": 2022,
+      "qno": "Q3",
+      "marks": 2,
+      "stop": "s05",
+      "text": "Using truth table verify that : (p ∧ q) ∨ ~q ≡ p ∨ ~q",
+      "answer": "Construct the 4-row truth table with columns I: p, II: q, III: ~q, IV: p ∧ q, V: (p ∧ q) ∨ ~q, VI: p ∨ ~q. Row (T,T): ~q = F, p ∧ q = T, V = T, VI = T. Row (T,F): ~q = T, p ∧ q = F, V = T, VI = T. Row (F,T): ~q = F, p ∧ q = F, V = F, VI = F. Row (F,F): ~q = T, p ∧ q = F, V = T, VI = T. Since columns V and VI are identical (T, T, F, T), we conclude (p ∧ q) ∨ ~q ≡ p ∨ ~q.",
+      "points": [
+        {
+          "text": "Complete 4-row truth table for p, q, ~q, p ∧ q, (p ∧ q) ∨ ~q, and p ∨ ~q",
+          "marks": 1
+        },
+        {
+          "text": "Observe columns V and VI are identical (T, T, F, T) and conclude (p ∧ q) ∨ ~q ≡ p ∨ ~q",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "m1-2022-Q27",
+      "year": 2022,
+      "qno": "Q27",
+      "marks": 4,
+      "stop": "s10",
+      "text": "Without using truth table prove that (p ∧ q) ∨ (~p ∧ q) ∨ (p ∧ ~q) ≡ p ∨ q",
+      "answer": "LHS = (p ∧ q) ∨ (~p ∧ q) ∨ (p ∧ ~q) ≡ [(p ∨ ~p) ∧ q] ∨ (p ∧ ~q) [Distributive law] ≡ (t ∧ q) ∨ (p ∧ ~q) [Complement law] ≡ q ∨ (p ∧ ~q) [Identity law] ≡ (q ∨ p) ∧ (q ∨ ~q) [Distributive law] ≡ (q ∨ p) ∧ t [Complement law] ≡ q ∨ p [Identity law] ≡ p ∨ q [Commutative law] = RHS.",
+      "points": [
+        {
+          "text": "Group first two terms by Distributive law: [(p ∨ ~p) ∧ q] ∨ (p ∧ ~q)",
+          "marks": 1
+        },
+        {
+          "text": "Apply Complement and Identity laws to simplify to q ∨ (p ∧ ~q)",
+          "marks": 1
+        },
+        {
+          "text": "Apply Distributive law again: (q ∨ p) ∧ (q ∨ ~q)",
+          "marks": 1
+        },
+        {
+          "text": "Apply Complement, Identity and Commutative laws to reach p ∨ q with all laws named",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "m1-imp-s06-tautology",
+      "stop": "s06",
+      "source": "Important · Balbharati",
+      "marks": 3,
+      "kind": "Truth table",
+      "text": "Using a truth table, examine whether the statement pattern [(p → q) ∧ ~q] → ~p is a tautology, a contradiction, or a contingency.",
+      "answer": "Build the 4-row truth table for p, q, ~p, ~q, p → q, (p → q) ∧ ~q, and [(p → q) ∧ ~q] → ~p. Row (T,T): ~p = F, ~q = F, p → q = T, (p → q) ∧ ~q = F, final = T. Row (T,F): ~p = F, ~q = T, p → q = F, (p → q) ∧ ~q = F, final = T. Row (F,T): ~p = T, ~q = F, p → q = T, (p → q) ∧ ~q = F, final = T. Row (F,F): ~p = T, ~q = T, p → q = T, (p → q) ∧ ~q = T, final = T. Since all entries in the final column are T, the statement pattern is a tautology.",
+      "points": [
+        {
+          "text": "Correct columns for p, q, ~p, ~q, and p → q across all 4 rows",
+          "marks": 1
+        },
+        {
+          "text": "Correct columns for (p → q) ∧ ~q (F, F, F, T) and [(p → q) ∧ ~q] → ~p (T, T, T, T)",
+          "marks": 1
+        },
+        {
+          "text": "Conclude that since all truth values in the last column are T, it is a tautology",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "m1-imp-s07-duals",
+      "stop": "s07",
+      "source": "Important · Balbharati",
+      "marks": 2,
+      "kind": "Short answer",
+      "text": "Write the duals of each of the following statement patterns: (i) p ∧ [~q ∨ (p ∧ q) ∨ ~r]   (ii) (p ∧ t) ∨ (c ∧ ~q)",
+      "answer": "Interchange ∨ ↔ ∧ and t ↔ c while keeping ~ unchanged: (i) p ∨ [~q ∧ (p ∨ q) ∧ ~r]   (ii) (p ∨ c) ∧ (t ∨ ~q).",
+      "points": [
+        {
+          "text": "Dual of (i): p ∨ [~q ∧ (p ∨ q) ∧ ~r]",
+          "marks": 1
+        },
+        {
+          "text": "Dual of (ii): (p ∨ c) ∧ (t ∨ ~q)",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "m1-imp-s02-truthval",
+      "stop": "s02",
+      "source": "Important · Balbharati",
+      "marks": 2,
+      "kind": "Short answer",
+      "text": "If statements p, q are true and r, s are false, determine the truth values of: (i) ~p ∧ (q ∨ ~r)   (ii) (~p → q) ∧ (r ↔ s)",
+      "answer": "(i) ~p ∧ (q ∨ ~r) ≡ ~T ∧ (T ∨ ~F) ≡ F ∧ (T ∨ T) ≡ F ∧ T ≡ F.   (ii) (~p → q) ∧ (r ↔ s) ≡ (~T → T) ∧ (F ↔ F) ≡ (F → T) ∧ T ≡ T ∧ T ≡ T.",
+      "points": [
+        {
+          "text": "Evaluate (i): ~T ∧ (T ∨ ~F) ≡ F ∧ T ≡ F",
+          "marks": 1
+        },
+        {
+          "text": "Evaluate (ii): (~T → T) ∧ (F ↔ F) ≡ (F → T) ∧ T ≡ T",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "m1-imp-s10-algebra",
+      "stop": "s10",
+      "source": "Important · Balbharati",
+      "marks": 3,
+      "kind": "Proof",
+      "text": "Without using a truth table, prove that ~(p ∨ q) ∨ (~p ∧ q) ≡ ~p, stating the laws used at each step.",
+      "answer": "LHS = ~(p ∨ q) ∨ (~p ∧ q) ≡ (~p ∧ ~q) ∨ (~p ∧ q) [De Morgan's law] ≡ ~p ∧ (~q ∨ q) [Distributive law] ≡ ~p ∧ t [Complement law] ≡ ~p [Identity law] = RHS.",
+      "points": [
+        {
+          "text": "Apply De Morgan's law: (~p ∧ ~q) ∨ (~p ∧ q)",
+          "marks": 1
+        },
+        {
+          "text": "Apply Distributive law: ~p ∧ (~q ∨ q)",
+          "marks": 1
+        },
+        {
+          "text": "Apply Complement law (~p ∧ t) and Identity law (~p) with laws named",
+          "marks": 1
+        }
+      ]
+    }
+  ],
+  "derivations": [
+    {
+      "id": "m1-d1",
+      "stop": "s10",
+      "title": "Prove (p ∧ q) ∨ (~p ∧ q) ∨ (p ∧ ~q) ≡ p ∨ q",
+      "page": 21,
+      "asked": [
+        "2022 Q27"
+      ],
+      "given": "Prove without using a truth table that (p ∧ q) ∨ (~p ∧ q) ∨ (p ∧ ~q) ≡ p ∨ q, naming each Balbharati law used.",
+      "steps": [
+        {
+          "line": "[(p ∧ q) ∨ (~p ∧ q)] ∨ (p ∧ ~q) ≡ [(p ∨ ~p) ∧ q] ∨ (p ∧ ~q)  [Distributive law]",
+          "wrong": [
+            "≡ [(p ∧ ~p) ∨ q] ∨ (p ∧ ~q)  [Distributive law]",
+            "≡ [p ∧ (q ∨ ~q)] ∨ (p ∧ ~q)  [De Morgan's law]"
+          ],
+          "note": "Factor the common '∧ q' out of the first two terms."
+        },
+        {
+          "line": "≡ (t ∧ q) ∨ (p ∧ ~q)  [Complement law]",
+          "wrong": [
+            "≡ (c ∧ q) ∨ (p ∧ ~q)  [Complement law]",
+            "≡ (p ∧ q) ∨ (p ∧ ~q)  [Idempotent law]"
+          ],
+          "note": "By the Complement law, p ∨ ~p ≡ t."
+        },
+        {
+          "line": "≡ q ∨ (p ∧ ~q)  [Identity law]",
+          "wrong": [
+            "≡ t ∨ (p ∧ ~q)  [Identity law]",
+            "≡ c ∨ (p ∧ ~q)  [Identity law]"
+          ],
+          "note": "t ∧ q ≡ q by the Identity law."
+        },
+        {
+          "line": "≡ (q ∨ p) ∧ (q ∨ ~q)  [Distributive law]",
+          "wrong": [
+            "≡ (q ∧ p) ∨ (q ∧ ~q)  [Distributive law]",
+            "≡ (q ∨ p) ∨ (q ∧ ~q)  [Associative law]"
+          ],
+          "note": "Distribute 'q ∨' over (p ∧ ~q)."
+        },
+        {
+          "line": "≡ (q ∨ p) ∧ t  [Complement law] ≡ q ∨ p  [Identity law] ≡ p ∨ q  [Commutative law]",
+          "wrong": [
+            "≡ (q ∨ p) ∧ c  [Complement law] ≡ c  [Identity law]",
+            "≡ (q ∨ p) ∧ t  [Identity law] ≡ t  [Complement law]"
+          ],
+          "note": "q ∨ ~q ≡ t, then A ∧ t ≡ A, then swap q ∨ p to p ∨ q."
+        }
+      ]
+    },
+    {
+      "id": "m1-d2",
+      "stop": "s11",
+      "title": "Simplify switching circuit p ∧ (~p ∨ ~q) ∧ q",
+      "page": 27,
+      "asked": [
+        "2023 Q27"
+      ],
+      "given": "Switch S_{1} is in series with the parallel branch (S'_{1} || S'_{2}), followed in series by S_{2}. Simplify its logical expression p ∧ (~p ∨ ~q) ∧ q and state your conclusion.",
+      "steps": [
+        {
+          "line": "Group the first two factors: [p ∧ (~p ∨ ~q)] ∧ q  [Associative law]",
+          "wrong": [
+            "Rewrite as p ∨ (~p ∧ ~q) ∨ q  [De Morgan's law]",
+            "Cancel p and ~p directly to get ~q ∧ q  [Absorption law]"
+          ],
+          "note": "Associative law lets us bracket the first two conjuncts."
+        },
+        {
+          "line": "≡ [(p ∧ ~p) ∨ (p ∧ ~q)] ∧ q  [Distributive law]",
+          "wrong": [
+            "≡ [(p ∨ ~p) ∧ (p ∨ ~q)] ∧ q  [Distributive law]",
+            "≡ [(p ∧ ~p) ∧ (p ∧ ~q)] ∧ q  [Associative law]"
+          ],
+          "note": "Distribute 'p ∧' over (~p ∨ ~q)."
+        },
+        {
+          "line": "≡ [c ∨ (p ∧ ~q)] ∧ q  [Complement law]",
+          "wrong": [
+            "≡ [t ∨ (p ∧ ~q)] ∧ q  [Complement law]",
+            "≡ [p ∨ (p ∧ ~q)] ∧ q  [Idempotent law]"
+          ],
+          "note": "p ∧ ~p ≡ c by the Complement law."
+        },
+        {
+          "line": "≡ (p ∧ ~q) ∧ q  [Identity law] ≡ p ∧ (~q ∧ q)  [Associative law]",
+          "wrong": [
+            "≡ c ∧ q  [Identity law]",
+            "≡ (p ∨ ~q) ∧ q  [Identity law]"
+          ],
+          "note": "c ∨ X ≡ X (Identity law), then re-bracket ~q with q."
+        },
+        {
+          "line": "≡ p ∧ c  [Complement law] ≡ c  [Identity law]; hence the lamp never glows",
+          "wrong": [
+            "≡ p ∧ t  [Complement law] ≡ p  [Identity law]; lamp follows S_{1}",
+            "≡ p ∧ c  [Complement law] ≡ p  [Identity law]; lamp follows S_{1}"
+          ],
+          "note": "~q ∧ q ≡ c and p ∧ c ≡ c, so no current ever reaches the lamp."
+        }
+      ]
+    },
+    {
+      "id": "m1-d3",
+      "stop": "s10",
+      "title": "Prove p ↔ q ≡ ~(p ∧ ~q) ∧ ~(q ∧ ~p)",
+      "page": 20,
+      "asked": [],
+      "given": "Using the laws of algebra of statements (without a truth table), prove that p ↔ q ≡ ~(p ∧ ~q) ∧ ~(q ∧ ~p).",
+      "steps": [
+        {
+          "line": "LHS = p ↔ q ≡ (p → q) ∧ (q → p)  [Biconditional law]",
+          "wrong": [
+            "LHS = p ↔ q ≡ (p → q) ∨ (q → p)  [Biconditional law]",
+            "LHS = p ↔ q ≡ (p ∧ q) → (q ∧ p)  [Conditional law]"
+          ],
+          "note": "A biconditional is the conjunction of both directions."
+        },
+        {
+          "line": "≡ (~p ∨ q) ∧ (~q ∨ p)  [Conditional law]",
+          "wrong": [
+            "≡ (p ∨ ~q) ∧ (q ∨ ~p)  [Conditional law]",
+            "≡ (~p ∧ q) ∧ (~q ∧ p)  [Conditional law]"
+          ],
+          "note": "Apply A → B ≡ ~A ∨ B to each bracket."
+        },
+        {
+          "line": "≡ (~p ∨ ~(~q)) ∧ (~q ∨ ~(~p))  [Involution / double negation]",
+          "wrong": [
+            "≡ (~p ∧ ~q) ∧ (~q ∧ ~p)  [Idempotent law]",
+            "≡ ~(p ∨ q) ∧ ~(q ∨ p)  [Commutative law]"
+          ],
+          "note": "Write q as ~(~q) and p as ~(~p) to prepare for De Morgan's law in reverse."
+        },
+        {
+          "line": "≡ ~(p ∧ ~q) ∧ ~(q ∧ ~p)  [De Morgan's law] = RHS",
+          "wrong": [
+            "≡ ~(p ∨ ~q) ∧ ~(q ∨ ~p)  [De Morgan's law]",
+            "≡ ~(p ∧ q) ∧ ~(~q ∧ ~p)  [De Morgan's law]"
+          ],
+          "note": "By De Morgan's law, ~A ∨ ~B ≡ ~(A ∧ B)."
+        }
+      ]
+    },
+    {
+      "id": "m1-d4",
+      "stop": "s10",
+      "title": "Prove ~(p ∨ q) ∨ (~p ∧ q) ≡ ~p",
+      "page": 20,
+      "asked": [],
+      "given": "Without using a truth table, prove that ~(p ∨ q) ∨ (~p ∧ q) ≡ ~p.",
+      "steps": [
+        {
+          "line": "LHS = ~(p ∨ q) ∨ (~p ∧ q) ≡ (~p ∧ ~q) ∨ (~p ∧ q)  [De Morgan's law]",
+          "wrong": [
+            "≡ (~p ∨ ~q) ∨ (~p ∧ q)  [De Morgan's law]",
+            "≡ ~(p ∧ q) ∨ (~p ∧ q)  [De Morgan's law]"
+          ],
+          "note": "Negating a disjunction turns ∨ into ∧."
+        },
+        {
+          "line": "≡ ~p ∧ (~q ∨ q)  [Distributive law]",
+          "wrong": [
+            "≡ ~p ∨ (~q ∧ q)  [Distributive law]",
+            "≡ (~p ∧ ~p) ∨ (~q ∧ q)  [Associative law]"
+          ],
+          "note": "Factor out the common '~p ∧' from both terms."
+        },
+        {
+          "line": "≡ ~p ∧ t  [Complement law]",
+          "wrong": [
+            "≡ ~p ∧ c  [Complement law]",
+            "≡ ~p ∧ ~q  [Idempotent law]"
+          ],
+          "note": "~q ∨ q ≡ t by the Complement law."
+        },
+        {
+          "line": "≡ ~p  [Identity law] = RHS",
+          "wrong": [
+            "≡ t  [Identity law]",
+            "≡ p  [Identity law]"
+          ],
+          "note": "Any statement ∧ t equals itself."
+        }
+      ]
+    },
+    {
+      "id": "m1-d5",
+      "stop": "s10",
+      "title": "Negate (p ∧ q) → (~p ∨ r) using laws",
+      "page": 19,
+      "asked": [],
+      "given": "Find the simplified negation of (p ∧ q) → (~p ∨ r) stating the rules used at each step (Balbharati Solved Ex. 1(v), p. 19).",
+      "steps": [
+        {
+          "line": "~[(p ∧ q) → (~p ∨ r)] ≡ (p ∧ q) ∧ ~(~p ∨ r)  [Negation of conditional: ~(A → B) ≡ A ∧ ~B]",
+          "wrong": [
+            "≡ ~(p ∧ q) → ~(~p ∨ r)  [Negation of conditional]",
+            "≡ ~(p ∧ q) ∨ ~(~p ∨ r)  [De Morgan's law]"
+          ],
+          "note": "Never negate an implication into another implication: keep A and negate B with ∧."
+        },
+        {
+          "line": "≡ (p ∧ q) ∧ [~(~p) ∧ ~r] ≡ (p ∧ q) ∧ (p ∧ ~r)  [De Morgan's law & double negation]",
+          "wrong": [
+            "≡ (p ∧ q) ∧ (p ∨ ~r)  [De Morgan's law]",
+            "≡ (p ∧ q) ∧ (~p ∧ ~r)  [De Morgan's law]"
+          ],
+          "note": "~(~p ∨ r) flips ∨ to ∧ and ~(~p) becomes p."
+        },
+        {
+          "line": "≡ q ∧ (p ∧ p) ∧ ~r  [Commutative & Associative laws]",
+          "wrong": [
+            "≡ (q ∨ p) ∧ (p ∨ ~r)  [Distributive law]",
+            "≡ q ∧ c ∧ ~r  [Complement law]"
+          ],
+          "note": "All connectives are ∧, so we can group the two p's together."
+        },
+        {
+          "line": "≡ q ∧ p ∧ ~r (or p ∧ q ∧ ~r)  [Idempotent law]",
+          "wrong": [
+            "≡ q ∧ t ∧ ~r  [Complement law]",
+            "≡ p ∧ ~r  [Absorption law]"
+          ],
+          "note": "By the Idempotent law, p ∧ p ≡ p."
+        }
+      ]
+    },
+    {
+      "id": "m1-d6",
+      "stop": "s11",
+      "title": "Simplify switching circuit (p ∧ q) ∨ (~p ∧ q) ∨ (r ∧ ~q)",
+      "page": 28,
+      "asked": [],
+      "given": "A switching circuit has three parallel branches: (S_{1} and S_{2} in series), (S'_{1} and S_{2} in series), and (S_{3} and S'_{2} in series). Simplify its logical expression (p ∧ q) ∨ (~p ∧ q) ∨ (r ∧ ~q) to minimum switches.",
+      "steps": [
+        {
+          "line": "[(p ∧ q) ∨ (~p ∧ q)] ∨ (r ∧ ~q) ≡ [(p ∨ ~p) ∧ q] ∨ (r ∧ ~q)  [Distributive law]",
+          "wrong": [
+            "≡ [(p ∧ ~p) ∨ q] ∨ (r ∧ ~q)  [Distributive law]",
+            "≡ [p ∧ (q ∨ ~q)] ∨ (r ∧ ~q)  [Associative law]"
+          ],
+          "note": "Factor out the common switch q from the first two parallel branches."
+        },
+        {
+          "line": "≡ (t ∧ q) ∨ (r ∧ ~q)  [Complement law]",
+          "wrong": [
+            "≡ (c ∧ q) ∨ (r ∧ ~q)  [Complement law]",
+            "≡ q ∨ (r ∨ ~q)  [De Morgan's law]"
+          ],
+          "note": "p ∨ ~p ≡ t."
+        },
+        {
+          "line": "≡ q ∨ (r ∧ ~q)  [Identity law]",
+          "wrong": [
+            "≡ t ∨ (r ∧ ~q)  [Identity law]",
+            "≡ q ∧ (r ∨ ~q)  [Commutative law]"
+          ],
+          "note": "t ∧ q ≡ q."
+        },
+        {
+          "line": "≡ (q ∨ r) ∧ (q ∨ ~q)  [Distributive law]",
+          "wrong": [
+            "≡ (q ∧ r) ∨ (q ∧ ~q)  [Distributive law]",
+            "≡ (q ∨ r) ∨ (q ∧ ~q)  [Associative law]"
+          ],
+          "note": "Distribute 'q ∨' over (r ∧ ~q)."
+        },
+        {
+          "line": "≡ (q ∨ r) ∧ t  [Complement law] ≡ q ∨ r  [Identity law] (just S_{2} and S_{3} in parallel)",
+          "wrong": [
+            "≡ (q ∨ r) ∧ c  [Complement law] ≡ c  [Identity law]",
+            "≡ (q ∧ r) ∧ t  [Complement law] ≡ q ∧ r  [Identity law]"
+          ],
+          "note": "The 6-switch circuit collapses to just 2 switches, S_{2} and S_{3}, connected in parallel!"
+        }
+      ]
+    }
+  ],
+  "formulas": [
+    {
+      "stop": "s02",
+      "items": [
+        {
+          "n": "Conjunction (and)",
+          "f": "p ∧ q : T ∧ T ≡ T (false otherwise)",
+          "s": "also triggered by 'but', 'while', 'yet'",
+          "p": 3
+        },
+        {
+          "n": "Disjunction (or)",
+          "f": "p ∨ q : F ∨ F ≡ F (true otherwise)",
+          "s": "inclusive 'or'",
+          "p": 3
+        },
+        {
+          "n": "Negation (not)",
+          "f": "~T ≡ F, ~F ≡ T, ~(~p) ≡ p",
+          "s": "double negation restores the original statement",
+          "p": 4
+        }
+      ]
+    },
+    {
+      "stop": "s03",
+      "items": [
+        {
+          "n": "Conditional (if ... then)",
+          "f": "p → q : T → F ≡ F (true otherwise)",
+          "s": "p: antecedent/hypothesis, q: consequent/conclusion",
+          "p": 4
+        },
+        {
+          "n": "English equivalents of p → q",
+          "f": "p is sufficient for q; q is necessary for p; p only if q; q follows from p",
+          "s": "watch 'p if q' which means q → p",
+          "p": 4
+        },
+        {
+          "n": "Biconditional (if and only if)",
+          "f": "p ↔ q : T ↔ T ≡ T, F ↔ F ≡ T (false when values differ)",
+          "s": "true iff p and q have the same truth value",
+          "p": 4
+        }
+      ]
+    },
+    {
+      "stop": "s04",
+      "items": [
+        {
+          "n": "Number of truth-table rows",
+          "f": "Rows = 2^{n}",
+          "s": "n: number of distinct prime components (n = 2 → 4 rows; n = 3 → 8 rows)",
+          "p": 8
+        },
+        {
+          "n": "Connective priority order",
+          "f": "~, ∨, ∧, →, ↔",
+          "s": "parentheses always take highest precedence",
+          "p": 8
+        }
+      ]
+    },
+    {
+      "stop": "s05",
+      "items": [
+        {
+          "n": "Logical equivalence",
+          "f": "A ≡ B iff truth-table columns of A and B are identical",
+          "s": "check row by row across all 2^{n} rows",
+          "p": 8
+        },
+        {
+          "n": "Key equivalences",
+          "f": "p ∧ q ≡ ~(p → ~q); (p ∧ q) → r ≡ p → (q → r)",
+          "s": "standard truth-table board proofs",
+          "p": 10
+        }
+      ]
+    },
+    {
+      "stop": "s06",
+      "items": [
+        {
+          "n": "Tautology (t)",
+          "f": "All entries in final column are T (e.g. p ∨ ~p)",
+          "s": "always true",
+          "p": 8
+        },
+        {
+          "n": "Contradiction (c)",
+          "f": "All entries in final column are F (e.g. p ∧ ~p)",
+          "s": "always false",
+          "p": 8
+        },
+        {
+          "n": "Contingency",
+          "f": "Final column has both T and F entries",
+          "s": "neither tautology nor contradiction",
+          "p": 8
+        }
+      ]
+    },
+    {
+      "stop": "s07",
+      "items": [
+        {
+          "n": "Universal quantifier",
+          "f": "∀x ∈ A, P(x)",
+          "s": "'for all' / 'for every'; false if even one counterexample exists",
+          "p": 14
+        },
+        {
+          "n": "Existential quantifier",
+          "f": "∃x ∈ A such that P(x)",
+          "s": "'there exists at least one' / 'for some'; true if ≥ 1 element satisfies P(x)",
+          "p": 14
+        },
+        {
+          "n": "Principle of Duality",
+          "f": "Swap ∨ ↔ ∧ and t ↔ c",
+          "s": "keep ~ and all statement letters unchanged",
+          "p": 14
+        }
+      ]
+    },
+    {
+      "stop": "s08",
+      "items": [
+        {
+          "n": "De Morgan's laws",
+          "f": "~(p ∧ q) ≡ ~p ∨ ~q; ~(p ∨ q) ≡ ~p ∧ ~q",
+          "s": "negation of conjunction and disjunction",
+          "p": 15
+        },
+        {
+          "n": "Negation of conditional",
+          "f": "~(p → q) ≡ p ∧ ~q",
+          "s": "never write an arrow in the negation of p → q",
+          "p": 15
+        },
+        {
+          "n": "Negation of biconditional",
+          "f": "~(p ↔ q) ≡ (p ∧ ~q) ∨ (q ∧ ~p)",
+          "s": "p and not q, or q and not p",
+          "p": 15
+        },
+        {
+          "n": "Negation of quantifiers",
+          "f": "~(∀x ∈ A, P(x)) ≡ ∃x ∈ A, ~P(x); ~(∃x ∈ A, P(x)) ≡ ∀x ∈ A, ~P(x)",
+          "s": "also flip > ↔ ≤, < ↔ ≥, = ↔ ≠",
+          "p": 16
+        }
+      ]
+    },
+    {
+      "stop": "s09",
+      "items": [
+        {
+          "n": "Converse of p → q",
+          "f": "q → p",
+          "s": "swap antecedent and consequent",
+          "p": 15
+        },
+        {
+          "n": "Inverse of p → q",
+          "f": "~p → ~q",
+          "s": "negate both parts",
+          "p": 15
+        },
+        {
+          "n": "Contrapositive of p → q",
+          "f": "~q → ~p",
+          "s": "swap and negate both parts",
+          "p": 15
+        },
+        {
+          "n": "Implication equivalences",
+          "f": "p → q ≡ ~q → ~p and q → p ≡ ~p → ~q",
+          "s": "implication ≡ contrapositive; converse ≡ inverse",
+          "p": 16
+        }
+      ]
+    },
+    {
+      "stop": "s10",
+      "items": [
+        {
+          "n": "Idempotent law",
+          "f": "p ∧ p ≡ p; p ∨ p ≡ p",
+          "s": "Table 1.21",
+          "p": 19
+        },
+        {
+          "n": "Commutative law",
+          "f": "p ∧ q ≡ q ∧ p; p ∨ q ≡ q ∨ p",
+          "s": "Table 1.21",
+          "p": 19
+        },
+        {
+          "n": "Associative law",
+          "f": "p ∧ (q ∧ r) ≡ (p ∧ q) ∧ r; p ∨ (q ∨ r) ≡ (p ∨ q) ∨ r",
+          "s": "Table 1.21",
+          "p": 19
+        },
+        {
+          "n": "Distributive law",
+          "f": "p ∧ (q ∨ r) ≡ (p ∧ q) ∨ (p ∧ r); p ∨ (q ∧ r) ≡ (p ∨ q) ∧ (p ∨ r)",
+          "s": "Table 1.21",
+          "p": 19
+        },
+        {
+          "n": "De Morgan's law",
+          "f": "~(p ∧ q) ≡ ~p ∨ ~q; ~(p ∨ q) ≡ ~p ∧ ~q",
+          "s": "Table 1.21",
+          "p": 19
+        },
+        {
+          "n": "Identity law",
+          "f": "p ∧ t ≡ p; p ∧ c ≡ c; p ∨ c ≡ p; p ∨ t ≡ t",
+          "s": "Table 1.21",
+          "p": 19
+        },
+        {
+          "n": "Complement law",
+          "f": "p ∧ ~p ≡ c; p ∨ ~p ≡ t",
+          "s": "Table 1.21",
+          "p": 19
+        },
+        {
+          "n": "Absorption law",
+          "f": "p ∨ (p ∧ q) ≡ p; p ∧ (p ∨ q) ≡ p",
+          "s": "Table 1.21",
+          "p": 19
+        },
+        {
+          "n": "Conditional law",
+          "f": "p → q ≡ ~p ∨ q",
+          "s": "also used to rewrite 'if ... then' without 'if ... then'",
+          "p": 19
+        },
+        {
+          "n": "Biconditional law",
+          "f": "p ↔ q ≡ (p → q) ∧ (q → p) ≡ (~p ∨ q) ∧ (~q ∨ p)",
+          "s": "Table 1.21",
+          "p": 19
+        }
+      ]
+    },
+    {
+      "stop": "s11",
+      "items": [
+        {
+          "n": "Switches in series",
+          "f": "S_{1} and S_{2} in series → p ∧ q",
+          "s": "current flows (1) only when both switches are closed (1)",
+          "p": 22
+        },
+        {
+          "n": "Switches in parallel",
+          "f": "S_{1} and S_{2} in parallel → p ∨ q",
+          "s": "current flows (1) when at least one switch is closed (1)",
+          "p": 23
+        },
+        {
+          "n": "Complementary switches",
+          "f": "S_{1} ↔ p, S'_{1} ↔ ~p",
+          "s": "S'_{1} is open (0) whenever S_{1} is closed (1), and vice versa",
+          "p": 22
+        },
+        {
+          "n": "Switching-table interpretation",
+          "f": "All 1s (≡ t): lamp always glows; All 0s (≡ c): lamp never glows",
+          "s": "1 = closed / ON, 0 = open / OFF",
+          "p": 27
+        }
+      ]
+    }
+  ]
+}

@@ -378,6 +378,19 @@ html[data-theme="focus"] .round-card { border-color: var(--amber); border-width:
 .t-notes summary { min-height: 44px; display: flex; align-items: center; cursor: pointer; font-weight: 600; color: var(--purple); }
 html[data-theme="focus"] .t-notes summary { color: var(--amber); }
 
+/* ---- multi-subject / multi-chapter filters ---- */
+.pills-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+.pill-btn { min-height: 40px; padding: 6px 14px; border-radius: 99px; border: 1.5px solid var(--line);
+  background: var(--card); color: var(--muted); font-size: 14px; font-weight: 600; cursor: pointer; white-space: nowrap; }
+.pill-btn[aria-pressed="true"] { border-color: var(--purple); background: var(--purple-soft); color: var(--purple-ink); }
+html[data-theme="focus"] .pill-btn[aria-pressed="true"] { border-color: var(--amber); background: var(--amber-soft); color: var(--amber-ink); }
+.g-rows { display: grid; gap: 10px; margin-top: 8px; }
+.g-row { display: block; text-decoration: none; color: inherit; padding-top: 8px; border-top: 1px solid var(--line); }
+.g-row:first-child { padding-top: 0; border-top: 0; }
+.g-row-top { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; font-size: 14.5px; margin-bottom: 4px; }
+.ch-tag { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: 99px; font-size: 12px; font-weight: 700;
+  background: var(--purple-soft); color: var(--purple-ink); margin-right: 4px; }
+
 @media (min-width: 700px) {
   .card { padding: 20px; }
   html[data-theme="focus"] .card { padding: 14px 18px; }

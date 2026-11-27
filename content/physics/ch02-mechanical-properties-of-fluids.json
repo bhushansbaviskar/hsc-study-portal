@@ -1,0 +1,1939 @@
+{
+  "id": "ch02",
+  "subject": "physics",
+  "number": 2,
+  "title": "Mechanical Properties of Fluids",
+  "printedPages": "26–56",
+  "startPage": 26,
+  "pdfPageOffset": 10,
+  "book": "xii",
+  "boardNote": "No 2024 Physics paper available yet.",
+  "examMarks": {
+    "avg": 7,
+    "basis": "Chapter 2 questions in the 2022, 2023 and 2025 papers: 7, 7 and 7 marks"
+  },
+  "stops": [
+    {
+      "id": "s01",
+      "title": "Fluids at rest and pressure",
+      "sections": [
+        "2.1 Introduction",
+        "2.2 Fluid",
+        "2.2.1 Fluids at Rest",
+        "2.3 Pressure"
+      ],
+      "page": 26,
+      "figs": [
+        "Fig 2.1",
+        "Fig 2.2",
+        "Fig 2.3",
+        "Fig 2.4",
+        "Fig 2.5"
+      ],
+      "inShort": "A fluid (liquid or gas) has zero shear modulus and flows under any shear stress. An ideal fluid is incompressible, irrotational, non-viscous and steady. Hydrostatic pressure is p = F/A (SI unit Pa = N/m²), a scalar.",
+      "xi": [],
+      "quest": {
+        "cards": [
+          {
+            "t": "What is a fluid?",
+            "text": "Any substance that can flow and deform continually under an external force is a fluid (liquids and gases). A fluid has zero shear modulus—it cannot oppose a shear stress in static equilibrium, so it takes the shape of its container.",
+            "page": 26
+          },
+          {
+            "t": "Ideal fluid assumptions",
+            "text": "To simplify fluid mechanics, an ideal fluid is assumed to be: (1) incompressible (constant density), (2) irrotational (smooth flow without turbulence), (3) non-viscous (zero internal friction), and (4) in steady flow (velocity at each point constant in time).",
+            "page": 26
+          },
+          {
+            "t": "Hydrostatic pressure",
+            "text": "The normal force F exerted by a fluid at rest per unit contact area A is pressure, p = F/A. Pressure is a scalar quantity with SI unit N/m² = pascal (Pa) and dimensions [L⁻¹M¹T⁻²]. Also 1 bar = 10^{5} N/m², 1 torr = 1 mm of Hg, and 1 hPa = 100 Pa.",
+            "page": 27
+          }
+        ],
+        "checks": [
+          {
+            "type": "mcq",
+            "q": "Which set of properties correctly describes an ideal fluid?",
+            "options": [
+              "Compressible, viscous, turbulent and unsteady",
+              "Incompressible, non-viscous, irrotational and steady",
+              "Incompressible, viscous, rotational and steady",
+              "Compressible, non-viscous, irrotational and unsteady"
+            ],
+            "answer": 1,
+            "hint": "Recall the four simplifying assumptions introduced at the start of Chapter 2.",
+            "explain": "An ideal fluid is incompressible (constant density), non-viscous (no internal friction), irrotational (no eddies/turbulence), and has steady flow.",
+            "page": 26
+          },
+          {
+            "type": "num",
+            "q": "A normal force of 20 N acts uniformly on a flat surface of area 4 cm². Find the pressure exerted in kPa.",
+            "answer": 50,
+            "unit": "kPa",
+            "hint": "Convert 4 cm² to m² (1 cm² = 10^{-4} m²), then use p = F/A.",
+            "explain": "A = 4 × 10^{-4} m², so p = F/A = 20 / (4 × 10^{-4}) = 5 × 10^{4} Pa = 50 kPa.",
+            "page": 27
+          },
+          {
+            "type": "tf",
+            "q": "Hydrostatic pressure is a vector quantity because force is a vector.",
+            "answer": false,
+            "hint": "At a given point inside a fluid at rest, does pressure depend on the orientation of the surface?",
+            "explain": "False. Pressure is a scalar quantity; at any point in a fluid at rest it acts equally in all directions and always normal to any surface placed there.",
+            "page": 27
+          }
+        ]
+      }
+    },
+    {
+      "id": "s02",
+      "title": "Liquid column, atmospheric and gauge pressure",
+      "sections": [
+        "2.3.1 Pressure Due to a Liquid Column",
+        "2.3.2 Atmospheric Pressure",
+        "2.3.3 Absolute Pressure and Gauge Pressure"
+      ],
+      "page": 28,
+      "figs": [
+        "Fig 2.6",
+        "Fig 2.7",
+        "Fig 2.8",
+        "Fig 2.9"
+      ],
+      "inShort": "A liquid column of height h and density ρ exerts pressure p = hρg, independent of container shape. Absolute pressure at depth h is p = p_{0} + hρg, and gauge pressure is p − p_{0} = hρg.",
+      "xi": [],
+      "quest": {
+        "cards": [
+          {
+            "t": "Pressure due to a liquid column",
+            "text": "Consider an imaginary vertical fluid cylinder of base area A and height h. Its weight is mg = (Ahρ)g, so the pressure on the base is p = mg/A = hρg. Notice A cancels—pressure depends only on depth h, density ρ and g, not on the shape or size of the vessel.",
+            "page": 28
+          },
+          {
+            "t": "Atmospheric pressure and vacuum",
+            "text": "Atmospheric pressure is the weight per unit cross-section of the air column above a point. It is highest at sea level (normal atmospheric pressure, ~1.013 × 10^{5} Pa) and falls with altitude. A region with gas pressure below atmospheric pressure is called a vacuum.",
+            "page": 28
+          },
+          {
+            "t": "Absolute and gauge pressure",
+            "text": "At depth h below a free liquid surface exposed to atmospheric pressure p_{0}, the total (absolute) pressure is p = p_{0} + hρg. The excess over atmospheric pressure is the gauge pressure: p − p_{0} = hρg. At a small height d above the surface, p = p_{0} − dρ_{air}g.",
+            "page": 29
+          }
+        ],
+        "checks": [
+          {
+            "type": "num",
+            "q": "Find the gauge pressure due to water at a depth of 5 m below the free surface of a lake, in kPa. (ρ = 1000 kg/m³, g = 9.8 m/s²)",
+            "answer": 49,
+            "unit": "kPa",
+            "hint": "Gauge pressure at depth h is p − p_{0} = hρg.",
+            "explain": "p − p_{0} = hρg = 5 × 1000 × 9.8 = 49000 Pa = 49 kPa.",
+            "page": 29
+          },
+          {
+            "type": "mcq",
+            "q": "Two liquids of densities ρ_{1} and ρ_{2} exert the same pressure at the bottoms of two vertical tubes. What is the ratio of their column heights h_{1}/h_{2}?",
+            "options": [
+              "ρ_{1}/ρ_{2}",
+              "ρ_{2}/ρ_{1}",
+              "√(ρ_{2}/ρ_{1})",
+              "1 : 1"
+            ],
+            "answer": 1,
+            "hint": "Set h_{1}ρ_{1}g = h_{2}ρ_{2}g and solve for h_{1}/h_{2}.",
+            "explain": "Since p = hρg is the same for both, h_{1}ρ_{1}g = h_{2}ρ_{2}g, giving h_{1}/h_{2} = ρ_{2}/ρ_{1}.",
+            "page": 28
+          },
+          {
+            "type": "tf",
+            "q": "Atmospheric pressure increases as we climb to higher altitudes above sea level.",
+            "answer": false,
+            "hint": "Does the column of air above you get taller or shorter as you climb?",
+            "explain": "False. As altitude increases, the height and weight of the air column above decrease (p = p_{0} − dρ_{air}g), so atmospheric pressure decreases.",
+            "page": 29
+          }
+        ]
+      }
+    },
+    {
+      "id": "s03",
+      "title": "Hydrostatic paradox and Pascal's law",
+      "sections": [
+        "2.3.4 Hydrostatic Paradox",
+        "2.3.5 Pascal's Law"
+      ],
+      "page": 30,
+      "figs": [
+        "Fig 2.10",
+        "Fig 2.11",
+        "Fig 2.12"
+      ],
+      "inShort": "Hydrostatic pressure depends only on vertical depth h, explaining equal levels in differently shaped connected vessels. By Pascal's law, applied pressure transmits undiminished, enabling force multiplication F_{2} = F_{1}(A_{2}/A_{1}) in hydraulic lifts and brakes.",
+      "xi": [],
+      "quest": {
+        "cards": [
+          {
+            "t": "Hydrostatic paradox resolved",
+            "text": "In interconnected vessels of widely different shapes, a liquid settles to the exact same height in every branch. Because p = hρg depends only on vertical height h, base pressure is identical; the sloping walls exert normal forces whose vertical components support or push down the extra fluid weight.",
+            "page": 30
+          },
+          {
+            "t": "Pascal's law",
+            "text": "Pressure applied at any point of an enclosed fluid at rest is transmitted equally and undiminished to every point of the fluid and to the walls of the container (neglecting gravity). In a four-piston vessel of areas a, 2a, 3a and a/2, balancing forces are F, 2F, 3F and F/2.",
+            "page": 30
+          },
+          {
+            "t": "Hydraulic lift and hydraulic brakes",
+            "text": "Applying a small force F_{1} on a small piston of area A_{1} creates pressure p = F_{1}/A_{1}, which transmits undiminished to a larger piston (or slave cylinder) of area A_{2} to produce a multiplied force F_{2} = F_{1}(A_{2}/A_{1}). This drives hydraulic lifts and vehicle disc brakes.",
+            "page": 31
+          }
+        ],
+        "checks": [
+          {
+            "type": "num",
+            "q": "In a hydraulic lift, the smaller piston has area 20 cm² and the larger piston has area 1000 cm². If a force of 40 N is applied on the smaller piston, find the maximum load that can be lifted on the larger piston.",
+            "answer": 2000,
+            "unit": "N",
+            "hint": "Use F_{2} = F_{1}(A_{2}/A_{1}). Since A_{2}/A_{1} is a ratio, cm² cancels directly.",
+            "explain": "F_{2} = F_{1}(A_{2}/A_{1}) = 40 × (1000 / 20) = 40 × 50 = 2000 N.",
+            "page": 31
+          },
+          {
+            "type": "mcq",
+            "q": "Three containers—one wide-topped, one cylindrical, and one narrow-topped—have identical base areas and are filled to the same vertical height h with the same oil. How do the pressures at their bases compare?",
+            "options": [
+              "Greatest in the wide-topped vessel because it holds the most oil",
+              "Greatest in the narrow-topped vessel",
+              "Equal in all three vessels",
+              "Depends on the total weight of oil in each vessel"
+            ],
+            "answer": 2,
+            "hint": "Check what variables appear in p = hρg.",
+            "explain": "By the hydrostatic principle (p = hρg), pressure at the base depends only on vertical height h, density ρ and g—not on the shape or volume of the container.",
+            "page": 30
+          },
+          {
+            "type": "step",
+            "q": "To calculate the braking force F_{2} produced at a wheel's slave cylinder of radius r_{2} when force F_{1} is pressed on a master cylinder of radius r_{1}, which equation do you write first?",
+            "options": [
+              "F_{1}/(πr_{1}²) = F_{2}/(πr_{2}²)",
+              "F_{1}(πr_{1}²) = F_{2}(πr_{2}²)",
+              "F_{1}/r_{1} = F_{2}/r_{2}",
+              "F_{1}r_{1} = F_{2}r_{2}"
+            ],
+            "answer": 0,
+            "hint": "Pascal's law equates the pressure p = F/A at both cylinders.",
+            "explain": "Pressure transmits undiminished: p_{1} = p_{2}, so F_{1}/A_{1} = F_{2}/A_{2}, i.e. F_{1}/(πr_{1}²) = F_{2}/(πr_{2}²).",
+            "page": 32
+          }
+        ]
+      }
+    },
+    {
+      "id": "s04",
+      "title": "Measurement of pressure: barometer and manometer",
+      "sections": [
+        "2.3.6 Measurement of Pressure"
+      ],
+      "page": 32,
+      "figs": [
+        "Fig 2.13",
+        "Fig 2.14"
+      ],
+      "inShort": "A mercury barometer measures atmospheric pressure as p_{0} = hρg (normal pressure = 76 cm of Hg = 760 torr) with Torricelli's vacuum at the top. An open-tube manometer uses a low-density liquid to measure gauge pressure p − p_{0} = hρg.",
+      "xi": [],
+      "quest": {
+        "cards": [
+          {
+            "t": "Mercury barometer (Torricelli)",
+            "text": "A 1 m glass tube filled with mercury is inverted into a mercury dish. The gap above the mercury column is Torricelli's vacuum (p_{A} ≈ 0, only trace mercury vapour). Equating pressure at the dish level inside and outside gives p_{0} = hρg, with normal atmospheric pressure = 76 cm of Hg = 760 torr.",
+            "page": 32
+          },
+          {
+            "t": "Open-tube manometer",
+            "text": "A U-tube partly filled with liquid has one arm open to the atmosphere (p_{0}) and the other connected to a gas container at pressure p. Equating pressures at the lower meniscus level gives p = p_{0} + hρg, so the manometer directly reads gauge pressure p − p_{0} = hρg.",
+            "page": 33
+          },
+          {
+            "t": "Why use a low-density manometric liquid?",
+            "text": "For a given small gauge pressure difference Δp = hρg, the height difference h = Δp/(ρg) is inversely proportional to density ρ. Using a low-density liquid like water or kerosene produces a larger, more easily and accurately measurable level difference h.",
+            "page": 33
+          }
+        ],
+        "checks": [
+          {
+            "type": "num",
+            "q": "An open-tube manometer filled with water (ρ = 1000 kg/m³) shows the open-arm level 0.25 m higher than the container-arm level. Find the gauge pressure of the gas in the container. (g = 9.8 m/s²)",
+            "answer": 2450,
+            "unit": "Pa",
+            "hint": "Gauge pressure in an open-tube manometer is p − p_{0} = hρg.",
+            "explain": "p − p_{0} = hρg = 0.25 × 1000 × 9.8 = 2450 Pa.",
+            "page": 33
+          },
+          {
+            "type": "mcq",
+            "q": "Why is a low-density liquid such as water or kerosene preferred in an open-tube laboratory manometer for measuring small gas pressures?",
+            "options": [
+              "It eliminates atmospheric pressure from the open arm",
+              "It gives a larger height difference h for a given pressure difference, improving reading accuracy",
+              "It makes the gauge pressure independent of gravity",
+              "It turns the manometer into a barometer"
+            ],
+            "answer": 1,
+            "hint": "Look at h = (p − p_{0}) / (ρg) when ρ is small.",
+            "explain": "Since h = Δp/(ρg), a smaller density ρ yields a larger level difference h for the same pressure difference, making it easier to read accurately.",
+            "page": 33
+          },
+          {
+            "type": "tf",
+            "q": "In a mercury barometer, the closed space above the mercury column contains air at atmospheric pressure.",
+            "answer": false,
+            "hint": "What did Torricelli discover about the space left when mercury drops in the inverted tube?",
+            "explain": "False. The space above the mercury column contains no air (only negligible mercury vapour) and is called Torricelli's vacuum, so p_{A} = 0.",
+            "page": 32
+          }
+        ]
+      }
+    },
+    {
+      "id": "s05",
+      "title": "Surface tension and molecular theory",
+      "sections": [
+        "2.4 Surface Tension",
+        "2.4.1 Molecular Theory of Surface Tension"
+      ],
+      "page": 33,
+      "figs": [
+        "Fig 2.15",
+        "Fig 2.16"
+      ],
+      "inShort": "Molecules in the surface film experience a net inward cohesive pull, making the free liquid surface act like a stretched membrane. Surface tension is T = F/L (SI unit N/m, dimensions [L⁰M¹T⁻²]).",
+      "xi": [],
+      "quest": {
+        "cards": [
+          {
+            "t": "Cohesion, adhesion and surface film",
+            "text": "Cohesive force attracts molecules of the same substance; adhesive force attracts different substances. Intermolecular forces act only within a short molecular range (~10^{-9} m), defining a molecule's sphere of influence. The top layer of thickness equal to this range is the surface film.",
+            "page": 34
+          },
+          {
+            "t": "Molecular theory of surface tension",
+            "text": "Molecule A deep inside has its sphere of influence completely in the liquid, so net cohesive force is zero. Molecules B (in the surface film) and C (on the free surface) have part of their sphere in air, so they suffer a net inward cohesive pull—putting the surface film under tension to minimize its area.",
+            "page": 34
+          },
+          {
+            "t": "Definition, units and dimensions of T",
+            "text": "Surface tension T is the tangential force per unit length acting on both sides of an imaginary line on the free surface of a liquid: T = F/L. Its SI unit is N/m (CGS: dyne/cm; 1 N/m = 10^{3} dyne/cm) and its dimensions are [L⁰M¹T⁻²]. Gases lack a free surface and show no surface tension.",
+            "page": 35
+          }
+        ],
+        "checks": [
+          {
+            "type": "num",
+            "q": "Calculate the force of surface tension acting across a straight line of length 0.15 m drawn on the free surface of water of surface tension 0.072 N/m. Express your answer in mN.",
+            "answer": 10.8,
+            "unit": "mN",
+            "hint": "Use F = TL, then convert N to mN (1 N = 1000 mN).",
+            "explain": "F = TL = 0.072 × 0.15 = 0.0108 N = 10.8 mN.",
+            "page": 35
+          },
+          {
+            "type": "mcq",
+            "q": "Why does a liquid molecule lying on the free surface experience a net downward force?",
+            "options": [
+              "Gravity is stronger at the surface than inside the liquid",
+              "Atmospheric pressure pulls it down while cohesion pushes it up",
+              "The downward cohesive force from liquid molecules below is much stronger than the upward adhesive force from fewer air molecules above",
+              "Its sphere of influence is completely inside the air"
+            ],
+            "answer": 2,
+            "hint": "Compare the lower half (liquid) and upper half (air) of molecule C's sphere of influence.",
+            "explain": "Half of molecule C's sphere of influence lies in the liquid and half in air. Because air is far less dense, upward adhesion is weak compared to downward cohesion, producing a net inward pull.",
+            "page": 35
+          },
+          {
+            "type": "tf",
+            "q": "Both liquids and gases exhibit surface tension because both are fluids.",
+            "answer": false,
+            "hint": "Does a gas form a free surface?",
+            "explain": "False. Gases expand to fill their entire container and have no free surface, so they do not exhibit surface tension.",
+            "page": 34
+          }
+        ]
+      }
+    },
+    {
+      "id": "s06",
+      "title": "Surface energy and its relation with surface tension",
+      "sections": [
+        "2.4.2 Surface Tension and Surface Energy"
+      ],
+      "page": 35,
+      "figs": [
+        "Fig 2.17"
+      ],
+      "inShort": "Surface molecules have extra potential energy called surface energy. Stretching a liquid surface isothermally requires work dW = T dA, so surface tension equals surface energy per unit area (J/m² = N/m).",
+      "xi": [],
+      "quest": {
+        "cards": [
+          {
+            "t": "Surface energy",
+            "text": "Work must be done against the inward cohesive pull to bring a molecule from the interior into the surface film. This extra potential energy of surface molecules is surface energy. Because every system minimizes potential energy, a liquid tries to minimize its surface area (making free drops spherical).",
+            "page": 35
+          },
+          {
+            "t": "Relation between surface energy and T",
+            "text": "On a C-shaped wire frame with a movable arm QR of length L holding a soap film (two free surfaces), the inward pull is F = 2TL. Moving QR isothermally by dx does work dW = F dx = T(2L dx) = T dA. Hence surface energy per unit area equals surface tension T (unit J/m² = N/m).",
+            "page": 36
+          },
+          {
+            "t": "Drops vs bubbles, coalescing vs splitting",
+            "text": "A liquid drop (or an air bubble submerged in liquid) has one free surface (A = 4πr²), while a soap bubble in air has two free surfaces (A = 8πr²). When small droplets coalesce into a big drop, total surface area decreases and energy is released; splitting a drop requires external work.",
+            "page": 36
+          }
+        ],
+        "checks": [
+          {
+            "type": "num",
+            "q": "A rectangular soap film on a wire frame is stretched from size 2 cm × 2 cm to 3 cm × 3 cm. If the surface tension of the soap film is 0.03 N/m, find the work done in μJ.",
+            "answer": 30,
+            "unit": "μJ",
+            "hint": "A soap film has TWO free surfaces, so dA = 2(A_{2} − A_{1}). Then W = T dA.",
+            "explain": "Change in area of one face = 9 − 4 = 5 cm² = 5 × 10^{-4} m². For two surfaces, dA = 2 × 5 × 10^{-4} = 10^{-3} m². W = T dA = 0.03 × 10^{-3} = 3 × 10^{-5} J = 30 μJ.",
+            "page": 36
+          },
+          {
+            "type": "mcq",
+            "q": "When several tiny droplets of mercury coalesce to form a single larger drop, what happens to the total surface area and surface energy?",
+            "options": [
+              "Total surface area increases and energy is absorbed",
+              "Total surface area decreases and energy is released to the surroundings",
+              "Total surface area stays constant and no energy changes",
+              "Total volume decreases so energy is released"
+            ],
+            "answer": 1,
+            "hint": "Volume is conserved, while a single sphere has less surface area than many small spheres of the same volume.",
+            "explain": "Coalescing reduces total surface area (while volume stays constant), so total surface energy drops and the excess energy is released to the surroundings.",
+            "page": 36
+          },
+          {
+            "type": "tf",
+            "q": "Surface energy per unit area (J/m²) has the same dimensions [L⁰M¹T⁻²] and is numerically equal to surface tension (N/m).",
+            "answer": true,
+            "hint": "Rewrite 1 J/m² using 1 J = 1 N·m.",
+            "explain": "True. Since dW = T dA, T = dW/dA has unit J/m² = (N·m)/m² = N/m and dimensions [L⁰M¹T⁻²].",
+            "page": 36
+          }
+        ]
+      }
+    },
+    {
+      "id": "s07",
+      "title": "Angle of contact, impurities and temperature",
+      "sections": [
+        "2.4.3 Angle of Contact",
+        "2.4.4 Effect of Impurity and Temperature on Surface Tension"
+      ],
+      "page": 37,
+      "figs": [
+        "Fig 2.18",
+        "Fig 2.19",
+        "Fig 2.20"
+      ],
+      "inShort": "Angle of contact θ is measured inside the liquid: acute (concave meniscus, wets solid) when adhesion dominates, obtuse (convex meniscus, non-wetting) when cohesion dominates. Soluble salt raises T; detergents, insoluble impurities and rising temperature lower T (T = 0 at critical temperature).",
+      "xi": [],
+      "quest": {
+        "cards": [
+          {
+            "t": "Angle of contact and meniscus shape",
+            "text": "The angle of contact θ is the angle between tangents to the liquid free surface and the solid wall at contact, measured inside the liquid. Acute θ (0° ≤ θ < 90°, e.g. kerosene-glass 26°, pure water-glass 0°) gives a concave meniscus and wets the solid (AP > AC/√2). Obtuse θ (e.g. mercury-glass 140°) gives a convex meniscus and does not wet (AP < AC/√2).",
+            "page": 37
+          },
+          {
+            "t": "Drop equilibrium on a solid surface",
+            "text": "Balancing tangential surface-tension forces T_{1} (liquid-solid), T_{2} (air-solid) and T_{3} (air-liquid) gives T_{2} = T_{1} + T_{3} cosθ, or cosθ = (T_{2} − T_{1})/T_{3}. If T_{2} > T_{1} + T_{3}, the liquid spreads completely. Angle θ depends on the liquid-solid pair, impurities and temperature (higher temperature reduces θ).",
+            "page": 38
+          },
+          {
+            "t": "Effect of impurities and temperature on T",
+            "text": "Highly soluble impurities (e.g. NaCl in water) increase T. Sparingly soluble impurities (detergents, phenol) and insoluble impurities (dust on mercury) decrease T. Raising temperature decreases T for most liquids (exceptions: molten copper and cadmium); T becomes zero at the critical temperature.",
+            "page": 39
+          }
+        ],
+        "checks": [
+          {
+            "type": "num",
+            "q": "For a liquid drop resting on a horizontal solid plate, T_{1} = 0.02 N/m (liquid-solid), T_{2} = 0.05 N/m (air-solid), and T_{3} = 0.06 N/m (air-liquid). Find the angle of contact θ in degrees.",
+            "answer": 60,
+            "unit": "°",
+            "hint": "Use cosθ = (T_{2} − T_{1}) / T_{3}.",
+            "explain": "cosθ = (0.05 − 0.02) / 0.06 = 0.03 / 0.06 = 0.5, so θ = 60°.",
+            "page": 39
+          },
+          {
+            "type": "mcq",
+            "q": "Why does adding detergent powder to water help wash tough stains out of clothes?",
+            "options": [
+              "Detergent increases the surface tension of water so droplets bead up",
+              "Detergent decreases the surface tension of water, letting water wet and penetrate the fabric better",
+              "Detergent raises the angle of contact above 90°",
+              "Detergent increases the cohesive force between water molecules"
+            ],
+            "answer": 1,
+            "hint": "Detergent is a sparingly soluble impurity in water.",
+            "explain": "A sparingly soluble impurity like detergent lowers the surface tension of water, allowing it to make closer contact with the fabric fibres and dislodge dirt.",
+            "page": 39
+          },
+          {
+            "type": "tf",
+            "q": "When a liquid forms a convex meniscus against a vertical glass wall, its angle of contact is obtuse and it does not wet the glass.",
+            "answer": true,
+            "hint": "Think of mercury in a glass tube.",
+            "explain": "True. Strong cohesive forces pull the resultant force inside the liquid, making the meniscus convex with an obtuse angle of contact (e.g. 140° for mercury-glass), so the liquid does not wet the solid.",
+            "page": 38
+          }
+        ]
+      }
+    },
+    {
+      "id": "s08",
+      "title": "Excess pressure in drops and bubbles",
+      "sections": [
+        "2.4.5 Excess Pressure Across the Free Surface of a Liquid",
+        "2.4.6 Explanation of Formation of Drops and Bubbles"
+      ],
+      "page": 40,
+      "figs": [
+        "Fig 2.21",
+        "Fig 2.22"
+      ],
+      "inShort": "Pressure on the concave side of any curved liquid surface always exceeds pressure on the convex side. By Laplace's law, excess pressure is p_{i} − p_{0} = 2T/r for a liquid drop (1 surface) and 4T/r for a soap bubble (2 surfaces).",
+      "xi": [],
+      "quest": {
+        "cards": [
+          {
+            "t": "Pressure across curved surfaces",
+            "text": "Across a plane liquid surface, resultant surface-tension force is zero so pressure is equal on both sides. Across a curved surface, the resultant surface-tension pull points towards the centre of curvature, so pressure on the concave side is always greater than on the convex side.",
+            "page": 40
+          },
+          {
+            "t": "Laplace's law for a liquid drop",
+            "text": "If a spherical liquid drop of radius r expands slightly by Δr, surface area increases by dA = 8πrΔr, requiring surface energy dW = T(8πrΔr). Equating this to mechanical work (p_{i} − p_{0})(4πr²)Δr gives Laplace's law: p_{i} − p_{0} = 2T/r. The same formula applies to an air bubble inside a liquid.",
+            "page": 41
+          },
+          {
+            "t": "Excess pressure in a soap bubble",
+            "text": "A soap bubble in air has two free surfaces (inner and outer), so expanding its radius by Δr doubles the area increase to dA = 16πrΔr. Equating work gives p_{i} − p_{0} = 4T/r. Smaller bubbles therefore have higher internal pressure than larger ones.",
+            "page": 41
+          }
+        ],
+        "checks": [
+          {
+            "type": "num",
+            "q": "Find the excess pressure inside a soap bubble of radius 2 mm if the surface tension of the soap solution is 0.025 N/m.",
+            "answer": 50,
+            "unit": "Pa",
+            "hint": "A soap bubble has two free surfaces, so p_{i} − p_{0} = 4T/r.",
+            "explain": "p_{i} − p_{0} = 4T/r = (4 × 0.025) / (2 × 10^{-3}) = 0.1 / 0.002 = 50 Pa (N/m²).",
+            "page": 41
+          },
+          {
+            "type": "mcq",
+            "q": "Across a curved liquid-air meniscus at rest, which side always has the greater pressure?",
+            "options": [
+              "The convex side",
+              "The concave side",
+              "Always the air side regardless of curvature",
+              "Both sides always have equal pressure"
+            ],
+            "answer": 1,
+            "hint": "Which way does the resultant surface-tension force pull a curved membrane?",
+            "explain": "The resultant surface-tension force points towards the centre of curvature (the concave side), so pressure on the concave side is always greater than on the convex side.",
+            "page": 40
+          },
+          {
+            "type": "tf",
+            "q": "Between two soap bubbles of different sizes made from the same soap solution, the larger bubble has a greater excess pressure inside it.",
+            "answer": false,
+            "hint": "Check how p_{i} − p_{0} = 4T/r depends on r.",
+            "explain": "False. Excess pressure 4T/r is inversely proportional to radius r, so the smaller bubble has the greater excess pressure.",
+            "page": 41
+          }
+        ]
+      }
+    },
+    {
+      "id": "s09",
+      "title": "Capillary action and capillary rise or fall",
+      "sections": [
+        "2.4.7 Capillary Action"
+      ],
+      "page": 41,
+      "figs": [
+        "Fig 2.23",
+        "Fig 2.24",
+        "Fig 2.25"
+      ],
+      "inShort": "Capillarity is the rise (wetting liquids, acute θ) or fall (non-wetting liquids, obtuse θ) of a liquid in a fine-bore tube. The height is h = 2T cosθ / (rρg), inversely proportional to tube radius r.",
+      "xi": [],
+      "quest": {
+        "cards": [
+          {
+            "t": "Capillarity: rise and fall",
+            "text": "When a fine-bore tube (~1 mm) open at both ends is dipped in a liquid, wetting liquids (concave meniscus, e.g. water in glass) rise in the tube, whereas non-wetting liquids (convex meniscus, e.g. mercury in glass) drop. Examples include oil rising in a lamp wick, blotting paper absorbing ink, and sap rising in plants.",
+            "page": 41
+          },
+          {
+            "t": "Pressure explanation of capillary fall and rise",
+            "text": "For mercury (convex meniscus), pressure just below the curved surface inside the tube exceeds atmospheric pressure outside at the same level, pushing mercury down. For water (concave meniscus), pressure just below the meniscus inside is less than atmospheric, so water is pushed up until hρg = 2T/R.",
+            "page": 42
+          },
+          {
+            "t": "Expression for capillary rise (or fall)",
+            "text": "Using meniscus radius R = r/cosθ in hρg = 2T/R—or balancing upward surface-tension force 2πrT cosθ with column weight πr²hρg—yields h = 2T cosθ / (rρg) and T = rhρg / (2 cosθ). Narrower tubes give larger h; obtuse θ makes cosθ negative, giving a capillary depression.",
+            "page": 43
+          }
+        ],
+        "checks": [
+          {
+            "type": "num",
+            "q": "Water of surface tension 0.07 N/m and density 1000 kg/m³ rises in a clean glass capillary tube of radius 0.2 mm (θ = 0°). Find the height of rise in cm. (g = 10 m/s²)",
+            "answer": 7,
+            "unit": "cm",
+            "hint": "Use h = 2T cosθ / (rρg) with r = 0.2 × 10^{-3} m and cos 0° = 1.",
+            "explain": "h = (2 × 0.07 × 1) / (0.2 × 10^{-3} × 1000 × 10) = 0.14 / 2 = 0.07 m = 7 cm.",
+            "page": 43
+          },
+          {
+            "type": "mcq",
+            "q": "Why does the mercury level drop inside a glass capillary tube dipped in a mercury reservoir?",
+            "options": [
+              "Mercury has a lower density than glass",
+              "The angle of contact is acute so cosθ is positive",
+              "The meniscus is upper convex, making pressure just below it inside the capillary greater than outside at the same horizontal level",
+              "Atmospheric pressure does not act inside a capillary tube"
+            ],
+            "answer": 2,
+            "hint": "Compare pressures at points B (just below convex meniscus inside) and D (just below plane surface outside).",
+            "explain": "Because mercury forms a convex meniscus, pressure on the concave side (inside the liquid below the meniscus) exceeds atmospheric pressure outside at the same level, forcing mercury down.",
+            "page": 42
+          },
+          {
+            "type": "step",
+            "q": "When deriving capillary rise h by the force balance method, which equation equates the vertical component of surface-tension force to the weight of the raised liquid column?",
+            "options": [
+              "2πr T cosθ = πr² h ρ g",
+              "πr² T cosθ = 2πr h ρ g",
+              "2πr T sinθ = πr² h ρ g",
+              "4πr² T = πr² h ρ g"
+            ],
+            "answer": 0,
+            "hint": "Surface tension acts along the inner circumference 2πr at angle θ to the vertical.",
+            "explain": "Total surface tension force along the rim is T(2πr), whose vertical component 2πrT cosθ balances the column weight mg = πr²hρg.",
+            "page": 43
+          }
+        ]
+      }
+    },
+    {
+      "id": "s10",
+      "title": "Streamline flow, turbulent flow and Reynolds number",
+      "sections": [
+        "2.5 Fluids in Motion",
+        "2.6 Critical Velocity and Reynolds Number"
+      ],
+      "page": 44,
+      "figs": [
+        "Fig 2.26",
+        "Fig 2.27"
+      ],
+      "inShort": "Streamline (laminar) flow is smooth with velocity below critical velocity v_{c} = R_{n}η/(ρd); above v_{c} it turns turbulent with eddies. Reynolds number R_{n} = v_{c}ρd/η is dimensionless: streamline if R_{n} < 1000, turbulent if R_{n} > 2000.",
+      "xi": [],
+      "quest": {
+        "cards": [
+          {
+            "t": "Flow lines, streamlines and flow tubes",
+            "text": "Hydrodynamics studies moving fluids. A streamline is a curve whose tangent at every point gives the fluid velocity direction; in steady flow, streamlines coincide with particle flow lines and two streamlines can never intersect. A flow tube is a bundle of streamlines that fluid cannot cross.",
+            "page": 44
+          },
+          {
+            "t": "Streamline vs turbulent flow",
+            "text": "In streamline (laminar) flow, fluid layers slide smoothly over each other with constant velocity at any given point (v < v_{c}). When speed exceeds the critical velocity v_{c}, flow becomes turbulent—irregular and unsteady, with swirling eddies and random mixing.",
+            "page": 44
+          },
+          {
+            "t": "Critical velocity and Reynolds number",
+            "text": "Critical velocity is v_{c} = R_{n}η/(ρd), so Reynolds number is R_{n} = v_{c}ρd/η (a pure dimensionless number). Flow is streamline for R_{n} < 1000, unsteady/transitional for 1000 < R_{n} < 2000, and turbulent for R_{n} > 2000.",
+            "page": 45
+          }
+        ],
+        "checks": [
+          {
+            "type": "num",
+            "q": "Water of density 1000 kg/m³ and viscosity 1 × 10^{-3} N s/m² flows through a pipe of diameter 2 cm. Taking R_{n} = 1000, calculate the critical velocity v_{c}.",
+            "answer": 0.05,
+            "unit": "m/s",
+            "hint": "Use v_{c} = R_{n}η / (ρd) with d = 0.02 m.",
+            "explain": "v_{c} = (1000 × 10^{-3}) / (1000 × 0.02) = 1 / 20 = 0.05 m/s.",
+            "page": 45
+          },
+          {
+            "type": "mcq",
+            "q": "According to the Reynolds number R_{n} criterion in the textbook, when is the flow of a fluid definitely turbulent?",
+            "options": [
+              "R_{n} < 1000",
+              "1000 < R_{n} < 2000",
+              "R_{n} > 2000",
+              "R_{n} = 0"
+            ],
+            "answer": 2,
+            "hint": "Remember the two threshold values 1000 and 2000.",
+            "explain": "Flow is streamline for R_{n} < 1000, unsteady (transition) between 1000 and 2000, and turbulent for R_{n} > 2000.",
+            "page": 45
+          },
+          {
+            "type": "tf",
+            "q": "Two streamlines in a steady laminar flow can intersect each other at a high-speed point.",
+            "answer": false,
+            "hint": "What would an intersection imply about the direction of fluid velocity at that single point?",
+            "explain": "False. If two streamlines intersected, a fluid particle at the intersection would have two different velocities simultaneously, which is impossible in steady flow.",
+            "page": 44
+          }
+        ]
+      }
+    },
+    {
+      "id": "s11",
+      "title": "Viscosity and Newton's law of viscosity",
+      "sections": [
+        "2.6.1 Viscosity",
+        "2.6.2 Coefficient of Viscosity"
+      ],
+      "page": 45,
+      "figs": [
+        "Fig 2.28",
+        "Fig 2.29",
+        "Fig 2.30"
+      ],
+      "inShort": "Viscosity is internal fluid friction opposing relative motion between layers. By Newton's law for streamline flow, viscous force f = ηA(dv/dx), where η is the coefficient of viscosity (SI unit N s/m² = 10 poise). Heating lowers η in liquids but raises η in gases.",
+      "xi": [],
+      "quest": {
+        "cards": [
+          {
+            "t": "Viscous drag and velocity gradient",
+            "text": "Viscosity is the property by which adjacent layers of a moving fluid oppose their relative motion through a dragging force (viscous drag). In a pipe, the central layer moves fastest and the layer touching the wall is slowest. The rate of change of velocity with distance from a stationary layer is velocity gradient dv/dx.",
+            "page": 45
+          },
+          {
+            "t": "Newton's law and coefficient of viscosity",
+            "text": "For streamline flow, viscous force f ∝ A(dv/dx), giving f = ηA(dv/dx), where A is the area of the layer parallel to the flow. Hence η = f/[A(dv/dx)] is viscous force per unit area per unit velocity gradient. SI unit: N s/m² (Pa·s); CGS unit: poise (1 N s/m² = 10 poise); dimensions: [L⁻¹M¹T⁻¹].",
+            "page": 46
+          },
+          {
+            "t": "Microscopic origin and temperature effect",
+            "text": "In liquids, viscosity arises mainly from cohesive forces between layers; heating weakens cohesion, so η decreases with rising temperature. In gases, viscosity arises from random molecular collisions transferring momentum between layers; heating speeds up molecules, so η increases with temperature.",
+            "page": 47
+          }
+        ],
+        "checks": [
+          {
+            "type": "num",
+            "q": "A horizontal force of 1 N moves a metal plate of area 10^{-2} m² at 2 × 10^{-2} m/s over an oil layer 1.5 × 10^{-3} m thick. Find the coefficient of viscosity of the oil.",
+            "answer": 7.5,
+            "unit": "N s/m²",
+            "hint": "Velocity gradient dv/dx = v/x, then use η = f / [A(dv/dx)].",
+            "explain": "dv/dx = (2 × 10^{-2}) / (1.5 × 10^{-3}) = 40/3 s⁻¹. η = 1 / (10^{-2} × 40/3) = 3 / 0.4 = 7.5 N s/m².",
+            "page": 46
+          },
+          {
+            "type": "mcq",
+            "q": "How does an increase in temperature affect the coefficient of viscosity η of most liquids and gases?",
+            "options": [
+              "Increases for both liquids and gases",
+              "Decreases for both liquids and gases",
+              "Decreases for liquids, but increases for gases",
+              "Increases for liquids, but decreases for gases"
+            ],
+            "answer": 2,
+            "hint": "Cohesive forces weaken on heating (liquids), while random molecular collisions increase on heating (gases).",
+            "explain": "In liquids, heating weakens intermolecular cohesive forces so η decreases; in gases, heating increases molecular speed and momentum-transferring collisions so η increases.",
+            "page": 47
+          },
+          {
+            "type": "tf",
+            "q": "In Newton's law of viscosity f = ηA(dv/dx), the area A represents the cross-sectional area perpendicular to the flow direction.",
+            "answer": false,
+            "hint": "Check the textbook note right below Eq. (2.35): viscous drag acts tangentially between sliding layers.",
+            "explain": "False. A is the area of the fluid layer parallel to the direction of flow, across which the tangential viscous drag acts.",
+            "page": 46
+          }
+        ]
+      }
+    },
+    {
+      "id": "s12",
+      "title": "Stokes' law and terminal velocity",
+      "sections": [
+        "2.7 Stokes' Law",
+        "2.7.1 Terminal Velocity"
+      ],
+      "page": 47,
+      "figs": [
+        "Fig 2.31",
+        "Fig 2.32"
+      ],
+      "inShort": "Stokes' law gives the viscous drag on a small sphere moving in a viscous fluid: F_{v} = 6πηrv. When weight balances viscous drag plus upthrust, the sphere falls at constant terminal velocity v = 2r²(ρ − σ)g / (9η).",
+      "xi": [],
+      "quest": {
+        "cards": [
+          {
+            "t": "Stokes' law",
+            "text": "The viscous force F_{v} on a small sphere of radius r moving at velocity v through a fluid of viscosity η in streamline flow is directly proportional to η, r and v: F_{v} = 6πηrv. This relation can also be obtained by dimensional analysis (up to the empirical factor 6π).",
+            "page": 47
+          },
+          {
+            "t": "Forces on a falling sphere",
+            "text": "A sphere of radius r and density ρ falling in a fluid of density σ experiences downward weight F_{g} = (4/3)πr³ρg, constant upward buoyant force F_{u} = (4/3)πr³σg, and upward viscous drag F_{v} = 6πηrv that grows with speed v until net force becomes zero.",
+            "page": 47
+          },
+          {
+            "t": "Terminal velocity",
+            "text": "At zero net force, F_{g} = F_{v} + F_{u}, giving the constant terminal velocity v = 2r²(ρ − σ)g / (9η), and inversely η = 2r²(ρ − σ)g / (9v). Note that v ∝ r², and if ρ < σ (e.g. an air bubble in oil), v is negative—meaning the bubble rises steadily.",
+            "page": 48
+          }
+        ],
+        "checks": [
+          {
+            "type": "num",
+            "q": "Find the viscous force (in mN) on a small sphere of radius 1 mm falling at 1 m/s through a liquid of viscosity 0.5 N s/m². (Take π = 3.142)",
+            "answer": 9.426,
+            "unit": "mN",
+            "hint": "Use Stokes' law F_{v} = 6πηrv with r = 10^{-3} m.",
+            "explain": "F_{v} = 6 × 3.142 × 0.5 × 10^{-3} × 1 = 9.426 × 10^{-3} N = 9.426 mN.",
+            "page": 47
+          },
+          {
+            "type": "mcq",
+            "q": "When the terminal velocity formula v = 2r²(ρ − σ)g / (9η) is applied to an air bubble inside a denser liquid (ρ < σ), the calculated value of v is negative. What does this sign signify?",
+            "options": [
+              "The viscosity of the liquid is negative",
+              "The bubble moves upward at a constant terminal speed",
+              "Stokes' law cannot be used for bubbles",
+              "The bubble decelerates to rest"
+            ],
+            "answer": 1,
+            "hint": "Downward direction was taken as positive in deriving v = 2r²(ρ − σ)g / (9η).",
+            "explain": "Because upthrust exceeds the bubble's weight when ρ < σ, the bubble rises upward; the negative sign simply indicates motion opposite to the downward positive direction.",
+            "page": 48
+          },
+          {
+            "type": "step",
+            "q": "Which force-balance equation marks the moment a falling sphere of radius r and density ρ reaches terminal velocity v in a fluid of density σ and viscosity η?",
+            "options": [
+              "(4/3)πr³ρg = 6πηrv + (4/3)πr³σg",
+              "(4/3)πr³ρg + (4/3)πr³σg = 6πηrv",
+              "(4/3)πr³σg = 6πηrv",
+              "6πηrv = (4/3)πr³ρg"
+            ],
+            "answer": 0,
+            "hint": "Equate total downward force (weight) to total upward force (viscous drag + upthrust).",
+            "explain": "At terminal velocity, downward weight F_{g} = (4/3)πr³ρg balances upward viscous force 6πηrv plus upward buoyancy (4/3)πr³σg.",
+            "page": 48
+          }
+        ]
+      }
+    },
+    {
+      "id": "s13",
+      "title": "Equation of continuity and Bernoulli's equation",
+      "sections": [
+        "2.8 Equation of Continuity",
+        "2.9 Bernoulli's Equation"
+      ],
+      "page": 48,
+      "figs": [
+        "Fig 2.33",
+        "Fig 2.34",
+        "Fig 2.35",
+        "Fig 2.36",
+        "Fig 2.37",
+        "Fig 2.38",
+        "Fig 2.39"
+      ],
+      "inShort": "Conservation of mass for steady incompressible flow gives the equation of continuity A_{1}v_{1} = A_{2}v_{2}. Conservation of energy gives Bernoulli's equation P + ½ρv² + ρgh = constant, explaining Torricelli's efflux v = √(2gh), Ventury tubes, aerofoil lift and atomizers.",
+      "xi": [],
+      "quest": {
+        "cards": [
+          {
+            "t": "Equation of continuity",
+            "text": "For steady flow of an incompressible fluid in a flow tube, mass entering per second equals mass leaving: ρA_{1}v_{1}Δt = ρA_{2}v_{2}Δt, so A_{1}v_{1} = A_{2}v_{2}, or Av = dV/dt = constant (volume flux). Thus the fluid speeds up in a narrower cross-section and slows down in a wider one.",
+            "page": 49
+          },
+          {
+            "t": "Bernoulli's equation",
+            "text": "Applying the work-energy theorem to a flowing ideal fluid gives (P_{1} − P_{2}) = ½ρ(v_{2}² − v_{1}²) + ρg(h_{2} − h_{1}), or P + ½ρv² + ρgh = constant. In a horizontal pipe (h_{1} = h_{2}), higher speed means lower internal pressure.",
+            "page": 51
+          },
+          {
+            "t": "Applications of Bernoulli's principle",
+            "text": "Key applications include: (a) Torricelli's speed of efflux from a small orifice at depth h: v = √(2gh); (b) Ventury tube measuring flow speed via ΔP = ½ρ(v_{2}² − v_{1}²) = ρgh; (c) dynamic lift on aeroplane wings (faster air and lower pressure above); (d) atomizers/sprayers and storm winds lifting roofs.",
+            "page": 52
+          }
+        ],
+        "checks": [
+          {
+            "type": "num",
+            "q": "Water flows steadily at 2 m/s through a pipe of cross-sectional area 6 cm² that narrows to 2 cm². Find the speed of water in the narrower section.",
+            "answer": 6,
+            "unit": "m/s",
+            "hint": "Use the equation of continuity A_{1}v_{1} = A_{2}v_{2}.",
+            "explain": "v_{2} = (A_{1}/A_{2})v_{1} = (6 / 2) × 2 = 6 m/s.",
+            "page": 49
+          },
+          {
+            "type": "mcq",
+            "q": "How does the aerodynamic shape of an aeroplane wing produce upward dynamic lift during takeoff?",
+            "options": [
+              "Air moves slower above the wing, creating higher pressure above",
+              "Air moves faster above the wing, lowering pressure above relative to the pressure below",
+              "Air density becomes zero above the wing",
+              "The wing pushes air upward using surface tension"
+            ],
+            "answer": 1,
+            "hint": "Apply Bernoulli's principle to the crowded streamlines above the curved upper surface of the wing.",
+            "explain": "Streamlines crowd above the wing so air flows faster there than below. By Bernoulli's principle, faster flow produces lower pressure above the wing, resulting in a net upward lift.",
+            "page": 53
+          },
+          {
+            "type": "tf",
+            "q": "When an incompressible liquid passes through a narrow constriction in a horizontal pipe, its speed decreases and its pressure increases.",
+            "answer": false,
+            "hint": "Check A_{1}v_{1} = A_{2}v_{2} first, then Bernoulli's equation P + ½ρv² = constant.",
+            "explain": "False. By continuity (Av = constant), a narrower area A increases speed v; by Bernoulli's principle, higher speed lowers internal pressure P.",
+            "page": 50
+          }
+        ]
+      }
+    },
+    {
+      "id": "s14",
+      "title": "Chapter exercises and mixed numericals",
+      "sections": [
+        "Exercises"
+      ],
+      "page": 54,
+      "figs": [],
+      "inShort": "Mixed revision checks covering hydrostatics, surface tension, viscosity, Stokes' law and Bernoulli's equation. Always watch SI conversions (mm → m, dyne/cm → N/m, poise → N s/m²) and single vs double surfaces.",
+      "xi": [],
+      "quest": {
+        "cards": [
+          {
+            "t": "Hydrostatics and surface tension sheet",
+            "text": "Keep handy: p = F/A, p = p_{0} + hρg, F_{2}/A_{2} = F_{1}/A_{1}, T = F/L = dW/dA, cosθ = (T_{2} − T_{1})/T_{3}, excess pressure 2T/r (drop/submerged bubble) vs 4T/r (soap bubble), and capillary rise h = 2T cosθ/(rρg).",
+            "page": "26–43"
+          },
+          {
+            "t": "Viscosity and hydrodynamics sheet",
+            "text": "Keep handy: v_{c} = R_{n}η/(ρd), f = ηA(dv/dx), Stokes' drag F_{v} = 6πηrv, terminal velocity v = 2r²(ρ − σ)g/(9η), continuity A_{1}v_{1} = A_{2}v_{2}, Bernoulli P + ½ρv² + ρgh = constant, and efflux v = √(2gh).",
+            "page": "44–53"
+          },
+          {
+            "t": "Common exam traps to avoid",
+            "text": "Convert diameter to radius (r = d/2), 1 dyne/cm = 10^{-3} N/m, and 1 poise = 0.1 N s/m². Check whether a problem asks for excess pressure (2T/r or 4T/r) or total pressure (add p_{0}), and remember soap films/bubbles have 2 free surfaces.",
+            "page": 54
+          }
+        ],
+        "checks": [
+          {
+            "type": "num",
+            "q": "An open water tank has a small orifice 5 m below the free surface of water. Find the speed of efflux of water from the orifice. (g = 10 m/s²)",
+            "answer": 10,
+            "unit": "m/s",
+            "hint": "Use Torricelli's law v = √(2gh).",
+            "explain": "v = √(2gh) = √(2 × 10 × 5) = √100 = 10 m/s.",
+            "page": 52
+          },
+          {
+            "type": "num",
+            "q": "The pressure of water inside a closed horizontal pipe is 3 × 10^{5} Pa. On opening a valve, the pressure drops to 2 × 10^{5} Pa. Calculate the speed of water flowing through the pipe (to 2 decimal places). (ρ = 1000 kg/m³)",
+            "answer": 14.14,
+            "unit": "m/s",
+            "hint": "In a horizontal pipe starting from rest (v_{1} = 0), P_{1} − P_{2} = ½ρv_{2}².",
+            "explain": "P_{1} − P_{2} = 10^{5} Pa = ½ × 1000 × v², so v² = 200 and v = √200 = 14.14 m/s.",
+            "page": 55
+          },
+          {
+            "type": "mcq",
+            "q": "Two spherical raindrops of the same density have radii in the ratio 1 : 3. What is the ratio of their terminal velocities falling through air?",
+            "options": [
+              "1 : 3",
+              "1 : 6",
+              "1 : 9",
+              "1 : 27"
+            ],
+            "answer": 2,
+            "hint": "Look at the exponent of r in v = 2r²(ρ − σ)g / (9η).",
+            "explain": "Terminal velocity v is directly proportional to r². For radii in the ratio 1 : 3, terminal velocities are in the ratio 1² : 3² = 1 : 9.",
+            "page": 54
+          }
+        ]
+      }
+    }
+  ],
+  "board": [
+    {
+      "id": "p2-2025-Q25",
+      "year": 2025,
+      "qno": "Q25",
+      "marks": 3,
+      "stop": "s08",
+      "text": "Diameter of a water drop is 0.6 mm. Calculate the pressure inside a liquid drop. (T = 72 dyne/cm, atmospheric pressure = 1.013 × 10^{5} N/m²)",
+      "answer": "Given: diameter d = 0.6 mm, so radius r = 0.3 mm = 3 × 10^{-4} m; T = 72 dyne/cm = 72 × 10^{-3} N/m = 0.072 N/m; p_{0} = 1.013 × 10^{5} N/m². Excess pressure inside a liquid drop is p_{i} − p_{0} = 2T/r = (2 × 0.072) / (3 × 10^{-4}) = 480 N/m². Total pressure inside the drop: p_{i} = p_{0} + 2T/r = 1.013 × 10^{5} + 480 = 1.0178 × 10^{5} N/m².",
+      "points": [
+        {
+          "text": "Convert to SI units (r = 3 × 10^{-4} m, T = 0.072 N/m) and state formula p_{i} = p_{0} + 2T/r",
+          "marks": 1
+        },
+        {
+          "text": "Calculate excess pressure 2T/r = (2 × 0.072)/(3 × 10^{-4}) = 480 N/m²",
+          "marks": 1
+        },
+        {
+          "text": "Final total pressure inside the drop p_{i} = 1.0178 × 10^{5} N/m² (101780 N/m²) with unit",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "p2-2025-Q4",
+      "year": 2025,
+      "qno": "Q4",
+      "marks": 2,
+      "stop": "s11",
+      "text": "Using Newton's law of viscosity for streamline flow, derive an expression for coefficient of viscosity.",
+      "answer": "According to Newton's law of viscosity for streamline flow, the viscous force f acting on any fluid layer is directly proportional to the area A of the layer parallel to the flow and the velocity gradient (dv/dx): f ∝ A(dv/dx). Introducing the proportionality constant η (coefficient of viscosity) gives f = ηA(dv/dx). Rearranging, η = f / [A(dv/dx)].",
+      "points": [
+        {
+          "text": "State Newton's law of viscosity for streamline flow: f ∝ A(dv/dx), so f = ηA(dv/dx)",
+          "marks": 1
+        },
+        {
+          "text": "Rearrange to obtain η = f / [A(dv/dx)] and identify symbols f, A and dv/dx",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "p2-2025-Q1ii",
+      "year": 2025,
+      "qno": "Q1(ii)",
+      "marks": 1,
+      "stop": "s13",
+      "kind": "MCQ",
+      "text": "In Bernoulli's theorem, which of the following is constant?",
+      "options": [
+        "(a) Linear momentum",
+        "(b) Angular momentum",
+        "(c) Mass",
+        "(d) Energy"
+      ],
+      "answer": "(d) Energy. Bernoulli's equation P + ½ρv² + ρgh = constant expresses conservation of total mechanical energy per unit volume of a steadily flowing ideal fluid.",
+      "points": [
+        {
+          "text": "Correct option (d) Energy",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "p2-2025-Q2i",
+      "year": 2025,
+      "qno": "Q2(i)",
+      "marks": 1,
+      "stop": "s07",
+      "text": "At what temperature the surface tension of a liquid becomes zero?",
+      "answer": "The surface tension of a liquid becomes zero at its critical temperature.",
+      "points": [
+        {
+          "text": "At the critical temperature of the liquid",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "p2-2023-Q30",
+      "year": 2023,
+      "qno": "Q30",
+      "marks": 4,
+      "stop": "s06",
+      "text": "Obtain the relation between surface energy and surface tension. Calculate the work done in blowing a soap bubble to a radius of 1 cm. The surface tension of soap solution is 2.5 × 10^{-2} N/m.",
+      "answer": "Relation: Dip a C-shaped wire frame P'PSS' with movable arm QR of length L in soap solution to form a film having two free surfaces. The inward force due to surface tension on QR is F = 2TL. Pulling QR outward isothermally through distance dx requires work dW = F dx = T(2L dx) = T dA, where dA = 2L dx is the total increase in surface area. This work is stored as surface energy, so Surface energy = T dA, i.e., T = surface energy per unit area.\nNumerical: r = 1 cm = 1 × 10^{-2} m, T = 2.5 × 10^{-2} N/m. A soap bubble has two free surfaces, so increase in area dA = 2 × 4πr² = 8πr² = 8 × 3.142 × (10^{-2})² = 2.5136 × 10^{-3} m². Work done W = T dA = 2.5 × 10^{-2} × 2.5136 × 10^{-3} = 6.284 × 10^{-5} J.",
+      "points": [
+        {
+          "text": "C-shaped wire frame with movable arm QR of length L and soap film (2 surfaces): inward force F = 2TL",
+          "marks": 1
+        },
+        {
+          "text": "Isothermal displacement dx gives dW = F dx = T(2L dx) = T dA, so surface energy = T dA (surface tension = surface energy per unit area)",
+          "marks": 1
+        },
+        {
+          "text": "Numerical setup: soap bubble has two surfaces so dA = 8πr² = 2.514 × 10^{-3} m², and formula W = T dA",
+          "marks": 1
+        },
+        {
+          "text": "Final answer W = 6.284 × 10^{-5} J with unit",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "p2-2023-Q3",
+      "year": 2023,
+      "qno": "Q3",
+      "marks": 2,
+      "stop": "s11",
+      "text": "Define coefficient of viscosity. State its formula and S.I. units.",
+      "answer": "Definition: The coefficient of viscosity (η) of a fluid is defined as the viscous force per unit area per unit velocity gradient. Formula: η = f / [A(dv/dx)], where f is viscous force, A is area of the fluid layer parallel to the flow, and dv/dx is velocity gradient. S.I. unit: N s/m² (or Pa·s).",
+      "points": [
+        {
+          "text": "Definition: viscous force per unit area per unit velocity gradient",
+          "marks": 1
+        },
+        {
+          "text": "Formula η = f / [A(dv/dx)] and SI unit N s/m² (or Pa·s)",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "p2-2023-Q1vi",
+      "year": 2023,
+      "qno": "Q1(vi)",
+      "marks": 1,
+      "stop": "s07",
+      "kind": "MCQ",
+      "text": "If 'θ' represents the angle of contact made by a liquid which completely wets the surface of the container then _____.",
+      "options": [
+        "(a) θ = 0",
+        "(b) 0 < θ < π/2",
+        "(c) θ = π/2",
+        "(d) π/2 < θ < π"
+      ],
+      "answer": "(a) θ = 0. For a liquid that completely wets a solid surface (such as pure water on clean glass), cohesive force is negligible compared to adhesive force, so the tangent lies along the solid wall inside the liquid and θ = 0.",
+      "points": [
+        {
+          "text": "Correct option (a) θ = 0",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "p2-2022-Q21",
+      "year": 2022,
+      "qno": "Q21",
+      "marks": 3,
+      "stop": "s12",
+      "text": "Derive an expression for terminal velocity of a spherical object falling under gravity through a viscous medium.",
+      "answer": "Consider a sphere of radius r and density ρ falling through a viscous medium of density σ and coefficient of viscosity η. The forces acting on it are: downward weight F_{g} = (4/3)πr³ρg, upward buoyant force F_{u} = (4/3)πr³σg, and upward viscous drag (Stokes' law) F_{v} = 6πηrv. When the sphere attains constant terminal velocity v, total downward force equals total upward force: F_{g} = F_{v} + F_{u}, so (4/3)πr³ρg = 6πηrv + (4/3)πr³σg. Rearranging gives 6πηrv = (4/3)πr³(ρ − σ)g, hence v = 2r²(ρ − σ)g / (9η).",
+      "points": [
+        {
+          "text": "Write the three forces: downward weight (4/3)πr³ρg, upward upthrust (4/3)πr³σg, and upward viscous force 6πηrv",
+          "marks": 1
+        },
+        {
+          "text": "Equilibrium at terminal velocity: (4/3)πr³ρg = 6πηrv + (4/3)πr³σg",
+          "marks": 1
+        },
+        {
+          "text": "Simplify to final expression v = 2r²(ρ − σ)g / (9η)",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "p2-2022-Q12",
+      "year": 2022,
+      "qno": "Q12",
+      "marks": 2,
+      "stop": "s06",
+      "text": "Eight droplets of water each of radius 0.2 mm coalesce into a single drop. Find the decrease in the surface area.",
+      "answer": "Given: n = 8, r = 0.2 mm = 2 × 10^{-4} m. By conservation of volume, (4/3)πR³ = 8 × (4/3)πr³, so R = 2r = 4 × 10^{-4} m. Initial surface area A_{1} = 8 × 4πr² = 32πr²; final surface area A_{2} = 4πR² = 4π(2r)² = 16πr². Decrease in surface area ΔA = A_{1} − A_{2} = 16πr² = 16 × 3.142 × (2 × 10^{-4})² = 2.011 × 10^{-6} m² (or 2.011 mm²).",
+      "points": [
+        {
+          "text": "Find radius of big drop R = 2r by volume conservation and write ΔA = 8(4πr²) − 4πR² = 16πr²",
+          "marks": 1
+        },
+        {
+          "text": "Correct substitution and final answer ΔA = 2.011 × 10^{-6} m² (or 2.011 mm²) with unit",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "p2-2022-Q1viii",
+      "year": 2022,
+      "qno": "Q1(viii)",
+      "marks": 1,
+      "stop": "s09",
+      "kind": "MCQ",
+      "text": "A liquid rises in glass capillary tube upto a height of 2.5 cm at room temperature. If another glass capillary tube having radius half that of the earlier tube is immersed in the same liquid, the rise of liquid in it will be _____.",
+      "options": [
+        "(a) 1.25 cm",
+        "(b) 2.5 cm",
+        "(c) 5 cm",
+        "(d) 10 cm"
+      ],
+      "answer": "(c) 5 cm. Since capillary rise h = 2T cosθ / (rρg), h ∝ 1/r for the same liquid and tube material. Halving r doubles h: h_{2} = 2 × 2.5 = 5 cm.",
+      "points": [
+        {
+          "text": "Correct option (c) 5 cm",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "p2-2022-Q2ii",
+      "year": 2022,
+      "qno": "Q2(ii)",
+      "marks": 1,
+      "stop": "s10",
+      "text": "State the formula for critical velocity in terms of Reynold's number for a flow of a fluid.",
+      "answer": "v_{c} = R_{n}η / (ρd), where v_{c} is critical velocity, R_{n} is Reynolds number, η is coefficient of viscosity, ρ is density of the fluid and d is diameter of the tube.",
+      "points": [
+        {
+          "text": "Formula v_{c} = R_{n}η / (ρd) with symbol meanings",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "p2-imp-s03-pascal",
+      "stop": "s03",
+      "source": "Important · Balbharati",
+      "marks": 3,
+      "kind": "Theory",
+      "text": "State Pascal's law. Explain the principle and working of a hydraulic lift and obtain the expression for the output force.",
+      "answer": "Pascal's law: The pressure applied at any point of an enclosed fluid at rest is transmitted equally and undiminished to every point of the fluid and to the walls of the container, neglecting the effect of gravity. Working of hydraulic lift: A fluid-filled tank has two pistons S_{1} (small cross-sectional area A_{1}) and S_{2} (large area A_{2}, with A_{2} ≫ A_{1}). Pushing S_{1} down with a small force F_{1} generates pressure p = F_{1}/A_{1}. By Pascal's law, this pressure transmits undiminished to S_{2}, exerting an upward force F_{2} = pA_{2} = F_{1}(A_{2}/A_{1}). Since A_{2} ≫ A_{1}, F_{2} ≫ F_{1}, lifting a heavy load with a small effort.",
+      "points": [
+        {
+          "text": "Accurate statement of Pascal's law (enclosed fluid at rest, transmitted equally and undiminished)",
+          "marks": 1
+        },
+        {
+          "text": "Describe the two pistons S_{1} (area A_{1}) and S_{2} (area A_{2} ≫ A_{1}) with pressure p = F_{1}/A_{1}",
+          "marks": 1
+        },
+        {
+          "text": "Obtain F_{2} = pA_{2} = F_{1}(A_{2}/A_{1}) and explain force multiplication",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "p2-imp-s05-molecular",
+      "stop": "s05",
+      "source": "Important · Balbharati",
+      "marks": 3,
+      "kind": "Theory",
+      "text": "Explain the phenomenon of surface tension on the basis of molecular theory.",
+      "answer": "Consider three molecules A (deep inside the liquid), B (within the surface film of thickness equal to the molecular range) and C (on the free surface). Molecule A has its entire sphere of influence inside the liquid, so equal cohesive forces act in all directions and the net force on A is zero. For molecule B, most of the sphere of influence lies in the liquid and a small part in air; since liquid density far exceeds air density, the downward cohesive pull dominates the weak upward adhesive pull from air. For molecule C, half its sphere is in liquid and half in air, so it also experiences a strong net inward cohesive pull. Hence all molecules in the surface film are pulled inward, minimizing the number of surface molecules and keeping the surface film under tension like a stretched elastic membrane.",
+      "points": [
+        {
+          "text": "Define surface film and describe molecule A deep inside (sphere completely in liquid, net cohesive force = 0)",
+          "marks": 1
+        },
+        {
+          "text": "Explain molecules B (in surface film) and C (on free surface): downward cohesion dominates weak upward adhesion from air",
+          "marks": 1
+        },
+        {
+          "text": "Conclude that net inward pull minimizes surface area, making the surface film behave like a stretched membrane",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "p2-imp-s09-capillary",
+      "stop": "s09",
+      "source": "Important · Balbharati",
+      "marks": 3,
+      "kind": "Derivation",
+      "text": "Derive an expression for capillary rise for a liquid having a concave meniscus in a capillary tube.",
+      "answer": "Consider a capillary tube of radius r dipped vertically in a wetting liquid of density ρ, surface tension T and angle of contact θ. The liquid rises to height h forming a concave meniscus. Along the inner circumference 2πr of the tube, surface tension exerts a tangential force f_{T} = 2πrT directed at angle θ to the vertical. Its upward vertical component is f_{Tv} = 2πrT cosθ. Neglecting the tiny volume in the meniscus, the weight of the raised liquid column is w = πr²hρg. At equilibrium, 2πrT cosθ = πr²hρg, giving h = 2T cosθ / (rρg).",
+      "points": [
+        {
+          "text": "Upward vertical component of surface-tension force along rim: f_{Tv} = 2πrT cosθ",
+          "marks": 1
+        },
+        {
+          "text": "Weight of raised liquid column: w = πr²hρg",
+          "marks": 1
+        },
+        {
+          "text": "Equate forces (2πrT cosθ = πr²hρg) and simplify to h = 2T cosθ / (rρg)",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "p2-imp-s13-bernoulli",
+      "stop": "s13",
+      "source": "Important · Balbharati",
+      "marks": 3,
+      "kind": "Derivation",
+      "text": "Derive Bernoulli's equation for the steady streamline flow of an incompressible, non-viscous fluid through a tube of varying cross-section and height.",
+      "answer": "Consider an ideal fluid of density ρ flowing steadily from lower section P (area A_{1}, pressure P_{1}, speed v_{1}, height h_{1}) to upper section R (area A_{2}, pressure P_{2}, speed v_{2}, height h_{2}). In time dt, equal volume dV = A_{1}d_{1} = A_{2}d_{2} passes both ends. Net work done on the fluid element by pressure forces is W = P_{1}A_{1}d_{1} − P_{2}A_{2}d_{2} = (P_{1} − P_{2})dV. By the work-energy theorem, W = ΔKE + ΔPE, where ΔKE = ½ρ dV(v_{2}² − v_{1}²) and ΔPE = ρ dV g(h_{2} − h_{1}). Equating and dividing by dV gives P_{1} − P_{2} = ½ρ(v_{2}² − v_{1}²) + ρg(h_{2} − h_{1}), or P + ½ρv² + ρgh = constant.",
+      "points": [
+        {
+          "text": "Net pressure work done in time dt: W = (P_{1} − P_{2})dV using dV = A_{1}d_{1} = A_{2}d_{2}",
+          "marks": 1
+        },
+        {
+          "text": "Write changes in mechanical energy: ΔKE = ½ρ dV(v_{2}² − v_{1}²) and ΔPE = ρ dV g(h_{2} − h_{1})",
+          "marks": 1
+        },
+        {
+          "text": "Apply W = ΔKE + ΔPE and divide by dV to obtain P + ½ρv² + ρgh = constant",
+          "marks": 1
+        }
+      ]
+    }
+  ],
+  "derivations": [
+    {
+      "id": "p2-d1",
+      "stop": "s02",
+      "title": "Absolute pressure at depth h inside a liquid, p = p_{0} + hρg",
+      "page": 29,
+      "asked": [],
+      "given": "Consider an imaginary vertical fluid cylinder of base area A between heights x_{1} (top, pressure p_{1}) and x_{2} (bottom, pressure p_{2}) in a liquid of density ρ at rest.",
+      "steps": [
+        {
+          "line": "In static equilibrium, upward bottom force balances downward top force plus weight: F_{2} = F_{1} + mg",
+          "wrong": [
+            "F_{1} = F_{2} + mg",
+            "F_{2} + F_{1} = mg"
+          ],
+          "note": "Pressure pushes up on the bottom face and down on the top face."
+        },
+        {
+          "line": "Write forces in terms of pressures: F_{1} = p_{1}A and F_{2} = p_{2}A",
+          "wrong": [
+            "F_{1} = p_{1}/A and F_{2} = p_{2}/A",
+            "F_{1} = p_{1}h and F_{2} = p_{2}h"
+          ]
+        },
+        {
+          "line": "Mass of the enclosed liquid cylinder: m = ρV = ρA(x_{1} − x_{2})",
+          "wrong": [
+            "m = ρ(x_{1} − x_{2})/A",
+            "m = A(x_{1} − x_{2})/ρ"
+          ]
+        },
+        {
+          "line": "Substitute and cancel A: p_{2} = p_{1} + ρg(x_{1} − x_{2})",
+          "wrong": [
+            "p_{2} = p_{1} − ρg(x_{1} − x_{2})",
+            "p_{2} = p_{1} + ρgA(x_{1} − x_{2})"
+          ]
+        },
+        {
+          "line": "Set top at free surface (x_{1} = 0, p_{1} = p_{0}) and bottom at depth h (x_{2} = −h, p_{2} = p): p = p_{0} + hρg",
+          "wrong": [
+            "p = p_{0} − hρg",
+            "p = hρg/p_{0}"
+          ],
+          "note": "Gauge pressure is p − p_{0} = hρg."
+        }
+      ]
+    },
+    {
+      "id": "p2-d2",
+      "stop": "s06",
+      "title": "Relation between surface energy and surface tension, dW = T dA",
+      "page": 36,
+      "asked": [
+        "2023 Q30"
+      ],
+      "given": "A C-shaped wire frame P'PSS' with a movable arm QR of length L is dipped in soap solution to form a soap film within PQRS.",
+      "steps": [
+        {
+          "line": "A soap film has two free surfaces (upper and lower), so total contact length on QR is 2L",
+          "wrong": [
+            "A soap film has only one free surface, so contact length on QR is L",
+            "Total contact length on QR is L²"
+          ]
+        },
+        {
+          "line": "Inward force of surface tension acting on arm QR: F = T × 2L = 2TL",
+          "wrong": [
+            "F = TL",
+            "F = T/(2L)"
+          ]
+        },
+        {
+          "line": "Apply an equal opposite external force F' = 2TL isothermally to move QR by dx: dW = F' dx = T(2L dx)",
+          "wrong": [
+            "dW = F'/dx = 2TL/dx",
+            "dW = TL dx"
+          ]
+        },
+        {
+          "line": "Since 2L dx = dA is the total increase in area of both surfaces of the film: dW = T dA",
+          "wrong": [
+            "Since L dx = dA, dW = 2T dA",
+            "Since 2L dx = dA, dW = T/dA"
+          ]
+        },
+        {
+          "line": "Work is stored as surface energy = T dA, so surface tension T equals surface energy per unit area",
+          "wrong": [
+            "Surface tension T equals surface energy times area",
+            "Surface energy is independent of surface tension"
+          ],
+          "note": "This also shows 1 N/m = 1 J/m²."
+        }
+      ]
+    },
+    {
+      "id": "p2-d3",
+      "stop": "s08",
+      "title": "Laplace's law: excess pressure inside a liquid drop and soap bubble",
+      "page": 41,
+      "asked": [],
+      "related": [
+        "2025 Q25"
+      ],
+      "given": "A spherical liquid drop of radius r and surface tension T has inside pressure p_{i} and outside pressure p_{0}. Let its radius increase infinitesimally from r to r + Δr.",
+      "steps": [
+        {
+          "line": "Initial area A_{1} = 4πr²; final area A_{2} = 4π(r + Δr)² ≈ 4πr² + 8πrΔr (neglecting Δr²)",
+          "wrong": [
+            "Final area A_{2} = 4πr² + 4πrΔr",
+            "Initial area A_{1} = 2πr²; final area A_{2} = 2πr² + 4πrΔr"
+          ]
+        },
+        {
+          "line": "Increase in surface area dA = A_{2} − A_{1} = 8πrΔr, so surface energy work dW = T dA = T(8πrΔr)",
+          "wrong": [
+            "dA = 4πrΔr, so dW = T(4πrΔr)",
+            "dA = 8πr²Δr, so dW = T(8πr²Δr)"
+          ]
+        },
+        {
+          "line": "Excess outward force F = (p_{i} − p_{0})(4πr²), so mechanical work done is dW = FΔr = (p_{i} − p_{0})(4πr²)Δr",
+          "wrong": [
+            "F = (p_{i} − p_{0})/(4πr²), so dW = (p_{i} − p_{0})Δr/(4πr²)",
+            "F = (p_{i} − p_{0})(4/3)πr³, so dW = (p_{i} − p_{0})(4/3)πr³Δr"
+          ]
+        },
+        {
+          "line": "Equate both expressions for dW: (p_{i} − p_{0})4πr²Δr = T(8πrΔr), giving p_{i} − p_{0} = 2T/r",
+          "wrong": [
+            "p_{i} − p_{0} = T/(2r)",
+            "p_{i} − p_{0} = 2Tr"
+          ],
+          "note": "Laplace's law for a liquid drop (1 free surface)."
+        },
+        {
+          "line": "For a soap bubble (2 free surfaces), dA = 16πrΔr, which gives p_{i} − p_{0} = 4T/r",
+          "wrong": [
+            "For a soap bubble, p_{i} − p_{0} = T/r",
+            "For a soap bubble, p_{i} − p_{0} = 8T/r"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "p2-d4",
+      "stop": "s09",
+      "title": "Capillary rise by force balance, h = 2T cosθ / (rρg)",
+      "page": 43,
+      "asked": [],
+      "related": [
+        "2022 Q1(viii)"
+      ],
+      "given": "A capillary tube of inner radius r is held vertically in a wetting liquid of density ρ, surface tension T and angle of contact θ. The liquid rises to height h.",
+      "steps": [
+        {
+          "line": "Length of liquid in contact with the inner wall is the circumference 2πr, so total tangential surface-tension force is f_{T} = 2πrT",
+          "wrong": [
+            "f_{T} = πr²T",
+            "f_{T} = 2πr/T"
+          ]
+        },
+        {
+          "line": "Upward vertical component of surface-tension force: f_{Tv} = 2πrT cosθ",
+          "wrong": [
+            "f_{Tv} = 2πrT sinθ",
+            "f_{Tv} = 2πrT tanθ"
+          ],
+          "note": "Horizontal components cancel around the circular rim."
+        },
+        {
+          "line": "Neglecting the meniscus volume, volume of raised column is V = πr²h, so its weight is w = πr²hρg",
+          "wrong": [
+            "Volume is V = 2πrh, so weight is w = 2πrhρg",
+            "Weight is w = (4/3)πr³ρg"
+          ]
+        },
+        {
+          "line": "At equilibrium, upward vertical force balances column weight: 2πrT cosθ = πr²hρg",
+          "wrong": [
+            "2πrT cosθ + πr²hρg = 0",
+            "πr²T cosθ = 2πrhρg"
+          ]
+        },
+        {
+          "line": "Solve for h: h = 2T cosθ / (rρg), or equivalently T = rhρg / (2 cosθ)",
+          "wrong": [
+            "h = rρg / (2T cosθ)",
+            "h = 2T / (rρg cosθ)"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "p2-d5",
+      "stop": "s11",
+      "title": "Coefficient of viscosity from Newton's law of viscosity",
+      "page": 46,
+      "asked": [
+        "2025 Q4"
+      ],
+      "related": [
+        "2023 Q3"
+      ],
+      "given": "A fluid undergoes steady streamline (laminar) flow in parallel layers of area A over a stationary reference surface, with velocity changing by dv over perpendicular distance dx.",
+      "steps": [
+        {
+          "line": "Define velocity gradient as rate of change of velocity with perpendicular distance from the stationary layer: dv/dx",
+          "wrong": [
+            "Velocity gradient is dv/dt",
+            "Velocity gradient is dx/dv"
+          ]
+        },
+        {
+          "line": "By Newton's law of viscosity for streamline flow, viscous drag f ∝ A and f ∝ (dv/dx), so f ∝ A(dv/dx)",
+          "wrong": [
+            "f ∝ A / (dv/dx)",
+            "f ∝ (dv/dx) / A"
+          ]
+        },
+        {
+          "line": "Introduce proportionality constant η (coefficient of viscosity): f = ηA(dv/dx)",
+          "wrong": [
+            "f = A(dv/dx) / η",
+            "f = η(dv/dx) / A"
+          ],
+          "note": "Here A is the layer area parallel to the direction of flow."
+        },
+        {
+          "line": "Rearrange to get the coefficient of viscosity: η = f / [A(dv/dx)] (SI unit N s/m²)",
+          "wrong": [
+            "η = fA(dv/dx)",
+            "η = [A(dv/dx)] / f"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "p2-d6",
+      "stop": "s12",
+      "title": "Terminal velocity of a sphere in a viscous fluid",
+      "page": 48,
+      "asked": [
+        "2022 Q21"
+      ],
+      "given": "A small sphere of radius r and density ρ falls vertically under gravity through a viscous fluid of density σ and coefficient of viscosity η.",
+      "steps": [
+        {
+          "line": "Downward weight of the sphere: F_{g} = mg = (4/3)πr³ρg",
+          "wrong": [
+            "F_{g} = 4πr²ρg",
+            "F_{g} = (4/3)πr³σg"
+          ]
+        },
+        {
+          "line": "Upward buoyant force (weight of displaced fluid): F_{u} = (4/3)πr³σg",
+          "wrong": [
+            "F_{u} = (4/3)πr³ρg",
+            "F_{u} = (2/3)πr³σg"
+          ]
+        },
+        {
+          "line": "Upward viscous force by Stokes' law: F_{v} = 6πηrv",
+          "wrong": [
+            "F_{v} = 4πηrv",
+            "F_{v} = 6πηr²v"
+          ]
+        },
+        {
+          "line": "At constant terminal velocity v, net force is zero (F_{g} = F_{v} + F_{u}): (4/3)πr³ρg = 6πηrv + (4/3)πr³σg",
+          "wrong": [
+            "(4/3)πr³ρg + (4/3)πr³σg = 6πηrv",
+            "(4/3)πr³ρg = 6πηrv"
+          ]
+        },
+        {
+          "line": "Collect terms: 6πηrv = (4/3)πr³(ρ − σ)g",
+          "wrong": [
+            "6πηrv = (4/3)πr³(ρ + σ)g",
+            "6πηrv = (4/3)πr³(σ − ρ)g"
+          ]
+        },
+        {
+          "line": "Divide by 6πηr to obtain terminal velocity: v = 2r²(ρ − σ)g / (9η)",
+          "wrong": [
+            "v = 9r²(ρ − σ)g / (2η)",
+            "v = 2r(ρ − σ)g / (9η)"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "p2-d7",
+      "stop": "s13",
+      "title": "Equation of continuity, A_{1}v_{1} = A_{2}v_{2}",
+      "page": 49,
+      "asked": [],
+      "given": "An incompressible fluid of constant density ρ flows steadily through a flow tube from cross-section A_{1} (speed v_{1}) to cross-section A_{2} (speed v_{2}).",
+      "steps": [
+        {
+          "line": "In time interval Δt, fluid entering section A_{1} moves distance v_{1}Δt, so its volume is ΔV_{1} = A_{1}v_{1}Δt",
+          "wrong": [
+            "ΔV_{1} = A_{1}v_{1}/Δt",
+            "ΔV_{1} = v_{1}Δt/A_{1}"
+          ]
+        },
+        {
+          "line": "Mass entering at section A_{1} is m_{1} = ρA_{1}v_{1}Δt, and mass leaving at section A_{2} is m_{2} = ρA_{2}v_{2}Δt",
+          "wrong": [
+            "m_{1} = A_{1}v_{1}Δt/ρ and m_{2} = A_{2}v_{2}Δt/ρ",
+            "m_{1} = ½ρA_{1}v_{1}²Δt and m_{2} = ½ρA_{2}v_{2}²Δt"
+          ]
+        },
+        {
+          "line": "By conservation of mass in a steady flow tube, m_{1} = m_{2}: ρA_{1}v_{1}Δt = ρA_{2}v_{2}Δt",
+          "wrong": [
+            "ρA_{1}v_{1}Δt + ρA_{2}v_{2}Δt = 0",
+            "A_{1}/v_{1} = A_{2}/v_{2}"
+          ]
+        },
+        {
+          "line": "Since density ρ is constant (incompressible fluid), cancel ρ and Δt: A_{1}v_{1} = A_{2}v_{2}, i.e. Av = dV/dt = constant",
+          "wrong": [
+            "A_{1}v_{1}² = A_{2}v_{2}²",
+            "A_{1}/v_{1} = A_{2}/v_{2} = constant"
+          ],
+          "note": "Av = dV/dt is the volume flux (volume rate of flow)."
+        }
+      ]
+    },
+    {
+      "id": "p2-d8",
+      "stop": "s13",
+      "title": "Bernoulli's equation, P + ½ρv² + ρgh = constant",
+      "page": 50,
+      "asked": [],
+      "related": [
+        "2025 Q1(ii)"
+      ],
+      "given": "An ideal fluid of density ρ flows steadily through a tube from lower end P (area A_{1}, pressure P_{1}, speed v_{1}, height h_{1}) to upper end R (area A_{2}, pressure P_{2}, speed v_{2}, height h_{2}).",
+      "steps": [
+        {
+          "line": "Equal volume dV passes both ends in time dt: dV = A_{1}d_{1} = A_{2}d_{2}",
+          "wrong": [
+            "dV = A_{1}/d_{1} = A_{2}/d_{2}",
+            "dV = A_{1}d_{2} = A_{2}d_{1}"
+          ]
+        },
+        {
+          "line": "Net work done on the fluid element by pressure forces: W = P_{1}A_{1}d_{1} − P_{2}A_{2}d_{2} = (P_{1} − P_{2})dV",
+          "wrong": [
+            "W = (P_{1} + P_{2})dV",
+            "W = (P_{2} − P_{1})dV"
+          ],
+          "note": "Force P_{2}A_{2} at R opposes the flow, so it carries a minus sign."
+        },
+        {
+          "line": "Change in kinetic energy of mass dm = ρdV: ΔKE = ½ρ dV(v_{2}² − v_{1}²)",
+          "wrong": [
+            "ΔKE = ½ρ dV(v_{2} − v_{1})²",
+            "ΔKE = ρ dV(v_{2}² − v_{1}²)"
+          ]
+        },
+        {
+          "line": "Change in gravitational potential energy: ΔPE = ρ dV g(h_{2} − h_{1})",
+          "wrong": [
+            "ΔPE = ½ρ dV g(h_{2} − h_{1})",
+            "ΔPE = ρ dV g(h_{1} − h_{2})"
+          ]
+        },
+        {
+          "line": "By work-energy theorem W = ΔKE + ΔPE; divide through by dV: P_{1} − P_{2} = ½ρ(v_{2}² − v_{1}²) + ρg(h_{2} − h_{1})",
+          "wrong": [
+            "P_{1} − P_{2} = ½ρ(v_{1}² − v_{2}²) + ρg(h_{1} − h_{2})",
+            "P_{1} + P_{2} = ½ρ(v_{2}² + v_{1}²) + ρg(h_{2} + h_{1})"
+          ]
+        },
+        {
+          "line": "Rearrange terms by position: P_{1} + ½ρv_{1}² + ρgh_{1} = P_{2} + ½ρv_{2}² + ρgh_{2}, or P + ½ρv² + ρgh = constant",
+          "wrong": [
+            "P − ½ρv² − ρgh = constant",
+            "P + ρv² + ½ρgh = constant"
+          ],
+          "note": "Expresses conservation of total mechanical energy per unit volume."
+        }
+      ]
+    }
+  ],
+  "formulas": [
+    {
+      "stop": "s01",
+      "items": [
+        {
+          "n": "Hydrostatic pressure",
+          "f": "p = F/A",
+          "s": "F: normal force, A: surface area; SI unit Pa = N/m², dimensions [L⁻¹M¹T⁻²]",
+          "p": 27
+        },
+        {
+          "n": "Pressure unit conversions",
+          "f": "1 bar = 10^{5} Pa, 1 hPa = 100 Pa, 1 torr = 1 mm of Hg",
+          "s": "1 atm = 1.013 × 10^{5} Pa = 760 torr",
+          "p": 27
+        }
+      ]
+    },
+    {
+      "stop": "s02",
+      "items": [
+        {
+          "n": "Pressure due to a liquid column",
+          "f": "p = hρg",
+          "s": "h: depth/height of column, ρ: fluid density, g: acceleration due to gravity",
+          "p": 28
+        },
+        {
+          "n": "Absolute pressure at depth h",
+          "f": "p = p_{0} + hρg",
+          "s": "p_{0}: atmospheric pressure at free surface",
+          "p": 29
+        },
+        {
+          "n": "Gauge pressure",
+          "f": "p − p_{0} = hρg",
+          "s": "excess over atmospheric pressure",
+          "p": 30
+        },
+        {
+          "n": "Atmospheric pressure at small altitude d",
+          "f": "p = p_{0} − dρ_{air}g",
+          "s": "assuming uniform air density ρ_{air}",
+          "p": 30
+        }
+      ]
+    },
+    {
+      "stop": "s03",
+      "items": [
+        {
+          "n": "Pascal's law (hydraulic lift / brakes)",
+          "f": "F_{2} = F_{1}(A_{2}/A_{1})",
+          "s": "F_{1}, A_{1}: input piston force and area; F_{2}, A_{2}: output piston force and area",
+          "p": 31
+        }
+      ]
+    },
+    {
+      "stop": "s04",
+      "items": [
+        {
+          "n": "Mercury barometer",
+          "f": "p_{0} = hρg",
+          "s": "h: mercury column height (76 cm at normal atmospheric pressure)",
+          "p": 32
+        },
+        {
+          "n": "Open-tube manometer",
+          "f": "p = p_{0} + hρg, gauge pressure = hρg",
+          "s": "h: level difference between arms, ρ: density of manometric liquid",
+          "p": 33
+        }
+      ]
+    },
+    {
+      "stop": "s05",
+      "items": [
+        {
+          "n": "Surface tension",
+          "f": "T = F/L",
+          "s": "SI unit N/m (= 10^{3} dyne/cm), dimensions [L⁰M¹T⁻²]",
+          "p": 35
+        }
+      ]
+    },
+    {
+      "stop": "s06",
+      "items": [
+        {
+          "n": "Force on movable wire of soap film",
+          "f": "F = 2TL",
+          "s": "factor 2 because a film has two free surfaces",
+          "p": 36
+        },
+        {
+          "n": "Surface energy / work done",
+          "f": "dW = T dA",
+          "s": "dA: total change in free surface area (J/m² = N/m)",
+          "p": 36
+        },
+        {
+          "n": "Work to blow a soap bubble of radius r",
+          "f": "W = 8πr²T",
+          "s": "two free surfaces: A = 2 × 4πr² = 8πr² (for a drop: 4πr²T)",
+          "p": 36
+        }
+      ]
+    },
+    {
+      "stop": "s07",
+      "items": [
+        {
+          "n": "Liquid drop equilibrium on a solid",
+          "f": "cosθ = (T_{2} − T_{1})/T_{3}",
+          "s": "T_{1}: liquid-solid, T_{2}: air-solid, T_{3}: air-liquid surface tensions",
+          "p": 39
+        },
+        {
+          "n": "Concavity / convexity condition",
+          "f": "Acute θ: AP > AC/√2; Obtuse θ: AP < AC/√2",
+          "s": "AP: net adhesive force, AC: net cohesive force",
+          "p": 38
+        }
+      ]
+    },
+    {
+      "stop": "s08",
+      "items": [
+        {
+          "n": "Excess pressure in a liquid drop (Laplace's law)",
+          "f": "p_{i} − p_{0} = 2T/r",
+          "s": "r: radius of drop (also valid for air bubble inside a liquid)",
+          "p": 41
+        },
+        {
+          "n": "Excess pressure in a soap bubble",
+          "f": "p_{i} − p_{0} = 4T/r",
+          "s": "factor 4 because a soap bubble has two free surfaces",
+          "p": 41
+        }
+      ]
+    },
+    {
+      "stop": "s09",
+      "items": [
+        {
+          "n": "Capillary rise or fall",
+          "f": "h = 2T cosθ / (rρg)",
+          "s": "r: capillary radius, θ: angle of contact; negative h means capillary fall",
+          "p": 43
+        },
+        {
+          "n": "Surface tension from capillary rise",
+          "f": "T = rhρg / (2 cosθ)",
+          "s": "from vertical force balance 2πrT cosθ = πr²hρg",
+          "p": 43
+        }
+      ]
+    },
+    {
+      "stop": "s10",
+      "items": [
+        {
+          "n": "Critical velocity",
+          "f": "v_{c} = R_{n}η / (ρd)",
+          "s": "R_{n}: Reynolds number, η: viscosity, ρ: density, d: tube diameter",
+          "p": 45
+        },
+        {
+          "n": "Reynolds number",
+          "f": "R_{n} = v_{c}ρd / η",
+          "s": "dimensionless; < 1000 streamline, 1000–2000 unsteady, > 2000 turbulent",
+          "p": 45
+        }
+      ]
+    },
+    {
+      "stop": "s11",
+      "items": [
+        {
+          "n": "Newton's law of viscosity",
+          "f": "f = ηA(dv/dx)",
+          "s": "A: layer area parallel to flow, dv/dx: velocity gradient",
+          "p": 46
+        },
+        {
+          "n": "Coefficient of viscosity",
+          "f": "η = f / [A(dv/dx)]",
+          "s": "SI unit N s/m² (= 10 poise), dimensions [L⁻¹M¹T⁻¹]",
+          "p": 46
+        }
+      ]
+    },
+    {
+      "stop": "s12",
+      "items": [
+        {
+          "n": "Stokes' law",
+          "f": "F_{v} = 6πηrv",
+          "s": "viscous drag on a small sphere of radius r moving at speed v",
+          "p": 47
+        },
+        {
+          "n": "Terminal velocity",
+          "f": "v = 2r²(ρ − σ)g / (9η)",
+          "s": "ρ: density of sphere, σ: density of fluid",
+          "p": 48
+        },
+        {
+          "n": "Viscosity from terminal velocity",
+          "f": "η = 2r²(ρ − σ)g / (9v)",
+          "s": "valid for streamline flow",
+          "p": 48
+        }
+      ]
+    },
+    {
+      "stop": "s13",
+      "items": [
+        {
+          "n": "Equation of continuity",
+          "f": "A_{1}v_{1} = A_{2}v_{2} (Av = dV/dt = constant)",
+          "s": "conservation of mass for steady incompressible flow; Av is volume flux",
+          "p": 49
+        },
+        {
+          "n": "Bernoulli's equation",
+          "f": "P + ½ρv² + ρgh = constant",
+          "s": "P_{1} − P_{2} = ½ρ(v_{2}² − v_{1}²) + ρg(h_{2} − h_{1}); conservation of energy",
+          "p": 51
+        },
+        {
+          "n": "Torricelli's speed of efflux",
+          "f": "v = √(2gh)",
+          "s": "for a small orifice (A_{2} ≪ A_{1}) at depth h below free surface",
+          "p": 52
+        },
+        {
+          "n": "Ventury tube pressure difference",
+          "f": "P_{1} − P_{2} = ½ρ(v_{2}² − v_{1}²) = ρgh",
+          "s": "h: height difference in vertical manometer tubes",
+          "p": 52
+        }
+      ]
+    }
+  ]
+}

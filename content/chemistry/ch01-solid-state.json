@@ -1,0 +1,1617 @@
+{
+  "id": "ch01",
+  "subject": "chemistry",
+  "number": 1,
+  "title": "Solid State",
+  "printedPages": "1–27",
+  "startPage": 1,
+  "pdfPageOffset": 10,
+  "book": "chem_xii",
+  "boardNote": "Covers all four recent papers: 2022, 2023, 2024 and 2025.",
+  "examMarks": {
+    "avg": 5.5,
+    "basis": "Chapter 1 questions in the 2022, 2023, 2024 and 2025 papers: 7, 5, 5 and 5 marks"
+  },
+  "stops": [
+    {
+      "id": "s01",
+      "title": "Crystalline & amorphous solids; isomorphism & polymorphism",
+      "sections": [
+        "1.1 Introduction",
+        "1.2 Types of Solids",
+        "1.2.1 Crystalline Solids",
+        "1.2.2 Amorphous Solids",
+        "1.2.3 Isomorphism and Polymorphism"
+      ],
+      "page": 1,
+      "figs": [],
+      "inShort": "Crystalline solids have long-range order, sharp melting points and anisotropy (except cubic); amorphous solids are supercooled liquids with short-range order, a melting range and isotropy. Isomorphous pairs share a crystal structure; polymorphs are different crystalline forms of the same substance.",
+      "xi": [],
+      "quest": {
+        "cards": [
+          {
+            "t": "Crystalline solids",
+            "text": "Constituent particles (atoms, ions or molecules) have a regular, periodic long-range arrangement. Crystalline solids melt sharply at a definite temperature and, except for cubic crystals, are anisotropic—properties like refractive index and conductivity vary with direction. Examples: NaCl, ice, metals (Na, Cu, Au), diamond and graphite.",
+            "page": 1
+          },
+          {
+            "t": "Amorphous solids",
+            "text": "Particles are randomly arranged with only short-range order, making amorphous solids supercooled liquids. They soften and melt gradually over a temperature range and are isotropic (same magnitude of physical properties in every direction). Examples: glass, plastic, rubber, tar and metallic glass.",
+            "page": 2
+          },
+          {
+            "t": "Isomorphism and polymorphism",
+            "text": "Two or more substances having the same crystal structure and the same atomic ratio are isomorphous (e.g. NaF & MgO in 1:1 ratio; NaNO_{3} & CaCO_{3} in 1:1:3 ratio). A single substance existing in two or more crystalline forms is polymorphous (calcite & aragonite for CaCO_{3}; α-quartz, β-quartz & cristobalite for SiO_{2}). Polymorphism in elements is allotropy (diamond, graphite, fullerene).",
+            "page": 2
+          }
+        ],
+        "checks": [
+          {
+            "type": "mcq",
+            "q": "Which pair of substances is isomorphous with the same 1 : 1 : 3 atomic ratio?",
+            "options": [
+              "NaNO_{3} and CaCO_{3}",
+              "Calcite and aragonite",
+              "Diamond and graphite",
+              "NaF and CaF_{2}"
+            ],
+            "answer": 0,
+            "hint": "Isomorphous substances are two different compounds with the same crystal structure and same atomic ratio.",
+            "explain": "NaNO_{3} and CaCO_{3} are different substances sharing the same crystal structure and the same 1 : 1 : 3 atomic ratio. Calcite/aragonite and diamond/graphite are polymorphs of a single substance.",
+            "page": 2
+          },
+          {
+            "type": "tf",
+            "q": "All crystalline solids, including those with a cubic crystal structure, are anisotropic.",
+            "answer": false,
+            "hint": "Check the exception stated in Balbharati Section 1.2.1.",
+            "explain": "False. All crystalline substances except those having a cubic structure are anisotropic; cubic crystals are isotropic because of their high symmetry.",
+            "page": 1
+          },
+          {
+            "type": "mcq",
+            "q": "Why are amorphous solids such as glass called isotropic?",
+            "options": [
+              "They melt at a single sharp temperature",
+              "Their physical properties have the same magnitude in all directions",
+              "Their constituent particles have long-range periodic order",
+              "They always consist of a single large crystal"
+            ],
+            "answer": 1,
+            "hint": "Recall the meaning of 'iso-' (same) and 'tropic' (direction).",
+            "explain": "Because particles in an amorphous solid are randomly arranged with no long-range order, properties such as refractive index and conductivity are independent of the direction of measurement.",
+            "page": 2
+          }
+        ]
+      }
+    },
+    {
+      "id": "s02",
+      "title": "Classification of crystalline solids",
+      "sections": [
+        "1.3 Classification of Crystalline Solids",
+        "1.3.1 Ionic Crystals",
+        "1.3.2 Covalent Network Crystals",
+        "1.3.3 Molecular Crystals",
+        "1.3.4 Metallic Crystals"
+      ],
+      "page": 3,
+      "figs": [],
+      "inShort": "Crystalline solids are classified into four types by their particles and bonding: ionic (cations/anions, electrostatic), covalent network (atoms, 3D covalent bonds), molecular (molecules, weak intermolecular forces) and metallic (metal cations in a sea of mobile electrons).",
+      "xi": [],
+      "quest": {
+        "cards": [
+          {
+            "t": "Ionic and covalent network crystals",
+            "text": "Ionic crystals (NaCl, KCl, CaF_{2}, K_{2}SO_{4}) consist of cations and anions held by strong electrostatic forces; they are hard, brittle, high-melting, and conduct electricity only when molten or dissolved in water. Covalent network solids (diamond, quartz SiO_{2}, BN, carborundum) are giant 3D covalently bonded molecules—the hardest, high-melting, and poor conductors (exceptions: graphite conducts electricity; diamond conducts heat well).",
+            "page": 3
+          },
+          {
+            "t": "Molecular crystals",
+            "text": "Constituent particles are molecules (or monoatomic noble gas atoms such as Ar, Ne) held together by weak intermolecular forces: London dispersion forces in nonpolar solids (CH_{4}, H_{2}, CO_{2}), dipole-dipole forces in polar solids (HCl, SO_{2}), or intermolecular hydrogen bonds (H_{2}O ice, NH_{3}, HF). They are soft, low-melting and poor electrical conductors.",
+            "page": 4
+          },
+          {
+            "t": "Metallic crystals",
+            "text": "Formed by atoms of a metallic element whose valence electrons are delocalised over the whole crystal, leaving positive metal ions immersed in a sea of mobile electrons. Metallic crystals (Na, Mg, Fe, Cu, Ag, Au) are malleable, ductile, and good conductors of heat and electricity, with wide ranges of hardness and melting point.",
+            "page": 4
+          }
+        ],
+        "checks": [
+          {
+            "type": "mcq",
+            "q": "A solid is hard, brittle and an electrical insulator in the solid state, but its melt conducts electricity well. What type of crystalline solid is it?",
+            "options": [
+              "Covalent network solid",
+              "Ionic solid",
+              "Molecular solid",
+              "Metallic solid"
+            ],
+            "answer": 1,
+            "hint": "Which solids have immobile ions in the solid state that become free to move on melting?",
+            "explain": "Ionic solids have cations and anions locked in a rigid lattice (hard, brittle, non-conducting solid), but on melting or dissolving in water the ions become mobile and conduct electricity.",
+            "page": 3
+          },
+          {
+            "type": "mcq",
+            "q": "Which intermolecular force holds the molecules together in solid H_{2}O (ice), solid NH_{3} and solid HF?",
+            "options": [
+              "Electrostatic (Coulomb) force between ions",
+              "Metallic bond",
+              "Intermolecular hydrogen bonds",
+              "Continuous 3D covalent network bonds"
+            ],
+            "answer": 2,
+            "hint": "H is covalently bonded to strongly electronegative O, N or F.",
+            "explain": "Solid H_{2}O (ice), NH_{3} and HF are hydrogen-bonded molecular crystals held together by intermolecular hydrogen bonds.",
+            "page": 4
+          },
+          {
+            "type": "tf",
+            "q": "Just like ionic solids, covalent network solids show an abrupt rise in electrical conductivity as soon as they are melted.",
+            "answer": false,
+            "hint": "Check how electrical properties distinguish ionic crystals from covalent network crystals on page 4.",
+            "explain": "False. Ionic solids become good conductors abruptly above their melting points, whereas covalent network solids show low conductivity that rises gradually with temperature with no abrupt jump on melting.",
+            "page": 4
+          }
+        ]
+      }
+    },
+    {
+      "id": "s03",
+      "title": "Crystal lattice, basis, unit cells & 7 crystal systems",
+      "sections": [
+        "1.4 Crystal Structure",
+        "1.4.1 Crystal, Lattice and Basis",
+        "1.4.2 Unit Cell",
+        "1.4.3 Types of Unit Cell",
+        "1.4.4 Crystal Systems"
+      ],
+      "page": 4,
+      "figs": [
+        "Fig 1.1"
+      ],
+      "inShort": "Crystal = Lattice + Basis. The unit cell is the smallest repeating 3D structural unit, specified by edge lengths a, b, c and angles α, β, γ. Four unit-cell types (primitive, body-centred, face-centred, base-centred) give 14 Bravais lattices across 7 crystal systems.",
+      "xi": [],
+      "quest": {
+        "cards": [
+          {
+            "t": "Lattice, basis and crystal",
+            "text": "A space lattice is a three-dimensional periodic geometrical array of points. The constituent particles attached to every lattice point form the basis. Combining the two generates the crystal: Lattice + Basis = Crystal.",
+            "page": 4
+          },
+          {
+            "t": "Unit cell and its four types",
+            "text": "The smallest repeating structural unit of a crystalline solid is the unit cell, specified by axial lengths a, b, c and interaxial angles α, β, γ (Fig 1.1). Its four types are: primitive (corners only), body-centred (corners + 1 body centre), face-centred (corners + 6 face centres) and base-centred (corners + 2 opposite face centres).",
+            "page": 5
+          },
+          {
+            "t": "Seven crystal systems and 14 Bravais lattices",
+            "text": "Only 14 distinct three-dimensional space lattices (Bravais lattices) exist. They are grouped into 7 crystal systems: cubic (3), orthorhombic (4), tetragonal (2), monoclinic (2), rhombohedral (1), triclinic (1) and hexagonal (1).",
+            "page": 6
+          }
+        ],
+        "checks": [
+          {
+            "type": "mcq",
+            "q": "Which of the seven crystal systems possesses all four Bravais lattice types (primitive, body-centred, face-centred and base-centred)?",
+            "options": [
+              "Cubic",
+              "Tetragonal",
+              "Orthorhombic",
+              "Monoclinic"
+            ],
+            "answer": 2,
+            "hint": "Count the Bravais lattices for each crystal system in the chart on page 7.",
+            "explain": "Orthorhombic has all 4 Bravais lattices. Cubic has 3 (sc, bcc, fcc), tetragonal has 2 (simple, body-centred), and monoclinic has 2 (simple, base-centred).",
+            "page": 7
+          },
+          {
+            "type": "num",
+            "q": "How many distinct three-dimensional Bravais lattices are possible across all seven crystal systems?",
+            "answer": 14,
+            "unit": "lattices",
+            "hint": "Add the Bravais lattices of cubic (3), orthorhombic (4), tetragonal (2), monoclinic (2), rhombohedral (1), triclinic (1) and hexagonal (1).",
+            "explain": "By mathematical analysis, there are exactly 14 Bravais lattices distributed across the 7 crystal systems.",
+            "page": 6
+          },
+          {
+            "type": "tf",
+            "q": "A base-centred unit cell has constituent particles at its eight corners and at the centres of all six faces.",
+            "answer": false,
+            "hint": "Compare the definitions of face-centred and base-centred unit cells on page 6.",
+            "explain": "False. A base-centred unit cell has particles at the centres of any two opposite faces (in addition to the corners). Particles at all six face centres define a face-centred unit cell.",
+            "page": 6
+          }
+        ]
+      }
+    },
+    {
+      "id": "s04",
+      "title": "Number of particles in SC, BCC & FCC cubic unit cells",
+      "sections": [
+        "1.5 Cubic System",
+        "1.5.1 Number of Particles in Cubic Unit Cells"
+      ],
+      "page": 6,
+      "figs": [
+        "Fig 1.2"
+      ],
+      "inShort": "In a cubic lattice, each corner contributes 1/8, each face-centre 1/2, each edge-centre 1/4, and the body-centre 1. Thus simple cubic (sc) has n = 1, body-centred cubic (bcc) has n = 2, and face-centred cubic (fcc) has n = 4 particles per unit cell.",
+      "xi": [],
+      "quest": {
+        "cards": [
+          {
+            "t": "Sharing of lattice positions in a cube",
+            "text": "When cubic unit cells are stacked in 3D, each corner particle is shared by 8 cubes (contributes 1/8), each face-centre particle by 2 cubes (contributes 1/2), each edge-centre particle by 4 cubes (contributes 1/4), and a body-centre particle belongs solely to 1 cube (contributes 1).",
+            "page": 8
+          },
+          {
+            "t": "Particles in sc and bcc unit cells",
+            "text": "A simple cubic (sc) unit cell has 8 corner particles, giving n = (1/8) × 8 = 1 particle per unit cell. A body-centred cubic (bcc) unit cell has 8 corners plus 1 unshared body-centre particle, giving n = (1/8) × 8 + 1 = 2 particles per unit cell.",
+            "page": 6
+          },
+          {
+            "t": "Particles in fcc unit cell and compound formulas",
+            "text": "A face-centred cubic (fcc) unit cell has 8 corners plus 6 face-centre particles, giving n = (1/8) × 8 + (1/2) × 6 = 1 + 3 = 4 particles per unit cell. Counting each element's contributions gives the compound formula (e.g. C at 8 corners = 1 and D at 6 faces = 3 gives CD_{3}).",
+            "page": 8
+          }
+        ],
+        "checks": [
+          {
+            "type": "num",
+            "q": "Find the total number of particles n belonging to one body-centred cubic (bcc) unit cell.",
+            "answer": 2,
+            "unit": "particles",
+            "hint": "Add the contribution of 8 corners (1/8 each) and 1 body-centre particle (1).",
+            "explain": "n = 8 × (1/8) + 1 = 1 + 1 = 2 particles per bcc unit cell.",
+            "page": 6
+          },
+          {
+            "type": "mcq",
+            "q": "A crystalline compound of elements C and D has C atoms at all 8 corners and D atoms at the centres of all 6 faces of a cubic unit cell. What is the formula of the compound?",
+            "options": [
+              "CD",
+              "C_{3}D",
+              "CD_{3}",
+              "CD_{6}"
+            ],
+            "answer": 2,
+            "hint": "Multiply corners by 1/8 and face centres by 1/2.",
+            "explain": "C atoms per unit cell = 8 × (1/8) = 1. D atoms per unit cell = 6 × (1/2) = 3. Hence the formula is CD_{3} (Problem 1.2).",
+            "page": 14
+          },
+          {
+            "type": "step",
+            "q": "Which calculation correctly gives the number of particles per face-centred cubic (fcc) unit cell?",
+            "options": [
+              "(1/8) × 8 + (1/2) × 6 = 4",
+              "(1/4) × 8 + (1/2) × 6 = 5",
+              "(1/8) × 8 + (1/4) × 6 = 2.5",
+              "(1/8) × 8 + 1 = 2"
+            ],
+            "answer": 0,
+            "hint": "Each of 8 corners contributes 1/8 and each of 6 faces contributes 1/2.",
+            "explain": "Corner particles contribute 8 × (1/8) = 1 and six face-centre particles contribute 6 × (1/2) = 3, giving 1 + 3 = 4 particles per fcc unit cell.",
+            "page": 8
+          }
+        ]
+      }
+    },
+    {
+      "id": "s05",
+      "title": "Density, molar mass & edge length relation",
+      "sections": [
+        "1.5.2 Relationship Between Molar Mass, Density of the Substance and Unit Cell Edge Length"
+      ],
+      "page": 8,
+      "figs": [],
+      "inShort": "Mass of one particle is m = M/N_{A}, mass of a cubic unit cell is nm, and its volume is a³. Hence density ρ = nM / (a³ N_{A}), linking molar mass M, density ρ, edge length a and lattice type n.",
+      "xi": [],
+      "quest": {
+        "cards": [
+          {
+            "t": "Mass and volume of a cubic unit cell",
+            "text": "For a cubic unit cell of edge length a, the volume is a³. If one particle has mass m and the unit cell contains n particles, then mass of unit cell = m × n, and the crystal density is ρ = (m × n) / a³.",
+            "page": 8
+          },
+          {
+            "t": "Introducing molar mass M",
+            "text": "One mole contains N_{A} = 6.022 × 10^{23} particles, so molar mass M = m × N_{A}, giving m = M / N_{A}. Substituting into the density expression gives ρ = nM / (a³ N_{A}). Knowing any four quantities determines the fifth.",
+            "page": 8
+          },
+          {
+            "t": "Unit conversions and identifying the lattice",
+            "text": "Always convert edge length from picometres to centimetres using 1 pm = 10^{-12} m = 10^{-10} cm so that M in g mol^{-1} yields ρ in g cm^{-3} (1 g cm^{-3} = 10^{3} kg m^{-3}). Solving n = ρ a³ N_{A} / M identifies the cubic lattice: n = 1 (sc), n = 2 (bcc), n = 4 (fcc).",
+            "page": 8
+          }
+        ],
+        "checks": [
+          {
+            "type": "num",
+            "q": "A metal of molar mass 50 g mol^{-1} crystallises in a bcc lattice (n = 2) with unit cell edge length 300 pm. Calculate its density ρ (use N_{A} = 6.022 × 10^{23} mol^{-1}).",
+            "answer": 6.15,
+            "unit": "g cm^{-3}",
+            "hint": "Convert a = 300 pm = 3.00 × 10^{-8} cm, then use ρ = nM / (a³ N_{A}).",
+            "explain": "a³ = (3.00 × 10^{-8})³ = 2.70 × 10^{-23} cm³. ρ = (2 × 50) / (2.70 × 10^{-23} × 6.022 × 10^{23}) = 100 / 16.259 = 6.15 g cm^{-3}.",
+            "page": 8
+          },
+          {
+            "type": "step",
+            "q": "Given density ρ, edge length a, molar mass M and Avogadro number N_{A}, which formula solves for the number of particles n per unit cell?",
+            "options": [
+              "n = ρ a³ N_{A} / M",
+              "n = M / (ρ a³ N_{A})",
+              "n = ρ M / (a³ N_{A})",
+              "n = a³ M / (ρ N_{A})"
+            ],
+            "answer": 0,
+            "hint": "Rearrange ρ = nM / (a³ N_{A}) to isolate n.",
+            "explain": "Multiplying both sides of ρ = nM / (a³ N_{A}) by a³ N_{A} and dividing by M gives n = ρ a³ N_{A} / M.",
+            "page": 8
+          },
+          {
+            "type": "mcq",
+            "q": "To calculate density in g cm^{-3} using ρ = nM / (a³ N_{A}) with M in g mol^{-1}, an edge length of 400 pm must be substituted as:",
+            "options": [
+              "4.00 × 10^{-12} cm",
+              "4.00 × 10^{-10} cm",
+              "4.00 × 10^{-8} cm",
+              "4.00 × 10^{-6} cm"
+            ],
+            "answer": 2,
+            "hint": "1 pm = 10^{-12} m = 10^{-10} cm.",
+            "explain": "400 pm = 400 × 10^{-10} cm = 4.00 × 10^{-8} cm.",
+            "page": 8
+          }
+        ]
+      }
+    },
+    {
+      "id": "s06",
+      "title": "Close packing in 1D, 2D & 3D; coordination number & voids",
+      "sections": [
+        "1.6 Packing of Particles in Crystal Lattice",
+        "1.6.1 Close Packed Structures",
+        "1.6.2 Coordination Number in Close Packed Structure",
+        "1.6.3 Number of Voids per Atom in hcp and ccp"
+      ],
+      "page": 8,
+      "figs": [
+        "Fig 1.3",
+        "Fig 1.4",
+        "Fig 1.5",
+        "Fig 1.6",
+        "Fig 1.7",
+        "Fig 1.8"
+      ],
+      "inShort": "2D square packing (CN 4) stacks AAAA to form simple cubic (CN 6, Po). 2D hexagonal packing (CN 6) stacks ABAB for hcp (Mg, Zn) or ABCABC for ccp/fcc (Cu, Ag), both with CN 12. For N atoms in hcp/ccp, there are 2N tetrahedral voids and N octahedral voids.",
+      "xi": [],
+      "quest": {
+        "cards": [
+          {
+            "t": "Close packing in 1D and 2D",
+            "text": "In 1D, spheres touch in a straight row (Fig 1.3(a)). In 2D, aligning rows directly (AAAA...) gives square close packing with CN = 4 (Fig 1.3(b)); fitting the second row into depressions of the first (ABAB...) gives hexagonal close packing with CN = 6 (Fig 1.3(c)), leaving smaller triangular voids and tighter packing.",
+            "page": 9
+          },
+          {
+            "t": "3D stacking: sc, hcp and ccp/fcc",
+            "text": "Stacking 2D square layers directly (AAAA...) gives simple cubic (CN = 6; polonium is the only metal with sc). Stacking 2D hexagonal layers with the third layer aligned over the first gives ABAB... hcp (Mg, Zn); placing the third layer over octahedral voids gives ABCABC... ccp/fcc (Cu, Ag). Both hcp and ccp/fcc have CN = 12 (6 in own layer, 3 above, 3 below).",
+            "page": 10
+          },
+          {
+            "t": "Tetrahedral and octahedral voids",
+            "text": "When layer B rests in depressions of layer A, covered triangular voids become tetrahedral voids (surrounded by 4 spheres, Fig 1.6) while uncovered overlapping triangular voids of both layers form octahedral voids (surrounded by 6 spheres, Fig 1.7). For N close-packed particles in hcp or ccp, there are 2N tetrahedral voids and N octahedral voids.",
+            "page": 11
+          }
+        ],
+        "checks": [
+          {
+            "type": "mcq",
+            "q": "What are the layer stacking pattern and coordination number in a cubic close-packed (ccp/fcc) metal such as Cu or Ag?",
+            "options": [
+              "ABAB..., CN = 12",
+              "ABCABC..., CN = 12",
+              "AAAA..., CN = 6",
+              "ABCABC..., CN = 8"
+            ],
+            "answer": 1,
+            "hint": "In ccp, the third layer covers the octahedral voids of the first two layers, so the fourth layer aligns with the first.",
+            "explain": "Covering octahedral voids gives the ABCABC... stacking pattern of ccp/fcc, where each sphere touches 12 neighbours (6 in its own layer, 3 above, 3 below).",
+            "page": 11
+          },
+          {
+            "type": "mcq",
+            "q": "A compound is formed by elements A and B. Atoms of B form a ccp structure and atoms of A occupy one-third (1/3) of the tetrahedral voids. What is the formula of the compound?",
+            "options": [
+              "AB_{3}",
+              "A_{2}B_{3}",
+              "A_{3}B_{2}",
+              "AB_{2}"
+            ],
+            "answer": 1,
+            "hint": "Each B atom generates 2 tetrahedral voids, so A = (1/3) × 2B.",
+            "explain": "Number of tetrahedral voids = 2B. Atoms of A occupy 1/3 of them, so A = (2/3)B. Thus A : B = 2/3 : 1 = 2 : 3, giving formula A_{2}B_{3} (Problem 1.4).",
+            "page": 15
+          },
+          {
+            "type": "tf",
+            "q": "An octahedral void is surrounded by six close-packed spheres, and for N atoms in an hcp or ccp structure there are N octahedral voids.",
+            "answer": true,
+            "hint": "Compare tetrahedral voids (4 spheres, 2N) with octahedral voids (6 spheres, N).",
+            "explain": "True. Overlapping triangular voids from two adjacent hexagonal layers are enclosed by 6 spheres, producing 1 octahedral void per atom (N voids for N atoms).",
+            "page": 10
+          }
+        ]
+      }
+    },
+    {
+      "id": "s07",
+      "title": "Packing efficiency of SC, BCC & FCC lattices",
+      "sections": [
+        "1.7 Packing Efficiency",
+        "1.7.1 Packing Efficiency of Metal Crystal in Simple Cubic Lattice",
+        "1.7.2 Packing Efficiency of Metal Crystal in Body-Centred Cubic Lattice",
+        "1.7.3 Packing Efficiency of Metal Crystal in Face-Centred Cubic Lattice"
+      ],
+      "page": 11,
+      "figs": [
+        "Fig 1.9",
+        "Fig 1.10",
+        "Fig 1.11"
+      ],
+      "inShort": "Packing efficiency = (volume of particles in unit cell / a³) × 100. sc: r = a/2, 52.36% occupied (47.64% void). bcc: r = (√3/4)a, 68% occupied (32% void). fcc/ccp/hcp: r = a/(2√2), 74% occupied (26% void).",
+      "xi": [],
+      "quest": {
+        "cards": [
+          {
+            "t": "Simple cubic (sc) packing efficiency",
+            "text": "Corner spheres touch along the edge (Fig 1.9), so a = 2r, i.e. r = a/2 = 0.5000a. With n = 1, volume occupied is (4/3)π(a/2)³ = πa³/6. Packing efficiency = (π/6) × 100 = 52.36%, leaving 47.64% void volume.",
+            "page": 12
+          },
+          {
+            "t": "Body-centred cubic (bcc) packing efficiency",
+            "text": "The body-centre sphere touches two corner spheres along the cube body diagonal of length √3 a (Fig 1.10), so 4r = √3 a and r = (√3/4)a = 0.4330a. With n = 2, occupied volume is (√3 π a³)/8, giving packing efficiency = (√3 π/8) × 100 = 68% and void volume = 32%.",
+            "page": 12
+          },
+          {
+            "t": "Face-centred cubic (fcc/ccp/hcp) packing efficiency",
+            "text": "Corner spheres touch the face-centre sphere along the face diagonal of length √2 a (Fig 1.11), so 4r = √2 a and r = a/(2√2) = 0.3535a. With n = 4, occupied volume is πa³/(3√2), giving packing efficiency = [π/(3√2)] × 100 = 74% (most efficient) and void volume = 26%.",
+            "page": 13
+          }
+        ],
+        "checks": [
+          {
+            "type": "num",
+            "q": "Lead (Pb) has an fcc structure with unit cell edge length a = 495 pm. Calculate the radius r of a Pb atom (to the nearest whole number).",
+            "answer": 175,
+            "unit": "pm",
+            "hint": "For fcc, r = a / (2√2) = 0.3535a.",
+            "explain": "r = 0.3535 × 495 pm = 175 pm.",
+            "page": 13
+          },
+          {
+            "type": "mcq",
+            "q": "In a crystal lattice formed by body-centred cubic (bcc) unit cells, what is the percentage of empty space (void volume)?",
+            "options": [
+              "68%",
+              "32%",
+              "26%",
+              "47.64%"
+            ],
+            "answer": 1,
+            "hint": "Subtract the bcc packing efficiency (68%) from 100%.",
+            "explain": "In a bcc unit cell, 68% of total space is occupied by particles and 100 − 68 = 32% is empty void volume.",
+            "page": 13
+          },
+          {
+            "type": "tf",
+            "q": "Among sc, bcc and fcc crystal lattices, fcc/ccp/hcp makes the most efficient use of space (74%) while simple cubic makes the least efficient use (52.36%).",
+            "answer": true,
+            "hint": "Compare 52.36% (sc), 68% (bcc) and 74% (fcc/ccp/hcp).",
+            "explain": "True. Packing efficiency rises from 52.36% in sc to 68% in bcc and reaches the maximum 74% in fcc/ccp/hcp.",
+            "page": 13
+          }
+        ]
+      }
+    },
+    {
+      "id": "s08",
+      "title": "Number of particles & unit cells in x g of metal",
+      "sections": [
+        "1.7.4 Number of Particles and Unit Cells in x g of Metallic Crystal"
+      ],
+      "page": 14,
+      "figs": [],
+      "inShort": "Substituting M = ρ a³ N_{A} / n into xN_{A}/M gives: particles in x g = xn / (ρa³), unit cells in x g = x / (ρa³), and unit cells in volume V = V / a³.",
+      "xi": [],
+      "quest": {
+        "cards": [
+          {
+            "t": "Number of particles in x g of metal",
+            "text": "Since molar mass M contains N_{A} particles, x g of metal contains xN_{A}/M particles. From the density formula, M = ρ a³ N_{A} / n. Substituting M cancels N_{A} and yields: Number of particles in x g = xn / (ρa³).",
+            "page": 14
+          },
+          {
+            "t": "Number of unit cells in x g of metal",
+            "text": "Because n particles make 1 unit cell, dividing the number of particles by n gives: Number of unit cells in x g = x / (ρa³). Equivalently, x/ρ is the sample volume V, divided by one unit cell's volume a³.",
+            "page": 14
+          },
+          {
+            "t": "Unit cells in a given volume V",
+            "text": "When the volume V of a metal sample is given directly (e.g. 1.00 cm³), the number of unit cells is simply V / a³. Always express a in cm when V is in cm³ and ρ is in g cm^{-3}.",
+            "page": 14
+          }
+        ],
+        "checks": [
+          {
+            "type": "step",
+            "q": "Starting from xN_{A}/M particles in x g of metal, which expression for M is substituted to obtain xn / (ρa³)?",
+            "options": [
+              "M = ρ a³ N_{A} / n",
+              "M = n ρ / (a³ N_{A})",
+              "M = ρ n / (a³ N_{A})",
+              "M = a³ N_{A} / (ρ n)"
+            ],
+            "answer": 0,
+            "hint": "Solve ρ = nM / (a³ N_{A}) for M.",
+            "explain": "From ρ = nM / (a³ N_{A}), we get M = ρ a³ N_{A} / n. Substituting into xN_{A}/M cancels N_{A} and gives xn / (ρa³).",
+            "page": 14
+          },
+          {
+            "type": "num",
+            "q": "A metal crystal has cubic unit cell volume a³ = 6.4 × 10^{-23} cm³. Calculate the number of unit cells in 1.28 cm³ of the metal, expressed as a multiple of 10^{22}.",
+            "answer": 2,
+            "unit": "× 10^{22}",
+            "hint": "Number of unit cells in volume V is V / a³.",
+            "explain": "Number of unit cells = V / a³ = 1.28 / (6.4 × 10^{-23}) = 0.2 × 10^{23} = 2 × 10^{22}.",
+            "page": 14
+          },
+          {
+            "type": "mcq",
+            "q": "Which formula gives the number of unit cells present in x g of a metal having density ρ and cubic unit cell edge length a?",
+            "options": [
+              "xn / (ρa³)",
+              "x / (ρa³)",
+              "ρa³ / x",
+              "xN_{A} / (ρa³)"
+            ],
+            "answer": 1,
+            "hint": "Divide the number of particles xn / (ρa³) by n particles per unit cell.",
+            "explain": "Since n particles correspond to 1 unit cell, dividing xn / (ρa³) by n gives x / (ρa³) unit cells.",
+            "page": 14
+          }
+        ]
+      }
+    },
+    {
+      "id": "s09",
+      "title": "Point defects: Schottky, Frenkel, impurity & non-stoichiometric",
+      "sections": [
+        "1.8 Crystal Defects or Imperfections",
+        "1.8.1 Point Defects"
+      ],
+      "page": 16,
+      "figs": [
+        "Fig 1.12",
+        "Fig 1.13",
+        "Fig 1.14",
+        "Fig 1.15",
+        "Fig 1.16",
+        "Fig 1.17",
+        "Fig 1.18",
+        "Fig 1.19",
+        "Fig 1.20",
+        "Fig 1.21",
+        "Fig 1.22"
+      ],
+      "inShort": "Point defects preserve electrical neutrality. Stoichiometric defects keep formula ratio fixed: vacancy, self-interstitial, Schottky (paired vacancies, lowers density: NaCl, KCl, AgBr) and Frenkel (cation in interstitial void, density unchanged: ZnS, AgCl, AgBr, AgI, CaF_{2}). Impurity defects are substitutional (brass, SrCl_{2} in NaCl) or interstitial (C in steel). Non-stoichiometric defects are metal deficiency (Ni_{0.97}O_{1.0}) and metal excess (Zn_{1+x}O_{1.0}, F-centres in NaCl).",
+      "xi": [],
+      "quest": {
+        "cards": [
+          {
+            "t": "Stoichiometric defects: Schottky & Frenkel",
+            "text": "Schottky defect is a paired cation–anion vacancy in highly ionic crystals with high CN and similar ion sizes (NaCl, KCl, AgBr); it lowers density while preserving electrical neutrality. Frenkel defect occurs when a smaller cation shifts from its lattice site to an interstitial void in low-CN crystals with large size difference (ZnS, AgCl, AgBr, AgI, CaF_{2}); density and neutrality remain unchanged.",
+            "page": 17
+          },
+          {
+            "t": "Impurity defects: substitutional & interstitial",
+            "text": "Substitutional impurity defects occur when foreign atoms replace host atoms at regular lattice sites—e.g. Zn replacing Cu in brass (Fig 1.17), or aliovalent Sr^{2+} replacing two Na^{+} ions in NaCl to create one cation vacancy (Fig 1.18). Interstitial impurity defects occur when foreign atoms occupy interstitial voids—e.g. C atoms in the Fe lattice of steel (Fig 1.19).",
+            "page": 18
+          },
+          {
+            "t": "Non-stoichiometric defects & F-centres",
+            "text": "Metal deficiency defect occurs in variable-valency metals: missing Ni^{2+} in NiO is balanced by two Ni^{3+} ions, giving Ni_{0.97}O_{1.0}. Metal excess defect occurs either via interstitial metal atoms/cations + electrons (ZnO → Zn^{2+} + ½O_{2} + 2e^{-}, giving Zn_{1+x}O_{1.0}) or via anion vacancies trapping electrons called F-centres (heating NaCl in Na vapour gives yellow Na_{1+x}Cl_{1.0}).",
+            "page": 19
+          }
+        ],
+        "checks": [
+          {
+            "type": "mcq",
+            "q": "Which ionic solid exhibits BOTH Schottky defect and Frenkel defect?",
+            "options": [
+              "NaCl",
+              "ZnS",
+              "AgBr",
+              "KCl"
+            ],
+            "answer": 2,
+            "hint": "Check the examples listed under both Schottky defect and Frenkel defect on page 18.",
+            "explain": "AgBr appears in the examples of both Schottky defect (NaCl, AgBr, KCl) and Frenkel defect (ZnS, AgCl, AgBr, AgI, CaF_{2}).",
+            "page": 18
+          },
+          {
+            "type": "tf",
+            "q": "Frenkel defect decreases the density of an ionic crystal because cations move away from their regular lattice sites.",
+            "answer": false,
+            "hint": "Does the displaced cation leave the crystal, or stay inside an interstitial void?",
+            "explain": "False. In a Frenkel defect no ion leaves the crystal lattice as a whole—the cation merely shifts to an interstitial position—so the density remains unchanged.",
+            "page": 18
+          },
+          {
+            "type": "mcq",
+            "q": "When a small amount of SrCl_{2} is added to NaCl during crystallisation, how is electrical neutrality maintained?",
+            "options": [
+              "Each Sr^{2+} ion replaces one Na^{+} ion",
+              "Each Sr^{2+} ion displaces two Na^{+} ions, occupying one site and leaving the second site vacant",
+              "Each Sr^{2+} ion enters an interstitial site without removing any Na^{+} ion",
+              "Two Sr^{2+} ions replace one Na^{+} ion"
+            ],
+            "answer": 1,
+            "hint": "Compare the +2 charge of Sr^{2+} with the +1 charge of Na^{+}.",
+            "explain": "To balance +2 charge, every Sr^{2+} removes two Na^{+} ions: Sr^{2+} occupies one Na^{+} site and the other site remains a cation vacancy (Fig 1.18).",
+            "page": 19
+          }
+        ]
+      }
+    },
+    {
+      "id": "s10",
+      "title": "Electrical properties & band theory",
+      "sections": [
+        "1.9 Electrical Properties of Solids",
+        "1.9.1 Band Theory",
+        "1.9.2 Metals",
+        "1.9.3 Insulators",
+        "1.9.4 Semiconductors"
+      ],
+      "page": 20,
+      "figs": [
+        "Fig 1.23",
+        "Fig 1.24",
+        "Fig 1.25"
+      ],
+      "inShort": "Conductivities span conductors (10^{4}–10^{7}), semiconductors (10^{-6}–10^{4}) and insulators (10^{-20}–10^{-10} Ω^{-1}m^{-1}). Overlapping atomic orbitals form valence and conduction bands separated by a band gap: zero/overlapping in metals, small in semiconductors (Si, Ge), large forbidden zone in insulators. Raising temperature lowers metallic conductivity but increases semiconductor conductivity.",
+      "xi": [],
+      "quest": {
+        "cards": [
+          {
+            "t": "Conductivity classes and band theory",
+            "text": "Solids are classified by conductivity (Ω^{-1}m^{-1}): conductors (10^{4}–10^{7}), semiconductors (10^{-6}–10^{4}) and insulators (10^{-20}–10^{-10}). Overlapping atomic orbitals form closely spaced energy bands: a lower-energy valence band (bound electrons) and a higher-energy conduction band (mobile delocalised electrons), separated by the band gap.",
+            "page": 21
+          },
+          {
+            "t": "Metals and insulators",
+            "text": "Metals have a partially filled conduction band (e.g. 3s band in Na, E_{gap} = 0) or overlapping filled and empty bands (e.g. filled 3s and vacant 3p in Mg), allowing free electron flow. Insulators have a filled valence band and empty conduction band separated by a large forbidden zone (e.g. diamond 5.47 eV) that thermal energy cannot bridge.",
+            "page": 22
+          },
+          {
+            "t": "Intrinsic semiconductors & temperature effect",
+            "text": "Pure semiconductors (Si: E_{gap} = 1.12 eV; Ge: 0.67 eV) have a small band gap, so above 0 K some electrons thermally jump to the conduction band. Heating increases semiconductor conductivity (more electrons promoted), whereas heating decreases metallic conductivity (stronger lattice cation vibrations interrupt electron flow).",
+            "page": 23
+          }
+        ],
+        "checks": [
+          {
+            "type": "mcq",
+            "q": "How does increasing temperature affect the electrical conductivity of a metal and of an intrinsic semiconductor?",
+            "options": [
+              "Increases for both",
+              "Decreases for both",
+              "Decreases for a metal and increases for a semiconductor",
+              "Increases for a metal and decreases for a semiconductor"
+            ],
+            "answer": 2,
+            "hint": "Think of lattice vibrations in metals versus thermal promotion across the small band gap in semiconductors.",
+            "explain": "Higher temperature increases metal-cation vibrations (lowering metallic conductivity) but promotes more electrons across the small band gap in a semiconductor (raising semiconductor conductivity).",
+            "page": 23
+          },
+          {
+            "type": "mcq",
+            "q": "What is the electrical conductivity range (in Ω^{-1} m^{-1}) of semiconductors according to Balbharati?",
+            "options": [
+              "10^{4} to 10^{7}",
+              "10^{-6} to 10^{4}",
+              "10^{-20} to 10^{-10}",
+              "10^{-12} to 10^{-8}"
+            ],
+            "answer": 1,
+            "hint": "Semiconductors lie intermediate between insulators (10^{-20}–10^{-10}) and conductors (10^{4}–10^{7}).",
+            "explain": "Semiconductors have conductivities in the intermediate range 10^{-6} to 10^{4} Ω^{-1} m^{-1}.",
+            "page": 21
+          },
+          {
+            "type": "tf",
+            "q": "In metallic magnesium, conduction occurs because the completely filled 3s band overlaps with the vacant 3p band.",
+            "answer": true,
+            "hint": "Check the magnesium example in the 'Do you know?' box on page 22.",
+            "explain": "True. Mg ([Ar]3s²3p⁰) has a completely filled 3s band overlapping a vacant 3p band, allowing higher-energy electrons to move freely into the 3p band.",
+            "page": 22
+          }
+        ]
+      }
+    },
+    {
+      "id": "s11",
+      "title": "Extrinsic semiconductors & magnetic properties",
+      "sections": [
+        "1.9.5 Extrinsic Semiconductors and Doping",
+        "1.10 Magnetic Properties of Solids"
+      ],
+      "page": 23,
+      "figs": [
+        "Fig 1.26",
+        "Fig 1.27",
+        "Fig 1.28"
+      ],
+      "inShort": "Doping group-14 Si/Ge with group-15 elements (P, As, Sb, Bi) gives n-type semiconductors (extra electrons); doping with group-13 elements (B, Ga, In) gives p-type (positively behaving holes). Solids are diamagnetic (paired electrons, weakly repelled), paramagnetic (unpaired, weakly attracted) or ferromagnetic (many unpaired, strongly and permanently magnetised).",
+      "xi": [],
+      "quest": {
+        "cards": [
+          {
+            "t": "Doping and n-type semiconductors",
+            "text": "Adding a minute amount of impurity (dopant) to an intrinsic semiconductor creates an extrinsic semiconductor with much higher conductivity. Doping group-14 Si or Ge with group-15 elements (P, As, Sb, Bi; 5 valence electrons) uses 4 electrons for bonding and places 1 extra electron in the conduction band—an n-type semiconductor (Fig 1.26, 1.27).",
+            "page": 23
+          },
+          {
+            "t": "p-type semiconductors",
+            "text": "Doping Si or Ge with group-13 elements (B, Ga, In; 3 valence electrons) leaves one covalent bond short of an electron, creating a vacancy called a hole in the valence band (Fig 1.28). Holes accept nearby electrons and behave like mobile positive charge carriers. Both n-type and p-type semiconductors remain electrically neutral overall.",
+            "page": 24
+          },
+          {
+            "t": "Diamagnetic, paramagnetic & ferromagnetic solids",
+            "text": "Spinning unpaired electrons act like tiny magnets. Diamagnetic solids have all electrons paired and are weakly repelled (N_{2}, F_{2}, NaCl, H_{2}O, benzene). Paramagnetic solids have unpaired electrons and are weakly attracted only in an external magnetic field (O_{2}, Cu^{2+}, Fe^{3+}, Cr^{3+}). Ferromagnetic solids have many unpaired electrons, are strongly attracted, and retain permanent magnetism (Fe, Co, Ni, Gd, CrO_{2}).",
+            "page": 25
+          }
+        ],
+        "checks": [
+          {
+            "type": "mcq",
+            "q": "Which of the following is an n-type semiconductor?",
+            "options": [
+              "Pure Si",
+              "Si doped with As",
+              "Si doped with Ga",
+              "Ge doped with In"
+            ],
+            "answer": 1,
+            "hint": "n-type needs a group-15 dopant (P, As, Sb, Bi) added to group-14 Si or Ge.",
+            "explain": "Arsenic (As) belongs to group 15 (5 valence electrons), so Si doped with As has extra electrons in the conduction band and is n-type. Ga and In are group-13 dopants (p-type).",
+            "page": 24
+          },
+          {
+            "type": "mcq",
+            "q": "Which group contains ONLY ferromagnetic substances as listed in the textbook?",
+            "options": [
+              "Fe, Co, Ni, CrO_{2}",
+              "O_{2}, Cu^{2+}, Fe^{3+}, Cr^{3+}",
+              "NaCl, H_{2}O, N_{2}, benzene",
+              "Fe, NaCl, Cu^{2+}, Gd"
+            ],
+            "answer": 0,
+            "hint": "Ferromagnetic substances can be permanently magnetised.",
+            "explain": "Fe, Co, Ni, Gd and CrO_{2} are ferromagnetic. O_{2}, Cu^{2+}, Fe^{3+} and Cr^{3+} are paramagnetic; NaCl, H_{2}O, N_{2} and benzene are diamagnetic.",
+            "page": 25
+          },
+          {
+            "type": "tf",
+            "q": "An n-type semiconductor carries a net negative electrical charge, while a p-type semiconductor carries a net positive charge.",
+            "answer": false,
+            "hint": "Both host atoms and dopant atoms are electrically neutral.",
+            "explain": "False. Whether intrinsic or extrinsic (n-type or p-type), the semiconductor crystal as a whole is electrically neutral; 'n' and 'p' refer only to the sign of the majority mobile charge carriers.",
+            "page": 24
+          }
+        ]
+      }
+    },
+    {
+      "id": "s12",
+      "title": "Chapter exercises & mixed board problems",
+      "sections": [
+        "Exercises"
+      ],
+      "page": 25,
+      "figs": [],
+      "inShort": "End-of-chapter mixed MCQs, short answers and numericals combining unit-cell geometry, density, voids, defects, band theory and magnetic properties. Watch pm-to-cm conversions and particle count n.",
+      "xi": [],
+      "quest": {
+        "cards": [
+          {
+            "t": "Cubic lattice summary",
+            "text": "Keep these side by side: sc (n = 1, CN = 6, r = a/2, PE = 52.36%, void = 47.64%), bcc (n = 2, CN = 8, r = (√3/4)a, PE = 68%, void = 32%), fcc/ccp (n = 4, CN = 12, r = a/(2√2) = 0.3535a, PE = 74%, void = 26%).",
+            "page": 13
+          },
+          {
+            "t": "Density, voids and sample counts",
+            "text": "Density ρ = nM/(a³ N_{A}) with 1 pm = 10^{-10} cm. In hcp/ccp with N atoms: octahedral voids = N, tetrahedral voids = 2N, total voids = 3N. In x g of metal: particles = xn/(ρa³), unit cells = x/(ρa³); in volume V: unit cells = V/a³.",
+            "page": 14
+          },
+          {
+            "t": "Board exam high-yield checklist",
+            "text": "Recent HSC papers consistently test: (1) a 1-mark MCQ on CN, n, r–a relation or defect examples; (2) a 2-mark numerical on ρ = nM/(a³ N_{A}) or predicting lattice type n; (3) a 2-mark theory question on Schottky, impurity, metal deficiency or F-centre defects.",
+            "page": 25
+          }
+        ],
+        "checks": [
+          {
+            "type": "num",
+            "q": "Aluminium crystallises in a cubic close-packed (fcc) structure with unit cell edge length 353.6 pm. Calculate the radius of an Al atom.",
+            "answer": 125,
+            "unit": "pm",
+            "hint": "For ccp/fcc, r = a / (2√2) = 0.3535a.",
+            "explain": "r = 0.3535 × 353.6 pm = 125 pm (Exercise Q.5).",
+            "page": 27
+          },
+          {
+            "type": "mcq",
+            "q": "A compound forms an hcp structure. What are the numbers of octahedral voids and tetrahedral voids respectively in 0.5 mol of the substance?",
+            "options": [
+              "3.011 × 10^{23}, 6.022 × 10^{23}",
+              "6.022 × 10^{23}, 3.011 × 10^{23}",
+              "4.011 × 10^{23}, 2.011 × 10^{23}",
+              "6.022 × 10^{23}, 12.044 × 10^{23}"
+            ],
+            "answer": 0,
+            "hint": "First find N = 0.5 × N_{A}; octahedral voids = N and tetrahedral voids = 2N.",
+            "explain": "N = 0.5 × 6.022 × 10^{23} = 3.011 × 10^{23}. Octahedral voids = N = 3.011 × 10^{23}; tetrahedral voids = 2N = 6.022 × 10^{23} (Exercise 1(vii)).",
+            "page": 26
+          },
+          {
+            "type": "num",
+            "q": "Cesium chloride crystallises in a cubic unit cell with Cl^{-} ions at the 8 corners and one Cs^{+} ion at the body centre. How many CsCl formula units are present in one unit cell?",
+            "answer": 1,
+            "unit": "CsCl unit",
+            "hint": "Count Cl^{-} ions (8 corners × 1/8) and Cs^{+} ions (1 at body centre) separately.",
+            "explain": "Cl^{-} ions = 8 × (1/8) = 1; Cs^{+} ion = 1 (entirely inside the cube). Thus there is 1 CsCl formula unit per unit cell (Exercise 3(viii)).",
+            "page": 27
+          }
+        ]
+      }
+    }
+  ],
+  "board": [
+    {
+      "id": "c1-2025-Q27a",
+      "year": 2025,
+      "qno": "Q27(a)",
+      "marks": 2,
+      "stop": "s05",
+      "text": "An element with molar mass 27 g/mol forms a cubic unit cell with edge length 405 pm. If density of the crystal is 2.7 g cm^{-3}, identify the type of unit cell.",
+      "answer": "Given: M = 27 g mol^{-1}, a = 405 pm = 4.05 × 10^{-8} cm, ρ = 2.7 g cm^{-3}, N_{A} = 6.022 × 10^{23} mol^{-1}. Using ρ = nM / (a³ N_{A}), n = ρ a³ N_{A} / M = [2.7 × (4.05 × 10^{-8})³ × 6.022 × 10^{23}] / 27 = 0.1 × 6.643 × 6.022 = 4.00 ≈ 4. Since there are 4 particles per unit cell, the unit cell is face-centred cubic (fcc or ccp).",
+      "points": [
+        {
+          "text": "Formula n = ρ a³ N_{A} / M, conversion a = 4.05 × 10^{-8} cm and correct substitution",
+          "marks": 1
+        },
+        {
+          "text": "Calculation n ≈ 4 and identification: face-centred cubic (fcc / ccp) unit cell",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "c1-2025-Q30a",
+      "year": 2025,
+      "qno": "Q30(a)",
+      "marks": 2,
+      "stop": "s03",
+      "text": "Define a unit cell. Which colour is shown by NaCl crystal due to formation of F-centre?",
+      "answer": "Unit cell: The smallest repeating structural unit of a crystalline solid is called a unit cell. Colour of NaCl: NaCl crystal shows yellow colour due to the formation of F-centres (anion vacancies occupied by trapped electrons).",
+      "points": [
+        {
+          "text": "Definition: the smallest repeating structural unit of a crystalline solid",
+          "marks": 1
+        },
+        {
+          "text": "Colour shown by NaCl crystal due to F-centre: yellow colour",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "c1-2025-Q1i",
+      "year": 2025,
+      "qno": "Q1(i)",
+      "marks": 1,
+      "stop": "s09",
+      "kind": "MCQ",
+      "text": "Schottky defect is NOT observed in _____.",
+      "options": [
+        "(a) NaCl",
+        "(b) KCl",
+        "(c) AgBr",
+        "(d) NiO"
+      ],
+      "answer": "(d) NiO. NaCl, KCl and AgBr show Schottky defect, whereas NiO exhibits non-stoichiometric metal deficiency defect (Ni_{0.97}O_{1.0}).",
+      "points": [
+        {
+          "text": "Correct option (d) NiO",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "c1-2024-Q14",
+      "year": 2024,
+      "qno": "Q14",
+      "marks": 2,
+      "stop": "s05",
+      "kind": "Derivation",
+      "text": "Derive the relationship between molar mass, density of the substance and unit cell edge length.",
+      "answer": "Let the edge length of a cubic unit cell be a, so its volume is a³. If the mass of one particle is m and there are n particles per unit cell, mass of the unit cell = m × n, and density ρ = (mass of unit cell) / (volume of unit cell) = (m × n) / a³. Molar mass M = m × N_{A}, so m = M / N_{A}. Substituting m gives ρ = nM / (a³ N_{A}).",
+      "points": [
+        {
+          "text": "Volume of unit cell = a³, mass = m × n, and density ρ = (m × n) / a³",
+          "marks": 1
+        },
+        {
+          "text": "Substitute m = M / N_{A} to obtain ρ = nM / (a³ N_{A})",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "c1-2024-Q29",
+      "year": 2024,
+      "qno": "Q29 (part)",
+      "marks": 2,
+      "stop": "s05",
+      "text": "Predict the type of cubic lattice of a solid element having edge length of 400 pm and density is 6.25 g/ml. (Atomic mass of element = 60)",
+      "answer": "Given: a = 400 pm = 4.00 × 10^{-8} cm, ρ = 6.25 g cm^{-3}, M = 60 g mol^{-1}, N_{A} = 6.022 × 10^{23} mol^{-1}. Using ρ = nM / (a³ N_{A}), n = ρ a³ N_{A} / M = [6.25 × (4.00 × 10^{-8})³ × 6.022 × 10^{23}] / 60 = (6.25 × 6.4 × 10^{-23} × 6.022 × 10^{23}) / 60 = 240.88 / 60 = 4.015 ≈ 4. Since n = 4, the element has a face-centred cubic (fcc) lattice.",
+      "points": [
+        {
+          "text": "Formula n = ρ a³ N_{A} / M, conversion a = 4.00 × 10^{-8} cm and correct substitution",
+          "marks": 1
+        },
+        {
+          "text": "Calculation n ≈ 4 and prediction: face-centred cubic (fcc) lattice",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "c1-2024-Q1vi",
+      "year": 2024,
+      "qno": "Q1(vi)",
+      "marks": 1,
+      "stop": "s04",
+      "kind": "MCQ",
+      "text": "The number of particles present in Face Centred Cubic Unit Cell is/are _____.",
+      "options": [
+        "(a) 1",
+        "(b) 2",
+        "(c) 3",
+        "(d) 4"
+      ],
+      "answer": "(d) 4. An fcc unit cell has 8 corner particles (8 × 1/8 = 1) plus 6 face-centre particles (6 × 1/2 = 3), giving 4 particles in total.",
+      "points": [
+        {
+          "text": "Correct option (d) 4",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "c1-2023-Q6",
+      "year": 2023,
+      "qno": "Q6",
+      "marks": 2,
+      "stop": "s09",
+      "text": "Explain the following terms: (a) Substitutional impurity defect (b) Interstitial impurity defect.",
+      "answer": "(a) Substitutional impurity defect: Foreign atoms occupy regular lattice sites in place of host atoms, displacing regular host atoms. Example: In brass (Cu–Zn alloy), Zn impurity atoms replace host Cu atoms at regular lattice sites (or Sr^{2+} replacing Na^{+} in NaCl). (b) Interstitial impurity defect: Impurity atoms occupy the interstitial spaces (voids) of the host crystal lattice. Example: In steel, Fe atoms occupy normal lattice sites while carbon atoms occupy interstitial spaces.",
+      "points": [
+        {
+          "text": "(a) Substitutional impurity defect: foreign atoms replace host atoms at regular lattice sites, with example (e.g. Zn in brass or SrCl_{2} in NaCl)",
+          "marks": 1
+        },
+        {
+          "text": "(b) Interstitial impurity defect: foreign atoms occupy interstitial spaces in the lattice, with example (e.g. C atoms in Fe lattice of steel)",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "c1-2023-Q29",
+      "year": 2023,
+      "qno": "Q29 (part)",
+      "marks": 2,
+      "stop": "s05",
+      "text": "Silver crystallizes in fcc structure. If edge length of unit cell is 400 pm, calculate density of silver (Atomic mass of Ag = 108).",
+      "answer": "Given: fcc structure ⇒ n = 4, M = 108 g mol^{-1}, a = 400 pm = 4.00 × 10^{-8} cm, N_{A} = 6.022 × 10^{23} mol^{-1}. ρ = nM / (a³ N_{A}) = (4 × 108) / [(4.00 × 10^{-8})³ × 6.022 × 10^{23}] = 432 / (6.4 × 10^{-23} × 6.022 × 10^{23}) = 432 / 38.5408 = 11.21 g cm^{-3}.",
+      "points": [
+        {
+          "text": "Formula ρ = nM / (a³ N_{A}) with n = 4, a = 4.00 × 10^{-8} cm and correct substitution",
+          "marks": 1
+        },
+        {
+          "text": "Final answer 11.21 g cm^{-3} with correct unit",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "c1-2023-Q1i",
+      "year": 2023,
+      "qno": "Q1(i)",
+      "marks": 1,
+      "stop": "s07",
+      "kind": "MCQ",
+      "text": "The relation between radius of sphere and edge length in body centered cubic lattice is given by formula:",
+      "options": [
+        "(a) √3 r = 4a",
+        "(b) r = (√3 / a) × 4",
+        "(c) r = (√3 / 4) a",
+        "(d) r = (√2 / 4) × a"
+      ],
+      "answer": "(c) r = (√3 / 4) a. In a bcc unit cell, spheres touch along the body diagonal of length √3 a, so 4r = √3 a and r = (√3 / 4) a.",
+      "points": [
+        {
+          "text": "Correct option (c) r = (√3 / 4) a",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "c1-2022-Q4",
+      "year": 2022,
+      "qno": "Q4",
+      "marks": 2,
+      "stop": "s09",
+      "text": "Write the consequences of Schottky defect with reasons.",
+      "answer": "1. Decrease in density: Because ions are missing from their lattice sites, the mass of the solid decreases while its volume remains unchanged; hence density decreases. 2. Preservation of electrical neutrality: Because equal numbers of cations and anions are missing from the lattice, the overall electrical neutrality of the ionic compound is preserved.",
+      "points": [
+        {
+          "text": "Density decreases because mass decreases due to missing ions while volume remains unchanged",
+          "marks": 1
+        },
+        {
+          "text": "Electrical neutrality is preserved because equal numbers of cations and anions are missing",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "c1-2022-Q27",
+      "year": 2022,
+      "qno": "Q27 (part)",
+      "marks": 2,
+      "stop": "s05",
+      "text": "Gold crystallises into face-centred cubic cells. The edge length of unit cell is 4.08 × 10^{-8} cm. Calculate the density of gold. [Molar mass of gold = 197 g mol^{-1}]",
+      "answer": "Given: fcc unit cell ⇒ n = 4, M = 197 g mol^{-1}, a = 4.08 × 10^{-8} cm, N_{A} = 6.022 × 10^{23} mol^{-1}. ρ = nM / (a³ N_{A}) = (4 × 197) / [(4.08 × 10^{-8})³ × 6.022 × 10^{23}] = 788 / (67.917 × 10^{-24} × 6.022 × 10^{23}) = 788 / 40.90 = 19.27 g cm^{-3} (or 19.27 × 10^{3} kg m^{-3}).",
+      "points": [
+        {
+          "text": "Formula ρ = nM / (a³ N_{A}) with n = 4 and correct substitution",
+          "marks": 1
+        },
+        {
+          "text": "Final answer 19.27 g cm^{-3} with correct unit",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "c1-2022-Q30",
+      "year": 2022,
+      "qno": "Q30 (part)",
+      "marks": 2,
+      "stop": "s09",
+      "text": "Explain metal deficiency defect with example.",
+      "answer": "Metal deficiency defect is a non-stoichiometric defect possible only in compounds of metals showing variable oxidation states. Some positive metal ions are missing from their regular lattice sites, and the resulting deficiency of positive charge is balanced by the presence of cations of the same metal in a higher oxidation state at other lattice sites. Example: In NiO, one Ni^{2+} ion is missing from its lattice site and the two missing positive charges are compensated by two Ni^{3+} ions at other Ni^{2+} sites, giving the composition Ni_{0.97}O_{1.0}.",
+      "points": [
+        {
+          "text": "Explanation: occurs in metals with variable oxidation states; missing cations are charge-balanced by cations of the same metal in a higher oxidation state",
+          "marks": 1
+        },
+        {
+          "text": "Example: in NiO, one missing Ni^{2+} is balanced by two Ni^{3+} ions, yielding Ni_{0.97}O_{1.0}",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "c1-2022-Q1i",
+      "year": 2022,
+      "qno": "Q1(i)",
+      "marks": 1,
+      "stop": "s06",
+      "kind": "MCQ",
+      "text": "The co-ordination number of atoms in body centred cubic structure (bcc) is _____.",
+      "options": [
+        "(a) 4",
+        "(b) 6",
+        "(c) 8",
+        "(d) 12"
+      ],
+      "answer": "(c) 8. In a bcc lattice, each atom touches 8 nearest neighbours—four in the layer above and four in the layer below.",
+      "points": [
+        {
+          "text": "Correct option (c) 8",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "c1-imp-s01-cryst",
+      "stop": "s01",
+      "source": "Important · Balbharati",
+      "marks": 2,
+      "kind": "Distinguish",
+      "text": "Distinguish between crystalline solids and amorphous solids (any four points).",
+      "answer": "1. Particle arrangement: Crystalline solids have a regular, periodic long-range order; amorphous solids have random arrangement with only short-range order. 2. Melting point: Crystalline solids melt at a sharp, definite temperature; amorphous solids soften and melt gradually over a temperature range. 3. Isotropy: Crystalline solids (except cubic) are anisotropic; amorphous solids are isotropic. 4. Nature & examples: Crystalline solids are true solids (NaCl, diamond, Cu); amorphous solids are supercooled liquids (glass, plastic, rubber).",
+      "points": [
+        {
+          "text": "Arrangement & melting point: long-range order with sharp m.p. (crystalline) vs short-range order with melting range (amorphous)",
+          "marks": 1
+        },
+        {
+          "text": "Isotropy & nature/examples: anisotropic true solids like NaCl/diamond vs isotropic supercooled liquids like glass/rubber",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "c1-imp-s02-ionic",
+      "stop": "s02",
+      "source": "Important · Balbharati",
+      "marks": 2,
+      "kind": "Distinguish",
+      "text": "Distinguish between ionic solids and molecular solids.",
+      "answer": "1. Constituent particles: Ionic solids consist of cations and anions; molecular solids consist of monoatomic or polyatomic molecules. 2. Interparticle forces: Ionic solids are held by strong electrostatic forces; molecular solids are held by weak London, dipole-dipole or hydrogen-bond forces. 3. Hardness & melting point: Ionic solids are hard, brittle and high-melting (600 °C–3000 °C); molecular solids are soft and low-melting (−272 °C to 400 °C). 4. Electrical conductivity: Ionic solids conduct electricity when molten or in aqueous solution (e.g. NaCl, CaF_{2}); molecular solids are poor conductors/insulators (e.g. ice, benzoic acid).",
+      "points": [
+        {
+          "text": "Particles & forces: cations/anions with strong electrostatic forces (ionic) vs molecules with weak London, dipole-dipole or H-bonds (molecular)",
+          "marks": 1
+        },
+        {
+          "text": "Properties & examples: hard, brittle, high m.p., conduct when molten/aqueous (NaCl) vs soft, low m.p., insulators (ice, CO_{2})",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "c1-imp-s10-bands",
+      "stop": "s10",
+      "source": "Important · Balbharati",
+      "marks": 3,
+      "kind": "Theory",
+      "text": "Distinguish between metallic conductors, insulators and semiconductors on the basis of band theory.",
+      "answer": "1. Metallic conductors: Have a partially filled conduction band (e.g. 3s band in Na) or overlapping filled valence and empty conduction bands (e.g. 3s and 3p in Mg) with zero band gap; electrons move freely, giving high conductivity (10^{4}–10^{7} Ω^{-1}m^{-1}) that decreases on heating. 2. Insulators: Have a completely filled valence band and an empty conduction band separated by a large band gap (forbidden zone, e.g. diamond 5.47 eV); thermal energy cannot promote electrons, so conductivity is very low (10^{-20}–10^{-10} Ω^{-1}m^{-1}). 3. Semiconductors: Have a filled valence band and empty conduction band separated by a small band gap (Si 1.12 eV, Ge 0.67 eV); electrons thermally jump to the conduction band, giving intermediate conductivity (10^{-6}–10^{4} Ω^{-1}m^{-1}) that increases with temperature.",
+      "points": [
+        {
+          "text": "Metallic conductors: partially filled conduction band or overlapping bands, zero band gap, high conductivity (10^{4}–10^{7} Ω^{-1}m^{-1})",
+          "marks": 1
+        },
+        {
+          "text": "Insulators: filled valence band and empty conduction band separated by a large forbidden zone, very low conductivity (10^{-20}–10^{-10} Ω^{-1}m^{-1})",
+          "marks": 1
+        },
+        {
+          "text": "Semiconductors: small band gap (Si, Ge), electrons thermally promoted to conduction band, conductivity increases with temperature (10^{-6}–10^{4} Ω^{-1}m^{-1})",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "c1-imp-s11-doping",
+      "stop": "s11",
+      "source": "Important · Balbharati",
+      "marks": 3,
+      "kind": "Theory",
+      "text": "What are n-type and p-type semiconductors? Explain how doping pure silicon with phosphorus and with boron increases its conductivity.",
+      "answer": "n-type semiconductor: Formed by doping a group-14 semiconductor (Si or Ge) with a group-15 element (P, As, Sb, Bi). Phosphorus has 5 valence electrons: 4 form covalent bonds with neighbouring Si atoms, and the 5th extra electron enters the conduction band and moves freely under an applied potential, raising conductivity. p-type semiconductor: Formed by doping Si or Ge with a group-13 element (B, Ga, In). Boron has only 3 valence electrons, forming 3 bonds with Si and leaving an electron vacancy (hole) in the valence band. Electrons move into adjacent holes under an applied field so holes act as mobile positive charge carriers, increasing conductivity while the crystal stays electrically neutral.",
+      "points": [
+        {
+          "text": "n-type: Si doped with group-15 element (P); 4 valence electrons bond and the 5th extra electron enters the conduction band as a mobile negative carrier",
+          "marks": 1
+        },
+        {
+          "text": "p-type: Si doped with group-13 element (B); 3 valence electrons bond, creating an electron vacancy (hole) in the valence band acting as a positive carrier",
+          "marks": 1
+        },
+        {
+          "text": "Conductivity rises due to extra conduction-band electrons (n-type) or valence-band holes (p-type), while overall electrical neutrality is maintained",
+          "marks": 1
+        }
+      ]
+    }
+  ],
+  "derivations": [
+    {
+      "id": "c1-d1",
+      "stop": "s07",
+      "title": "Packing efficiency of simple cubic (sc) lattice (52.36%)",
+      "page": 12,
+      "asked": [],
+      "given": "A metal crystallises in a simple cubic unit cell of edge length a. Corner spheres of radius r touch each other along the cube edge.",
+      "steps": [
+        {
+          "line": "Corner spheres touch along the edge, so a = 2r and hence r = a/2",
+          "wrong": [
+            "a = 4r and hence r = a/4",
+            "√2 a = 4r and hence r = a/(2√2)"
+          ],
+          "note": "See Fig 1.9: two corner radii span one cube edge."
+        },
+        {
+          "line": "Volume of one spherical particle: V_{1} = (4/3)πr³ = (4/3)π(a/2)³ = πa³/6",
+          "wrong": [
+            "V_{1} = (4/3)π(a/2)² = πa²/3",
+            "V_{1} = (4/3)π(a/2)³ = πa³/3"
+          ]
+        },
+        {
+          "line": "A simple cubic unit cell contains n = 1 particle (8 × 1/8 = 1), so occupied volume = πa³/6",
+          "wrong": [
+            "A simple cubic unit cell contains n = 2 particles, so occupied volume = πa³/3",
+            "A simple cubic unit cell contains n = 8 particles, so occupied volume = 4πa³/3"
+          ]
+        },
+        {
+          "line": "Packing efficiency = (volume occupied / volume of unit cell) × 100 = [(πa³/6) / a³] × 100 = 100π / 6",
+          "wrong": [
+            "Packing efficiency = [a³ / (πa³/6)] × 100 = 600 / π",
+            "Packing efficiency = (π / 8) × 100"
+          ]
+        },
+        {
+          "line": "Substituting π = 3.142 gives (100 × 3.142) / 6 = 52.36% (void volume = 47.64%)",
+          "wrong": [
+            "Substituting π = 3.142 gives 68% (void volume = 32%)",
+            "Substituting π = 3.142 gives 74% (void volume = 26%)"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c1-d2",
+      "stop": "s07",
+      "title": "Packing efficiency of body-centred cubic (bcc) lattice (68%)",
+      "page": 12,
+      "asked": [],
+      "related": [
+        "2023 Q1(i)"
+      ],
+      "given": "A metal crystallises in a bcc unit cell of edge length a. The body-centre sphere touches two corner spheres along the cube body diagonal AF (Fig 1.10).",
+      "steps": [
+        {
+          "line": "By Pythagoras theorem: face diagonal FD² = a² + a² = 2a², and body diagonal AF² = a² + FD² = 3a², so AF = √3 a",
+          "wrong": [
+            "Body diagonal AF² = a² + a² = 2a², so AF = √2 a",
+            "Body diagonal AF = 3a"
+          ]
+        },
+        {
+          "line": "Along the body diagonal, spheres touch so AF = 4r; hence √3 a = 4r and r = (√3 / 4) a",
+          "wrong": [
+            "AF = 2r; hence √3 a = 2r and r = (√3 / 2) a",
+            "√2 a = 4r and hence r = (√2 / 4) a"
+          ],
+          "note": "This exact relation was asked in 2023 Q1(i)."
+        },
+        {
+          "line": "Volume of one sphere: (4/3)πr³ = (4/3)π[(√3 / 4)a]³ = (4/3)π(3√3 / 64)a³ = (√3 π a³) / 16",
+          "wrong": [
+            "Volume of one sphere = (3 π a³) / 16",
+            "Volume of one sphere = (√3 π a³) / 8"
+          ]
+        },
+        {
+          "line": "A bcc unit cell contains n = 2 particles (8 × 1/8 + 1), so total occupied volume = 2 × (√3 π a³ / 16) = (√3 π a³) / 8",
+          "wrong": [
+            "A bcc unit cell contains n = 4 particles, so total occupied volume = (√3 π a³) / 4",
+            "A bcc unit cell contains n = 1 particle, so total occupied volume = (√3 π a³) / 16"
+          ]
+        },
+        {
+          "line": "Packing efficiency = [(√3 π a³ / 8) / a³] × 100 = (√3 π / 8) × 100 = 68% (void volume = 32%)",
+          "wrong": [
+            "Packing efficiency = (√3 π / 16) × 100 = 34% (void volume = 66%)",
+            "Packing efficiency = (π / 6) × 100 = 52.36% (void volume = 47.64%)"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c1-d3",
+      "stop": "s07",
+      "title": "Packing efficiency of face-centred cubic (fcc) lattice (74%)",
+      "page": 13,
+      "asked": [],
+      "related": [
+        "2024 Q1(vi)"
+      ],
+      "given": "A metal crystallises in an fcc (ccp) unit cell of edge length a. Corner spheres touch the face-centre sphere along the face diagonal AC (Fig 1.11).",
+      "steps": [
+        {
+          "line": "In right-angled triangle ABC on a face, face diagonal AC² = a² + a² = 2a², so AC = √2 a",
+          "wrong": [
+            "Face diagonal AC² = a² + 2a² = 3a², so AC = √3 a",
+            "Face diagonal AC = 2a"
+          ]
+        },
+        {
+          "line": "Along the face diagonal AC = 4r; hence √2 a = 4r, giving r = (√2 / 4)a = a / (2√2)",
+          "wrong": [
+            "Along the face diagonal AC = 2r, giving r = (√2 / 2)a",
+            "Along the face diagonal √3 a = 4r, giving r = (√3 / 4)a"
+          ]
+        },
+        {
+          "line": "Volume of one sphere: (4/3)πr³ = (4/3)π[a / (2√2)]³ = (4/3)πa³ / (16√2) = πa³ / (12√2)",
+          "wrong": [
+            "Volume of one sphere = πa³ / (6√2)",
+            "Volume of one sphere = πa³ / (3√2)"
+          ]
+        },
+        {
+          "line": "An fcc unit cell contains n = 4 particles (8 × 1/8 + 6 × 1/2), so total occupied volume = 4 × πa³ / (12√2) = πa³ / (3√2)",
+          "wrong": [
+            "An fcc unit cell contains n = 2 particles, so total occupied volume = πa³ / (6√2)",
+            "An fcc unit cell contains n = 6 particles, so total occupied volume = πa³ / (2√2)"
+          ]
+        },
+        {
+          "line": "Packing efficiency = [(πa³ / (3√2)) / a³] × 100 = [π / (3√2)] × 100 = 74% (void volume = 26%)",
+          "wrong": [
+            "Packing efficiency = [π / (12√2)] × 100 = 18.5% (void volume = 81.5%)",
+            "Packing efficiency = (√3 π / 8) × 100 = 68% (void volume = 32%)"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c1-d4",
+      "stop": "s05",
+      "title": "Density, molar mass and edge length relation, ρ = nM/(a³ N_{A})",
+      "page": 8,
+      "asked": [
+        "2024 Q14"
+      ],
+      "related": [
+        "2022 Q27 (part)",
+        "2023 Q29 (part)",
+        "2024 Q29 (part)",
+        "2025 Q27(a)"
+      ],
+      "given": "A crystalline substance has a cubic unit cell of edge length a containing n particles, each of mass m. Its molar mass is M and Avogadro's number is N_{A}.",
+      "steps": [
+        {
+          "line": "Volume of the cubic unit cell of edge length a is V = a³",
+          "wrong": [
+            "Volume of the cubic unit cell is V = 6a²",
+            "Volume of the cubic unit cell is V = (4/3)πa³"
+          ]
+        },
+        {
+          "line": "With n particles of mass m each, mass of the unit cell = m × n",
+          "wrong": [
+            "Mass of the unit cell = m / n",
+            "Mass of the unit cell = M × n"
+          ]
+        },
+        {
+          "line": "Density of the substance equals density of the unit cell: ρ = (mass of unit cell) / (volume of unit cell) = (m × n) / a³",
+          "wrong": [
+            "ρ = a³ / (m × n)",
+            "ρ = (m × n) × a³"
+          ]
+        },
+        {
+          "line": "Molar mass is the mass of N_{A} particles: M = m × N_{A}, therefore m = M / N_{A}",
+          "wrong": [
+            "M = m / N_{A}, therefore m = M × N_{A}",
+            "m = N_{A} / M"
+          ]
+        },
+        {
+          "line": "Substituting m = M / N_{A} into the density equation yields ρ = nM / (a³ N_{A})",
+          "wrong": [
+            "Substituting gives ρ = (n M N_{A}) / a³",
+            "Substituting gives ρ = (M a³) / (n N_{A})"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c1-d5",
+      "stop": "s08",
+      "title": "Number of particles and unit cells in x g of metal",
+      "page": 14,
+      "asked": [],
+      "given": "A metallic crystal of density ρ and molar mass M has cubic unit cells of edge length a with n particles per unit cell. Find the number of particles and unit cells in x g of the metal.",
+      "steps": [
+        {
+          "line": "From ρ = nM / (a³ N_{A}), express molar mass as M = ρ a³ N_{A} / n",
+          "wrong": [
+            "Express molar mass as M = (n ρ) / (a³ N_{A})",
+            "Express molar mass as M = (a³ N_{A}) / (ρ n)"
+          ]
+        },
+        {
+          "line": "Since molar mass M contains N_{A} particles, x g of metal contains (x N_{A}) / M particles",
+          "wrong": [
+            "x g of metal contains (x M) / N_{A} particles",
+            "x g of metal contains M / (x N_{A}) particles"
+          ]
+        },
+        {
+          "line": "Substitute M = ρ a³ N_{A} / n: number of particles in x g = (x N_{A}) / (ρ a³ N_{A} / n) = xn / (ρa³)",
+          "wrong": [
+            "Number of particles in x g = x / (n ρ a³)",
+            "Number of particles in x g = (x ρ a³) / n"
+          ],
+          "note": "N_{A} cancels out cleanly."
+        },
+        {
+          "line": "Because n particles correspond to 1 unit cell, number of unit cells in x g = [xn / (ρa³)] × (1 / n)",
+          "wrong": [
+            "Number of unit cells in x g = [xn / (ρa³)] × n",
+            "Number of unit cells in x g = [xn / (ρa³)] / N_{A}"
+          ]
+        },
+        {
+          "line": "Cancelling n gives: number of unit cells in x g of metal = x / (ρa³) (and in volume V of metal = V / a³)",
+          "wrong": [
+            "Number of unit cells in x g of metal = (ρa³) / x",
+            "Number of unit cells in x g of metal = xn / (ρa³)"
+          ]
+        }
+      ]
+    }
+  ],
+  "formulas": [
+    {
+      "stop": "s03",
+      "items": [
+        {
+          "n": "Crystal structure",
+          "f": "Crystal = Lattice + Basis",
+          "s": "3D periodic array of points plus constituent particles at each point",
+          "p": 5
+        },
+        {
+          "n": "Unit cell parameters",
+          "f": "Edges: a, b, c; Angles: α, β, γ",
+          "s": "define the 7 crystal systems and 14 Bravais lattices",
+          "p": 5
+        }
+      ]
+    },
+    {
+      "stop": "s04",
+      "items": [
+        {
+          "n": "Lattice site sharing (cube)",
+          "f": "Corner = 1/8, Face = 1/2, Edge = 1/4, Body centre = 1",
+          "s": "fraction belonging to a single cubic unit cell",
+          "p": 8
+        },
+        {
+          "n": "Particles per cubic unit cell (n)",
+          "f": "sc: n = 1; bcc: n = 2; fcc: n = 4",
+          "s": "sc: 8×1/8; bcc: 8×1/8 + 1; fcc: 8×1/8 + 6×1/2",
+          "p": 6
+        }
+      ]
+    },
+    {
+      "stop": "s05",
+      "items": [
+        {
+          "n": "Density of a cubic crystal",
+          "f": "ρ = nM / (a³ N_{A})",
+          "s": "n: particles/unit cell, M: molar mass, a: edge length, N_{A} = 6.022 × 10^{23} mol^{-1}",
+          "p": 8
+        },
+        {
+          "n": "Particles per unit cell from density",
+          "f": "n = ρ a³ N_{A} / M",
+          "s": "identifies lattice type: 1 (sc), 2 (bcc), 4 (fcc)",
+          "p": 8
+        },
+        {
+          "n": "Molar mass from unit cell",
+          "f": "M = ρ a³ N_{A} / n",
+          "s": "use a in cm (1 pm = 10^{-10} cm) when ρ is in g cm^{-3}",
+          "p": 14
+        }
+      ]
+    },
+    {
+      "stop": "s06",
+      "items": [
+        {
+          "n": "Voids in hcp and ccp/fcc",
+          "f": "Octahedral voids = N, Tetrahedral voids = 2N, Total = 3N",
+          "s": "for N close-packed atoms",
+          "p": 11
+        },
+        {
+          "n": "Coordination numbers",
+          "f": "sc: 6; bcc: 8; hcp / ccp / fcc: 12",
+          "s": "2D square: 4, 2D hexagonal: 6",
+          "p": 14
+        }
+      ]
+    },
+    {
+      "stop": "s07",
+      "items": [
+        {
+          "n": "Packing efficiency",
+          "f": "PE = (Volume of particles in unit cell / a³) × 100",
+          "s": "Void volume % = 100 − PE",
+          "p": 11
+        },
+        {
+          "n": "Simple cubic (sc)",
+          "f": "r = a/2 = 0.5000a; PE = 52.36% (void 47.64%)",
+          "s": "V_{particles} = πa³/6",
+          "p": 12
+        },
+        {
+          "n": "Body-centred cubic (bcc)",
+          "f": "r = (√3 / 4)a = 0.4330a; PE = 68% (void 32%)",
+          "s": "V_{particles} = (√3 π a³)/8",
+          "p": 13
+        },
+        {
+          "n": "Face-centred cubic (fcc / ccp)",
+          "f": "r = a/(2√2) = (√2 / 4)a = 0.3535a; PE = 74% (void 26%)",
+          "s": "V_{particles} = πa³/(3√2)",
+          "p": 13
+        }
+      ]
+    },
+    {
+      "stop": "s08",
+      "items": [
+        {
+          "n": "Number of particles in x g of metal",
+          "f": "N_{particles} = xn / (ρa³)",
+          "s": "x: mass in g, ρ: density in g cm^{-3}, a: edge length in cm",
+          "p": 14
+        },
+        {
+          "n": "Number of unit cells in x g of metal",
+          "f": "N_{cells} = x / (ρa³)",
+          "s": "independent of n once ρ and a are known",
+          "p": 14
+        },
+        {
+          "n": "Number of unit cells in volume V",
+          "f": "N_{cells} = V / a³",
+          "s": "keep V and a³ in the same volume unit (e.g. cm³)",
+          "p": 14
+        }
+      ]
+    },
+    {
+      "stop": "s10",
+      "items": [
+        {
+          "n": "Electrical conductivity ranges",
+          "f": "Conductors: 10^{4}–10^{7}; Semiconductors: 10^{-6}–10^{4}; Insulators: 10^{-20}–10^{-10} Ω^{-1}m^{-1}",
+          "s": "conductors drop and semiconductors rise in conductivity on heating",
+          "p": 21
+        },
+        {
+          "n": "Band gap values (E_{gap})",
+          "f": "Na: 0 eV, Ge: 0.67 eV, Si: 1.12 eV, Diamond: 5.47 eV",
+          "s": "energy gap between valence band and conduction band",
+          "p": 21
+        }
+      ]
+    }
+  ]
+}

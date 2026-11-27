@@ -168,6 +168,53 @@
     return ka >= kb ? clone(a) : clone(b);
   }
 
+  function mergeRoundObj(ra, rb) {
+    ra = isObj(ra) ? ra : {};
+    rb = isObj(rb) ? rb : {};
+    var res = {
+      modes: {},
+      complete: !!(ra.complete || rb.complete),
+      bestFull: Math.max(num(ra.bestFull), num(rb.bestFull)),
+      run: null,
+      runDel: Math.max(num(ra.runDel), num(rb.runDel)),
+      last: pickRoundRec(ra.last, rb.last)
+    };
+    unionKeys(ra.modes, rb.modes).forEach(function (m) {
+      var ma = isObj(ra.modes && ra.modes[m]) ? ra.modes[m] : {};
+      var mb = isObj(rb.modes && rb.modes[m]) ? rb.modes[m] : {};
+      var best = pickBestRec(ma.best, mb.best);
+      var last = pickRoundRec(ma.last, mb.last);
+      if (best || last) {
+        res.modes[m] = {};
+        if (best) res.modes[m].best = best;
+        if (last) res.modes[m].last = last;
+      }
+    });
+    var runA = isObj(ra.run) ? ra.run : null;
+    var runB = isObj(rb.run) ? rb.run : null;
+    var winRun = null, fromRemoteRun = false;
+    if (runA && runB) {
+      var rta = num(runA.at), rtb = num(runB.at);
+      if (rtb > rta) { winRun = clone(runB); fromRemoteRun = true; }
+      else if (rta > rtb) { winRun = clone(runA); }
+      else if (num(runB.i) > num(runA.i) || (num(runB.i) === num(runA.i) && !!runB.rev && !runA.rev)) {
+        winRun = clone(runB); fromRemoteRun = true;
+      } else {
+        winRun = clone(runA);
+      }
+    } else if (runA) {
+      winRun = clone(runA);
+    } else if (runB) {
+      winRun = clone(runB);
+      fromRemoteRun = true;
+    }
+    if (winRun && !(res.runDel > 0 && num(winRun.at) <= res.runDel)) {
+      if (fromRemoteRun) { winRun.since = 0; winRun.resumed = true; }
+      res.run = winRun;
+    }
+    return res;
+  }
+
   function mergeState(local, remote, nowMs) {
     var now = typeof nowMs === "number" ? nowMs : Date.now();
     var cutoff = now - TOMBSTONE_TTL_MS;
@@ -186,11 +233,13 @@
       board: {},
       boardAt: {},
       theme: A.theme === "focus" ? "focus" : "quest", // stays device-local
+      lastChapter: typeof A.lastChapter === "string" ? A.lastChapter : "",
       qp: {},
       qpDel: {},
       drill: {},
       planStart: earlierDate(A.planStart, B.planStart),
       round: { modes: {}, complete: false, bestFull: 0, run: null, runDel: 0, last: null },
+      rounds: {},
       updatedAt: Math.max(num(A.updatedAt), num(B.updatedAt))
     };
 
@@ -298,61 +347,31 @@
       }
     });
 
-    // round
-    var ra = isObj(A.round) ? A.round : {};
-    var rb = isObj(B.round) ? B.round : {};
-    out.round.complete = !!(ra.complete || rb.complete);
-    out.round.bestFull = Math.max(num(ra.bestFull), num(rb.bestFull));
-    out.round.last = pickRoundRec(ra.last, rb.last);
-    var runDel = Math.max(num(ra.runDel), num(rb.runDel));
-    out.round.runDel = runDel;
-
-    unionKeys(ra.modes, rb.modes).forEach(function (m) {
-      var ma = isObj(ra.modes && ra.modes[m]) ? ra.modes[m] : {};
-      var mb = isObj(rb.modes && rb.modes[m]) ? rb.modes[m] : {};
-      var best = pickBestRec(ma.best, mb.best);
-      var last = pickRoundRec(ma.last, mb.last);
-      if (best || last) {
-        out.round.modes[m] = {};
-        if (best) out.round.modes[m].best = best;
-        if (last) out.round.modes[m].last = last;
-      }
+    // round (physics/ch01 backward-compatible) + rounds (all other chapters)
+    out.round = mergeRoundObj(A.round, B.round);
+    unionKeys(A.rounds, B.rounds).forEach(function (chKey) {
+      out.rounds[chKey] = mergeRoundObj(A.rounds && A.rounds[chKey], B.rounds && B.rounds[chKey]);
     });
-
-    var runA = isObj(ra.run) ? ra.run : null;
-    var runB = isObj(rb.run) ? rb.run : null;
-    var winRun = null, fromRemoteRun = false;
-    if (runA && runB) {
-      var rta = num(runA.at), rtb = num(runB.at);
-      if (rtb > rta) { winRun = clone(runB); fromRemoteRun = true; }
-      else if (rta > rtb) { winRun = clone(runA); }
-      else if (num(runB.i) > num(runA.i) || (num(runB.i) === num(runA.i) && !!runB.rev && !runA.rev)) {
-        winRun = clone(runB); fromRemoteRun = true;
-      } else {
-        winRun = clone(runA);
-      }
-    } else if (runA) {
-      winRun = clone(runA);
-    } else if (runB) {
-      winRun = clone(runB);
-      fromRemoteRun = true;
-    }
-    if (winRun && !(runDel > 0 && num(winRun.at) <= runDel)) {
-      if (fromRemoteRun) { winRun.since = 0; winRun.resumed = true; }
-      out.round.run = winRun;
-    }
 
     return out;
   }
 
-  /* Semantic equality ignoring device-local theme & top-level updatedAt */
+  /* Semantic equality ignoring device-local theme, lastChapter & top-level updatedAt */
   function canonicalForCompare(st) {
     if (!isObj(st)) return "";
     var c = clone(st);
     delete c.theme;
+    delete c.lastChapter;
     delete c.updatedAt;
     if (isObj(c.round) && isObj(c.round.run)) {
       delete c.round.run.resumed;
+    }
+    if (isObj(c.rounds)) {
+      Object.keys(c.rounds).forEach(function (k) {
+        if (isObj(c.rounds[k]) && isObj(c.rounds[k].run)) delete c.rounds[k].run.resumed;
+      });
+    } else {
+      c.rounds = {};
     }
     return canonicalJSON(c);
   }
