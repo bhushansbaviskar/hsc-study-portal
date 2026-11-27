@@ -84,6 +84,7 @@ function doPost(e) {
     if (body.action === "pull") return handlePull(body);
     if (body.action === "push") return handlePush(body);
     if (body.action === "teacher") return handleTeacher(body);
+    if (body.action === "teacherUpdate") return handleTeacherUpdate(body);
     return jsonOut({ ok: false, error: "Unknown action." });
   } catch (err) {
     return jsonOut({ ok: false, error: "Server error: " + String(err && err.message ? err.message : err) });
@@ -101,17 +102,18 @@ function handlePull(body) {
 
   var folder = getFolderIfExists();
   if (!folder) {
-    return jsonOut({ ok: true, rev: 0, updatedAt: 0, state: null, studentId: student.id, studentName: student.name });
+    return jsonOut({ ok: true, rev: 0, updatedAt: 0, state: null, teacher: null, studentId: student.id, studentName: student.name });
   }
   var rec = readStudentRecord(folder, student.id);
   if (!rec) {
-    return jsonOut({ ok: true, rev: 0, updatedAt: 0, state: null, studentId: student.id, studentName: student.name });
+    return jsonOut({ ok: true, rev: 0, updatedAt: 0, state: null, teacher: null, studentId: student.id, studentName: student.name });
   }
   return jsonOut({
     ok: true,
     rev: rec.rev,
     updatedAt: rec.updatedAt,
-    state: rec.state,
+    state: rec.state || null,
+    teacher: isObj(rec.teacher) ? rec.teacher : null,
     studentId: student.id,
     studentName: student.name
   });
@@ -145,10 +147,12 @@ function handlePush(body) {
 
   var newRev = 0;
   var now = Date.now();
+  var preservedTeacher = null;
   try {
     var folder = getOrCreateFolder();
     var existing = readStudentRecord(folder, student.id);
     var currentRev = existing ? existing.rev : 0;
+    preservedTeacher = existing && isObj(existing.teacher) ? existing.teacher : null;
 
     if (baseRev !== currentRev) {
       return jsonOut({
@@ -157,6 +161,7 @@ function handlePush(body) {
         rev: currentRev,
         updatedAt: existing ? existing.updatedAt : 0,
         state: existing ? existing.state : null,
+        teacher: preservedTeacher,
         studentId: student.id,
         studentName: student.name
       });
@@ -168,7 +173,8 @@ function handlePush(body) {
       studentName: student.name,
       rev: newRev,
       updatedAt: now,
-      state: state
+      state: state,
+      teacher: preservedTeacher
     };
     writeStudentRecord(folder, student.id, payload);
   } finally {
@@ -186,6 +192,7 @@ function handlePush(body) {
     ok: true,
     rev: newRev,
     updatedAt: now,
+    teacher: preservedTeacher,
     studentId: student.id,
     studentName: student.name
   });
@@ -211,10 +218,57 @@ function handleTeacher(body) {
       name: s.name,
       rev: rec ? rec.rev : 0,
       updatedAt: rec ? rec.updatedAt : 0,
-      state: rec ? rec.state : null
+      state: rec ? rec.state : null,
+      teacher: rec && isObj(rec.teacher) ? rec.teacher : null
     });
   }
   return jsonOut({ ok: true, serverTime: Date.now(), students: out });
+}
+
+function handleTeacherUpdate(body) {
+  var props = PropertiesService.getScriptProperties();
+  var expectedKey = props.getProperty("TEACHER_KEY");
+  if (!expectedKey || typeof body.key !== "string" || !body.key || !safeEq(body.key, expectedKey)) {
+    recordAuthFail();
+    return jsonOut({ ok: false, error: "Invalid teacher key." });
+  }
+  clearAuthFail();
+
+  var sid = sanitizeId(body.studentId);
+  var students = listConfiguredStudents();
+  var match = null;
+  for (var i = 0; i < students.length; i++) {
+    if (students[i].id === sid) { match = students[i]; break; }
+  }
+  if (!match) {
+    return jsonOut({ ok: false, error: "Unknown student." });
+  }
+  var teacherObj = isObj(body.teacher) ? body.teacher : {};
+  if (JSON.stringify(teacherObj).length > 16384) {
+    return jsonOut({ ok: false, error: "Teacher settings too large." });
+  }
+  teacherObj.updatedAt = Date.now();
+
+  var lock = LockService.getScriptLock();
+  if (!lock.tryLock(LOCK_WAIT_MS)) {
+    return jsonOut({ ok: false, error: "Sync busy, please retry." });
+  }
+  try {
+    var folder = getOrCreateFolder();
+    var existing = readStudentRecord(folder, match.id);
+    var payload = {
+      studentId: match.id,
+      studentName: match.name,
+      rev: existing ? existing.rev : 0,
+      updatedAt: existing ? existing.updatedAt : 0,
+      state: existing ? existing.state : null,
+      teacher: teacherObj
+    };
+    writeStudentRecord(folder, match.id, payload);
+  } finally {
+    lock.releaseLock();
+  }
+  return jsonOut({ ok: true, studentId: match.id, teacher: teacherObj });
 }
 
 /* ---------- auth & throttling helpers ---------- */

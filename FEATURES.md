@@ -10,7 +10,7 @@ Features 2-6 were built together for Physics Ch 1 at the owner's request (awaiti
 4. [x] Derivation drills + formula card
 5. [x] Mistake bank (spaced repeats)
 6. [x] Section notes + "My notes" page (device-only for now)
-7. [ ] Drive sync + live teacher view (built, awaiting review; see `sync/SETUP.md`) + rewards set by the parent (next)
+7. [x] Drive sync + live teacher view (study time, 7-day activity, Preview as student, notes/pins/assignments & parent-set rewards; see `sync/SETUP.md`)
 8. [ ] Email progress report
 9. [x] Resume + mid-quest saving (awaiting review)
 10. [x] Confidence tap (awaiting review)

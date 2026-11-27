@@ -19,12 +19,16 @@
       <span id="xp" class="xp" hidden aria-label="Experience points"></span>
     </div>
   </header>
+  <div id="preview-bar" class="preview-bar" hidden></div>
   <div class="themebar">
     <div class="seg" role="group" aria-label="Theme">
       <button type="button" id="th-quest" data-theme-set="quest" aria-pressed="true">Quest</button>
       <button type="button" id="th-focus" data-theme-set="focus" aria-pressed="false">Exam focus</button>
     </div>
-    <a id="sync-pill" class="sync-pill" href="#/sync" aria-label="Sync status"><i class="sdot" aria-hidden="true"></i><span id="sync-label">Sync</span></a>
+    <div class="themebar-r">
+      <a id="teacher-pill" class="sync-pill teacher-pill" href="#/teacher" hidden>Teacher</a>
+      <a id="sync-pill" class="sync-pill" href="#/sync" aria-label="Sync status"><i class="sdot" aria-hidden="true"></i><span id="sync-label">Sync</span></a>
+    </div>
   </div>
   <main id="app" aria-live="polite">
     <p class="muted center">Loading…</p>

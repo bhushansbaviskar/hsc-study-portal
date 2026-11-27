@@ -18,6 +18,8 @@
   var dueEl = document.getElementById("due-badge");
   var syncPillEl = document.getElementById("sync-pill");
   var syncLabelEl = document.getElementById("sync-label");
+  var previewBarEl = document.getElementById("preview-bar");
+  var teacherPillEl = document.getElementById("teacher-pill");
   var SYNC = window.HSCSync || null;
   var catalog = null, CH = null;
   var CHAPTERS = {};               // "subj/chId" -> chapter JSON
@@ -30,6 +32,9 @@
   var Q = null, R = null, D = null; // quest, review and drill sessions (in memory)
   var revealed = {};               // board answers shown this session
   var TState = { loading: false, error: "", data: null, checkedAt: 0 };
+  var TActionMsg = {};             // studentId -> { ok, text }
+  var PREVIEW = null;              // { name, blankMode, savedMem, savedTeacher }
+  var lastActivityAt = Date.now();
 
   /* ---------- icons ---------- */
   var ICON = {
@@ -72,7 +77,7 @@
 
   /* ---------- storage (never throws) ---------- */
   var mem = null;
-  function blank() { return { v: 2, done: {}, xp: 0, quest: {}, bank: {}, bankDel: {}, notes: {}, noteAt: {}, board: {}, boardAt: {}, theme: "quest", lastChapter: "", qp: {}, qpDel: {}, drill: {}, planStart: "", round: blankRound(), rounds: {}, updatedAt: 0 }; }
+  function blank() { return { v: 2, done: {}, xp: 0, quest: {}, bank: {}, bankDel: {}, notes: {}, noteAt: {}, board: {}, boardAt: {}, theme: "quest", lastChapter: "", qp: {}, qpDel: {}, drill: {}, planStart: "", round: blankRound(), rounds: {}, timeByDay: {}, timeByCh: {}, dismissedNoteAt: 0, updatedAt: 0 }; }
   function blankRound() { return { modes: {}, complete: false, bestFull: 0, run: null, runDel: 0, last: null }; }
   function isObj(x) { return x && typeof x === "object" && !Array.isArray(x); }
   function normalizeRound(rd) {
@@ -91,6 +96,8 @@
     s.round = normalizeRound(s.round);
     if (!isObj(s.rounds)) s.rounds = {};
     for (var ck in s.rounds) s.rounds[ck] = normalizeRound(s.rounds[ck]);
+    if (!isObj(s.timeByDay)) s.timeByDay = {};
+    if (!isObj(s.timeByCh)) s.timeByCh = {};
     return s;
   }
   function load() {
@@ -111,6 +118,7 @@
     return mem;
   }
   function save(opts) {
+    if (PREVIEW) return; // Teacher preview mode stays strictly in memory
     opts = opts || {};
     if (!opts.fromRemote && mem) mem.updatedAt = Date.now();
     try { localStorage.setItem(STORE_KEY, JSON.stringify(mem)); } catch (e) { /* keep in memory only */ }
@@ -168,6 +176,66 @@
     if (!days[cur]) cur = addDays(cur, -1);          // streak stays alive until the end of today
     while (days[cur]) { n++; cur = addDays(cur, -1); }
     return n;
+  }
+  var WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  function sumDevMap(m) {
+    if (!isObj(m)) return 0;
+    var s = 0;
+    for (var k in m) if (typeof m[k] === "number" && isFinite(m[k]) && m[k] > 0) s += m[k];
+    return Math.round(s);
+  }
+  function timeOnDay(dateStr, st) {
+    var s = st || load();
+    return sumDevMap(s.timeByDay && s.timeByDay[dateStr]);
+  }
+  function timeLast7Days(st) {
+    var s = st || load(), t = today(), days = [], total = 0, max = 0;
+    for (var i = 6; i >= 0; i--) {
+      var dStr = addDays(t, -i);
+      var sec = timeOnDay(dStr, s);
+      var wd = WEEKDAYS[parseDate(dStr).getDay()];
+      days.push({ date: dStr, label: i === 0 ? "Today" : wd, sec: sec });
+      total += sec;
+      if (sec > max) max = sec;
+    }
+    return { days: days, totalSec: total, maxSec: max };
+  }
+  function timeForChapter(chKey, st) {
+    var s = st || load();
+    return sumDevMap(s.timeByCh && s.timeByCh[chKey]);
+  }
+  function fmtStudyTime(sec) {
+    sec = Math.max(0, Math.round(sec || 0));
+    if (sec === 0) return "0m";
+    if (sec < 60) return "<1m";
+    var min = Math.round(sec / 60);
+    if (min < 60) return min + "m";
+    var hr = Math.floor(min / 60), rem = min % 60;
+    return rem ? hr + "h " + rem + "m" : hr + "h";
+  }
+  function startStudyTimer() {
+    var bump = function () { lastActivityAt = Date.now(); };
+    ["click", "keydown", "input", "touchstart", "scroll"].forEach(function (ev) {
+      window.addEventListener(ev, bump, { passive: true });
+    });
+    setInterval(function () {
+      if (PREVIEW || !CHAPTER_LIST.length) return;
+      if (typeof document !== "undefined" && document.visibilityState !== "visible") return;
+      if (Date.now() - lastActivityAt > 120000) return;
+      var h = (location.hash || "#/").split("?")[0];
+      if (h === "#/teacher" || h === "#/sync") return;
+      var devId = SYNC ? SYNC.getDeviceId() : "local";
+      var st = load(), d = today();
+      if (!isObj(st.timeByDay[d])) st.timeByDay[d] = {};
+      st.timeByDay[d][devId] = (st.timeByDay[d][devId] || 0) + 15;
+      var parts = h.replace(/^#\/?/, "").split("/").filter(Boolean);
+      if (parts.length >= 2 && CHAPTERS[chKeyOf(parts[0], parts[1])]) {
+        var ck = chKeyOf(parts[0], parts[1]);
+        if (!isObj(st.timeByCh[ck])) st.timeByCh[ck] = {};
+        st.timeByCh[ck][devId] = (st.timeByCh[ck][devId] || 0) + 15;
+      }
+      save({ silentSync: true });
+    }, 15000);
   }
   function getJSON(url) {
     return fetch(url, { cache: "no-cache" }).then(function (r) {
@@ -393,7 +461,7 @@
   function addXP(n) { if (n > 0) { load().xp += n; save(); updateChrome(); } }
 
   /* ---------- mistake bank (spaced review) ---------- */
-  var REASON = { "guessed": "Guessed", "confident mistake": "Confident mistake", "missed": "Missed", "need practice": "Need practice", "slip": "Slip", "below full marks": "Below full marks" };
+  var REASON = { "guessed": "Guessed", "confident mistake": "Confident mistake", "missed": "Missed", "need practice": "Need practice", "slip": "Slip", "below full marks": "Below full marks", "teacher assigned": "Teacher assigned" };
   function bankChToken(ch) {
     var target = ch || CH;
     return (target.subject === "physics" && target.id === "ch01") ? "ch01" : target.subject + ":" + target.id;
@@ -459,6 +527,106 @@
     return false;
   }
 
+  /* ---------- teacher directives & preview mode ---------- */
+  function activeTeacherData() {
+    if (PREVIEW) return PREVIEW.savedTeacher || null;
+    return SYNC ? SYNC.getTeacherData() : null;
+  }
+  function applyTeacherAssignments(teacherObj) {
+    if (!isObj(teacherObj) || !Array.isArray(teacherObj.assigned) || !CHAPTER_LIST.length) return;
+    var st = load(), changed = false;
+    teacherObj.assigned.forEach(function (entry) {
+      var id = isObj(entry) ? entry.id : (typeof entry === "string" ? entry : "");
+      var at = isObj(entry) && typeof entry.at === "number" ? entry.at : 1;
+      if (!id || !itemExists(id)) return;
+      if (st.bank[id]) return;
+      if ((st.bankDel[id] || 0) >= at) return;
+      st.bank[id] = { due: today(), streak: 0, added: today(), reason: "teacher assigned", prio: true, updatedAt: at };
+      delete st.bankDel[id];
+      changed = true;
+    });
+    if (changed) { save({ silentSync: true }); updateChrome(); }
+  }
+  function rewardProgress(reward, st) {
+    if (!isObj(reward) || !reward.title) return null;
+    st = st || load();
+    var type = reward.type || "xp";
+    if (type === "stops") {
+      var ch = CHAPTERS[reward.chKey];
+      if (!ch) return null;
+      var p = chapterProgress(st, ch);
+      return {
+        label: "Finish all " + p.total + " stops in " + chShortLabel(ch),
+        cur: p.done, target: p.total, pct: p.pct,
+        text: p.done + " / " + p.total + " stops",
+        done: p.done >= p.total
+      };
+    }
+    if (type === "round") {
+      var ch2 = CHAPTERS[reward.chKey];
+      if (!ch2) return null;
+      var best = RS(st, reward.chKey).bestFull || 0;
+      var pct = Math.min(100, Math.round(100 * best / 80));
+      return {
+        label: "Score 80%+ in " + chShortLabel(ch2) + " Board round",
+        cur: best, target: 80, pct: pct,
+        text: best + "% / 80%",
+        done: best >= 80
+      };
+    }
+    var tgt = Math.max(50, parseInt(reward.target, 10) || 250);
+    var cur = st.xp || 0;
+    return {
+      label: "Reach " + tgt + " XP",
+      cur: cur, target: tgt, pct: Math.min(100, Math.round(100 * cur / tgt)),
+      text: cur + " / " + tgt + " XP",
+      done: cur >= tgt
+    };
+  }
+  function renderPreviewBar() {
+    if (!previewBarEl) return;
+    if (!PREVIEW) { previewBarEl.hidden = true; previewBarEl.innerHTML = ""; return; }
+    previewBarEl.hidden = false;
+    previewBarEl.innerHTML = '<div class="preview-bar-in"><span>Previewing as <b>' + esc(PREVIEW.name) + '</b>' +
+      (PREVIEW.blankMode ? " (blank view)" : "") + ' · Changes won\'t save or sync</span>' +
+      '<button type="button" class="btn sm preview-exit" data-act="exit-preview">Exit preview</button></div>';
+  }
+  function enterPreview(entry, blankMode) {
+    var savedMem = PREVIEW ? PREVIEW.savedMem : load();
+    var name = blankMode ? "New student" : ((entry && (entry.name || entry.id)) || "Student");
+    var clonedState = (!blankMode && entry && entry.state) ? normalizeState(JSON.parse(JSON.stringify(entry.state))) : normalizeState(blank());
+    if (!clonedState.planStart) clonedState.planStart = today();
+    PREVIEW = {
+      name: name,
+      blankMode: !!blankMode,
+      savedMem: savedMem,
+      savedTeacher: (!blankMode && entry && isObj(entry.teacher)) ? JSON.parse(JSON.stringify(entry.teacher)) : null
+    };
+    mem = clonedState;
+    Q = null; R = null; D = null;
+    if (rTimer) { clearInterval(rTimer); rTimer = null; }
+    RD = null;
+    applyTeacherAssignments(PREVIEW.savedTeacher);
+    renderPreviewBar();
+    applyTheme();
+    updateChrome();
+    if (location.hash === "#/" || location.hash === "") route(false);
+    else location.hash = "#/";
+  }
+  function exitPreview() {
+    if (!PREVIEW) return;
+    mem = PREVIEW.savedMem;
+    PREVIEW = null;
+    Q = null; R = null; D = null;
+    if (rTimer) { clearInterval(rTimer); rTimer = null; }
+    RD = null;
+    renderPreviewBar();
+    applyTheme();
+    updateChrome();
+    if (location.hash === "#/teacher") teacherView();
+    else location.hash = "#/teacher";
+  }
+
   /* ---------- chrome: header, theme, tabs ---------- */
   function setHeader(title, backHref, opts) {
     opts = opts || {};
@@ -503,6 +671,7 @@
     var n = 0;
     try { n = CHAPTER_LIST.length ? dueIds().filter(itemExists).length : 0; } catch (e) { n = 0; }
     if (n > 0) { dueEl.hidden = false; dueEl.textContent = n; dueEl.setAttribute("aria-label", n + " due"); } else dueEl.hidden = true;
+    if (teacherPillEl && SYNC) teacherPillEl.hidden = !SYNC.hasTeacherConfig() || !!PREVIEW;
     updateSyncPill();
   }
   function applyTheme() {
@@ -549,6 +718,18 @@
         return '<button type="button" class="pill-btn" data-act="home-subj" data-subj="' + esc(sub.id) + '" aria-pressed="' + (homeSubj === sub.id) + '">' + esc(sub.title) + "</button>";
       }).join("") + "</div>";
 
+    var tData = activeTeacherData();
+    if (tData && tData.note && (tData.noteAt || 1) > (st.dismissedNoteAt || 0)) {
+      h += '<div class="card t-msg-card"><div class="row"><div class="grow"><span class="pill">Note from teacher</span><p class="t-msg-body">' + esc(tData.note) + '</p></div>' +
+        '<button type="button" class="btn ghost sm" data-act="dismiss-t-note" data-at="' + esc(tData.noteAt || Date.now()) + '">Got it</button></div></div>';
+    }
+    if (tData && isObj(tData.focus) && CHAPTERS[tData.focus.chKey]) {
+      var fCh = CHAPTERS[tData.focus.chKey], fStop = stopById(tData.focus.stopId, fCh);
+      if (fStop) {
+        h += '<a class="card cont-card t-focus-card" href="' + chBase(fCh) + "/" + fStop.id + '/quest"><span class="num">' + ICON.play + '</span><span class="grow"><b>Assigned by teacher: ' + esc(fStop.title) + '</b><br><span class="small">' + esc(chShortLabel(fCh)) + ' · Stop ' + (stopIndex(fStop.id, fCh) + 1) + ' · p. ' + esc(fStop.page) + (isDone(fStop.id, st, fCh) ? " · Done ✓" : "") + '</span></span>' + ICON.chev + "</a>";
+      }
+    }
+
     var ri = resumeInfoAll(), rr = roundRestoreAll(), nextPair = pickNextStop(homeSubj);
     var showRound = !!rr && (!ri || (rr.run.at || 0) > ri.at);
     if (showRound) {
@@ -557,6 +738,13 @@
       h += '<a class="card cont-card" href="' + chBase(ri.ch) + "/" + ri.s.id + '/quest"><span class="num">' + ICON.play + '</span><span class="grow"><b>Continue: ' + esc(ri.s.title) + " · " + progressText(ri.q) + '</b><br><span class="small">' + esc(chShortLabel(ri.ch)) + ' · pick up where you stopped</span></span>' + ICON.chev + "</a>";
     } else if (nextPair) {
       h += '<a class="card cont-card" href="' + chBase(nextPair.ch) + "/" + nextPair.s.id + '/quest"><span class="num">' + ICON.play + '</span><span class="grow"><b>Next up: ' + esc(nextPair.s.title) + '</b><br><span class="small">' + esc(chShortLabel(nextPair.ch)) + ' · Stop ' + (stopIndex(nextPair.s.id, nextPair.ch) + 1) + " · p. " + esc(nextPair.s.page) + "</span></span>" + ICON.chev + "</a>";
+    }
+    if (tData && isObj(tData.reward)) {
+      var rp = rewardProgress(tData.reward, st);
+      if (rp) {
+        h += '<div class="card reward-card' + (rp.done ? " done" : "") + '"><div class="row"><span class="ricon">' + ICON.trophy + '</span><div class="grow"><b>Reward: ' + esc(tData.reward.title) + '</b><div class="small muted">' + esc(rp.label) + '</div></div><span class="pill ' + (rp.done ? "ok" : "amber") + '">' + (rp.done ? "Unlocked!" : esc(rp.text)) + '</span></div>' +
+          '<div class="bar' + (rp.done ? "" : " amber") + '" style="margin-top:10px"><i style="width:' + rp.pct + '%"></i></div></div>';
+      }
     }
     if (isFocus()) {
       h += '<div class="card countdown"><div class="cd-num">' + left + '</div><div class="cd-lab">days to the board exam · 1 February 2027</div>' +
@@ -1529,10 +1717,129 @@
       if (location.hash === "#/teacher") teacherView();
     });
   }
+  function findStudentEntry(sid) {
+    if (!TState.data || !Array.isArray(TState.data.students)) return null;
+    for (var i = 0; i < TState.data.students.length; i++) {
+      if ((TState.data.students[i].id || "") === sid) return TState.data.students[i];
+    }
+    return null;
+  }
+  function saveTeacherPatch(sid, mutateFn, okMsg) {
+    if (!SYNC) return;
+    var entry = findStudentEntry(sid);
+    if (!entry) return;
+    var next = isObj(entry.teacher) ? JSON.parse(JSON.stringify(entry.teacher)) : {};
+    mutateFn(next);
+    next.updatedAt = Date.now();
+    TActionMsg[sid] = { ok: true, text: "Saving…" };
+    teacherView();
+    SYNC.saveTeacherAction(sid, next).then(function (res) {
+      if (!res.ok) {
+        TActionMsg[sid] = { ok: false, text: res.error || "Could not save." };
+      } else {
+        entry.teacher = isObj(res.teacher) ? res.teacher : next;
+        TActionMsg[sid] = { ok: true, text: okMsg || "Saved. Will appear on student's device on next sync." };
+      }
+      if (location.hash === "#/teacher") teacherView();
+    });
+  }
+  function teacherStudyTimeHTML(st) {
+    var todaySec = timeOnDay(today(), st);
+    var t7 = timeLast7Days(st);
+    var maxSec = Math.max(t7.maxSec, 60);
+    var bars = t7.days.map(function (d) {
+      var hPct = d.sec > 0 ? Math.max(8, Math.round(100 * d.sec / maxSec)) : 0;
+      return '<div class="t-bar-col"><span class="t-bar-val">' + (d.sec > 0 ? esc(fmtStudyTime(d.sec)) : "") + '</span>' +
+        '<div class="t-bar-track"><i style="height:' + hPct + '%"></i></div>' +
+        '<span class="t-bar-lab">' + esc(d.label) + "</span></div>";
+    }).join("");
+    var chChips = CHAPTER_LIST.map(function (e) {
+      var sec = timeForChapter(e.key, st);
+      return '<span class="tag">' + esc(chShortLabel(e.ch)) + ": <b>" + esc(fmtStudyTime(sec)) + "</b></span>";
+    }).join(" ");
+    return '<div class="card"><h2>Study time</h2>' +
+      '<div class="t-time-top"><div><b>' + esc(fmtStudyTime(todaySec)) + '</b> <span class="small muted">today</span></div>' +
+      '<div><b>' + esc(fmtStudyTime(t7.totalSec)) + '</b> <span class="small muted">last 7 days</span></div></div>' +
+      '<div class="t-bars" aria-label="Last 7 days active study time">' + bars + '</div>' +
+      '<p class="small muted" style="margin-top:10px">Time by chapter:</p><div class="t-chips">' + chChips + "</div></div>";
+  }
+  function teacherActionsHTML(entry, st) {
+    var sid = entry.id || "student1";
+    var td = isObj(entry.teacher) ? entry.teacher : {};
+    var msg = TActionMsg[sid];
+
+    // Focus stop options
+    var curFocus = isObj(td.focus) ? (td.focus.chKey + "|" + td.focus.stopId) : "";
+    var focusOpts = '<option value="">— Select a stop to pin —</option>' + CHAPTER_LIST.map(function (e) {
+      return '<optgroup label="' + esc(chShortLabel(e.ch) + ": " + e.ch.title) + '">' +
+        e.ch.stops.map(function (s, idx) {
+          var val = e.key + "|" + s.id;
+          return '<option value="' + esc(val) + '"' + (val === curFocus ? " selected" : "") + '>' + (idx + 1) + ". " + esc(s.title) + "</option>";
+        }).join("") + "</optgroup>";
+    }).join("");
+
+    // Reward goal options
+    var curRew = isObj(td.reward) ? td.reward : null;
+    var curRewGoal = curRew ? (curRew.type === "xp" ? ("xp|" + (curRew.target || 250)) : (curRew.type + "|" + (curRew.chKey || ""))) : "";
+    var rewOpts = CHAPTER_LIST.map(function (e) {
+      var v1 = "stops|" + e.key, v2 = "round|" + e.key;
+      return '<option value="' + esc(v1) + '"' + (v1 === curRewGoal ? " selected" : "") + '>Finish all stops · ' + esc(chShortLabel(e.ch)) + "</option>" +
+        '<option value="' + esc(v2) + '"' + (v2 === curRewGoal ? " selected" : "") + '>80%+ Board round · ' + esc(chShortLabel(e.ch)) + "</option>";
+    }).join("") + [250, 500, 1000, 2000].map(function (xp) {
+      var v = "xp|" + xp;
+      return '<option value="' + esc(v) + '"' + (v === curRewGoal ? " selected" : "") + '>Reach ' + xp + " XP</option>";
+    }).join("");
+    var rp = curRew && st ? rewardProgress(curRew, st) : null;
+
+    // Assign board question options
+    var assignOpts = '<option value="">— Pick a board question —</option>' + CHAPTER_LIST.map(function (e) {
+      return '<optgroup label="' + esc(chShortLabel(e.ch) + ": " + e.ch.title) + '">' +
+        e.ch.board.map(function (b) {
+          var bid = bankId("b", b.id, null, e.ch);
+          return '<option value="' + esc(bid) + '">' + esc(boardTag(b)) + " (" + b.marks + "m) — " + esc(trunc(plain(b.text), 68)) + "</option>";
+        }).join("") + "</optgroup>";
+    }).join("");
+    var assignedList = Array.isArray(td.assigned) ? td.assigned.filter(function (a) { return isObj(a) && a.id && itemExists(a.id); }) : [];
+
+    var h = '<div class="card t-actions"><h2>Teacher actions</h2>' +
+      '<p class="small muted">Send a note, pin a focus stop, set a reward goal, or assign a board question to Review. Delivered on the student\'s next sync.</p>';
+    if (msg) h += '<div class="fb ' + (msg.ok ? "good" : "bad") + '" role="status">' + esc(msg.text) + "</div>";
+
+    h += '<div class="t-act-sec"><label for="ta-note-' + esc(sid) + '">Message / encouragement</label>' +
+      '<textarea id="ta-note-' + esc(sid) + '" class="fin t-ta" rows="2" maxlength="400" placeholder="e.g. Great job on Physics Ch 1! Finish Fluid Pressure before Friday.">' + esc(td.note || "") + "</textarea>" +
+      '<div class="row" style="margin-top:6px"><button type="button" class="btn primary sm" data-act="t-send-note" data-sid="' + esc(sid) + '">Send note</button>' +
+      (td.note ? '<button type="button" class="btn ghost sm" data-act="t-clear-note" data-sid="' + esc(sid) + '">Clear</button>' : "") + "</div></div>";
+
+    h += '<div class="t-act-sec"><label for="ta-focus-' + esc(sid) + '">Pin a focus stop (shows at top of Home)</label>' +
+      '<select id="ta-focus-' + esc(sid) + '" class="fin">' + focusOpts + "</select>" +
+      '<div class="row" style="margin-top:6px"><button type="button" class="btn primary sm" data-act="t-set-focus" data-sid="' + esc(sid) + '">Pin stop</button>' +
+      (curFocus ? '<button type="button" class="btn ghost sm" data-act="t-clear-focus" data-sid="' + esc(sid) + '">Clear pin</button>' : "") + "</div></div>";
+
+    h += '<div class="t-act-sec"><label for="ta-rew-title-' + esc(sid) + '">Reward milestone</label>' +
+      '<input id="ta-rew-title-' + esc(sid) + '" class="fin" type="text" maxlength="120" placeholder="e.g. Weekend movie or favourite treat" value="' + esc(curRew ? curRew.title : "") + '">' +
+      '<select id="ta-rew-goal-' + esc(sid) + '" class="fin" style="margin-top:6px">' + rewOpts + "</select>" +
+      (rp ? '<p class="small muted" style="margin-top:6px">Current progress: <b>' + (rp.done ? "Unlocked! ✓" : esc(rp.text)) + "</b></p>" : "") +
+      '<div class="row" style="margin-top:6px"><button type="button" class="btn primary sm" data-act="t-set-reward" data-sid="' + esc(sid) + '">Save reward</button>' +
+      (curRew ? '<button type="button" class="btn ghost sm" data-act="t-clear-reward" data-sid="' + esc(sid) + '">Clear reward</button>' : "") + "</div></div>";
+
+    h += '<div class="t-act-sec"><label for="ta-assign-' + esc(sid) + '">Assign a board question to Review (priority)</label>' +
+      '<select id="ta-assign-' + esc(sid) + '" class="fin">' + assignOpts + "</select>" +
+      '<div class="row" style="margin-top:6px"><button type="button" class="btn primary sm" data-act="t-assign-q" data-sid="' + esc(sid) + '">Assign to Review</button></div>';
+    if (assignedList.length) {
+      h += '<ul class="t-list" style="margin-top:8px">' + assignedList.map(function (a) {
+        return '<li><span>' + esc(trunc(itemLabel(a.id), 90)) + '</span><button type="button" class="btn ghost sm" data-act="t-unassign-q" data-sid="' + esc(sid) + '" data-id="' + esc(a.id) + '">Remove</button></li>';
+      }).join("") + "</ul>";
+    }
+    h += "</div></div>";
+    return h;
+  }
   function teacherStudentHTML(entry) {
-    var name = entry.name || entry.id || "Student";
+    var sid = entry.id || "student1";
+    var name = entry.name || sid || "Student";
     if (!entry.state) {
-      return '<div class="card"><h2>' + esc(name) + '</h2><p class="muted">No progress synced yet. Link the student\'s device first.</p></div>';
+      return '<div class="card"><div class="t-head"><div class="grow"><h2>' + esc(name) + '</h2><p class="muted">No progress synced yet. Link the student\'s device first.</p></div>' +
+        '<button type="button" class="btn ghost sm" data-act="t-preview-blank" data-sid="' + esc(sid) + '">Test blank view</button></div></div>' +
+        teacherActionsHTML(entry, null);
     }
     var st = normalizeState(entry.state);
     var pl = planInfo(st, "all"), dt = doneToday(st), strk = streak(st), left = daysLeft(catalog.examDate);
@@ -1542,14 +1849,19 @@
 
     var h = '<div class="card"><div class="t-head"><div class="grow"><h2>' + esc(name) + '</h2>' +
       '<p class="small muted">Student last synced: <b>' + esc(relTime(entry.updatedAt)) + '</b>' + (entry.updatedAt ? " · " + esc(new Date(entry.updatedAt).toLocaleString()) : "") + "</p></div>" +
-      '<span class="pill plan-pill" data-plan="' + pl.status + '">' + esc(planLabel) + "</span></div></div>";
+      '<span class="pill plan-pill" data-plan="' + pl.status + '">' + esc(planLabel) + "</span></div>" +
+      '<div class="row" style="margin-top:10px;flex-wrap:wrap">' +
+      '<button type="button" class="btn primary sm" data-act="t-preview" data-sid="' + esc(sid) + '">Preview as student</button>' +
+      '<button type="button" class="btn ghost sm" data-act="t-preview-blank" data-sid="' + esc(sid) + '">Test blank view</button></div></div>';
 
     h += '<div class="t-grid">' +
       '<div class="t-kpi"><b>' + Math.min(dt, pl.pace) + "/" + pl.pace + '</b><span>stops today</span></div>' +
+      '<div class="t-kpi"><b>' + esc(fmtStudyTime(timeOnDay(today(), st))) + '</b><span>studied today</span></div>' +
       '<div class="t-kpi"><b>' + strk + ' d</b><span>streak</span></div>' +
-      '<div class="t-kpi"><b>' + st.xp + '</b><span>XP</span></div>' +
-      '<div class="t-kpi"><b>' + left + ' d</b><span>to board exam</span></div></div>';
+      '<div class="t-kpi"><b>' + st.xp + '</b><span>XP · ' + left + 'd left</span></div></div>';
 
+    h += teacherStudyTimeHTML(st);
+    h += teacherActionsHTML(entry, st);
     h += homeGaugeHTML(st, "all");
 
     CHAPTER_LIST.forEach(function (e) {
@@ -1557,11 +1869,13 @@
       var cleanDrills = ch.derivations.filter(function (d) { return drillClean(d.id, st); }).length;
       var g = ch.examMarks ? gaugeData(st, ch) : null;
       var doneStops = ch.stops.filter(function (s) { return isDone(s.id, st, ch); });
+      var chTime = timeForChapter(e.key, st);
       h += '<div class="card"><h2>' + esc(chShortLabel(ch)) + ": " + esc(ch.title) + '</h2>' +
         '<div class="row"><div class="grow"><div class="bar"><i style="width:' + prog.pct + '%"></i></div></div><b>' + prog.done + "/" + prog.total + ' stops (' + prog.pct + "%)</b></div>" +
         '<p class="small muted" style="margin-top:8px">' +
         (g ? "Predicted: <b>" + g.pred + " / ~" + Math.round(g.avg) + " marks</b> · " : "") +
-        'Drills clean: <b>' + cleanDrills + "/" + ch.derivations.length + "</b> · Board round best: <b>" + (rs.bestFull ? rs.bestFull + "%" : "Not tried") + "</b></p>" +
+        'Drills clean: <b>' + cleanDrills + "/" + ch.derivations.length + "</b> · Board round best: <b>" + (rs.bestFull ? rs.bestFull + "%" : "Not tried") + "</b>" +
+        (chTime ? " · Study time: <b>" + esc(fmtStudyTime(chTime)) + "</b>" : "") + "</p>" +
         (roundComplete(st, e.key) ? '<div class="cb-row">' + badgeHTML("teacher", st, ch) + "</div>" : "") +
         (rs.last ? '<p class="small muted" style="margin-top:6px">Last board round: ' + esc(MODE_NAME[rs.last.mode] || rs.last.mode) + " — <b>" + rs.last.got + "/" + rs.last.of + " (" + rs.last.pct + "%)</b> on " + esc(niceDate(rs.last.date)) + "</p>" : "");
       if (doneStops.length) {
@@ -1573,13 +1887,13 @@
       h += "</div>";
     });
 
-    h += '<div class="card"><h2>Mistake bank watchlist</h2><p class="small muted"><b>' + bankIds(st).filter(itemExists).length + "</b> items in bank · <b>" + due.length + "</b> due now · <b>" + prio.length + "</b> confident mistakes (priority)</p>";
+    h += '<div class="card"><h2>Mistake bank watchlist</h2><p class="small muted"><b>' + bankIds(st).filter(itemExists).length + "</b> items in bank · <b>" + due.length + "</b> due now · <b>" + prio.length + "</b> priority items</p>";
     if (prio.length) {
       h += '<ul class="t-list">' + prio.slice(0, 10).map(function (id) {
         return '<li><span>' + esc(trunc(itemLabel(id), 100)) + '</span>' + reasonTag(id, st) + "</li>";
       }).join("") + "</ul>";
     } else {
-      h += '<p class="small muted">No confident-mistake alerts right now.</p>';
+      h += '<p class="small muted">No priority alerts right now.</p>';
     }
     h += "</div>";
 
@@ -1601,11 +1915,13 @@
     var c = SYNC.getConfig();
     if (!SYNC.hasTeacherConfig()) {
       var st = SYNC.getStatus();
-      var h = '<div class="card"><h2>Connect Parent / Teacher view</h2><p class="small muted">View live student progress from Google Drive without affecting your own device\'s study data.</p>';
+      var h = '<div class="card"><h2>Connect Parent / Teacher view</h2><p class="small muted">View live student progress, study time, preview the student experience, and send focus tasks or rewards from your own device.</p>';
       if (TState.error || st.notice) h += '<div class="fb bad" role="alert">' + esc(TState.error || st.notice) + "</div>";
       h += '<div class="field" style="margin-top:12px"><label for="t-url">Sync Web App URL</label><input id="t-url" class="fin" type="url" autocomplete="off" spellcheck="false" placeholder="https://script.google.com/macros/s/.../exec" value="' + esc(c.url || "") + '"></div>' +
         '<div class="field"><label for="t-key">Teacher key</label><div class="pw-row"><input id="t-key" class="fin" type="password" autocomplete="off" spellcheck="false" placeholder="Enter teacher key"><button type="button" class="btn ghost sm" data-act="pw-toggle" data-target="t-key">Show</button></div></div>' +
-        '<button type="button" class="btn primary block" data-act="t-connect">Connect</button></div>';
+        '<button type="button" class="btn primary block" data-act="t-connect">Connect</button></div>' +
+        '<div class="card"><div class="row"><div class="grow"><h2>Test student portal</h2><p class="small muted">Try the portal as a brand-new student without changing your device\'s saved progress.</p></div>' +
+        '<button type="button" class="btn ghost sm" data-act="t-preview-blank">Open preview</button></div></div>';
       app.innerHTML = h;
       return;
     }
@@ -1629,6 +1945,7 @@
 
   /* ---------- apply merged remote state safely ---------- */
   function applyRemoteState(merged) {
+    if (PREVIEW) return;
     var prevRounds = mem ? JSON.stringify({ r: mem.round, rs: mem.rounds }) : "";
     mem = normalizeState(merged);
     save({ fromRemote: true });
@@ -1788,9 +2105,82 @@
       case "t-signout":
         if (!SYNC) return;
         SYNC.clearTeacherConfig(); TState = { loading: false, error: "", data: null, checkedAt: 0 };
+        TActionMsg = {};
         return teacherView();
+      case "dismiss-t-note":
+        var nAt = parseInt(t.getAttribute("data-at"), 10) || Date.now();
+        load().dismissedNoteAt = Math.max(load().dismissedNoteAt || 0, nAt);
+        save();
+        return homeView();
+      case "t-preview":
+        return enterPreview(findStudentEntry(t.getAttribute("data-sid") || ""), false);
+      case "t-preview-blank":
+        return enterPreview(findStudentEntry(t.getAttribute("data-sid") || ""), true);
+      case "t-send-note": {
+        var sid1 = t.getAttribute("data-sid") || "student1";
+        var el1 = document.getElementById("ta-note-" + sid1);
+        var txt1 = el1 ? el1.value.trim() : "";
+        if (!txt1) { TActionMsg[sid1] = { ok: false, text: "Type a message first." }; return teacherView(); }
+        return saveTeacherPatch(sid1, function (td) { td.note = txt1; td.noteAt = Date.now(); }, "Note sent to student.");
+      }
+      case "t-clear-note": {
+        var sid2 = t.getAttribute("data-sid") || "student1";
+        return saveTeacherPatch(sid2, function (td) { td.note = ""; td.noteAt = 0; }, "Note cleared.");
+      }
+      case "t-set-focus": {
+        var sid3 = t.getAttribute("data-sid") || "student1";
+        var sel3 = document.getElementById("ta-focus-" + sid3);
+        var val3 = sel3 ? sel3.value : "";
+        if (!val3 || val3.indexOf("|") < 0) { TActionMsg[sid3] = { ok: false, text: "Select a stop to pin first." }; return teacherView(); }
+        var sp3 = val3.split("|");
+        return saveTeacherPatch(sid3, function (td) { td.focus = { chKey: sp3[0], stopId: sp3[1], at: Date.now() }; }, "Focus stop pinned.");
+      }
+      case "t-clear-focus": {
+        var sid4 = t.getAttribute("data-sid") || "student1";
+        return saveTeacherPatch(sid4, function (td) { td.focus = null; }, "Focus pin cleared.");
+      }
+      case "t-set-reward": {
+        var sid5 = t.getAttribute("data-sid") || "student1";
+        var ti5 = document.getElementById("ta-rew-title-" + sid5);
+        var gl5 = document.getElementById("ta-rew-goal-" + sid5);
+        var rTitle = ti5 ? ti5.value.trim() : "";
+        var gVal = gl5 ? gl5.value : "";
+        if (!rTitle) { TActionMsg[sid5] = { ok: false, text: "Enter a reward description first." }; return teacherView(); }
+        var gsp = gVal.split("|");
+        var rewObj = gsp[0] === "xp"
+          ? { title: rTitle, type: "xp", target: parseInt(gsp[1], 10) || 250, at: Date.now() }
+          : { title: rTitle, type: gsp[0] || "stops", chKey: gsp[1] || "", at: Date.now() };
+        return saveTeacherPatch(sid5, function (td) { td.reward = rewObj; }, "Reward milestone saved.");
+      }
+      case "t-clear-reward": {
+        var sid6 = t.getAttribute("data-sid") || "student1";
+        return saveTeacherPatch(sid6, function (td) { td.reward = null; }, "Reward cleared.");
+      }
+      case "t-assign-q": {
+        var sid7 = t.getAttribute("data-sid") || "student1";
+        var sel7 = document.getElementById("ta-assign-" + sid7);
+        var qid7 = sel7 ? sel7.value : "";
+        if (!qid7) { TActionMsg[sid7] = { ok: false, text: "Pick a board question first." }; return teacherView(); }
+        return saveTeacherPatch(sid7, function (td) {
+          var arr = Array.isArray(td.assigned) ? td.assigned.filter(function (a) { return isObj(a) && a.id !== qid7; }) : [];
+          arr.push({ id: qid7, at: Date.now() });
+          td.assigned = arr.slice(-20);
+        }, "Board question assigned to Review.");
+      }
+      case "t-unassign-q": {
+        var sid8 = t.getAttribute("data-sid") || "student1";
+        var qid8 = t.getAttribute("data-id") || "";
+        return saveTeacherPatch(sid8, function (td) {
+          td.assigned = Array.isArray(td.assigned) ? td.assigned.filter(function (a) { return isObj(a) && a.id !== qid8; }) : [];
+        }, "Removed from teacher assignments.");
+      }
     }
   });
+  if (previewBarEl) {
+    previewBarEl.addEventListener("click", function (e) {
+      if (e.target.closest('[data-act="exit-preview"]')) exitPreview();
+    });
+  }
   function syncNum(ce) { var el = document.getElementById("numin"); if (el) ce.val = el.value; }
   app.addEventListener("input", function (e) {
     var t = e.target;
@@ -1891,15 +2281,22 @@
     }
     applyTheme();
     if (SYNC) {
+      applyTeacherAssignments(SYNC.getTeacherData());
       SYNC.init({
         getState: function () { return load(); },
         applyState: applyRemoteState,
+        onTeacherData: function (td) {
+          if (PREVIEW) return;
+          applyTeacherAssignments(td);
+          if ((location.hash || "#/") === "#/") homeView();
+        },
         onStatus: function () {
           updateSyncPill();
           if (location.hash === "#/sync" && SYNC.isLinked()) syncView();
         }
       });
     }
+    startStudyTimer();
     window.addEventListener("hashchange", function () { route(false); });
     route(false);
   }).catch(function (e) {

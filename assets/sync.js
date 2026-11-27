@@ -49,8 +49,11 @@
   }
 
   /* ---------- sync config storage (device-only, never uploaded) ---------- */
+  function genDeviceId() {
+    return "d_" + Math.random().toString(36).slice(2, 10);
+  }
   function blankCfg() {
-    return { url: "", code: "", teacherKey: "", rev: 0, lastSync: 0, dirty: false, studentName: "" };
+    return { url: "", code: "", teacherKey: "", rev: 0, lastSync: 0, dirty: false, studentName: "", deviceId: "", teacherData: null };
   }
   function loadCfg() {
     if (cfg) return cfg;
@@ -65,12 +68,26 @@
       if (typeof raw.lastSync === "number" && isFinite(raw.lastSync) && raw.lastSync >= 0) c.lastSync = raw.lastSync;
       c.dirty = !!raw.dirty;
       if (typeof raw.studentName === "string") c.studentName = raw.studentName;
+      if (typeof raw.deviceId === "string" && /^[A-Za-z0-9_-]{3,32}$/.test(raw.deviceId)) c.deviceId = raw.deviceId;
+      if (isObj(raw.teacherData)) c.teacherData = clone(raw.teacherData);
     }
     cfg = c;
     return cfg;
   }
   function saveCfg() {
     try { localStorage.setItem(SYNC_KEY, JSON.stringify(loadCfg())); } catch (e) { /* ignore */ }
+  }
+  function getDeviceId() {
+    var c = loadCfg();
+    if (!c.deviceId) {
+      c.deviceId = genDeviceId();
+      saveCfg();
+    }
+    return c.deviceId;
+  }
+  function getTeacherData() {
+    var c = loadCfg();
+    return isObj(c.teacherData) ? clone(c.teacherData) : null;
   }
   function isLinked() {
     var c = loadCfg();
@@ -215,6 +232,24 @@
     return res;
   }
 
+  function mergeCounterMap(a, b) {
+    var out = {};
+    unionKeys(a, b).forEach(function (outer) {
+      var oa = isObj(a && a[outer]) ? a[outer] : null;
+      var ob = isObj(b && b[outer]) ? b[outer] : null;
+      var sub = {};
+      var hasAny = false;
+      unionKeys(oa, ob).forEach(function (dev) {
+        var va = oa ? Math.max(0, Math.floor(num(oa[dev]))) : 0;
+        var vb = ob ? Math.max(0, Math.floor(num(ob[dev]))) : 0;
+        var m = Math.max(va, vb);
+        if (m > 0) { sub[dev] = m; hasAny = true; }
+      });
+      if (hasAny) out[outer] = sub;
+    });
+    return out;
+  }
+
   function mergeState(local, remote, nowMs) {
     var now = typeof nowMs === "number" ? nowMs : Date.now();
     var cutoff = now - TOMBSTONE_TTL_MS;
@@ -240,6 +275,9 @@
       planStart: earlierDate(A.planStart, B.planStart),
       round: { modes: {}, complete: false, bestFull: 0, run: null, runDel: 0, last: null },
       rounds: {},
+      timeByDay: mergeCounterMap(A.timeByDay, B.timeByDay),
+      timeByCh: mergeCounterMap(A.timeByCh, B.timeByCh),
+      dismissedNoteAt: Math.max(num(A.dismissedNoteAt), num(B.dismissedNoteAt)),
       updatedAt: Math.max(num(A.updatedAt), num(B.updatedAt))
     };
 
@@ -373,6 +411,9 @@
     } else {
       c.rounds = {};
     }
+    if (!isObj(c.timeByDay)) c.timeByDay = {};
+    if (!isObj(c.timeByCh)) c.timeByCh = {};
+    c.dismissedNoteAt = num(c.dismissedNoteAt);
     return canonicalJSON(c);
   }
   function canonicalJSON(val) {
@@ -486,6 +527,16 @@
     });
   }
 
+  function applyTeacherPayload(c, data) {
+    if (typeof data.teacher === "undefined") return;
+    var next = isObj(data.teacher) ? clone(data.teacher) : null;
+    var changed = canonicalJSON(c.teacherData) !== canonicalJSON(next);
+    c.teacherData = next;
+    if (changed && hooks && typeof hooks.onTeacherData === "function") {
+      try { hooks.onTeacherData(getTeacherData()); } catch (e) { /* ignore */ }
+    }
+  }
+
   function doPull() {
     var c = loadCfg();
     var seqBefore = localSeq;
@@ -497,6 +548,7 @@
       c.rev = typeof data.rev === "number" ? data.rev : 0;
       c.lastSync = Date.now();
       if (typeof data.studentName === "string" && data.studentName) c.studentName = data.studentName;
+      applyTeacherPayload(c, data);
 
       var local = hooks.getState();
       if (isObj(data.state)) {
@@ -538,6 +590,7 @@
         c.rev = typeof data.rev === "number" ? data.rev : c.rev + 1;
         c.lastSync = Date.now();
         if (typeof data.studentName === "string" && data.studentName) c.studentName = data.studentName;
+        applyTeacherPayload(c, data);
         // Only clear dirty if no new local edits happened while push was in-flight
         if (localSeq === seqAtSend) c.dirty = false;
         saveCfg();
@@ -641,6 +694,7 @@
     c.lastSync = 0;
     c.dirty = false;
     c.studentName = "";
+    c.teacherData = null;
     if (!c.teacherKey) c.url = "";
     saveCfg();
     setStatus("idle", "");
@@ -682,6 +736,28 @@
     });
   }
 
+  function saveTeacherAction(studentId, teacherObj) {
+    var c = loadCfg();
+    if (!hasTeacherConfig()) return Promise.resolve({ ok: false, error: "Teacher view not connected." });
+    return postAPI(c.url, {
+      action: "teacherUpdate",
+      key: c.teacherKey,
+      studentId: String(studentId || ""),
+      teacher: isObj(teacherObj) ? teacherObj : {}
+    }).then(function (data) {
+      if (!data.ok) {
+        var msg = data.error || "Could not save teacher update.";
+        if (/unknown action/i.test(msg)) {
+          msg = "Apps Script needs a version update to save Teacher Actions: in Apps Script click Deploy → Manage deployments → Edit → Version: New version → Deploy.";
+        }
+        return { ok: false, error: msg };
+      }
+      return data;
+    }, function (err) {
+      return { ok: false, error: err && err.message ? err.message : "Could not reach sync server." };
+    });
+  }
+
   /* Run synchronous URL scrubbing immediately on load (and on hashchange before app.js) */
   if (typeof location !== "undefined") {
     captureHashParams(location.hash);
@@ -704,6 +780,9 @@
     setTeacherConfig: setTeacherConfig,
     clearTeacherConfig: clearTeacherConfig,
     fetchTeacher: fetchTeacher,
+    saveTeacherAction: saveTeacherAction,
+    getDeviceId: getDeviceId,
+    getTeacherData: getTeacherData,
     getStatus: getStatus,
     getConfig: function () { return clone(loadCfg()); },
     clearNotice: clearNotice,
