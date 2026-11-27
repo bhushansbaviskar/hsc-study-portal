@@ -141,7 +141,7 @@
           {
             "type": "num",
             "q": "A 0.2 kg ball moves in a circle of radius 0.5 m with a speed of 5 m/s. Find the centripetal force.",
-            "answer": 10.0,
+            "answer": 10,
             "unit": "N",
             "hint": "Use F = mv²/r.",
             "explain": "F = mv²/r = 0.2 × 5² / 0.5 = 10 N.",
@@ -264,7 +264,7 @@
           {
             "type": "num",
             "q": "A motor cyclist rides horizontal circles inside a well of radius 4 m. The coefficient of static friction between tyres and wall is 0.4. Find the minimum speed. (g = 10 m/s²)",
-            "answer": 10.0,
+            "answer": 10,
             "unit": "m/s",
             "hint": "v_{min} = √(rg/μ_{s}).",
             "explain": "v_{min} = √(rg/μ_{s}) = √(4 × 10 / 0.4) = √100 = 10 m/s.",
@@ -331,7 +331,7 @@
           {
             "type": "num",
             "q": "A frictionless road of radius 40 m is banked so that tanθ = 0.25. Find the most safe speed. (g = 10 m/s²)",
-            "answer": 10.0,
+            "answer": 10,
             "unit": "m/s",
             "hint": "v_{s} = √(rg tanθ).",
             "explain": "v_{s} = √(rg tanθ) = √(40 × 10 × 0.25) = √100 = 10 m/s.",
@@ -339,25 +339,25 @@
           },
           {
             "type": "mcq",
-            "q": "Which expression gives the angle of banking θ for a vehicle at the most safe speed v on a road of radius r?",
+            "q": "A car travels on a banked curved road faster than the most safe speed v_{s}. In which direction does static friction act on the tyres?",
             "options": [
-              "tanθ = rg/v²",
-              "tanθ = v²/(rg)",
-              "sinθ = v²/(rg)",
-              "tanθ = v/(rg)"
+              "Down the banked incline, helping provide extra centripetal force",
+              "Up the banked incline, opposing the inward pull",
+              "Vertically upwards, balancing the weight",
+              "Static friction becomes zero above v_{s}"
             ],
-            "answer": 1,
-            "hint": "Divide N sinθ = mv²/r by N cosθ = mg.",
-            "explain": "N sinθ / N cosθ = (mv²/r)/(mg), so tanθ = v²/(rg).",
-            "page": 6
+            "answer": 0,
+            "hint": "At speeds above v_{s}, the car tends to skid outward (up the slope), so friction opposes that tendency.",
+            "explain": "When v > v_{s}, the horizontal component of normal reaction alone is not enough, so the car tends to skid up the slope. Static friction acts down the incline so its horizontal component adds to the centripetal force.",
+            "page": "6"
           },
           {
             "type": "tf",
-            "q": "A vehicle can move safely on a frictionless banked road if it travels at the most safe speed.",
+            "q": "On a banked road with friction, if μ_{s} ≥ cotθ (for example θ ≥ 45° with μ_{s} = 1), the denominator of v_{max} reaches zero and there is no upper speed limit against skidding.",
             "answer": true,
-            "hint": "At this speed the horizontal part of N alone supplies the centripetal force.",
-            "explain": "True. At v = √(rg tanθ), the horizontal component N sinθ provides exactly the required centripetal force, so no friction is needed.",
-            "page": 6
+            "hint": "Look at the denominator (1 − μ_{s} tanθ) in the formula for v_{max}.",
+            "explain": "Since v_{max} = √(rg(μ_{s} + tanθ)/(1 − μ_{s} tanθ)), when μ_{s} tanθ ≥ 1 (i.e. μ_{s} ≥ cotθ), the denominator becomes zero or negative, meaning the vehicle will not skid outward at any speed (though it could topple).",
+            "page": "6"
           }
         ]
       }
@@ -528,7 +528,7 @@
           {
             "type": "num",
             "q": "A convex bridge has radius of curvature 40 m. Find the maximum speed at which a vehicle can cross the top without losing contact. (g = 10 m/s²)",
-            "answer": 20.0,
+            "answer": 20,
             "unit": "m/s",
             "hint": "At the limit N = 0, so mg = mv²/r.",
             "explain": "At the limit N = 0, so v_{max} = √(rg) = √(40 × 10) = 20 m/s.",
@@ -602,12 +602,12 @@
         "checks": [
           {
             "type": "num",
-            "q": "Find the moment of inertia of a uniform disc of mass 4 kg and radius 0.5 m about its own axis.",
-            "answer": 0.5,
-            "unit": "kg m²",
-            "hint": "I = ½MR² for a disc.",
-            "explain": "I = ½MR² = ½ × 4 × (0.5)² = 0.5 kg m².",
-            "page": 14
+            "q": "A thin uniform rod of mass 3 kg and length 2 m rotates about an axis perpendicular to its length through its centre (I = ML²/12). Find its radius of gyration K (to 2 decimal places).",
+            "answer": 0.58,
+            "unit": "m",
+            "hint": "First find I = ML²/12, then use K = √(I/M) = L/√12.",
+            "explain": "I = ML²/12 = (3 × 4)/12 = 1 kg m². Radius of gyration K = √(I/M) = √(1/3) ≈ 0.58 m.",
+            "page": "14"
           },
           {
             "type": "mcq",
@@ -671,7 +671,7 @@
           {
             "type": "num",
             "q": "A body of mass 4 kg has I_{c} = 2 kg m² about an axis through its centre of mass. Find I about a parallel axis 0.5 m away.",
-            "answer": 3.0,
+            "answer": 3,
             "unit": "kg m²",
             "hint": "I = I_{c} + Mh².",
             "explain": "I = I_{c} + Mh² = 2 + 4 × (0.5)² = 3 kg m².",
@@ -742,17 +742,17 @@
         "checks": [
           {
             "type": "num",
-            "q": "A particle of mass 0.5 kg moves in a circle of radius 2 m at a speed of 3 m/s. Find its angular momentum.",
-            "answer": 3.0,
+            "q": "A flywheel of moment of inertia 4 kg m² rotates at a constant angular velocity of 5 rad/s. Find its angular momentum L.",
+            "answer": 20,
             "unit": "kg m²/s",
-            "hint": "For circular motion L = mvr.",
-            "explain": "L = mvr = 0.5 × 3 × 2 = 3 kg m²/s.",
-            "page": 17
+            "hint": "For a rigid body rotating about a fixed axis, L = Iω.",
+            "explain": "L = Iω = 4 × 5 = 20 kg m²/s.",
+            "page": "17"
           },
           {
             "type": "num",
             "q": "A torque of 10 N m acts on a body whose moment of inertia is 2 kg m². Find its angular acceleration.",
-            "answer": 5.0,
+            "answer": 5,
             "unit": "rad/s²",
             "hint": "Use τ = Iα.",
             "explain": "α = τ/I = 10/2 = 5 rad/s².",
@@ -806,7 +806,7 @@
           {
             "type": "num",
             "q": "A skater with moment of inertia 3 kg m² spins at 2 revolutions per second. She pulls in her arms so that I becomes 1.5 kg m². Find her new frequency.",
-            "answer": 4.0,
+            "answer": 4,
             "unit": "rev/s",
             "hint": "I_{1}n_{1} = I_{2}n_{2}.",
             "explain": "n_{2} = I_{1}n_{1}/I_{2} = 3 × 2 / 1.5 = 4 rev/s.",
@@ -814,31 +814,25 @@
           },
           {
             "type": "mcq",
-            "q": "Which statement is the principle of conservation of angular momentum?",
+            "q": "A diver jumps off a springboard and tucks her knees tightly to her chest mid-air. What happens to her moment of inertia I and angular speed ω?",
             "options": [
-              "If the net external force is zero, kinetic energy is constant",
-              "If the net external torque is zero, the angular momentum of the system is constant",
-              "Angular momentum is always zero for a rigid body",
-              "Angular momentum equals torque multiplied by time in all cases"
-            ],
-            "answer": 1,
-            "hint": "Angular momentum is to torque as linear momentum is to force.",
-            "explain": "With zero net external torque, dL/dt = 0, so L = Iω stays constant.",
-            "page": 18
-          },
-          {
-            "type": "step",
-            "q": "In the proof you have written τ = dL/dt. What is the next step?",
-            "options": [
-              "Put τ = 0, so dL/dt = 0 and L = Iω = constant",
-              "Put L = 0 so τ is zero",
-              "Put I = constant so ω = 0",
-              "Put ω = 0 so L is constant"
+              "I decreases and ω increases",
+              "I increases and ω decreases",
+              "Both I and ω stay unchanged",
+              "Both I and ω decrease"
             ],
             "answer": 0,
-            "hint": "The principle applies when the net external torque is zero.",
-            "explain": "If τ = 0 then dL/dt = 0, so L is constant. For a rigid body L = Iω, giving I_{1}ω_{1} = I_{2}ω_{2}.",
-            "page": 18
+            "hint": "No external torque acts mid-air, so Iω stays constant.",
+            "explain": "Pulling limbs closer to the axis reduces moment of inertia I. Since angular momentum L = Iω is conserved, angular speed ω increases, letting the diver complete more somersaults.",
+            "page": "18"
+          },
+          {
+            "type": "tf",
+            "q": "When a spinning ice skater pulls her arms inward with no external torque, her angular momentum stays constant while her rotational kinetic energy increases.",
+            "answer": true,
+            "hint": "Write rotational KE in terms of conserved L: KE = L² / (2I).",
+            "explain": "Because L = Iω is constant and KE = L²/(2I), decreasing I increases rotational kinetic energy. The extra energy comes from internal muscular work done by the skater.",
+            "page": "18"
           }
         ]
       }
@@ -947,35 +941,36 @@
         ],
         "checks": [
           {
-            "type": "mcq",
-            "q": "Which formula gives the most safe speed on a frictionless banked road?",
-            "options": [
-              "v = √(μ_{s}rg)",
-              "v = √(rg tanθ)",
-              "v = √(rg/μ_{s})",
-              "v = √(5rg)"
-            ],
-            "answer": 1,
-            "hint": "Frictionless means no μ_{s}. The angle must appear.",
-            "explain": "On a banked road without friction, v_{s} = √(rg tanθ). The first option is for a flat road, the third for the well of death, the fourth for the bottom of a vertical circle.",
-            "page": 6
+            "type": "num",
+            "q": "A uniform thin rod of mass 6 kg and length 1 m has I_{c} = ML²/12 about its centre. Using the parallel axes theorem, find its moment of inertia about a parallel axis through one end.",
+            "answer": 2,
+            "unit": "kg m²",
+            "hint": "The distance from the centre to one end is h = L/2, so I = ML²/12 + M(L/2)² = ML²/3.",
+            "explain": "I = I_{c} + M(L/2)² = ML²/12 + ML²/4 = ML²/3 = (6 × 1²)/3 = 2 kg m².",
+            "page": "15"
           },
           {
             "type": "num",
             "q": "A metallic ring of mass 1 kg has I = 1 kg m² about a diameter. It is melted and remoulded into a thin uniform disc of the same radius. Find I of the disc about its own axis.",
-            "answer": 1.0,
+            "answer": 1,
             "unit": "kg m²",
             "hint": "Ring about a diameter: I = ½MR². Find R² first, then use ½MR² for the disc.",
             "explain": "Ring about a diameter: ½MR² = 1, so with M = 1 kg, R² = 2 m². The disc about its own axis: I = ½MR² = ½ × 1 × 2 = 1 kg m².",
             "page": 25
           },
           {
-            "type": "tf",
-            "q": "For a bob on a string in a vertical circle, the tension at the bottom exceeds the tension at the top by 6mg.",
-            "answer": true,
-            "hint": "This difference does not depend on v or r.",
-            "explain": "True. T_{B} − T_{A} = 6mg, independent of the speed and the radius.",
-            "page": 10
+            "type": "mcq",
+            "q": "A solid sphere (K²/R² = 2/5) rolls without slipping on a horizontal surface. What is the ratio of its rotational kinetic energy to its translational kinetic energy?",
+            "options": [
+              "2 : 5",
+              "5 : 2",
+              "2 : 7",
+              "5 : 7"
+            ],
+            "answer": 0,
+            "hint": "Compare KE_{rot} = ½(MK²)(v/R)² with KE_{trans} = ½Mv².",
+            "explain": "KE_{rot} / KE_{trans} = (½MK²v²/R²) / (½Mv²) = K²/R² = 2/5, i.e. 2 : 5.",
+            "page": "20"
           }
         ]
       }
@@ -983,38 +978,148 @@
   ],
   "board": [
     {
-      "id": "2022-Q1vii",
-      "year": 2022,
-      "qno": "Q1(vii)",
-      "marks": 1,
-      "stop": "s07",
-      "kind": "MCQ",
-      "text": "A bob performs vertical circular motion on a string. The difference in tension in the string at the horizontal position and at the uppermost position is:",
-      "options": [
-        "(a) mg",
-        "(b) 2mg",
-        "(c) 3mg",
-        "(d) 6mg"
-      ],
-      "answer": "(c) 3mg. Reason: T_{top} = mv_{t}²/r − mg and T_{horizontal} = mv_{h}²/r. Also v_{h}² = v_{t}² + 2gr, so T_{h} − T_{top} = 2mg + mg = 3mg.",
+      "id": "2023-Q5",
+      "year": 2023,
+      "qno": "Q5",
+      "marks": 2,
+      "stop": "s12",
+      "text": "State and prove the principle (law) of conservation of angular momentum.",
+      "answer": "Statement: if the net external torque on a system is zero, its angular momentum stays constant. Proof: τ = dL/dt. If τ = 0 then dL/dt = 0, so L = Iω = constant, i.e. I_{1}ω_{1} = I_{2}ω_{2}.",
       "points": [
         {
-          "text": "Correct option (c) 3mg",
+          "text": "Statement: if the net external torque is zero, angular momentum stays constant",
+          "marks": 1
+        },
+        {
+          "text": "Proof: dL/dt = r × (dp/dt) = r × F = τ; with τ = 0, dL/dt = 0, so L = Iω is constant, i.e. I_{1}ω_{1} = I_{2}ω_{2}",
+          "marks": 1
+        }
+      ],
+      "alsoAsked": [
+        "2025 Q6"
+      ]
+    },
+    {
+      "id": "2025-Q23",
+      "year": 2025,
+      "qno": "Q23",
+      "marks": 3,
+      "stop": "s11",
+      "text": "A flywheel of a motor has mass 100 kg and radius 1.5 m. The motor develops a constant torque of 2000 N m. The flywheel starts from rest. Calculate the work done during the first 4 revolutions.",
+      "answer": "θ = 4 × 2π = 8π rad. W = τθ = 2000 × 8π = 16000π J ≈ 5.03 × 10^{4} J (with π = 3.142, W = 50 272 J). The mass and radius are not needed.",
+      "points": [
+        {
+          "text": "Angle turned in 4 revolutions: θ = 4 × 2π = 8π rad",
+          "marks": 1
+        },
+        {
+          "text": "Formula W = τθ with correct substitution, W = 2000 × 8π",
+          "marks": 1
+        },
+        {
+          "text": "Final answer 16000π J ≈ 5.03 × 10^{4} J with unit",
           "marks": 1
         }
       ]
     },
     {
-      "id": "2022-Q2viii",
-      "year": 2022,
-      "qno": "Q2(viii)",
+      "id": "2025-Q1viii",
+      "year": 2025,
+      "qno": "Q1(viii)",
       "marks": 1,
-      "stop": "s09",
-      "text": "Calculate the moment of inertia of a uniform disc of mass 10 kg and radius 60 cm about an axis perpendicular to its plane through its centre.",
-      "answer": "I = ½MR² = ½ × 10 × (0.6)² = 1.8 kg m².",
+      "stop": "s11",
+      "kind": "MCQ",
+      "text": "The power rating of a ceiling fan rotating with a constant torque of 2 N m at an angular speed of 2π rad/s is:",
+      "options": [
+        "(a) π W",
+        "(b) 2π W",
+        "(c) 3π W",
+        "(d) 4π W"
+      ],
+      "answer": "(d) 4π W, since P = τω = 2 × 2π.",
       "points": [
         {
-          "text": "Formula I = ½MR², correct substitution (0.6 m) and final answer 1.8 kg m² with unit",
+          "text": "Correct option (d) 4π W",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "2025-Q2vi",
+      "year": 2025,
+      "qno": "Q2(vi)",
+      "marks": 1,
+      "stop": "s05",
+      "text": "State the formula for the angle of banking.",
+      "answer": "tanθ = v²/(rg), i.e. θ = tan⁻¹(v²/rg).",
+      "points": [
+        {
+          "text": "tanθ = v²/(rg), i.e. θ = tan⁻¹(v²/rg)",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "2023-Q31",
+      "year": 2023,
+      "qno": "Q31",
+      "marks": 4,
+      "stop": "s07",
+      "text": "Derive expressions for the linear velocity at the lowest position, midway position and topmost position for a particle revolving in a vertical circle, if it has to just complete circular motion without the string slackening at the top.",
+      "answer": "At the top, the critical case is T = 0, so mg = mv_{t}²/r and v_{t} = √(rg). Top to midway (fall r): v_{m}² = v_{t}² + 2gr = 3rg, so v_{m} = √(3rg). Top to bottom (fall 2r): v_{b}² = v_{t}² + 4gr = 5rg, so v_{b} = √(5rg).",
+      "points": [
+        {
+          "text": "Top, just completing the circle: T = 0, so mg = mv_{t}²/r",
+          "marks": 1
+        },
+        {
+          "text": "v_{t} = √(rg)",
+          "marks": 1
+        },
+        {
+          "text": "Midway (fall r): v_{m}² = v_{t}² + 2gr, so v_{m} = √(3rg)",
+          "marks": 1
+        },
+        {
+          "text": "Bottom (fall 2r): v_{b}² = v_{t}² + 4gr, so v_{b} = √(5rg)",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "2023-Q2v",
+      "year": 2023,
+      "qno": "Q2(v)",
+      "marks": 1,
+      "stop": "s05",
+      "text": "If friction is made zero for a road, can a vehicle move safely on this road?",
+      "answer": "Yes, only if the road is banked and the vehicle moves at the most safe speed v = √(rg tanθ). The horizontal component of the normal reaction then supplies the centripetal force.",
+      "points": [
+        {
+          "text": "Yes, only if the road is banked and the vehicle moves at the safe speed v = √(rg tanθ)",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "2022-Q19",
+      "year": 2022,
+      "qno": "Q19",
+      "marks": 3,
+      "stop": "s09",
+      "text": "Derive an expression for the kinetic energy of a body rotating with a uniform angular speed.",
+      "answer": "Each particle has v_{i} = r_{i}ω, so KE_{i} = ½m_{i}r_{i}²ω². Summing over all particles: KE = ½(Σ m_{i}r_{i}²)ω² = ½Iω². Draw a diagram of a rigid body rotating about a fixed axis.",
+      "points": [
+        {
+          "text": "Each particle: v_{i} = r_{i}ω, so KE_{i} = ½m_{i}r_{i}²ω²",
+          "marks": 1
+        },
+        {
+          "text": "Sum over all particles: KE = ½(Σ m_{i}r_{i}²)ω²",
+          "marks": 1
+        },
+        {
+          "text": "Result KE = ½Iω², with I = Σ m_{i}r_{i}²",
           "marks": 1
         }
       ]
@@ -1058,164 +1163,126 @@
       ]
     },
     {
-      "id": "2022-Q19",
+      "id": "2022-Q1vii",
       "year": 2022,
-      "qno": "Q19",
-      "marks": 3,
-      "stop": "s09",
-      "text": "Derive an expression for the kinetic energy of a body rotating with a uniform angular speed.",
-      "answer": "Each particle has v_{i} = r_{i}ω, so KE_{i} = ½m_{i}r_{i}²ω². Summing over all particles: KE = ½(Σ m_{i}r_{i}²)ω² = ½Iω². Draw a diagram of a rigid body rotating about a fixed axis.",
-      "points": [
-        {
-          "text": "Each particle: v_{i} = r_{i}ω, so KE_{i} = ½m_{i}r_{i}²ω²",
-          "marks": 1
-        },
-        {
-          "text": "Sum over all particles: KE = ½(Σ m_{i}r_{i}²)ω²",
-          "marks": 1
-        },
-        {
-          "text": "Result KE = ½Iω², with I = Σ m_{i}r_{i}²",
-          "marks": 1
-        }
-      ]
-    },
-    {
-      "id": "2023-Q2v",
-      "year": 2023,
-      "qno": "Q2(v)",
+      "qno": "Q1(vii)",
       "marks": 1,
-      "stop": "s05",
-      "text": "If friction is made zero for a road, can a vehicle move safely on this road?",
-      "answer": "Yes, only if the road is banked and the vehicle moves at the most safe speed v = √(rg tanθ). The horizontal component of the normal reaction then supplies the centripetal force.",
-      "points": [
-        {
-          "text": "Yes, only if the road is banked and the vehicle moves at the safe speed v = √(rg tanθ)",
-          "marks": 1
-        }
-      ]
-    },
-    {
-      "id": "2023-Q5",
-      "year": 2023,
-      "qno": "Q5",
-      "marks": 2,
-      "stop": "s12",
-      "text": "State and prove the principle of conservation of angular momentum.",
-      "answer": "Statement: if the net external torque on a system is zero, its angular momentum stays constant. Proof: τ = dL/dt. If τ = 0 then dL/dt = 0, so L = Iω = constant, i.e. I_{1}ω_{1} = I_{2}ω_{2}.",
-      "points": [
-        {
-          "text": "Statement: if the net external torque is zero, angular momentum stays constant",
-          "marks": 1
-        },
-        {
-          "text": "Proof: dL/dt = r × (dp/dt) = r × F = τ; with τ = 0, dL/dt = 0, so L = Iω is constant, i.e. I_{1}ω_{1} = I_{2}ω_{2}",
-          "marks": 1
-        }
-      ]
-    },
-    {
-      "id": "2023-Q31",
-      "year": 2023,
-      "qno": "Q31",
-      "marks": 4,
       "stop": "s07",
-      "text": "Derive expressions for the linear velocity at the lowest position, midway position and topmost position for a particle revolving in a vertical circle, if it has to just complete circular motion without the string slackening at the top.",
-      "answer": "At the top, the critical case is T = 0, so mg = mv_{t}²/r and v_{t} = √(rg). Top to midway (fall r): v_{m}² = v_{t}² + 2gr = 3rg, so v_{m} = √(3rg). Top to bottom (fall 2r): v_{b}² = v_{t}² + 4gr = 5rg, so v_{b} = √(5rg).",
-      "points": [
-        {
-          "text": "Top, just completing the circle: T = 0, so mg = mv_{t}²/r",
-          "marks": 1
-        },
-        {
-          "text": "v_{t} = √(rg)",
-          "marks": 1
-        },
-        {
-          "text": "Midway (fall r): v_{m}² = v_{t}² + 2gr, so v_{m} = √(3rg)",
-          "marks": 1
-        },
-        {
-          "text": "Bottom (fall 2r): v_{b}² = v_{t}² + 4gr, so v_{b} = √(5rg)",
-          "marks": 1
-        }
-      ]
-    },
-    {
-      "id": "2025-Q1viii",
-      "year": 2025,
-      "qno": "Q1(viii)",
-      "marks": 1,
-      "stop": "s11",
       "kind": "MCQ",
-      "text": "The power rating of a ceiling fan rotating with a constant torque of 2 N m at an angular speed of 2π rad/s is:",
+      "text": "A bob performs vertical circular motion on a string. The difference in tension in the string at the horizontal position and at the uppermost position is:",
       "options": [
-        "(a) π W",
-        "(b) 2π W",
-        "(c) 3π W",
-        "(d) 4π W"
+        "(a) mg",
+        "(b) 2mg",
+        "(c) 3mg",
+        "(d) 6mg"
       ],
-      "answer": "(d) 4π W, since P = τω = 2 × 2π.",
+      "answer": "(c) 3mg. Reason: T_{top} = mv_{t}²/r − mg and T_{horizontal} = mv_{h}²/r. Also v_{h}² = v_{t}² + 2gr, so T_{h} − T_{top} = 2mg + mg = 3mg.",
       "points": [
         {
-          "text": "Correct option (d) 4π W",
+          "text": "Correct option (c) 3mg",
           "marks": 1
         }
       ]
     },
     {
-      "id": "2025-Q2vi",
-      "year": 2025,
-      "qno": "Q2(vi)",
+      "id": "2022-Q2viii",
+      "year": 2022,
+      "qno": "Q2(viii)",
       "marks": 1,
-      "stop": "s05",
-      "text": "State the formula for the angle of banking.",
-      "answer": "tanθ = v²/(rg), i.e. θ = tan⁻¹(v²/rg).",
+      "stop": "s09",
+      "text": "Calculate the moment of inertia of a uniform disc of mass 10 kg and radius 60 cm about an axis perpendicular to its plane through its centre.",
+      "answer": "I = ½MR² = ½ × 10 × (0.6)² = 1.8 kg m².",
       "points": [
         {
-          "text": "tanθ = v²/(rg), i.e. θ = tan⁻¹(v²/rg)",
+          "text": "Formula I = ½MR², correct substitution (0.6 m) and final answer 1.8 kg m² with unit",
           "marks": 1
         }
       ]
     },
     {
-      "id": "2025-Q6",
-      "year": 2025,
-      "qno": "Q6",
-      "marks": 2,
-      "stop": "s12",
-      "text": "State and prove the law of conservation of angular momentum.",
-      "answer": "Statement: if the net external torque on a system is zero, its angular momentum stays constant. Proof: τ = dL/dt. If τ = 0 then dL/dt = 0, so L = Iω = constant, i.e. I_{1}ω_{1} = I_{2}ω_{2}.",
-      "points": [
-        {
-          "text": "Statement: if the net external torque is zero, angular momentum stays constant",
-          "marks": 1
-        },
-        {
-          "text": "Proof: dL/dt = r × (dp/dt) = r × F = τ; with τ = 0, dL/dt = 0, so L = Iω is constant, i.e. I_{1}ω_{1} = I_{2}ω_{2}",
-          "marks": 1
-        }
-      ]
-    },
-    {
-      "id": "2025-Q23",
-      "year": 2025,
-      "qno": "Q23",
+      "id": "imp-s06-conical",
+      "stop": "s06",
+      "source": "Important · Balbharati",
       "marks": 3,
-      "stop": "s11",
-      "text": "A flywheel of a motor has mass 100 kg and radius 1.5 m. The motor develops a constant torque of 2000 N m. The flywheel starts from rest. Calculate the work done during the first 4 revolutions.",
-      "answer": "θ = 4 × 2π = 8π rad. W = τθ = 2000 × 8π = 16000π J ≈ 5.03 × 10^{4} J (with π = 3.142, W = 50 272 J). The mass and radius are not needed.",
+      "kind": "Derivation",
+      "text": "Obtain an expression for the period of a conical pendulum. State the factors on which its period depends.",
+      "answer": "Resolve string tension T₀ into vertical and horizontal components: T₀ cosθ = mg and T₀ sinθ = mrω² (with r = L sinθ). Dividing gives ω² = g / (L cosθ), so ω = √(g / (L cosθ)). Since T = 2π/ω, the period is T = 2π√(L cosθ / g). It depends on length L, semi-vertical angle θ, and acceleration due to gravity g (independent of the bob mass).",
       "points": [
         {
-          "text": "Angle turned in 4 revolutions: θ = 4 × 2π = 8π rad",
+          "text": "Force balance equations: T₀ cosθ = mg and T₀ sinθ = mrω²",
           "marks": 1
         },
         {
-          "text": "Formula W = τθ with correct substitution, W = 2000 × 8π",
+          "text": "Substitute r = L sinθ and obtain T = 2π√(L cosθ / g)",
           "marks": 1
         },
         {
-          "text": "Final answer 16000π J ≈ 5.03 × 10^{4} J with unit",
+          "text": "State factors: length L, angle θ, and g (independent of mass)",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "imp-s10-parallel",
+      "stop": "s10",
+      "source": "Important · Balbharati",
+      "marks": 3,
+      "kind": "Derivation",
+      "text": "State and prove the theorem of parallel axes for moment of inertia.",
+      "answer": "Statement: The moment of inertia I_{o} of a body about any axis equals its moment of inertia I_{c} about a parallel axis through its centre of mass plus Mh², where M is the mass and h is the perpendicular distance between the two axes (I_{o} = I_{c} + Mh²). Proof: Take C at the origin and O at (−h, 0). For mass element dm at (x, y), I_{o} = ∫[(x + h)² + y²] dm = ∫(x² + y²) dm + 2h∫x dm + h²∫dm = I_{c} + 0 + Mh² (since ∫x dm = 0 about the centre of mass).",
+      "points": [
+        {
+          "text": "Clear statement and formula I_{o} = I_{c} + Mh²",
+          "marks": 1
+        },
+        {
+          "text": "Setup with element dm and expansion ∫[(x + h)² + y²] dm",
+          "marks": 1
+        },
+        {
+          "text": "Use ∫x dm = 0 about centre of mass to arrive at I_{o} = I_{c} + Mh²",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "imp-s13-rolling",
+      "stop": "s13",
+      "source": "Important · Balbharati",
+      "marks": 3,
+      "kind": "Derivation",
+      "text": "Derive expressions for the linear speed at the bottom and linear acceleration of a rigid body rolling without slipping down an inclined plane of height h and inclination θ.",
+      "answer": "By conservation of energy: Mgh = ½Mv² + ½Iω² = ½Mv²(1 + K²/R²), giving v = √[2gh / (1 + K²/R²)]. Along the incline of length s = h / sinθ, using v² = 2as gives a = v²/(2s) = (g sinθ) / (1 + K²/R²).",
+      "points": [
+        {
+          "text": "Energy conservation Mgh = ½Mv²(1 + K²/R²)",
+          "marks": 1
+        },
+        {
+          "text": "Linear speed at bottom v = √[2gh / (1 + K²/R²)]",
+          "marks": 1
+        },
+        {
+          "text": "Use s = h/sinθ and v² = 2as to get a = (g sinθ)/(1 + K²/R²)",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "imp-s04-well",
+      "stop": "s04",
+      "source": "Important · Balbharati",
+      "marks": 2,
+      "kind": "Derivation",
+      "text": "Derive an expression for the minimum safe speed of a vehicle moving in a horizontal circle along the inner vertical wall of a well of death of radius r.",
+      "answer": "The normal reaction N from the vertical wall supplies the centripetal force: N = mv²/r. To prevent sliding down, the upward static friction f_{s} balances the weight: f_{s} = mg. Since f_{s} ≤ μ_{s}N, we need mg ≤ μ_{s}(mv²/r), giving v² ≥ rg/μ_{s}. Therefore, the minimum safe speed is v_{min} = √(rg / μ_{s}).",
+      "points": [
+        {
+          "text": "Force equations: N = mv²/r and f_{s} = mg",
+          "marks": 1
+        },
+        {
+          "text": "Apply f_{s} ≤ μ_{s}N to obtain v_{min} = √(rg / μ_{s})",
           "marks": 1
         }
       ]

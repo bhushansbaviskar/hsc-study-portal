@@ -155,9 +155,25 @@
   function tag(t) { return '<span class="tag">' + esc(t) + "</span>"; }
 
   /* ---------- derived data from the chapter file ---------- */
-  function boardFor(stopId) { return CH.board.filter(function (b) { return b.stop === stopId; }); }
-  function boardTag(b) { return b.year + " " + b.qno; }
-  function askedCount(stopId) { return boardFor(stopId).length; }
+  function isBoardPYQ(b) { return !!(b && b.year); }
+  function pyqAskCount(b) { return isBoardPYQ(b) ? 1 + (Array.isArray(b.alsoAsked) ? b.alsoAsked.length : 0) : 0; }
+  function boardPriorityCmp(a, b) {
+    var pa = isBoardPYQ(a) ? 1 : 0, pb = isBoardPYQ(b) ? 1 : 0;
+    if (pa !== pb) return pb - pa;                                  // previously asked PYQs always come first
+    if (pa) return pyqAskCount(b) - pyqAskCount(a) || (b.year || 0) - (a.year || 0) || b.marks - a.marks;
+    return b.marks - a.marks;
+  }
+  function boardFor(stopId) {
+    return CH.board.filter(function (b) { return b.stop === stopId; }).sort(boardPriorityCmp);
+  }
+  function boardTag(b) {
+    if (!isBoardPYQ(b)) return b.source || "Important";
+    var base = b.year + " " + b.qno;
+    return Array.isArray(b.alsoAsked) && b.alsoAsked.length ? base + " · " + b.alsoAsked.join(" · ") : base;
+  }
+  function askedCount(stopId) {
+    return CH.board.reduce(function (n, b) { return b.stop === stopId ? n + pyqAskCount(b) : n; }, 0);
+  }
   function getBoard(id) { return CH.board.filter(function (b) { return b.id === id; })[0]; }
   function getDeriv(id) { return CH.derivations.filter(function (d) { return d.id === id; })[0]; }
 
@@ -465,18 +481,19 @@
       '<div class="chips">' + bookChip(CH.book, 1, "Chapter in textbook") + "</div>" +
       '<p class="note">Textbook pages ' + esc(CH.printedPages) + ". The Drive viewer can't jump to a page, so use the PDF page number shown.</p></div>";
     h += gaugeHTML();
-    h += '<div class="tiles"><a class="tile" href="' + BASE + '/board"><b>Board questions</b><span class="muted small">' + CH.board.length + ' from 2022–2025</span></a>' +
+    var pyqN = CH.board.filter(isBoardPYQ).length, impN = CH.board.length - pyqN;
+    h += '<div class="tiles"><a class="tile" href="' + BASE + '/board"><b>Board questions</b><span class="muted small">' + pyqN + ' PYQs' + (impN ? ' + ' + impN + ' imp' : '') + '</span></a>' +
       '<a class="tile" href="' + BASE + '/derive"><b>Derivation drills</b><span class="muted small">' + CH.derivations.length + ' derivations</span></a>' +
       '<a class="tile" href="#/formulas"><b>Formula card</b><span class="muted small">All of Chapter 1</span></a></div>';
     if (isFocus()) {
       var order = CH.stops.map(function (s, i) { return { s: s, i: i, c: askedCount(s.id) }; })
         .sort(function (a, b) { return b.c - a.c || a.i - b.i; });
-      h += '<a class="card round-card" href="' + BASE + '/round"><span class="ricon">' + ICON.trophy + '</span><span class="grow"><b>Board round</b><br><span class="small muted">' + CH.board.length + " past-paper questions · by marks, most asked first or timed mock</span>" + (roundComplete() ? "<br>" + badgeHTML("map") : "") + "</span>" + ICON.chev + "</a>";
+      h += '<a class="card round-card" href="' + BASE + '/round"><span class="ricon">' + ICON.trophy + '</span><span class="grow"><b>Board round</b><br><span class="small muted">' + CH.board.length + " exam questions · PYQs first, then derived important</span>" + (roundComplete() ? "<br>" + badgeHTML("map") : "") + "</span>" + ICON.chev + "</a>";
       h += '<div class="card flist-card"><h2>Stops, most asked first</h2><ul class="flist">' + order.map(function (o) {
-        var s = o.s, d = isDone(s.id);
+        var s = o.s, d = isDone(s.id), pyqs = boardFor(s.id).filter(isBoardPYQ);
         return '<li><a class="frow" href="' + BASE + "/" + s.id + '"><span class="fnum' + (d ? " done" : "") + '">' + (d ? ICON.checkS : o.i + 1) + "</span>" +
-          '<span class="grow"><span class="t">' + esc(s.title) + '</span><span class="fmeta muted small">p. ' + s.page + (o.c ? "" : "") + "</span>" +
-          (o.c ? '<span class="tags">' + boardFor(s.id).map(function (b) { return tag(boardTag(b)); }).join("") + "</span>" : "") + "</span></a></li>";
+          '<span class="grow"><span class="t">' + esc(s.title) + '</span><span class="fmeta muted small">p. ' + s.page + "</span>" +
+          (pyqs.length ? '<span class="tags">' + pyqs.map(function (b) { return tag(boardTag(b)); }).join("") + "</span>" : "") + "</span></a></li>";
       }).join("") + "</ul></div>";
     } else {
       var doneArr = CH.stops.map(function (s) { return isDone(s.id); }), rn = CH.stops.length;
@@ -562,7 +579,10 @@
     }
     var bq = boardFor(s.id);
     if (bq.length) {
-      h += '<div class="card"><h2>Asked in board papers</h2><p class="muted small">' + bq.length + " question" + (bq.length > 1 ? "s" : "") + " from 2022–2025. Try each before you open the answer.</p>" +
+      var hasPyq = bq.some(isBoardPYQ), hasImp = bq.some(function (x) { return !isBoardPYQ(x); });
+      var bHead = hasPyq && hasImp ? "Board & important questions" : hasPyq ? "Asked in board papers" : "Important exam questions";
+      var bSub = hasPyq ? "Previously asked board questions first" + (hasImp ? ", followed by derived important questions" : "") + ". Try each before opening the answer." : "High-yield textbook question. Try it before opening the answer.";
+      h += '<div class="card"><h2>' + bHead + '</h2><p class="muted small">' + bSub + "</p>" +
         bq.map(function (q) { return boardCard(q, false); }).join("") + "</div>";
     }
     h += noteBox(s.id);
@@ -727,10 +747,10 @@
   /* ---------- board page ---------- */
   function boardView() {
     setHeader("Board questions", BASE, { xp: true, tab: "map" });
-    var h = '<div class="card"><p>All Chapter 1 questions from the 2022, 2023 and 2025 board papers, grouped by marks. Try each one, then check the model answer.</p>' +
+    var h = '<div class="card"><p>Previously asked Chapter 1 board questions (2022, 2023 and 2025) come first in every marks group, followed by derived important textbook questions. No duplicates.</p>' +
       '<p class="note"><b>No 2024 paper available yet.</b> Tap “Need practice” to add a question to your mistake bank.</p></div>';
     [1, 2, 3, 4].forEach(function (m) {
-      var list = CH.board.filter(function (b) { return b.marks === m; });
+      var list = CH.board.filter(function (b) { return b.marks === m; }).sort(boardPriorityCmp);
       if (!list.length) return;
       h += '<h2 class="grp">' + m + (m === 1 ? " mark" : " marks") + ' <span class="muted small">' + list.length + " question" + (list.length > 1 ? "s" : "") + "</span></h2>" +
         '<div class="card">' + list.map(function (q) { return boardCard(q, true); }).join("") + "</div>";
@@ -757,11 +777,18 @@
   function pointsNeedCheck(q) { return qPoints(q).some(function (x) { return x.needsCheck; }); }
   function modeIds(mode) {
     var all = CH.board.map(function (b, i) { return { b: b, i: i }; });
-    if (/^m[1-4]$/.test(mode)) all = all.filter(function (x) { return x.b.marks === +mode.charAt(1); });
-    else if (mode === "most") all.sort(function (a, b) {
-      return askedCount(b.b.stop) - askedCount(a.b.stop) || b.b.marks - a.b.marks || a.b.year - b.b.year || a.i - b.i;
-    });
-    else if (mode === "mock") all.sort(function (a, b) { return a.b.marks - b.b.marks || a.i - b.i; });
+    if (/^m[1-4]$/.test(mode)) {
+      all = all.filter(function (x) { return x.b.marks === +mode.charAt(1); })
+        .sort(function (a, b) { return boardPriorityCmp(a.b, b.b) || a.i - b.i; });
+    } else if (mode === "most") {
+      all.sort(function (a, b) {
+        var pa = isBoardPYQ(a.b) ? 1 : 0, pb = isBoardPYQ(b.b) ? 1 : 0;
+        if (pa !== pb) return pb - pa;
+        return pyqAskCount(b.b) - pyqAskCount(a.b) || askedCount(b.b.stop) - askedCount(a.b.stop) || b.b.marks - a.b.marks || (b.b.year || 0) - (a.b.year || 0) || a.i - b.i;
+      });
+    } else if (mode === "mock") {
+      all.sort(function (a, b) { return a.b.marks - b.b.marks || boardPriorityCmp(a.b, b.b) || a.i - b.i; });
+    }
     return all.map(function (x) { return x.b.id; });
   }
   function fmtDur(sec) {
