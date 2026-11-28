@@ -1,0 +1,102 @@
+{
+  "id": "ch04",
+  "file": "content/maths2/ch04-definite-integration.json",
+  "subject": "maths2",
+  "book": "maths2_xii",
+  "title": "Definite Integration",
+  "lite": true,
+  "startPage": 151,
+  "endPage": 177,
+  "examMarks": 4,
+  "examMarksWithOptions": 6,
+  "stops": [
+    {
+      "id": "s01",
+      "title": "Fundamental theorem of calculus & Properties of definite integrals",
+      "page": 151,
+      "inShort": "∫_a^b f(x) dx = F(b) − F(a). King's property: ∫_a^b f(x) dx = ∫_a^b f(a + b − x) dx; ∫_0^a f(x) dx = ∫_0^a f(a − x) dx. For even/odd functions on [−a, a]: 2∫_0^a f(x) dx if even, 0 if odd.",
+      "sections": [
+        "4.1 Definite Integral",
+        "4.2 Properties of Definite Integrals"
+      ]
+    },
+    {
+      "id": "s02",
+      "title": "Reduction & Limit of a sum",
+      "page": 170,
+      "inShort": "∫_0^(2a) f(x) dx = 2∫_0^a f(x) dx if f(2a−x) = f(x), and 0 if f(2a−x) = −f(x).",
+      "sections": [
+        "4.2 Properties (continued)"
+      ]
+    }
+  ],
+  "formulas": [
+    {
+      "stop": "s01",
+      "items": [
+        {
+          "n": "King's properties",
+          "f": "∫_0^a f(x) dx = ∫_0^a f(a − x) dx;  ∫_a^b f(x) dx = ∫_a^b f(a + b − x) dx",
+          "s": "Most frequently tested 4-mark proof & numerical tool.",
+          "p": 161
+        },
+        {
+          "n": "Symmetric interval [−a, a]",
+          "f": "∫_{−a}^a f(x) dx = 2∫_0^a f(x) dx (even),  0 (odd)",
+          "s": "f(−x) = f(x) even; f(−x) = −f(x) odd.",
+          "p": 164
+        }
+      ]
+    }
+  ],
+  "board": [
+    {
+      "id": "m2c4-imp-s01-king",
+      "stop": "s01",
+      "source": "Important · Balbharati",
+      "marks": 4,
+      "kind": "proof",
+      "page": 161,
+      "text": "Prove that ∫_0^a f(x) dx = ∫_0^a f(a − x) dx and hence evaluate ∫_0^(π/2) √(sin x) / (√(sin x) + √(cos x)) dx.",
+      "answer": "Proof: Put x = a − t ⇒ dx = −dt. When x = 0, t = a; when x = a, t = 0.\n∫_0^a f(x) dx = ∫_a^0 f(a − t)(−dt) = ∫_0^a f(a − t) dt = ∫_0^a f(a − x) dx.\nEvaluation: Let I = ∫_0^(π/2) √(sin x)/(√(sin x) + √(cos x)) dx.\nUsing property: I = ∫_0^(π/2) √(cos x)/(√(cos x) + √(sin x)) dx.\nAdding: 2I = ∫_0^(π/2) 1 dx = π/2 ⇒ I = π/4.",
+      "points": [
+        {
+          "text": "Proof using substitution x = a − t",
+          "marks": 2
+        },
+        {
+          "text": "Applying property to I and adding 2I = ∫_0^(π/2) 1 dx",
+          "marks": 1
+        },
+        {
+          "text": "Final answer I = π/4",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "m2c4-imp-s01-log",
+      "stop": "s01",
+      "source": "Important · Balbharati",
+      "marks": 3,
+      "kind": "problem",
+      "page": 165,
+      "text": "Evaluate: ∫_0^(π/4) log(1 + tan x) dx.",
+      "answer": "Let I = ∫_0^(π/4) log(1 + tan x) dx.\nUsing ∫_0^a f(x) dx = ∫_0^a f(a − x) dx:\nI = ∫_0^(π/4) log(1 + tan(π/4 − x)) dx = ∫_0^(π/4) log(1 + (1 − tan x)/(1 + tan x)) dx = ∫_0^(π/4) log(2 / (1 + tan x)) dx.\nI = ∫_0^(π/4) log 2 dx − I ⇒ 2I = (π/4) log 2 ⇒ I = (π/8) log 2.",
+      "points": [
+        {
+          "text": "Applying ∫_0^a f(a−x) dx and tan(π/4 − x)",
+          "marks": 1
+        },
+        {
+          "text": "Simplifying to log(2/(1+tan x))",
+          "marks": 1
+        },
+        {
+          "text": "2I = (π/4) log 2 ⇒ I = (π/8) log 2",
+          "marks": 1
+        }
+      ]
+    }
+  ]
+}

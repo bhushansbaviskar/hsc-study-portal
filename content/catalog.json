@@ -624,7 +624,11 @@
           "estStops": 12,
           "marks": 7,
           "marksWithOptions": 10,
-          "prefix": "m2c3-"
+          "prefix": "m2c3-",
+          "file": "content/maths2/ch03-indefinite-integration.json",
+          "lite": true,
+          "stopCount": 3,
+          "boardCount": 4
         },
         {
           "id": "ch04",
@@ -633,7 +637,11 @@
           "estStops": 10,
           "marks": 4,
           "marksWithOptions": 6,
-          "prefix": "m2c4-"
+          "prefix": "m2c4-",
+          "file": "content/maths2/ch04-definite-integration.json",
+          "lite": true,
+          "stopCount": 2,
+          "boardCount": 2
         },
         {
           "id": "ch05",
@@ -642,7 +650,11 @@
           "estStops": 8,
           "marks": 3,
           "marksWithOptions": 4,
-          "prefix": "m2c5-"
+          "prefix": "m2c5-",
+          "file": "content/maths2/ch05-application-of-definite-integration.json",
+          "lite": true,
+          "stopCount": 1,
+          "boardCount": 2
         },
         {
           "id": "ch06",
@@ -651,7 +663,11 @@
           "estStops": 12,
           "marks": 6,
           "marksWithOptions": 8,
-          "prefix": "m2c6-"
+          "prefix": "m2c6-",
+          "file": "content/maths2/ch06-differential-equations.json",
+          "lite": true,
+          "stopCount": 3,
+          "boardCount": 3
         },
         {
           "id": "ch07",
@@ -660,7 +676,11 @@
           "estStops": 10,
           "marks": 4,
           "marksWithOptions": 5,
-          "prefix": "m2c7-"
+          "prefix": "m2c7-",
+          "file": "content/maths2/ch07-probability-distributions.json",
+          "lite": true,
+          "stopCount": 2,
+          "boardCount": 2
         },
         {
           "id": "ch08",
@@ -669,7 +689,11 @@
           "estStops": 8,
           "marks": 4,
           "marksWithOptions": 5,
-          "prefix": "m2c8-"
+          "prefix": "m2c8-",
+          "file": "content/maths2/ch08-binomial-distribution.json",
+          "lite": true,
+          "stopCount": 1,
+          "boardCount": 2
         }
       ]
     }

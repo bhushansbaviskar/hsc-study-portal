@@ -1,0 +1,176 @@
+{
+  "id": "ch03",
+  "file": "content/maths2/ch03-indefinite-integration.json",
+  "subject": "maths2",
+  "book": "maths2_xii",
+  "title": "Indefinite Integration",
+  "lite": true,
+  "startPage": 95,
+  "endPage": 150,
+  "examMarks": 7,
+  "examMarksWithOptions": 10,
+  "stops": [
+    {
+      "id": "s01",
+      "title": "Standard integrals & Integration by substitution",
+      "page": 95,
+      "inShort": "∫ f'(x)/f(x) dx = log|f(x)| + c. ∫ [f(x)]^n f'(x) dx = [f(x)]^(n+1)/(n+1) + c. ∫ e^x [f(x) + f'(x)] dx = e^x f(x) + c.",
+      "sections": [
+        "3.1 Elementary Integration",
+        "3.2 Integration by Substitution"
+      ]
+    },
+    {
+      "id": "s02",
+      "title": "Special integrals (1/(ax²+bx+c), 1/√(ax²+bx+c))",
+      "page": 112,
+      "inShort": "∫ dx/(x² − a²) = (1/2a) log|(x−a)/(x+a)| + c; ∫ dx/(x² + a²) = (1/a) tan⁻¹(x/a) + c; ∫ dx/√(a² − x²) = sin⁻¹(x/a) + c.",
+      "sections": [
+        "3.2.2 Integrals of Special Forms"
+      ]
+    },
+    {
+      "id": "s03",
+      "title": "Integration by parts & Partial fractions",
+      "page": 125,
+      "inShort": "LIATE rule for ∫ u v dx = u ∫ v dx − ∫ [ (du/dx) ∫ v dx ] dx. Partial fractions decompose proper rational functions P(x)/Q(x) into linear and quadratic factors.",
+      "sections": [
+        "3.3 Integration by Parts",
+        "3.4 Integration by Partial Fractions"
+      ]
+    }
+  ],
+  "formulas": [
+    {
+      "stop": "s01",
+      "items": [
+        {
+          "n": "e^x [f(x) + f'(x)]",
+          "f": "∫ e^x [f(x) + f'(x)] dx = e^x f(x) + c",
+          "s": "Also ∫ f'(x)/f(x) dx = log|f(x)| + c.",
+          "p": 108
+        }
+      ]
+    },
+    {
+      "stop": "s02",
+      "items": [
+        {
+          "n": "Standard quadratic integrals",
+          "f": "∫ dx/(x²−a²) = (1/2a) log|(x−a)/(x+a)| + c,  ∫ dx/(x²+a²) = (1/a) tan⁻¹(x/a) + c",
+          "s": "Complete the square for general ax² + bx + c.",
+          "p": 113
+        }
+      ]
+    },
+    {
+      "stop": "s03",
+      "items": [
+        {
+          "n": "Integration by parts (LIATE)",
+          "f": "∫ u v dx = u ∫ v dx − ∫ (u' ∫ v dx) dx",
+          "s": "Order of u: Logarithmic, Inverse trig, Algebraic, Trig, Exponential.",
+          "p": 125
+        }
+      ]
+    }
+  ],
+  "board": [
+    {
+      "id": "m2c3-2025-Q1vii",
+      "stop": "s01",
+      "year": 2025,
+      "qno": "Q1(vii)",
+      "marks": 2,
+      "kind": "mcq",
+      "page": 104,
+      "text": "The value of ∫ x^x (1 + log x) dx is equal to ____.",
+      "options": [
+        "½(1 + log x)² + c",
+        "x^x + c",
+        "x^x log x + c",
+        "e^x + c"
+      ],
+      "answerIndex": 1,
+      "answer": "(b) x^x + c (since d/dx(x^x) = x^x (1 + log x)).",
+      "points": [
+        {
+          "text": "Correct option: (b) x^x + c",
+          "marks": 2
+        }
+      ]
+    },
+    {
+      "id": "m2c3-2023-Q1vi",
+      "stop": "s01",
+      "year": 2023,
+      "qno": "Q1(vi)",
+      "marks": 2,
+      "kind": "mcq",
+      "page": 100,
+      "text": "∫ cos³x dx = ____.",
+      "options": [
+        "(3/4)sin x + (1/12)sin 3x + c",
+        "(1/4)sin 3x + (3/4)sin x + c",
+        "(1/12)sin 3x + (3/4)sin x + c",
+        "(1/12)sin 3x − (3/4)sin x + c"
+      ],
+      "answerIndex": 2,
+      "answer": "(c) (1/12) sin 3x + (3/4) sin x + c (using cos³x = (cos 3x + 3 cos x)/4).",
+      "points": [
+        {
+          "text": "Correct option: (c) (1/12)sin 3x + (3/4)sin x + c",
+          "marks": 2
+        }
+      ]
+    },
+    {
+      "id": "m2c3-2022-Q1vii",
+      "stop": "s02",
+      "year": 2022,
+      "qno": "Q1(vii)",
+      "marks": 2,
+      "kind": "mcq",
+      "page": 113,
+      "text": "If ∫ dx / (4x² − 1) = A log((2x − 1)/(2x + 1)) + c, then A = ____.",
+      "options": [
+        "1/3",
+        "1/2",
+        "1/4",
+        "1"
+      ],
+      "answerIndex": 2,
+      "answer": "(c) 1/4 (1/4 ∫ dx/(x² − (1/2)²) = (1/4) · (1/(2·1/2)) log|(2x−1)/(2x+1)| = (1/4) log|(2x−1)/(2x+1)|).",
+      "points": [
+        {
+          "text": "Correct option: (c) 1/4",
+          "marks": 2
+        }
+      ]
+    },
+    {
+      "id": "m2c3-imp-s03-parts",
+      "stop": "s03",
+      "source": "Important · Balbharati",
+      "marks": 3,
+      "kind": "proof",
+      "page": 129,
+      "text": "Evaluate: ∫ √(a² − x²) dx.",
+      "answer": "Let I = ∫ √(a² − x²) · 1 dx. Using integration by parts:\nI = √(a² − x²) · x − ∫ [ (−2x / 2√(a² − x²)) · x ] dx\n= x√(a² − x²) + ∫ x²/√(a² − x²) dx = x√(a² − x²) + ∫ [a² − (a² − x²)]/√(a² − x²) dx\n= x√(a² − x²) + a² sin⁻¹(x/a) − I\n⇒ 2I = x√(a² − x²) + a² sin⁻¹(x/a)\n⇒ I = (x/2)√(a² − x²) + (a²/2) sin⁻¹(x/a) + c.",
+      "points": [
+        {
+          "text": "Integration by parts with u = √(a²−x²), v = 1",
+          "marks": 1
+        },
+        {
+          "text": "Algebraic split x² = a² − (a² − x²)",
+          "marks": 1
+        },
+        {
+          "text": "Final formula (x/2)√(a²−x²) + (a²/2)sin⁻¹(x/a) + c",
+          "marks": 1
+        }
+      ]
+    }
+  ]
+}

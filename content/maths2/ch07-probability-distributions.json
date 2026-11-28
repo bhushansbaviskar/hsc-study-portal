@@ -1,0 +1,97 @@
+{
+  "id": "ch07",
+  "file": "content/maths2/ch07-probability-distributions.json",
+  "subject": "maths2",
+  "book": "maths2_xii",
+  "title": "Probability Distributions",
+  "lite": true,
+  "startPage": 219,
+  "endPage": 244,
+  "examMarks": 4,
+  "examMarksWithOptions": 5,
+  "stops": [
+    {
+      "id": "s01",
+      "title": "Discrete random variable, PMF, Expected value & Variance",
+      "page": 219,
+      "inShort": "For discrete r.v. X with PMF P(x_i) ≥ 0 and ∑P(x_i) = 1: Mean E(X) = ∑ x_i P(x_i). Variance Var(X) = E(X²) − [E(X)]², SD = √Var(X).",
+      "sections": [
+        "7.1 Random Variables",
+        "7.2 Discrete Random Variable & PMF",
+        "7.3 Expected Value and Variance"
+      ]
+    },
+    {
+      "id": "s02",
+      "title": "Continuous random variable & PDF",
+      "page": 235,
+      "inShort": "For continuous r.v. X with PDF f(x) ≥ 0 and ∫_{-∞}^∞ f(x) dx = 1: P(a ≤ X ≤ b) = ∫_a^b f(x) dx. CDF F(x) = ∫_{-∞}^x f(t) dt.",
+      "sections": [
+        "7.4 Continuous Random Variable & PDF"
+      ]
+    }
+  ],
+  "formulas": [
+    {
+      "stop": "s01",
+      "items": [
+        {
+          "n": "Mean & Variance (Discrete r.v.)",
+          "f": "E(X) = ∑ x_i p_i,  Var(X) = ∑ x_i² p_i − [E(X)]²",
+          "s": "∑ p_i = 1.",
+          "p": 226
+        }
+      ]
+    }
+  ],
+  "board": [
+    {
+      "id": "m2c7-2022-Q1viii",
+      "stop": "s01",
+      "year": 2022,
+      "qno": "Q1(viii)",
+      "marks": 2,
+      "kind": "mcq",
+      "page": 227,
+      "text": "If the p.m.f. of a r.v. X is P(x) = c / x³ for x = 1, 2, 3 and 0 otherwise, then E(X) = ____.",
+      "options": [
+        "216/251",
+        "294/251",
+        "297/294",
+        "294/297"
+      ],
+      "answerIndex": 1,
+      "answer": "(b) 294/251 (∑P(x) = c(1 + 1/8 + 1/27) = c(251/216) = 1 ⇒ c = 216/251. E(X) = c(1 + 2/8 + 3/27) = (216/251)(1 + 1/4 + 1/9) = (216/251)(49/36) = 294/251).",
+      "points": [
+        {
+          "text": "Correct option: (b) 294/251",
+          "marks": 2
+        }
+      ]
+    },
+    {
+      "id": "m2c7-imp-s01-ev",
+      "stop": "s01",
+      "source": "Important · Balbharati",
+      "marks": 3,
+      "kind": "numerical",
+      "page": 228,
+      "text": "Find expected value and variance of X, where X is the number obtained on uppermost face when a fair die is thrown.",
+      "answer": "X = {1, 2, 3, 4, 5, 6}, each with P(x) = 1/6.\nE(X) = (1+2+3+4+5+6)/6 = 21/6 = 3.5.\nE(X²) = (1+4+9+16+25+36)/6 = 91/6.\nVar(X) = E(X²) − [E(X)]² = 91/6 − 49/4 = (182 − 147)/12 = 35/12 ≈ 2.917.",
+      "points": [
+        {
+          "text": "E(X) = 3.5",
+          "marks": 1
+        },
+        {
+          "text": "E(X²) = 91/6",
+          "marks": 1
+        },
+        {
+          "text": "Var(X) = 35/12",
+          "marks": 1
+        }
+      ]
+    }
+  ]
+}

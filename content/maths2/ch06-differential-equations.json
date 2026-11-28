@@ -1,0 +1,122 @@
+{
+  "id": "ch06",
+  "file": "content/maths2/ch06-differential-equations.json",
+  "subject": "maths2",
+  "book": "maths2_xii",
+  "title": "Differential Equations",
+  "lite": true,
+  "startPage": 191,
+  "endPage": 218,
+  "examMarks": 6,
+  "examMarksWithOptions": 8,
+  "stops": [
+    {
+      "id": "s01",
+      "title": "Order, degree & formation of differential equations",
+      "page": 191,
+      "inShort": "Order = highest order derivative present. Degree = highest power of highest order derivative after clearing radicals/fractions. Eliminating n arbitrary constants gives an nth-order DE.",
+      "sections": [
+        "6.1 Differential Equation",
+        "6.2 Order and Degree",
+        "6.3 Formation of DE"
+      ]
+    },
+    {
+      "id": "s02",
+      "title": "Variable separable, Homogeneous & Linear DEs",
+      "page": 198,
+      "inShort": "Variable separable: f(x)dx = g(y)dy. Homogeneous: dy/dx = f(y/x) ⇒ put y = vx. Linear DE: dy/dx + Py = Q ⇒ IF = e^(∫ P dx), solution: y · IF = ∫ (Q · IF) dx + c.",
+      "sections": [
+        "6.4 Solution of DE",
+        "6.4.1 Variable Separable",
+        "6.4.2 Homogeneous DE",
+        "6.4.3 Linear DE"
+      ]
+    },
+    {
+      "id": "s03",
+      "title": "Applications (Population growth, Radioactive decay, Newton's law of cooling)",
+      "page": 212,
+      "inShort": "dP/dt = kP ⇒ P = P₀ e^(kt). Newton's law of cooling: dθ/dt = −k(θ − θ₀).",
+      "sections": [
+        "6.5 Applications of Differential Equations"
+      ]
+    }
+  ],
+  "formulas": [
+    {
+      "stop": "s02",
+      "items": [
+        {
+          "n": "Linear differential equation",
+          "f": "dy/dx + P y = Q ⇒ I.F. = e^(∫ P dx),  y·I.F. = ∫ (Q · I.F.) dx + c",
+          "s": "P and Q are functions of x only.",
+          "p": 207
+        }
+      ]
+    }
+  ],
+  "board": [
+    {
+      "id": "m2c6-2025-Q2iii",
+      "stop": "s01",
+      "year": 2025,
+      "qno": "Q2(iii)",
+      "marks": 1,
+      "kind": "vsa",
+      "page": 192,
+      "text": "Write the order of the differential equation √(1 + (dy/dx)²) = (d²y/dx²)^(3/2).",
+      "answer": "Order = 2 (highest derivative is d²y/dx²).",
+      "points": [
+        {
+          "text": "Order = 2",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "m2c6-2023-Q1vii",
+      "stop": "s02",
+      "year": 2023,
+      "qno": "Q1(vii)",
+      "marks": 2,
+      "kind": "mcq",
+      "page": 199,
+      "text": "The solution of the differential equation dx/dt = x log x / t is ____.",
+      "options": [
+        "x = e^(ct)",
+        "x = e^t + c",
+        "x = c e^t",
+        "log x = c t"
+      ],
+      "answerIndex": 0,
+      "answer": "(a) x = e^(ct) (dx/(x log x) = dt/t ⇒ log(log x) = log t + log c ⇒ log x = ct ⇒ x = e^(ct)).",
+      "points": [
+        {
+          "text": "Correct option: (a) x = e^(ct)",
+          "marks": 2
+        }
+      ]
+    },
+    {
+      "id": "m2c6-imp-s02-linear",
+      "stop": "s02",
+      "source": "Important · Balbharati",
+      "marks": 3,
+      "kind": "problem",
+      "page": 208,
+      "text": "Solve the differential equation: dy/dx + y/x = x².",
+      "answer": "Linear DE with P = 1/x, Q = x².\nI.F. = e^(∫ (1/x) dx) = e^(log x) = x.\nSolution: y · x = ∫ (x² · x) dx + c = ∫ x³ dx + c = x⁴/4 + c.\nThus x y = x⁴/4 + c.",
+      "points": [
+        {
+          "text": "Identifying P = 1/x, Q = x² and I.F. = x",
+          "marks": 1.5
+        },
+        {
+          "text": "Integrating y·x = ∫ x³ dx + c ⇒ xy = x⁴/4 + c",
+          "marks": 1.5
+        }
+      ]
+    }
+  ]
+}

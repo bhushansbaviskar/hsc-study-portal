@@ -1,0 +1,83 @@
+{
+  "id": "ch05",
+  "file": "content/maths2/ch05-application-of-definite-integration.json",
+  "subject": "maths2",
+  "book": "maths2_xii",
+  "title": "Application of Definite Integration",
+  "lite": true,
+  "startPage": 178,
+  "endPage": 190,
+  "examMarks": 3,
+  "examMarksWithOptions": 4,
+  "stops": [
+    {
+      "id": "s01",
+      "title": "Area under a curve & Area between two curves",
+      "page": 178,
+      "inShort": "Area bounded by y = f(x), X-axis, x = a, x = b is A = ∫_a^b |y| dx. Area between two curves y = f(x) and y = g(x) (where f(x) ≥ g(x)): A = ∫_a^b [f(x) − g(x)] dx.",
+      "sections": [
+        "5.1 Area Under a Curve",
+        "5.2 Area Between Two Curves"
+      ]
+    }
+  ],
+  "formulas": [
+    {
+      "stop": "s01",
+      "items": [
+        {
+          "n": "Area under curve & between curves",
+          "f": "A = ∫_a^b |f(x)| dx,  A = ∫_a^b |f(x) − g(x)| dx",
+          "s": "Split integral where curve crosses X-axis.",
+          "p": 179
+        }
+      ]
+    }
+  ],
+  "board": [
+    {
+      "id": "m2c5-2025-Q1viii",
+      "stop": "s01",
+      "year": 2025,
+      "qno": "Q1(viii)",
+      "marks": 2,
+      "kind": "mcq",
+      "page": 180,
+      "text": "The area bounded by the line y = x, X-axis and the lines x = −1 and x = 4 is equal to ____ (in square units).",
+      "options": [
+        "17/2",
+        "8",
+        "15/2",
+        "17"
+      ],
+      "answerIndex": 0,
+      "answer": "(a) 17/2 (A = ∫_{−1}^0 (−x) dx + ∫_0^4 x dx = [−x²/2]_{−1}^0 + [x²/2]_0^4 = 1/2 + 8 = 17/2).",
+      "points": [
+        {
+          "text": "Correct option: (a) 17/2",
+          "marks": 2
+        }
+      ]
+    },
+    {
+      "id": "m2c5-imp-s01-parab",
+      "stop": "s01",
+      "source": "Important · Balbharati",
+      "marks": 3,
+      "kind": "problem",
+      "page": 184,
+      "text": "Find the area of the region bounded by the parabola y² = 4ax and its latus rectum.",
+      "answer": "Latus rectum is x = a. By symmetry about X-axis:\nArea A = 2 ∫_0^a √(4ax) dx = 4√a [ (2/3) x^(3/2) ]_0^a = (8/3) a² sq. units.",
+      "points": [
+        {
+          "text": "Setting up symmetric integral A = 2 ∫_0^a 2√(ax) dx",
+          "marks": 1.5
+        },
+        {
+          "text": "Evaluation giving (8/3) a² sq. units",
+          "marks": 1.5
+        }
+      ]
+    }
+  ]
+}
