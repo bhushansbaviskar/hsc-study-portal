@@ -340,6 +340,32 @@ async function runSuiteForViewport(browser, baseUrl, vp) {
   await snap(page, vp, "home-focus-sprint");
   console.log("PASS: P5 3 subject countdowns, Today's Focus, and Final 10-Day Sprint banner");
 
+  // 12. P6: Exam Cockpit (#/revise/physics & #/revise/maths) with seeded st.graduated item
+  await page.evaluate(() => {
+    const st = JSON.parse(localStorage.getItem("hscPrep.v2") || "{}");
+    st.graduated = { "c|physics:ch01|s01|0": Date.now() };
+    localStorage.setItem("hscPrep.v2", JSON.stringify(st));
+  });
+  await page.goto(baseUrl + "/#/revise/physics", { waitUntil: "networkidle0" });
+  await page.waitForSelector(".const-grid");
+  const revChecks = await page.evaluate(() => ({
+    secs: document.querySelectorAll(".rev-sec").length,
+    hasGrad: document.querySelector("#app").textContent.includes("Graduated")
+  }));
+  assert.strictEqual(revChecks.secs, 6, "Cockpit must render all 6 sections");
+  assert.ok(revChecks.hasGrad, "Section 4 must resurface seeded graduated mistake");
+  await page.$eval('[data-act="revise-pack"][data-idx="0"]', (el) => el.scrollIntoView({ block: "center" }));
+  await page.click('[data-act="revise-pack"][data-idx="0"]');
+  await page.reload({ waitUntil: "networkidle0" });
+  await page.waitForSelector('[data-act="revise-pack"][data-idx="0"]');
+  assert.strictEqual(await page.$eval('[data-act="revise-pack"][data-idx="0"]', (el) => el.checked), true, "Packing checklist must persist in sessionStorage");
+  await checkLayout(page, "Revise cockpit physics");
+  await snap(page, vp, "revise-cockpit");
+  await page.goto(baseUrl + "/#/revise/maths", { waitUntil: "networkidle0" });
+  await page.waitForSelector(".rev-sec");
+  assert.strictEqual(await page.$$eval(".rev-sec", (els) => els.length), 6, "Maths cockpit must render 6 sections");
+  console.log("PASS: P6 Exam Cockpit (#/revise/physics & #/revise/maths) with 6 sections & packing checklist");
+
   assert.strictEqual(errors.length, 0, `Unexpected console/page errors: ${errors.join("; ")}`);
   await ctx.close();
 }

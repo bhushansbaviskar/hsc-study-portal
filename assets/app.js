@@ -3228,6 +3228,17 @@
         var bval = t.getAttribute("data-boost") || "balanced";
         return saveTeacherPatch(bsid, function (td) { td.subjectBoost = bval; }, "Weekly focus set to " + bval + ".");
       }
+      case "revise-pack": {
+        var rpk = t.getAttribute("data-pk") || "physics";
+        var rpi = t.getAttribute("data-idx");
+        try {
+          var keyS = "hscPrep.pack." + rpk;
+          var cur = JSON.parse(sessionStorage.getItem(keyS) || "{}");
+          cur[rpi] = !cur[rpi];
+          sessionStorage.setItem(keyS, JSON.stringify(cur));
+        } catch (e) {}
+        return;
+      }
     }
   });
   if (previewBarEl) {
@@ -3692,6 +3703,124 @@
     };
   }
 
+  /* ---------- P6: Last-Week & Exam-Day Cockpit ---------- */
+  var PHY_CONSTANTS = [
+    ["g", "9.8 m/s²"], ["G", "6.67 × 10⁻¹¹ N·m²/kg²"], ["R", "8.314 J/(mol·K)"],
+    ["N_A", "6.022 × 10²³ mol⁻¹"], ["h", "6.63 × 10⁻³⁴ J·s"], ["c", "3 × 10⁸ m/s"],
+    ["e", "1.6 × 10⁻¹⁹ C"], ["ε₀", "8.85 × 10⁻¹² C²/(N·m²)"], ["μ₀", "4π × 10⁻⁷ Wb/(A·m)"],
+    ["k_B", "1.38 × 10⁻²³ J/K"], ["F", "96500 C/mol"], ["σ", "5.67 × 10⁻⁸ W/(m²·K⁴)"]
+  ];
+  var PACK_ITEMS = [
+    "Original HSC Hall Ticket + School/College ID",
+    "2 blue/black ball pens + extra refills",
+    "Sharpened pencil, eraser, 30 cm ruler & geometry box",
+    "Clear water bottle (no calculators / smartwatches — log tables supplied by board)"
+  ];
+  function reviseView(paperKey) {
+    var pk = paperKey && (catalog.paperGroups || {})[paperKey] ? paperKey : "physics";
+    var pg = (catalog.paperGroups || {})[pk] || { title: pk, paperMarks: 70, subjects: [pk] };
+    setHeader(pg.title + " · Exam Cockpit", "#/", { xp: true, tab: "home" });
+    var st = load();
+    var chKeys = paperKeysList(pk);
+    var chObjs = chKeys.map(function (k) { return CHAPTERS[k]; }).filter(Boolean);
+    var phase = studyPhase(pk, st);
+
+    var h = '<div class="pills-row noprint">' + ["physics", "chemistry", "maths"].map(function (k) {
+      return '<a class="pill-btn" href="#/revise/' + k + '" aria-pressed="' + (k === pk) + '">' + esc((catalog.paperGroups[k] || {}).title || k) + "</a>";
+    }).join("") + "</div>";
+
+    h += '<div class="card"><div class="row"><div class="grow"><h2>' + esc(pg.title) + " · Final Revision Cockpit</h2>" +
+      '<p class="muted small">' + esc(phase.label) + (phase.daysLeft != null ? " · " + phase.daysLeft + " days to exam" : "") + " · " + chObjs.length + " chapters</p></div>" +
+      '<button type="button" class="btn primary sm noprint" onclick="window.print()">Print Revision Pack</button></div></div>';
+
+    // 1. Master Formula / Reaction Sheet
+    var fGroups = [];
+    chObjs.forEach(function (ch) {
+      (ch.formulas || []).forEach(function (g) {
+        (g.items || []).forEach(function (it) { fGroups.push({ ch: ch, it: it }); });
+      });
+    });
+    h += '<div class="card rev-sec"><h2>1. Master ' + (pk === "chemistry" ? "Formula & Reaction" : "Formula") + " Sheet (" + fGroups.length + ")</h2>" +
+      '<div class="noprint" style="margin-bottom:8px"><a class="btn ghost sm" href="#/formulas">Open Active-Recall Flashcards</a></div>' +
+      '<div class="f-grid">' + fGroups.slice(0, 40).map(function (x) {
+        return '<div class="frm"><div class="fn">' + esc(x.it.n) + '<span class="fp">' + esc(chShortLabel(x.ch)) + " p." + esc(x.it.p) + '</span></div><div class="ff">' + fm(x.it.f) + "</div>" + (x.it.s ? '<div class="fs">' + fm(x.it.s) + "</div>" : "") + "</div>";
+      }).join("") + "</div></div>";
+
+    // 2. Derivation & Proof Skeletons
+    var derivs = [];
+    chObjs.forEach(function (ch) {
+      (ch.derivations || []).forEach(function (d) { derivs.push({ ch: ch, d: d }); });
+    });
+    h += '<div class="card rev-sec pbreak"><h2>2. Derivation &amp; Proof Skeletons (' + derivs.length + ")</h2>" +
+      (derivs.length ? derivs.map(function (x) {
+        return '<details class="how"><summary>' + fm(x.d.title) + " (" + esc(chShortLabel(x.ch)) + ", p. " + esc(x.d.page) + ')</summary><ol class="dlines">' +
+          (x.d.steps || []).map(function (s) { return "<li>" + fm(s.line) + "</li>"; }).join("") + "</ol></details>";
+      }).join("") : '<p class="muted small">See high-yield derivations in Top 25 PYQs below.</p>') + "</div>";
+
+    // 3. Top 25 Most-Asked PYQs
+    var pyqs = [];
+    chObjs.forEach(function (ch) {
+      (ch.board || []).forEach(function (q) {
+        var askC = q.pyqAskCount || (Array.isArray(q.alsoAsked) ? q.alsoAsked.length + 1 : (q.year ? 1 : 0));
+        pyqs.push({ ch: ch, q: q, askC: askC });
+      });
+    });
+    pyqs.sort(function (a, b) {
+      if (b.askC !== a.askC) return b.askC - a.askC;
+      if (b.q.marks !== a.q.marks) return b.q.marks - a.q.marks;
+      return (b.q.year || 0) - (a.q.year || 0);
+    });
+    h += '<div class="card rev-sec"><h2>3. Top 25 Most-Asked Board PYQs</h2>' +
+      pyqs.slice(0, 25).map(function (x, idx) {
+        return '<details class="how"><summary><b>#' + (idx + 1) + " [" + x.q.marks + "m · " + esc(boardTag(x.q)) + "]</b> " + fm(x.q.text) + "</summary>" +
+          modelAnswerHTML(x.q, x.ch) + "</details>";
+      }).join("") + "</div>";
+
+    // 4. Resurfaced Past Mistakes (st.graduated + remaining st.bank)
+    var pastIds = [];
+    var seenM = {};
+    Object.keys(st.graduated || {}).forEach(function (id) {
+      var ck = parseId(id).chKey;
+      if (chKeys.indexOf(ck) >= 0 && itemExists(id) && !seenM[id]) { seenM[id] = true; pastIds.push({ id: id, grad: true }); }
+    });
+    Object.keys(st.bank || {}).forEach(function (id) {
+      var ck = parseId(id).chKey;
+      if (chKeys.indexOf(ck) >= 0 && itemExists(id) && !seenM[id]) { seenM[id] = true; pastIds.push({ id: id, grad: false }); }
+    });
+    h += '<div class="card rev-sec noprint"><h2>4. Resurfaced Past Mistakes (' + pastIds.length + ")</h2>" +
+      (pastIds.length ? '<ul class="t-list">' + pastIds.slice(0, 15).map(function (m) {
+        return '<li><span>' + esc(trunc(itemLabel(m.id), 95)) + '</span><span class="pill' + (m.grad ? " ok" : "") + '">' + (m.grad ? "Graduated" : "In bank") + "</span></li>";
+      }).join("") + "</ul>" : '<p class="muted small">No past mistakes logged for ' + esc(pg.title) + " yet.</p>") + "</div>";
+
+    // 5. Weak Chapters Alert (< 50% mastery)
+    var weakChs = chObjs.filter(function (ch) { return chapterProgress(st, ch).pct < 50; })
+      .sort(function (a, b) { return ((b.examMarks && b.examMarks.theory) || 0) - ((a.examMarks && a.examMarks.theory) || 0); });
+    h += '<div class="card rev-sec noprint"><h2>5. Weak Chapters Alert (' + weakChs.length + ")</h2>" +
+      (weakChs.length ? '<ul class="list">' + weakChs.slice(0, 6).map(function (ch) {
+        var topStops = ch.stops.filter(function (s) { return !isDone(s.id, st, ch); }).slice(0, 2);
+        return '<li><a class="item" href="' + chBase(ch) + '"><span class="num">' + ch.number + '</span><span class="grow"><b>' + esc(ch.title) + '</b> (' + chapterProgress(st, ch).pct + '%)<br><span class="muted small">Top stops: ' + esc(topStops.map(function (s) { return s.title; }).join(", ") || "Board round") + "</span></span>" + ICON.chev + "</a></li>";
+      }).join("") + "</ul>" : '<p class="muted small">All chapters above 50% mastery!</p>') + "</div>";
+
+    // 6. Exam-Day Strategy, Physical Constants & Packing Checklist
+    var packState = {};
+    try { packState = JSON.parse(sessionStorage.getItem("hscPrep.pack." + pk) || "{}"); } catch (e) {}
+    h += '<div class="card rev-sec pbreak"><h2>6. Exam-Day Strategy, Constants &amp; Checklist</h2>' +
+      '<p class="small"><b>180-Min Time Budget:</b> Reading 15m (pick best B/C/D) → Sec A 25m → Sec B 35m → Sec C 60m → Sec D 45m → Final 15m (check SI units, diagrams, roll no.).</p>';
+    if (pk === "physics" || pk === "chemistry") {
+      h += '<h3 style="margin-top:10px">Physical Constants &amp; Log-Table Tips</h3><div class="const-grid">' +
+        PHY_CONSTANTS.map(function (c) { return '<div class="const-item"><b>' + fm(c[0]) + "</b> = " + fm(c[1]) + "</div>"; }).join("") + "</div>" +
+        '<p class="small muted" style="margin-top:8px"><b>Log-table tip:</b> Characteristic = (digits before decimal − 1) for ≥ 1, or −(leading zeros + 1) for &lt; 1. Mantissa is always positive from the 4-digit table. Calculators are strictly NOT allowed.</p>';
+    } else {
+      h += '<p class="small muted" style="margin-top:8px"><b>Maths Hall Rule:</b> Graph paper is NOT provided — draw neat rough sketches for LPP and Area under curves. State theorems &amp; substitutions clearly.</p>';
+    }
+    h += '<h3 style="margin-top:12px" class="noprint">Exam-Morning Packing Checklist</h3><div class="noprint">' +
+      PACK_ITEMS.map(function (txt, idx) {
+        return '<label class="pt-row"><input type="checkbox" data-act="revise-pack" data-pk="' + esc(pk) + '" data-idx="' + idx + '"' + (packState[idx] ? " checked" : "") + '><span>' + esc(txt) + "</span></label>";
+      }).join("") + "</div></div>";
+
+    app.innerHTML = h;
+  }
+
   /* ---------- router ---------- */
   function route(rerender) {
     routeGen++;
@@ -3707,6 +3836,7 @@
     if (!stayingOnSameRun) roundLeave();
     if (!parts.length) return homeView();
     if (p0 === "sync") return syncView();
+    if (p0 === "revise") return withChapters(paperKeysList(p1 || "physics"), function () { reviseView(p1 || "physics"); });
     if (p0 === "mix") return mixStart(p1 || "physics");
     if (p0 === "paper") {
       var pkR = p1 && (catalog.paperGroups || {})[p1] ? p1 : "physics";
