@@ -462,3 +462,14 @@ html[data-theme="focus"] .teacher-bar { background: var(--amber-soft); border-bo
   .pbreak { break-before: page; page-break-before: always; }
   .fchap-h { margin-top: 0; }
 }
+
+/* ---- P1: error tag pills & error breakdown card ---- */
+.err-box { margin: 10px 0 8px; }
+.err-pills { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.err-pill { min-height: 36px; padding: 4px 12px; border-radius: 99px; border: 1.5px solid var(--line);
+  background: var(--card); color: var(--muted); font-size: 13px; font-weight: 600; cursor: pointer; }
+.err-pill[aria-pressed="true"], .err-pill.on { border-color: var(--amber); background: var(--amber-soft); color: var(--amber-ink); }
+.err-rows { display: grid; gap: 12px; margin-top: 10px; }
+.err-row-top { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; font-size: 14.5px; margin-bottom: 4px; }
+.err-tip { margin: 4px 0 0; line-height: 1.4; }
+

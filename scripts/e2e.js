@@ -88,6 +88,11 @@ async function runSuiteForViewport(browser, baseUrl, vp) {
   assert.ok(homeText.includes("Physics, Chemistry, Maths I, Maths II"), "planInfo must count all 4 active subjects");
   console.log("PASS: Home renders unloaded live chapters & counts all 4 active subjects");
 
+  // Home shows /70, /70, /80 full-paper predictions
+  assert.ok(homeText.includes("of 70"), "Home must show /70 prediction");
+  assert.ok(homeText.includes("of 80"), "Home must show /80 prediction");
+  console.log("PASS: Home shows /70, /70, /80 full-paper predictions");
+
   // 2. Seed due bank item in unloaded maths2:ch01 -> #due-badge shows 1 -> #/review lazy-loads it
   const today = todayStr();
   await page.evaluate((t) => {
@@ -127,6 +132,69 @@ async function runSuiteForViewport(browser, baseUrl, vp) {
   await checkLayout(page2, "Deep-link quest");
   await page2.close();
   console.log("PASS: Cold deep-link #/maths2/ch01/s03/quest renders cleanly");
+
+  // 4. P1: Board-card point marking + All correct toggle + untick 1 + Units / Cond. + Save
+  await page.goto(baseUrl + "/#/physics/ch01/board", { waitUntil: "networkidle0" });
+  await page.waitForSelector(".bq");
+  const multiQ = await page.evaluate(() => {
+    const cards = Array.from(document.querySelectorAll(".bq"));
+    for (const c of cards) {
+      if (c.textContent.includes("2 marks") || c.textContent.includes("3 marks")) return c.getAttribute("data-q");
+    }
+    return cards[0].getAttribute("data-q");
+  });
+  await page.click(`.bq[data-q="${multiQ}"] [data-act="reveal"]`);
+  await page.waitForSelector(`.bq[data-q="${multiQ}"] [data-act="bq-all"]`);
+  await page.click(`.bq[data-q="${multiQ}"] [data-act="bq-all"]`);
+  await page.click(`.bq[data-q="${multiQ}"] [data-act="bq-tick"][data-i="0"]`);
+  await page.waitForSelector(`.bq[data-q="${multiQ}"] [data-act="bq-err"][data-err="units"]`);
+  await page.click(`.bq[data-q="${multiQ}"] [data-act="bq-err"][data-err="units"]`);
+  await page.click(`.bq[data-q="${multiQ}"] [data-act="bq-save"]`);
+  const savedP1 = await page.evaluate((qid) => {
+    const st = JSON.parse(localStorage.getItem("hscPrep.v2"));
+    return { bp: st.boardPts[qid], bank: st.bank["b|ch01|" + qid], errLog: st.errLog };
+  }, multiQ);
+  assert.ok(savedP1.bp && savedP1.bp.got < savedP1.bp.of && savedP1.bp.err === "units", "boardPts must record partial score + units err");
+  assert.ok(savedP1.bank && savedP1.bank.err === "units", "bank item must record units err");
+  assert.ok(savedP1.errLog.length >= 1 && savedP1.errLog[0].err === "units", "errLog must record units err");
+  await checkLayout(page, "Board card point marking");
+  console.log("PASS: P1 board-card point marking, All correct toggle, error tag & Save");
+
+  // 5. P1: Complete a 1-mark round -> roundHist appended (no ids/results) + Error Breakdown card renders on Home
+  await page.goto(baseUrl + "/#/physics/ch01/round", { waitUntil: "networkidle0" });
+  await page.waitForSelector('[data-act="round-start"][data-mode="m1"]');
+  await page.click('[data-act="round-start"][data-mode="m1"]');
+  await page.waitForSelector('[data-act="round-reveal"]');
+  for (let step = 0; step < 10; step++) {
+    const hasReveal = await page.$('[data-act="round-reveal"]');
+    if (!hasReveal) break;
+    await page.$eval('[data-act="round-reveal"]', (el) => el.scrollIntoView({ block: "center" }));
+    await page.click('[data-act="round-reveal"]');
+    await page.waitForSelector('[data-act="round-next"]');
+    if (step === 0) {
+      await page.waitForSelector('[data-act="round-err"][data-err="calc"]');
+      await page.$eval('[data-act="round-err"][data-err="calc"]', (el) => el.scrollIntoView({ block: "center" }));
+      await page.click('[data-act="round-err"][data-err="calc"]');
+    }
+    await page.$eval('[data-act="round-next"]', (el) => el.scrollIntoView({ block: "center" }));
+    await page.click('[data-act="round-next"]');
+  }
+  await page.waitForSelector(".rres");
+  const histCheck = await page.evaluate(() => {
+    const st = JSON.parse(localStorage.getItem("hscPrep.v2"));
+    return st.roundHist && st.roundHist["physics/ch01"];
+  });
+  assert.ok(Array.isArray(histCheck) && histCheck.length === 1, "roundHist must have 1 entry");
+  assert.strictEqual(histCheck[0].ids, undefined, "roundHist must NOT store ids");
+  assert.strictEqual(histCheck[0].results, undefined, "roundHist must NOT store results");
+
+  // Navigate Home -> Error Breakdown card renders (2 errors logged: units + calc)
+  await page.goto(baseUrl + "/#/", { waitUntil: "networkidle0" });
+  await page.waitForSelector(".err-card");
+  const errCardText = await page.$eval(".err-card", (el) => el.textContent);
+  assert.ok(errCardText.includes("Units / Cond.") && errCardText.includes("Calculation"), "Error Breakdown card must show logged errors");
+  await checkLayout(page, "Home with Error Breakdown");
+  console.log("PASS: P1 1-mark round updates slim roundHist & Error Breakdown card renders on Home");
 
   assert.strictEqual(errors.length, 0, `Unexpected console/page errors: ${errors.join("; ")}`);
   await ctx.close();

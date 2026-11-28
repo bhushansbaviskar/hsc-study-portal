@@ -38,6 +38,7 @@
   var redraw = null;               // re-renders the interactive view currently on screen
   var Q = null, R = null, D = null, PR = null; // quest, review, drill, paper sessions (in memory)
   var revealed = {};               // board answers shown this session
+  var bqDraft = {};                // qId -> { ticks: [...], err: "" }
   var TState = { loading: false, error: "", data: null, checkedAt: 0 };
   var TActionMsg = {};             // studentId -> { ok, text }
   var PREVIEW = null;              // { name, blankMode, savedMem, savedTeacher }
@@ -51,6 +52,61 @@
     theory: "Theory", diagram: "Diagram", problem: "Problem"
   };
   function kindLabel(k) { return KIND_LABEL[k] || String(k || ""); }
+
+  var ERR_TAGS = [
+    { id: "concept", label: "Concept", tip: "Re-read the textbook section and In-short summary before retrying." },
+    { id: "calc", label: "Calculation", tip: "Write intermediate values clearly and double-check powers of 10." },
+    { id: "units", label: "Units / Cond.", tip: "Check SI unit on every final number, or reagent/conditions in Chemistry." },
+    { id: "diagram", label: "Diagram", tip: "Sketch and label the figure neatly before step 1." },
+    { id: "steps", label: "Steps / Format", tip: "State formula first, show substitution, box the final result." },
+    { id: "time", label: "Time", tip: "Practice timed section drills to speed up recall." }
+  ];
+  function errTagById(id) {
+    for (var i = 0; i < ERR_TAGS.length; i++) if (ERR_TAGS[i].id === id) return ERR_TAGS[i];
+    return null;
+  }
+  function errPillsHTML(selectedId, actName, qIdAttr) {
+    return '<div class="err-box"><span class="small muted">Why lost marks? (optional)</span><div class="err-pills" role="group" aria-label="Error reason">' +
+      ERR_TAGS.map(function (t) {
+        var on = selectedId === t.id;
+        return '<button type="button" class="err-pill' + (on ? " on" : "") + '" data-act="' + actName + '" data-err="' + t.id + '"' +
+          (qIdAttr ? ' data-q="' + esc(qIdAttr) + '"' : "") + ' aria-pressed="' + on + '">' + esc(t.label) + "</button>";
+      }).join("") + "</div></div>";
+  }
+  function logError(id, chKey, errId, st) {
+    if (!errId || !errTagById(errId)) return;
+    st = st || load();
+    if (!Array.isArray(st.errLog)) st.errLog = [];
+    st.errLog.unshift({ at: Date.now(), date: today(), id: id, chKey: chKey || curChKey(), err: errId });
+    if (st.errLog.length > 200) st.errLog = st.errLog.slice(0, 200);
+  }
+  function errorSummary(st, days) {
+    st = st || load();
+    var dCount = days || 14;
+    var cutoff = addDays(today(), -(dCount - 1));
+    var counts = {}, total = 0;
+    (Array.isArray(st.errLog) ? st.errLog : []).forEach(function (e) {
+      if (!e || !e.err || (e.date && e.date < cutoff)) return;
+      counts[e.err] = (counts[e.err] || 0) + 1;
+      total++;
+    });
+    var rows = Object.keys(counts).map(function (id) {
+      var meta = errTagById(id) || { id: id, label: id, tip: "" };
+      return { id: id, label: meta.label, tip: meta.tip, count: counts[id], pct: total ? Math.round(100 * counts[id] / total) : 0 };
+    }).sort(function (a, b) { return b.count - a.count || (a.id < b.id ? -1 : 1); });
+    return { total: total, rows: rows };
+  }
+  function errorBreakdownHTML(st, days, minTotal) {
+    var sum = errorSummary(st, days || 14);
+    if (sum.total < (minTotal || 2)) return "";
+    var top = sum.rows.slice(0, 3);
+    return '<div class="card err-card"><h2>Where marks are leaking</h2><p class="small muted">Top error patterns from the last ' + (days || 14) + ' days (' + sum.total + ' tagged):</p>' +
+      '<div class="err-rows">' + top.map(function (r) {
+        return '<div class="err-row"><div class="err-row-top"><b>' + esc(r.label) + '</b><span class="small muted">' + r.count + ' (' + r.pct + '%)</span></div>' +
+          '<div class="bar thin amber"><i style="width:' + r.pct + '%"></i></div>' +
+          (r.tip ? '<p class="small muted err-tip">' + esc(r.tip) + "</p>" : "") + "</div>";
+      }).join("") + "</div></div>";
+  }
 
   /* ---------- icons ---------- */
   var ICON = {
@@ -247,7 +303,10 @@
   /* The single source of "today". Tests can fake it with window.__TODAY = "YYYY-MM-DD" or ?today=YYYY-MM-DD */
   function today() {
     var o = null;
-    try { o = window.__TODAY || new URLSearchParams(location.search).get("today"); } catch (e) { o = null; }
+    try {
+      o = (HAS_WIN ? window.__TODAY : (typeof global !== "undefined" ? global.__TODAY : null)) ||
+        (typeof location !== "undefined" ? new URLSearchParams(location.search).get("today") : null);
+    } catch (e) { o = null; }
     if (o && /^\d{4}-\d{2}-\d{2}$/.test(o)) return o;
     return fmtDate(new Date());
   }
@@ -495,27 +554,73 @@
   /* ---------- predicted board marks ---------- */
   function drillClean(id, st) { var r = (st || load()).drill[id]; return !!(r && r.clean); }
   function stopMastery(s, st, ch) {
-    // Average of the parts that apply to this stop: quest always; board questions and
-    // derivations only if the stop has them. Nothing is credited before it is done.
     st = st || load();
     var target = ch || CH;
-    var parts = [isDone(s.id, st, target) ? 1 : 0];
+    var done = isDone(s.id, st, target);
     var bq = boardFor(s.id, target);
-    if (bq.length) parts.push(bq.filter(function (b) { return st.board[b.id] === "got"; }).length / bq.length);
-    var ds = target.derivations.filter(function (d) { return d.stop === s.id; });
-    if (ds.length) parts.push(ds.filter(function (d) { return drillClean(d.id, st); }).length / ds.length);
-    return parts.reduce(function (a, b) { return a + b; }, 0) / parts.length;
+    var ds = (target.derivations || []).filter(function (d) { return d.stop === s.id; });
+    var wSum = 0, valSum = 0;
+
+    if (s.quest) {
+      var qr = st.quest && st.quest[K(s.id, target)];
+      var qMax = s.quest.checks ? s.quest.checks.length : 0;
+      var qScore = ((qr && qMax > 0 && qr.best >= qMax) || (done && qr && qr.plays >= 2)) ? 1.0 : (done ? 0.65 : 0);
+      wSum += 0.20; valSum += 0.20 * qScore;
+    } else {
+      var wRev = (bq.length > 0 || ds.length > 0) ? 0.15 : 0.50;
+      wSum += wRev; valSum += wRev * (done ? 1.0 : 0);
+    }
+
+    if (bq.length > 0) {
+      var bSum = 0;
+      bq.forEach(function (q) {
+        var bp = st.boardPts && st.boardPts[q.id];
+        var ba = (st.boardAt && st.boardAt[q.id]) || 0;
+        var bv = st.board && st.board[q.id];
+        if (bv === "need" && (!bp || ba > bp.at)) bSum += 0;
+        else if (bp && bp.of > 0) bSum += Math.min(1, bp.got / bp.of);
+        else if (bv === "got") bSum += 0.5;
+      });
+      var wB = s.quest ? 0.50 : (ds.length > 0 ? 0.55 : 0.85);
+      wSum += wB; valSum += wB * (bSum / bq.length);
+    }
+
+    if (ds.length > 0) {
+      var dSum = 0;
+      ds.forEach(function (d) {
+        var dr = st.drill && st.drill[d.id];
+        dSum += (dr && dr.clean) ? 1.0 : (dr && dr.runs > 0 ? 0.5 : 0);
+      });
+      wSum += 0.30; valSum += 0.30 * (dSum / ds.length);
+    }
+
+    return wSum ? valSum / wSum : 0;
   }
   function stopWeight(s, ch) { return 1 + askedCount(s.id, ch); }
   function gaugeData(st, ch) {
+    st = st || load();
     var target = ch || CH;
+    var key = chKeyFor(target);
     var em = target.examMarks || { avg: 0, basis: "" }, tw = 0, sw = 0;
     var rows = target.stops.map(function (s, i) {
       var w = stopWeight(s, target), m = stopMastery(s, st, target);
       tw += w; sw += w * m;
       return { s: s, i: i, w: w, m: m };
     });
-    var M = tw ? sw / tw : 0;
+    var stopM = tw ? sw / tw : 0;
+    var hist = (st.roundHist && Array.isArray(st.roundHist[key])) ? st.roundHist[key] : [];
+    var fulls = hist.filter(function (r) { return r && (r.mode === "most" || r.mode === "mock" || r.full); });
+    var M;
+    if (fulls.length) {
+      var latestPct = fulls[0].pct || 0;
+      var bestPct = fulls.reduce(function (mx, r) { return Math.max(mx, r.pct || 0); }, 0);
+      var recentPct = 0.6 * latestPct + 0.4 * bestPct;
+      M = 0.7 * stopM + 0.3 * (recentPct / 100);
+    } else {
+      var rsBest = RS(st, key).bestFull || 0;
+      if (rsBest > 0) M = 0.7 * stopM + 0.3 * (rsBest / 100);
+      else M = Math.min(0.85, stopM);
+    }
     rows.forEach(function (r) { r.gain = em.avg * r.w / tw * (1 - r.m); });
     var top = rows.filter(function (r) { return r.gain > 0.0001; })
       .sort(function (a, b) { return b.gain - a.gain || a.i - b.i; }).slice(0, 2);
@@ -528,7 +633,7 @@
     var line = "About " + g.pred + " of ~" + Math.round(g.avg) + " marks secured";
     var gain = g.top.length ? '<p class="small gain">Biggest gain next: <b>' + g.top.map(function (r) { return esc(r.s.title); }).join(", then ") + "</b></p>" : "";
     var how = '<details class="how"><summary>How this is worked out</summary><p class="small">An estimate based on past papers: the average marks this chapter carried (' + esc(g.basis) +
-      ') times how much of the chapter you have mastered (quest, board questions, drills), counting often-asked stops more.</p></details>';
+      ') times how much of the chapter you have mastered (20% quest, 50% written board answers, 30% drills, plus 30% from full board rounds — capped at 85% until you finish a full round).</p></details>';
     var h;
     if (isFocus()) {
       h = '<div class="card gauge-card gauge-line"><div class="g-text" data-gauge="' + g.pred + '">' + line + "</div>" +
@@ -542,23 +647,89 @@
     }
     return h;
   }
-  function homeGaugeHTML(st, subjFilter) {
-    var list = CHAPTER_LIST.filter(function (e) {
-      return e.ch.examMarks && (!subjFilter || subjFilter === "all" || e.subj === subjFilter);
+  function paperPrediction(paperKey, st) {
+    st = st || load();
+    var pg = catalog && catalog.paperGroups && catalog.paperGroups[paperKey];
+    if (!pg) return { key: paperKey, title: paperKey, pred: 0, of: 0, pct: 0 };
+    var raw = 0;
+    (pg.subjects || []).forEach(function (sid) {
+      var sub = (catalog.subjects || []).filter(function (s) { return s.id === sid; })[0];
+      if (!sub) return;
+      (sub.chapters || []).forEach(function (c) {
+        var chObj = CHAPTERS[chKeyOf(sid, c.id)];
+        if (!chObj) return;
+        raw += (c.marks || 0) * gaugeData(st, chObj).M;
+      });
     });
-    if (!list.length) return "";
-    if (list.length === 1) return gaugeHTML(st, list[0].ch);
-    var totalPred = 0, totalAvg = 0;
-    var rowsHTML = list.map(function (e) {
+    var pred = Math.min(pg.paperMarks, Math.max(0, Math.round(raw * 2) / 2));
+    return { key: paperKey, title: pg.title, pred: pred, of: pg.paperMarks, pct: pg.paperMarks ? Math.round(100 * pred / pg.paperMarks) : 0 };
+  }
+  function subjectPartPrediction(subjId, st) {
+    st = st || load();
+    var sub = (catalog && catalog.subjects || []).filter(function (s) { return s.id === subjId; })[0];
+    if (!sub) return { pred: 0, of: 40, pct: 0 };
+    var raw = 0, tot = 0;
+    (sub.chapters || []).forEach(function (c) {
+      tot += c.marks || 0;
+      var chObj = CHAPTERS[chKeyOf(subjId, c.id)];
+      if (chObj) raw += (c.marks || 0) * gaugeData(st, chObj).M;
+    });
+    var pred = Math.min(tot, Math.max(0, Math.round(raw * 2) / 2));
+    return { pred: pred, of: tot, pct: tot ? Math.round(100 * pred / tot) : 0 };
+  }
+  function syncPredSummary(st, pPhy, pChem, pMaths) {
+    if (PREVIEW || !mem || st !== mem) return;
+    var cur = st.predSummary || {};
+    if (cur.physics !== pPhy.pred || cur.chemistry !== pChem.pred || cur.maths !== pMaths.pred) {
+      st.predSummary = { physics: pPhy.pred, chemistry: pChem.pred, maths: pMaths.pred, at: Date.now() };
+      save({ silentSync: true });
+    }
+  }
+  function homeGaugeHTML(st, subjFilter) {
+    st = st || load();
+    var filter = subjFilter || "all";
+    var pPhy = paperPrediction("physics", st);
+    var pChem = paperPrediction("chemistry", st);
+    var pMaths = paperPrediction("maths", st);
+    syncPredSummary(st, pPhy, pChem, pMaths);
+
+    var list = CHAPTER_LIST.filter(function (e) {
+      return e.ch.examMarks && (filter === "all" || e.subj === filter);
+    });
+    var chRowsHTML = list.map(function (e) {
       var g = gaugeData(st, e.ch), pct = Math.round(g.M * 100);
-      totalPred += g.pred; totalAvg += g.avg;
       return '<a class="g-row" href="' + chBase(e.ch) + '"><div class="g-row-top"><b>' + esc(chShortLabel(e.ch)) + ' · ' + esc(e.ch.title) + '</b><span class="small muted"><b>' + g.pred + '</b> / ~' + Math.round(g.avg) + '</span></div>' +
         '<div class="bar"><i style="width:' + pct + '%"></i></div></a>';
     }).join("");
-    totalPred = Math.round(totalPred * 2) / 2;
-    return '<div class="card gauge-card"><h2>Predicted board marks</h2>' +
-      '<p class="small muted">About <b>' + totalPred + ' of ~' + Math.round(totalAvg) + ' marks</b> secured across ' + list.length + ' active chapters</p>' +
-      '<div class="g-rows">' + rowsHTML + '</div></div>';
+
+    if (catalog && catalog.paperGroups) {
+      var papersToShow = [];
+      if (filter === "all") papersToShow = [pPhy, pChem, pMaths];
+      else if (filter === "physics") papersToShow = [pPhy];
+      else if (filter === "chemistry") papersToShow = [pChem];
+
+      var h = '<div class="card gauge-card"><h2>Predicted board marks</h2>';
+      if (filter === "maths1" || filter === "maths2") {
+        var part = subjectPartPrediction(filter, st);
+        h += '<div class="g-rows"><div class="g-row"><div class="g-row-top"><b>' + esc(subjTitle(filter)) + '</b><span><b>~' + part.pred + '</b> of ' + part.of + '</span></div>' +
+          '<div class="bar"><i style="width:' + part.pct + '%"></i></div></div></div>' +
+          '<p class="small muted" style="margin-top:8px"><span class="pill">Combined Maths paper: ~' + pMaths.pred + ' of ' + pMaths.of + '</span></p>';
+      } else {
+        h += '<div class="g-rows">' + papersToShow.map(function (p) {
+          return '<div class="g-row"><div class="g-row-top"><b>' + esc(p.title) + '</b><span><b>~' + p.pred + '</b> of ' + p.of + '</span></div>' +
+            '<div class="bar"><i style="width:' + p.pct + '%"></i></div></div>';
+        }).join("") + '</div>';
+      }
+      if (list.length) {
+        h += '<details class="how" style="margin-top:10px"><summary>Active chapters (' + list.length + ')</summary><div class="g-rows" style="margin-top:8px">' + chRowsHTML + '</div></details>';
+      }
+      h += '<p class="note">Honest estimate across the full syllabus (unstarted chapters count as 0).</p></div>';
+      return h;
+    }
+
+    if (!list.length) return "";
+    if (list.length === 1) return gaugeHTML(st, list[0].ch);
+    return '<div class="card gauge-card"><h2>Predicted board marks</h2><div class="g-rows">' + chRowsHTML + '</div></div>';
   }
 
   /* ---------- mid-quest saving ---------- */
@@ -616,12 +787,13 @@
   function bankId(kind, a, b, ch) {
     return kind + "|" + bankChToken(ch) + "|" + a + (b != null ? "|" + b : "");
   }
-  function bankAdd(id, reason) {
+  function bankAdd(id, reason, err) {
     var st = load(), b = st.bank, old = b[id];
     if (reason === "guessed" && old) return false;   // already in the bank: leave its schedule alone
     var keep = old && old.prio && reason !== "confident mistake";
     b[id] = { due: addDays(today(), 1), streak: 0, added: old ? old.added : today(),
-      reason: keep ? old.reason : (reason || "missed"), prio: reason === "confident mistake" || !!keep, updatedAt: Date.now() };
+      reason: keep ? old.reason : (reason || "missed"), prio: reason === "confident mistake" || !!keep,
+      err: err || (old && old.err) || "", updatedAt: Date.now() };
     delete st.bankDel[id];
     save(); updateChrome();
     return true;
@@ -632,14 +804,23 @@
     var r = it.reason || "missed";
     return '<span class="tag rtag' + (it.prio ? " prio" : "") + '">' + esc(REASON[r] || r) + (it.prio ? " · priority" : "") + "</span>";
   }
+  function subjectExamDate(chKey) {
+    var subj = (chKey || "").split("/")[0];
+    if (subj === "maths1" || subj === "maths2") subj = "maths";
+    if (catalog && catalog.exams && catalog.exams[subj]) return catalog.exams[subj];
+    return (catalog && catalog.examDate) || "";
+  }
   // Spaced review ladder: after the n-th correct review in a row, next review is REVIEW_GAPS[n] days later.
   // An item graduates (leaves the bank) only after REVIEW_GAPS.length correct reviews in a row,
   // so material learnt in December keeps coming back until the exam. Gaps never push past exam eve.
   var REVIEW_GAPS = [1, 3, 7, 14, 30];
-  function nextReviewDate(streakN) {
+  function nextReviewDate(streakN, idOrChKey, isConfident) {
     var gap = REVIEW_GAPS[Math.min(streakN, REVIEW_GAPS.length - 1)];
+    if (isConfident && streakN >= 1 && gap < 7) gap = 7;
     var due = addDays(today(), gap);
-    var eve = catalog && catalog.examDate ? addDays(catalog.examDate, -2) : "";
+    var chKey = idOrChKey && idOrChKey.indexOf("|") >= 0 ? parseId(idOrChKey).chKey : idOrChKey;
+    var exDate = subjectExamDate(chKey);
+    var eve = exDate ? addDays(exDate, -2) : "";
     if (eve && due > eve) due = eve > today() ? eve : addDays(today(), 1);
     return due;
   }
@@ -648,10 +829,18 @@
     if (!it) return;
     var now = Date.now();
     if (ok) {
+      var wasConf = it.reason === "confident mistake";
       it.prio = false;
       it.streak = (it.streak || 0) + 1;
-      if (it.streak >= REVIEW_GAPS.length) { delete b[id]; st.bankDel[id] = now; }
-      else { it.due = nextReviewDate(it.streak); it.updatedAt = now; }
+      if (it.streak >= REVIEW_GAPS.length) {
+        if (!isObj(st.graduated)) st.graduated = {};
+        st.graduated[id] = now;
+        delete b[id];
+        st.bankDel[id] = now;
+      } else {
+        it.due = nextReviewDate(it.streak, id, wasConf);
+        it.updatedAt = now;
+      }
     } else { it.streak = 0; it.due = addDays(today(), 1); it.updatedAt = now; }
     save(); updateChrome();
   }
@@ -966,7 +1155,7 @@
     if (due > 0) {
       h += '<a class="card review-card" href="#/review"><span class="num amber">' + due + '</span><span class="grow"><b>Review: ' + due + ' due</b><br><span class="muted small">Redo what you got wrong across subjects</span></span>' + ICON.chev + "</a>";
     }
-    h += planHTML(pl) + homeGaugeHTML(st, homeSubj);
+    h += planHTML(pl) + homeGaugeHTML(st, homeSubj) + errorBreakdownHTML(st, 14, 2);
 
     // Today's target
     var shownKey = showRound ? null : ri ? K(ri.s.id, ri.ch) : (nextPair ? K(nextPair.s.id, nextPair.ch) : null);
@@ -1094,22 +1283,50 @@
   }
 
   /* ---------- board question card ---------- */
+  function getBqDraft(q, st) {
+    var pts = qPoints(q);
+    var d = bqDraft[q.id];
+    if (!d || !Array.isArray(d.ticks) || d.ticks.length !== pts.length) {
+      var bp = (st || load()).boardPts && (st || load()).boardPts[q.id];
+      var allGot = !!(bp && bp.of > 0 && bp.got >= bp.of);
+      d = { ticks: pts.map(function () { return allGot; }), err: (bp && bp.err) || "" };
+      bqDraft[q.id] = d;
+    }
+    return d;
+  }
   function boardCard(q, withStop) {
+    var st = load();
     var bkey = bankId("b", q.id);
-    var r = load().board[q.id], inBank = !!load().bank[bkey], open = !!revealed[q.id];
+    var r = st.board[q.id], bp = st.boardPts && st.boardPts[q.id], inBank = !!st.bank[bkey], open = !!revealed[q.id];
     var s = stopById(q.stop);
     var h = '<article class="bq" data-q="' + esc(q.id) + '"><div class="bq-top">' + tag(boardTag(q)) +
-      '<span class="marks">' + q.marks + (q.marks === 1 ? " mark" : " marks") + "</span>" +
+      '<span class="marks">' + marksWord(q.marks) + "</span>" +
       (q.kind ? '<span class="kind">' + esc(kindLabel(q.kind)) + "</span>" : "") + "</div>" +
       '<p class="bq-text">' + fm(q.text) + "</p>";
     if (q.options) h += '<ul class="bq-opts">' + q.options.map(function (o) { return "<li>" + fm(o) + "</li>"; }).join("") + "</ul>";
     if (withStop && s) h += '<p class="small muted">Stop ' + (stopIndex(s.id) + 1) + ': <a href="' + BASE + "/" + s.id + '">' + esc(s.title) + "</a></p>";
-    h += '<button type="button" class="btn ghost" data-act="reveal" aria-expanded="' + open + '">' + (open ? "Hide model answer" : "Show model answer") + "</button>";
-    h += '<div class="answer"' + (open ? "" : " hidden") + "><b>Model answer</b><p>" + fm(q.answer) + "</p></div>";
-    h += '<div class="rate"><button type="button" class="btn ok' + (r === "got" ? "" : " ghost") + '" data-act="rate-got" aria-pressed="' + (r === "got") + '"' + (open || r === "got" ? "" : ' disabled title="Open the model answer first"') + '>Got it</button>' +
-      '<button type="button" class="btn warn' + (r === "need" || r === "practice" ? "" : " ghost") + '" data-act="rate-need" aria-pressed="' + (r === "need" || r === "practice") + '">Need practice</button></div>';
-    if (!open && r !== "got") h += '<p class="small muted">Write your answer first, then open the model answer to compare before tapping Got it.</p>';
-    if ((r === "need" || r === "practice") && inBank) h += '<p class="small muted">In your mistake bank. Review: ' + niceDate(load().bank[bkey].due) + ".</p>";
+
+    if (!open) {
+      h += '<div class="rate">' +
+        '<button type="button" class="btn ghost" data-act="reveal" aria-expanded="false">Show model answer</button>' +
+        '<button type="button" class="btn warn' + (r === "need" || r === "practice" ? "" : " ghost") + '" data-act="rate-need" aria-pressed="' + (r === "need" || r === "practice") + '">Need practice</button></div>';
+      if (bp && bp.of > 0) h += '<p class="small muted"><span class="pill ' + (bp.got >= bp.of ? "ok" : "amber") + '">Saved: ' + bp.got + " / " + bp.of + " marks</span></p>";
+      else if (r === "got") h += '<p class="small muted"><span class="pill ok">Marked Got it (tap Show model answer to point-mark)</span></p>';
+      else h += '<p class="small muted">Write your answer on paper first, then open the model answer to mark examiner points.</p>';
+    } else {
+      var pts = qPoints(q), draft = getBqDraft(q, st), got = 0;
+      pts.forEach(function (x, k) { if (draft.ticks[k]) got += +x.marks || 0; });
+      var allOn = draft.ticks.every(Boolean);
+      h += '<div class="rate"><button type="button" class="btn ghost" data-act="reveal" aria-expanded="true">Hide model answer</button>' +
+        '<button type="button" class="btn ghost sm" data-act="bq-all" aria-pressed="' + allOn + '">' + (allOn ? "Clear ticks" : "All correct ✓") + "</button></div>";
+      h += '<div class="answer"><b>Model answer</b><p>' + fm(q.answer) + "</p></div>";
+      h += pointsHTML(q, draft.ticks, "bq-tick");
+      if (got < q.marks) h += errPillsHTML(draft.err, "bq-err", q.id);
+      h += '<div class="rate"><button type="button" class="btn primary" data-act="bq-save">Save score (' + got + " / " + q.marks + " marks)</button>" +
+        '<button type="button" class="btn warn' + (r === "need" || r === "practice" ? "" : " ghost") + '" data-act="rate-need" aria-pressed="' + (r === "need" || r === "practice") + '">Need practice</button></div>';
+      if (bp && bp.of > 0) h += '<p class="small muted"><span class="pill ' + (bp.got >= bp.of ? "ok" : "amber") + '">Saved: ' + bp.got + " / " + bp.of + " marks</span></p>";
+    }
+    if ((r === "need" || r === "practice") && inBank) h += '<p class="small muted">In your mistake bank. Review: ' + niceDate(st.bank[bkey].due) + ".</p>";
     return h + "</article>";
   }
 
@@ -1458,7 +1675,7 @@
     var ids = modeIds(mode);
     if (!ids.length) return;
     var run = { mode: mode, ids: ids, i: 0, results: [], ticks: qPoints(getBoard(ids[0])).map(function () { return false; }), rev: false,
-      elapsed: 0, since: 0, at: Date.now() };
+      err: "", errs: {}, elapsed: 0, since: 0, at: Date.now() };
     if (mode === "mock") { run.limit = totalMarks(ids) * MIN_PER_MARK; run.timeUp = false; run.since = nowMs(); }
     RD = { chKey: curChKey(), run: run, phase: "run" };
     saveRound(false);
@@ -1468,17 +1685,26 @@
     var run = RD.run, q = getBoard(run.ids[run.i]), pts = qPoints(q), got = 0;
     pts.forEach(function (x, k) { if (run.ticks[k]) got += +x.marks || 0; });
     run.results.push({ id: q.id, got: got, of: q.marks }); run.resumed = false;
-    var st = load();
-    st.boardAt[q.id] = Date.now();
+    var st = load(), now = Date.now();
+    var err = got < q.marks ? (run.err || "") : "";
+    st.boardAt[q.id] = now;
+    if (!isObj(st.boardPts)) st.boardPts = {};
+    st.boardPts[q.id] = { got: got, of: q.marks, at: now, err: err };
+    if (err) {
+      if (!isObj(run.errs)) run.errs = {};
+      run.errs[err] = (run.errs[err] || 0) + 1;
+      logError(q.id, RD.chKey, err, st);
+    }
     if (got >= q.marks) { st.board[q.id] = "got"; save(); }
-    else { st.board[q.id] = "practice"; bankAdd(bankId("b", q.id), "below full marks"); }
+    else { st.board[q.id] = "practice"; bankAdd(bankId("b", q.id), "below full marks", err); }
+    run.err = "";
     if (run.i < run.ids.length - 1) {
       run.i++; run.rev = false; run.ticks = qPoints(getBoard(run.ids[run.i])).map(function () { return false; });
       saveRound(false); roundRender(true);
     } else roundFinish();
   }
   function roundFinish() {
-    var run = RD.run, rs = RS(), got = 0, of = 0, now = Date.now();
+    var run = RD.run, chKey = RD.chKey || curChKey(), ch = CHAPTERS[chKey] || CH, rs = RS(null, chKey), got = 0, of = 0, now = Date.now();
     run.results.forEach(function (r) { got += r.got; of += r.of; });
     rebase(run);
     var rec = { mode: run.mode, ids: run.ids, results: run.results, got: got, of: of, pct: pctOf(got, of), date: today(), at: now, newlyComplete: false };
@@ -1486,15 +1712,23 @@
     var m = isObj(rs.modes[run.mode]) ? rs.modes[run.mode] : (rs.modes[run.mode] = {});
     m.last = { got: got, of: of, pct: rec.pct, date: rec.date, at: now };
     if (!isObj(m.best) || rec.pct > m.best.pct) m.best = { got: got, of: of, pct: rec.pct, date: rec.date };
-    var full = run.ids.length === CH.board.length && (run.mode === "most" || run.mode === "mock");
+    var full = run.ids.length === ch.board.length && (run.mode === "most" || run.mode === "mock");
     if (full) {
       rs.bestFull = Math.max(rs.bestFull, rec.pct);
       if (got * 100 >= PASS_PCT * of) { if (!rs.complete) rec.newlyComplete = true; rs.complete = true; }
     }
     rec.full = full;
-    lastRoundChKey = curChKey();
+    var st = load();
+    if (!isObj(st.roundHist)) st.roundHist = {};
+    if (!Array.isArray(st.roundHist[chKey])) st.roundHist[chKey] = [];
+    var slim = { at: now, date: rec.date, mode: run.mode, got: got, of: of, pct: rec.pct };
+    if (rec.secs) slim.secs = rec.secs;
+    if (isObj(run.errs) && Object.keys(run.errs).length) slim.errs = run.errs;
+    st.roundHist[chKey].unshift(slim);
+    if (st.roundHist[chKey].length > 20) st.roundHist[chKey] = st.roundHist[chKey].slice(0, 20);
+    lastRoundChKey = chKey;
     rs.last = rec; rs.run = null; rs.runDel = now; save({ immediate: true }); updateChrome();
-    RD = { chKey: curChKey(), run: null, phase: "result", rec: rec };
+    RD = { chKey: chKey, run: null, phase: "result", rec: rec };
     roundRender(true);
   }
 
@@ -1576,7 +1810,10 @@
     if (!run.rev) {
       h += '<p class="rinst">Write your answer on paper first.</p><button type="button" class="btn primary block" data-act="round-reveal">I\'ve written my answer</button>';
     } else {
+      var rGot = 0;
+      qPoints(q).forEach(function (x, k) { if (run.ticks[k]) rGot += +x.marks || 0; });
       h += '<div class="answer"><b>Model answer</b><p>' + fm(q.answer) + "</p></div>" + pointsHTML(q, run.ticks, "round-tick") +
+        (rGot < q.marks ? errPillsHTML(run.err || "", "round-err") : "") +
         '<button type="button" class="btn primary block" data-act="round-next">' + (run.i < n - 1 ? "Next question" : "See result") + "</button>";
     }
     h += "</article>";
@@ -1742,7 +1979,7 @@
     reviewSetup(); reviewRender();
   }
   function reviewSetup() {
-    R.shown = false; R.ds = null; R.ce = null; R.ticks = [];
+    R.shown = false; R.ds = null; R.ce = null; R.ticks = []; R.err = "";
     if (R.i >= R.queue.length) return;
     var p = parseId(R.queue[R.i]), ch = CHAPTERS[p.chKey];
     if (!ch) return;
@@ -1761,7 +1998,7 @@
         .map(function (r) { return bankId("b", r.id, null, ch); })
         .filter(function (id) { return itemExists(id) && load().bank[id]; });
     }
-    R = { queue: ids, i: 0, ok: 0, bad: 0, ce: null, ds: null, shown: false, ticks: [] };
+    R = { queue: ids, i: 0, ok: 0, bad: 0, ce: null, ds: null, shown: false, ticks: [], err: "" };
     redraw = reviewRender;
     reviewSetup(); reviewRender();
   }
@@ -1812,7 +2049,13 @@
     if (q.options) h += '<ul class="bq-opts">' + q.options.map(function (o) { return "<li>" + fm(o) + "</li>"; }).join("") + "</ul>";
     if (reviewByPoints(id)) {
       if (!R.shown) h += '<p class="rinst">Write your answer on paper first.</p><button type="button" class="btn primary block" data-act="rv-written">I\'ve written my answer</button>';
-      else h += '<div class="answer"><b>Model answer</b><p>' + fm(q.answer) + "</p></div>" + pointsHTML(q, R.ticks, "rv-tick") + '<button type="button" class="btn primary block" data-act="rv-score">Done</button>';
+      else {
+        var rvGot = 0;
+        qPoints(q).forEach(function (x, k) { if (R.ticks[k]) rvGot += +x.marks || 0; });
+        h += '<div class="answer"><b>Model answer</b><p>' + fm(q.answer) + "</p></div>" + pointsHTML(q, R.ticks, "rv-tick") +
+          (rvGot < q.marks ? errPillsHTML(R.err || "", "rv-err") : "") +
+          '<button type="button" class="btn primary block" data-act="rv-score">Done</button>';
+      }
       return h + "</div>";
     }
     if (!R.shown) h += '<button type="button" class="btn primary block" data-act="rv-show">Show model answer</button>';
@@ -2143,6 +2386,7 @@
     h += teacherStudyTimeHTML(st);
     h += teacherActionsHTML(entry, st);
     h += homeGaugeHTML(st, "all");
+    h += errorBreakdownHTML(st, 14, 1);
 
     CHAPTER_LIST.forEach(function (e) {
       var ch = e.ch, prog = chapterProgress(st, ch), rs = RS(st, e.key);
@@ -2322,6 +2566,46 @@
         revealed[qid] = !revealed[qid];
         q.outerHTML = boardCard(getBoard(qid), location.hash.slice(-5) === "board");
         return;
+      case "bq-tick": {
+        q = t.closest(".bq"); var bqid = q.getAttribute("data-q"), bqObj = getBoard(bqid);
+        var bqd = getBqDraft(bqObj), idx = dataI(t);
+        bqd.ticks[idx] = !bqd.ticks[idx];
+        q.outerHTML = boardCard(bqObj, location.hash.slice(-5) === "board");
+        return;
+      }
+      case "bq-all": {
+        q = t.closest(".bq"); var bqid2 = q.getAttribute("data-q"), bqObj2 = getBoard(bqid2);
+        var bqd2 = getBqDraft(bqObj2), allOn2 = bqd2.ticks.every(Boolean);
+        bqd2.ticks = bqd2.ticks.map(function () { return !allOn2; });
+        if (!allOn2) bqd2.err = "";
+        q.outerHTML = boardCard(bqObj2, location.hash.slice(-5) === "board");
+        return;
+      }
+      case "bq-err": {
+        q = t.closest(".bq"); var bqid3 = q.getAttribute("data-q"), bqObj3 = getBoard(bqid3);
+        var bqd3 = getBqDraft(bqObj3), errVal = t.getAttribute("data-err") || "";
+        bqd3.err = bqd3.err === errVal ? "" : errVal;
+        q.outerHTML = boardCard(bqObj3, location.hash.slice(-5) === "board");
+        return;
+      }
+      case "bq-save": {
+        q = t.closest(".bq"); var bqid4 = q.getAttribute("data-q"), bqObj4 = getBoard(bqid4);
+        var bqd4 = getBqDraft(bqObj4), pts4 = qPoints(bqObj4), got4 = 0;
+        pts4.forEach(function (x, k) { if (bqd4.ticks[k]) got4 += +x.marks || 0; });
+        var st4 = load(), now4 = Date.now(), err4 = got4 < bqObj4.marks ? (bqd4.err || "") : "";
+        if (!isObj(st4.boardPts)) st4.boardPts = {};
+        st4.boardPts[bqid4] = { got: got4, of: bqObj4.marks, at: now4, err: err4 };
+        st4.board[bqid4] = got4 >= bqObj4.marks ? "got" : "practice";
+        st4.boardAt[bqid4] = now4;
+        if (got4 < bqObj4.marks) {
+          if (err4) logError(bqid4, curChKey(), err4, st4);
+          bankAdd(bankId("b", bqid4), "below full marks", err4);
+        } else {
+          save();
+        }
+        q.outerHTML = boardCard(bqObj4, location.hash.slice(-5) === "board");
+        return;
+      }
       case "rate-got": case "rate-need":
         q = t.closest(".bq"); var id = q.getAttribute("data-q");
         if (act === "rate-got" && !revealed[id]) return;   // must compare with the model answer first
@@ -2340,14 +2624,32 @@
         return reviewAdvance(R.ds.picked === stepOptions(getDeriv(pd.a, dch), +pd.b).correct);
       case "rv-show": case "rv-written": R.shown = true; return reviewRender();
       case "rv-tick": R.ticks[dataI(t)] = !R.ticks[dataI(t)]; return reviewKeep();
-      case "rv-score":
+      case "rv-err": {
+        var rErr = t.getAttribute("data-err") || "";
+        R.err = R.err === rErr ? "" : rErr;
+        return reviewKeep();
+      }
+      case "rv-score": {
         var pb = parseId(R.queue[R.i]), bch = CHAPTERS[pb.chKey];
         var rq = getBoard(pb.a, bch), rg = 0;
         qPoints(rq).forEach(function (x, k) { if (R.ticks[k]) rg += +x.marks || 0; });
+        var rvSt = load(), rvNow = Date.now(), rvErr = rg < rq.marks ? (R.err || "") : "";
+        if (!isObj(rvSt.boardPts)) rvSt.boardPts = {};
+        rvSt.boardPts[rq.id] = { got: rg, of: rq.marks, at: rvNow, err: rvErr };
+        rvSt.board[rq.id] = rg >= rq.marks ? "got" : "practice";
+        rvSt.boardAt[rq.id] = rvNow;
+        if (rg < rq.marks && rvErr) logError(rq.id, pb.chKey, rvErr, rvSt);
         return reviewAdvance(rg >= rq.marks);
+      }
       case "round-start": return roundStart(t.getAttribute("data-mode"));
       case "round-reveal": RD.run.rev = true; saveRound(false); return roundRender(false);
       case "round-tick": RD.run.ticks[dataI(t)] = !RD.run.ticks[dataI(t)]; saveRound(false); return roundRender(false);
+      case "round-err": {
+        var rdErr = t.getAttribute("data-err") || "";
+        RD.run.err = RD.run.err === rdErr ? "" : rdErr;
+        saveRound(false);
+        return roundRender(false);
+      }
       case "round-next": return roundNext();
       case "round-pause": rebase(RD.run); RD.run.elapsed = runElapsed(RD.run); RD.run.since = 0; saveRound(false); return roundRender(false);
       case "round-resume": RD.run.since = nowMs(); saveRound(false); return roundRender(false);
@@ -2709,7 +3011,11 @@
     parseNum: parseNum,
     fm: fm,
     nextReviewDate: nextReviewDate,
-    errorSummary: function () { return { total: 0, rows: [] }; },
+    errorSummary: errorSummary,
+    subjectExamDate: subjectExamDate,
+    ERR_TAGS: ERR_TAGS,
+    bankAdd: bankAdd,
+    bankReview: bankReview,
     buildPaper: function () { return null; },
     todayFocusPlan: function () { return null; },
     normalizeState: normalizeState,
@@ -2728,7 +3034,10 @@
         if (CHAPTER_LIST[0]) { SUBJ = CHAPTER_LIST[0].subj; CHID = CHAPTER_LIST[0].chId; BASE = "#/" + SUBJ + "/" + CHID; CH = CHAPTER_LIST[0].ch; }
       }
       if (env.state) mem = normalizeState(env.state);
-      if (HAS_WIN && env.today !== undefined) window.__TODAY = env.today;
+      if (env.today !== undefined) {
+        if (HAS_WIN) window.__TODAY = env.today;
+        else if (typeof global !== "undefined") global.__TODAY = env.today;
+      }
     }
   };
   if (HAS_WIN) window.__HSC_TEST = testApi;
