@@ -1,0 +1,166 @@
+{
+  "id": "ch03",
+  "file": "content/maths1/ch03-trigonometric-functions.json",
+  "subject": "maths1",
+  "book": "maths1_xii",
+  "title": "Trigonometric Functions",
+  "lite": true,
+  "startPage": 65,
+  "endPage": 111,
+  "examMarks": 7,
+  "examMarksWithOptions": 10,
+  "stops": [
+    {
+      "id": "s01",
+      "title": "Trigonometric equations & general solutions",
+      "page": 65,
+      "inShort": "sin θ = sin α ⇒ θ = nπ + (−1)^n α; cos θ = cos α ⇒ θ = 2nπ ± α; tan θ = tan α ⇒ θ = nπ + α. For sin²θ = sin²α (or cos² or tan²): θ = nπ ± α.",
+      "sections": [
+        "3.1 Trigonometric Equations and their Solutions"
+      ]
+    },
+    {
+      "id": "s02",
+      "title": "Solution of a triangle (Sine, Cosine & Projection rules)",
+      "page": 76,
+      "inShort": "Sine rule: a/sin A = b/sin B = c/sin C = 2R. Cosine rule: a² = b² + c² − 2bc cos A. Projection rule: a = b cos C + c cos B. Hero's formula: Δ = √(s(s−a)(s−b)(s−c)).",
+      "sections": [
+        "3.2 Solution of Triangle",
+        "3.2.1 Polar Coordinates",
+        "3.2.4 Sine, Cosine & Projection Rules"
+      ]
+    },
+    {
+      "id": "s03",
+      "title": "Inverse trigonometric functions",
+      "page": 89,
+      "inShort": "Principal value branches: sin⁻¹x ∈ [−π/2, π/2], cos⁻¹x ∈ [0, π], tan⁻¹x ∈ (−π/2, π/2). Key identities: sin⁻¹x + cos⁻¹x = π/2; tan⁻¹x + tan⁻¹y = tan⁻¹((x+y)/(1−xy)) for xy < 1.",
+      "sections": [
+        "3.3 Inverse Trigonometric Functions"
+      ]
+    }
+  ],
+  "formulas": [
+    {
+      "stop": "s01",
+      "items": [
+        {
+          "n": "General solutions",
+          "f": "sin θ = sin α ⇒ θ = nπ + (−1)^n α;  cos θ = cos α ⇒ 2nπ ± α;  tan²θ = tan²α ⇒ nπ ± α",
+          "s": "n ∈ Z.",
+          "p": 68
+        }
+      ]
+    },
+    {
+      "stop": "s02",
+      "items": [
+        {
+          "n": "Cosine & Projection rules",
+          "f": "b² = c² + a² − 2ca cos B,  a = b cos C + c cos B",
+          "s": "Also a/sin A = b/sin B = c/sin C = 2R.",
+          "p": 79
+        }
+      ]
+    },
+    {
+      "stop": "s03",
+      "items": [
+        {
+          "n": "Inverse trig sum",
+          "f": "tan⁻¹x + tan⁻¹y = tan⁻¹[(x + y)/(1 − xy)]  (xy < 1)",
+          "s": "sin⁻¹x + cos⁻¹x = π/2.",
+          "p": 97
+        }
+      ]
+    }
+  ],
+  "board": [
+    {
+      "id": "m1c3-2025-Q1ii",
+      "stop": "s02",
+      "year": 2025,
+      "qno": "Q1(ii)",
+      "marks": 2,
+      "kind": "mcq",
+      "page": 80,
+      "text": "In ΔABC, (a + b)·cos C + (b + c)·cos A + (c + a)·cos B is equal to ____.",
+      "options": [
+        "a − b + c",
+        "a + b − c",
+        "a + b + c",
+        "a − b − c"
+      ],
+      "answerIndex": 2,
+      "answer": "(c) a + b + c (regrouping by projection rule: (b cos C + c cos B) + (c cos A + a cos C) + (a cos B + b cos A) = a + b + c).",
+      "points": [
+        {
+          "text": "Correct option: (c) a + b + c",
+          "marks": 2
+        }
+      ]
+    },
+    {
+      "id": "m1c3-2025-Q5",
+      "stop": "s01",
+      "year": 2025,
+      "qno": "Q5",
+      "marks": 2,
+      "kind": "problem",
+      "page": 69,
+      "text": "Find the general solution of tan²θ = 1.",
+      "answer": "tan²θ = 1 = (1)² = tan²(π/4).\nSince tan²θ = tan²α ⇒ θ = nπ ± α, n ∈ Z,\nθ = nπ ± π/4, where n ∈ Z.",
+      "points": [
+        {
+          "text": "Rewriting as tan²θ = tan²(π/4)",
+          "marks": 1
+        },
+        {
+          "text": "General solution θ = nπ ± π/4, n ∈ Z",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "m1c3-2023-Q1ii",
+      "stop": "s02",
+      "year": 2023,
+      "qno": "Q1(ii)",
+      "marks": 2,
+      "kind": "mcq",
+      "page": 79,
+      "text": "In ΔABC, if c² + a² − b² = ac, then ∠B = ____.",
+      "options": [
+        "π/4",
+        "π/3",
+        "π/2",
+        "π/6"
+      ],
+      "answerIndex": 1,
+      "answer": "(b) π/3 (cos B = (c² + a² − b²)/(2ac) = ac/(2ac) = 1/2 ⇒ ∠B = π/3).",
+      "points": [
+        {
+          "text": "Correct option: (b) π/3",
+          "marks": 2
+        }
+      ]
+    },
+    {
+      "id": "m1c3-2022-Q2i",
+      "stop": "s03",
+      "year": 2022,
+      "qno": "Q2(i)",
+      "marks": 1,
+      "kind": "vsa",
+      "page": 93,
+      "text": "Find the principal value of cot⁻¹(−1/√3).",
+      "answer": "Let cot⁻¹(−1/√3) = y ∈ (0, π). Then cot y = −1/√3 = −cot(π/3) = cot(π − π/3) = cot(2π/3).\nPrincipal value = 2π/3.",
+      "points": [
+        {
+          "text": "Principal value = 2π/3",
+          "marks": 1
+        }
+      ]
+    }
+  ]
+}

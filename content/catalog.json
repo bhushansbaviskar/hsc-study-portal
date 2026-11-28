@@ -484,7 +484,11 @@
           "estStops": 10,
           "marks": 3,
           "marksWithOptions": 4,
-          "prefix": "c16-"
+          "prefix": "c16-",
+          "file": "content/chemistry/ch16-green-chemistry-and-nanochemistry.json",
+          "lite": true,
+          "stopCount": 2,
+          "boardCount": 5
         }
       ]
     },
@@ -511,7 +515,11 @@
           "estStops": 11,
           "marks": 4,
           "marksWithOptions": 6,
-          "prefix": "m1c2-"
+          "prefix": "m1c2-",
+          "file": "content/maths1/ch02-matrices.json",
+          "lite": true,
+          "stopCount": 2,
+          "boardCount": 2
         },
         {
           "id": "ch03",
@@ -520,7 +528,11 @@
           "estStops": 12,
           "marks": 7,
           "marksWithOptions": 10,
-          "prefix": "m1c3-"
+          "prefix": "m1c3-",
+          "file": "content/maths1/ch03-trigonometric-functions.json",
+          "lite": true,
+          "stopCount": 3,
+          "boardCount": 4
         },
         {
           "id": "ch04",
@@ -529,7 +541,11 @@
           "estStops": 10,
           "marks": 4,
           "marksWithOptions": 6,
-          "prefix": "m1c4-"
+          "prefix": "m1c4-",
+          "file": "content/maths1/ch04-pair-of-straight-lines.json",
+          "lite": true,
+          "stopCount": 2,
+          "boardCount": 2
         },
         {
           "id": "ch05",
@@ -538,7 +554,11 @@
           "estStops": 12,
           "marks": 9,
           "marksWithOptions": 12,
-          "prefix": "m1c5-"
+          "prefix": "m1c5-",
+          "file": "content/maths1/ch05-vectors.json",
+          "lite": true,
+          "stopCount": 3,
+          "boardCount": 4
         },
         {
           "id": "ch06",
@@ -547,7 +567,11 @@
           "estStops": 12,
           "marks": 7,
           "marksWithOptions": 10,
-          "prefix": "m1c6-"
+          "prefix": "m1c6-",
+          "file": "content/maths1/ch06-line-and-plane.json",
+          "lite": true,
+          "stopCount": 2,
+          "boardCount": 3
         },
         {
           "id": "ch07",
@@ -556,7 +580,11 @@
           "estStops": 8,
           "marks": 3,
           "marksWithOptions": 4,
-          "prefix": "m1c7-"
+          "prefix": "m1c7-",
+          "file": "content/maths1/ch07-linear-programming.json",
+          "lite": true,
+          "stopCount": 1,
+          "boardCount": 2
         }
       ]
     },
@@ -583,7 +611,11 @@
           "estStops": 12,
           "marks": 6,
           "marksWithOptions": 9,
-          "prefix": "m2c2-"
+          "prefix": "m2c2-",
+          "file": "content/maths2/ch02-applications-of-derivatives.json",
+          "lite": true,
+          "stopCount": 3,
+          "boardCount": 3
         },
         {
           "id": "ch03",

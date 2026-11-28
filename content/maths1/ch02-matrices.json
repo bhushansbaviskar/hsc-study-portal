@@ -1,0 +1,100 @@
+{
+  "id": "ch02",
+  "file": "content/maths1/ch02-matrices.json",
+  "subject": "maths1",
+  "book": "maths1_xii",
+  "title": "Matrices",
+  "lite": true,
+  "startPage": 36,
+  "endPage": 64,
+  "examMarks": 4,
+  "examMarksWithOptions": 6,
+  "stops": [
+    {
+      "id": "s01",
+      "title": "Elementary transformations & Inverse by elementary row/column ops",
+      "page": 36,
+      "inShort": "Three elementary transformations: R_i ↔ R_j, R_i → k R_i (k≠0), R_i → R_i + k R_j. To find A⁻¹ by row transformations, start with A · A⁻¹ = I and reduce A to I.",
+      "sections": [
+        "2.1 Elementary Transformations",
+        "2.2 Inverse of a Matrix"
+      ]
+    },
+    {
+      "id": "s02",
+      "title": "Adjoint method for inverse & Solving linear equations",
+      "page": 44,
+      "inShort": "Adjoint adj(A) = [A_ij]^T (transpose of cofactor matrix). A⁻¹ = adj(A) / |A| (when |A| ≠ 0). Method of inversion: A X = B ⇒ X = A⁻¹ B. Method of reduction: convert [A|B] to upper triangular form.",
+      "sections": [
+        "2.2.2 Adjoint Method",
+        "2.3 Application of Matrices (Inversion & Reduction)"
+      ]
+    }
+  ],
+  "formulas": [
+    {
+      "stop": "s02",
+      "items": [
+        {
+          "n": "Inverse by adjoint method",
+          "f": "A⁻¹ = adj(A) / |A|  (|A| ≠ 0)",
+          "s": "For 2×2 [[a,b],[c,d]], adj(A) = [[d,−b],[−c,a]].",
+          "p": 46
+        },
+        {
+          "n": "Matrix solution of AX = B",
+          "f": "X = A⁻¹ B",
+          "s": "Valid when |A| ≠ 0 (unique solution).",
+          "p": 52
+        }
+      ]
+    }
+  ],
+  "board": [
+    {
+      "id": "m1c2-2025-Q4",
+      "stop": "s02",
+      "year": 2025,
+      "qno": "Q4",
+      "marks": 2,
+      "kind": "problem",
+      "page": 45,
+      "text": "Find the adjoint of the matrix A = [[2, −3], [3, 5]].",
+      "answer": "Cofactors: A₁₁ = 5, A₁₂ = −3, A₂₁ = 3, A₂₂ = 2.\nCofactor matrix = [[5, −3], [3, 2]].\nadj(A) = (Cofactor matrix)^T = [[5, 3], [−3, 2]].",
+      "points": [
+        {
+          "text": "Finding cofactors A₁₁, A₁₂, A₂₁, A₂₂",
+          "marks": 1
+        },
+        {
+          "text": "Transpose to get adj(A) = [[5, 3], [−3, 2]]",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "m1c2-imp-s02-sys",
+      "stop": "s02",
+      "source": "Important · Balbharati",
+      "marks": 4,
+      "kind": "problem",
+      "page": 53,
+      "text": "Solve the following equations by the method of inversion: x + y + z = 6, x − y + z = 2, 2x + y − z = 1.",
+      "answer": "A = [[1,1,1],[1,−1,1],[2,1,−1]], X = [x,y,z]^T, B = [6,2,1]^T.\n|A| = 1(1−1) − 1(−1−2) + 1(1+2) = 0 + 3 + 3 = 6 ≠ 0.\nadj(A) = [[0,2,2],[3,−3,0],[3,1,−2]].\nX = (1/6) adj(A) B = (1/6) [6, 12, 18]^T = [1, 2, 3]^T.\nHence x = 1, y = 2, z = 3.",
+      "points": [
+        {
+          "text": "Matrix form AX = B and |A| = 6 ≠ 0",
+          "marks": 1
+        },
+        {
+          "text": "Correct adj(A) and A⁻¹",
+          "marks": 2
+        },
+        {
+          "text": "Solution x = 1, y = 2, z = 3",
+          "marks": 1
+        }
+      ]
+    }
+  ]
+}

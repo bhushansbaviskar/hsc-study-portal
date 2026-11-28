@@ -1,0 +1,130 @@
+{
+  "id": "ch06",
+  "file": "content/maths1/ch06-line-and-plane.json",
+  "subject": "maths1",
+  "book": "maths1_xii",
+  "title": "Line and Plane",
+  "lite": true,
+  "startPage": 194,
+  "endPage": 226,
+  "examMarks": 7,
+  "examMarksWithOptions": 10,
+  "stops": [
+    {
+      "id": "s01",
+      "title": "Vector & Cartesian equations of a line; distance of point/skew lines",
+      "page": 194,
+      "inShort": "Line through a parallel to b: r = a + λ b; Cartesian: (x − x₁)/a = (y − y₁)/b = (z − z₁)/c. Shortest distance between skew lines r = a₁ + λb₁ and r = a₂ + μb₂: d = |(a₂ − a₁) · (b₁ × b₂)| / |b₁ × b₂|.",
+      "sections": [
+        "6.1 Vector & Cartesian Equations of a Line",
+        "6.2 Distance of a Point from a Line",
+        "6.3 Skew Lines"
+      ]
+    },
+    {
+      "id": "s02",
+      "title": "Equations of a plane & angle/distance",
+      "page": 208,
+      "inShort": "Normal form: r · n̂ = p; passing through a with normal n: r · n = a · n (Cartesian: ax + by + cz = d). Distance of point r₁ from r·n = d: |r₁·n − d| / |n|.",
+      "sections": [
+        "6.4 Equations of Plane",
+        "6.5 Angle between Two Planes",
+        "6.7 Distance of a Point from a Plane"
+      ]
+    }
+  ],
+  "formulas": [
+    {
+      "stop": "s01",
+      "items": [
+        {
+          "n": "Line & shortest distance",
+          "f": "r = a + λ b,  d_skew = |(a₂ − a₁) · (b₁ × b₂)| / |b₁ × b₂|",
+          "s": "Lines intersect if (a₂ − a₁)·(b₁ × b₂) = 0.",
+          "p": 202
+        }
+      ]
+    },
+    {
+      "stop": "s02",
+      "items": [
+        {
+          "n": "Plane equation & point distance",
+          "f": "r · n = a · n,  d = |ax₁ + by₁ + cz₁ − d₀| / √(a² + b² + c²)",
+          "s": "Angle between line (dir b) & plane (normal n): sin θ = |b·n|/(|b||n|).",
+          "p": 215
+        }
+      ]
+    }
+  ],
+  "board": [
+    {
+      "id": "m1c6-2025-Q1iv",
+      "stop": "s01",
+      "year": 2025,
+      "qno": "Q1(iv)",
+      "marks": 2,
+      "kind": "mcq",
+      "page": 195,
+      "text": "The vector equation of the line passing through the point having position vector 4i − j + 2k and parallel to vector −2i − j + k is given by ____.",
+      "options": [
+        "(4i − j − 2k) + λ(−2i − j + k)",
+        "(4i − j + 2k) + λ(2i − j + k)",
+        "(4i − j + 2k) + λ(−2i − j − k)",
+        "(4i − j + 2k) + λ(−2i − j + k)"
+      ],
+      "answerIndex": 3,
+      "answer": "(d) (4i − j + 2k) + λ(−2i − j + k) (using r = a + λb).",
+      "points": [
+        {
+          "text": "Correct option: (d) (4i − j + 2k) + λ(−2i − j + k)",
+          "marks": 2
+        }
+      ]
+    },
+    {
+      "id": "m1c6-2022-Q1iii",
+      "stop": "s01",
+      "year": 2022,
+      "qno": "Q1(iii)",
+      "marks": 2,
+      "kind": "mcq",
+      "page": 197,
+      "text": "Equation of line passing through the points (0, 0, 0) and (2, 1, −3) is ____.",
+      "options": [
+        "x/2 = y/1 = z/(−3)",
+        "x/2 = y/(−1) = z/(−3)",
+        "x/1 = y/2 = z/3",
+        "x/3 = y/1 = z/2"
+      ],
+      "answerIndex": 0,
+      "answer": "(a) x/2 = y/1 = z/(−3).",
+      "points": [
+        {
+          "text": "Correct option: (a) x/2 = y/1 = z/(−3)",
+          "marks": 2
+        }
+      ]
+    },
+    {
+      "id": "m1c6-imp-s02-plane",
+      "stop": "s02",
+      "source": "Important · Balbharati",
+      "marks": 3,
+      "kind": "problem",
+      "page": 211,
+      "text": "Find the vector and Cartesian equations of the plane passing through the points A(1, 1, −2), B(1, 2, 1) and C(2, −1, 1).",
+      "answer": "AB = (0, 1, 3), AC = (1, −2, 3).\nNormal n = AB × AC = |i j k; 0 1 3; 1 −2 3| = 9i + 3j − k.\nVector equation: r · (9i + 3j − k) = (i + j − 2k) · (9i + 3j − k) = 9 + 3 + 2 = 14.\nCartesian equation: 9x + 3y − z = 14.",
+      "points": [
+        {
+          "text": "Vectors AB, AC and normal n = AB × AC = 9i + 3j − k",
+          "marks": 1.5
+        },
+        {
+          "text": "Vector and Cartesian equations: 9x + 3y − z = 14",
+          "marks": 1.5
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,88 @@
+{
+  "id": "ch07",
+  "file": "content/maths1/ch07-linear-programming.json",
+  "subject": "maths1",
+  "book": "maths1_xii",
+  "title": "Linear Programming",
+  "lite": true,
+  "startPage": 227,
+  "endPage": 245,
+  "examMarks": 3,
+  "examMarksWithOptions": 4,
+  "stops": [
+    {
+      "id": "s01",
+      "title": "LPP formulation & Graphical solution (Corner point method)",
+      "page": 227,
+      "inShort": "A Linear Programming Problem maximizes or minimizes a linear objective function Z = ax + by subject to linear inequality constraints and non-negativity x ≥ 0, y ≥ 0. Optimal value always occurs at a corner point (vertex) of the bounded feasible region.",
+      "sections": [
+        "7.1 Linear Inequations in Two Variables",
+        "7.2 Mathematical Formulation of LPP",
+        "7.3 Graphical Method"
+      ]
+    }
+  ],
+  "formulas": [
+    {
+      "stop": "s01",
+      "items": [
+        {
+          "n": "Objective function",
+          "f": "Optimize Z = a x + b y",
+          "s": "Evaluate Z at every corner point of feasible region.",
+          "p": 235
+        }
+      ]
+    }
+  ],
+  "board": [
+    {
+      "id": "m1c7-2023-Q1iv",
+      "stop": "s01",
+      "year": 2023,
+      "qno": "Q1(iv)",
+      "marks": 2,
+      "kind": "mcq",
+      "page": 236,
+      "text": "If the corner points of the feasible solution are (0, 10), (2, 2) and (4, 0) then the point of minimum Z = 3x + 2y is ____.",
+      "options": [
+        "(2, 2)",
+        "(0, 10)",
+        "(4, 0)",
+        "(3, 4)"
+      ],
+      "answerIndex": 0,
+      "answer": "(a) (2, 2) (Z at (0,10)=20; Z at (2,2)=6+4=10; Z at (4,0)=12; minimum is 10 at (2,2)).",
+      "points": [
+        {
+          "text": "Correct option: (a) (2, 2)",
+          "marks": 2
+        }
+      ]
+    },
+    {
+      "id": "m1c7-imp-s01-max",
+      "stop": "s01",
+      "source": "Important · Balbharati",
+      "marks": 4,
+      "kind": "problem",
+      "page": 238,
+      "text": "Maximize Z = 4x + 6y subject to 3x + 2y ≤ 12, x + y ≥ 4, x ≥ 0, y ≥ 0.",
+      "answer": "Draw lines 3x + 2y = 12 [passes through (4,0), (0,6)] and x + y = 4 [passes through (4,0), (0,4)].\nFeasible region is bounded by corner points A(4,0), B(0,4), C(0,6).\nZ(4,0) = 16; Z(0,4) = 24; Z(0,6) = 36.\nMaximum Z = 36 at (0, 6).",
+      "points": [
+        {
+          "text": "Correct lines and shaded feasible region",
+          "marks": 2
+        },
+        {
+          "text": "Corner points A(4,0), B(0,4), C(0,6)",
+          "marks": 1
+        },
+        {
+          "text": "Evaluating Z and finding max Z = 36 at (0, 6)",
+          "marks": 1
+        }
+      ]
+    }
+  ]
+}

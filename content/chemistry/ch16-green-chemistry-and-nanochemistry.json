@@ -1,0 +1,163 @@
+{
+  "id": "ch16",
+  "file": "content/chemistry/ch16-green-chemistry-and-nanochemistry.json",
+  "subject": "chemistry",
+  "book": "chem_xii",
+  "title": "Green Chemistry and Nanochemistry",
+  "lite": true,
+  "startPage": 340,
+  "endPage": 352,
+  "examMarks": 3,
+  "examMarksWithOptions": 4,
+  "stops": [
+    {
+      "id": "s01",
+      "title": "12 Principles of Green Chemistry & Atom economy",
+      "page": 340,
+      "inShort": "Green chemistry minimizes waste and hazardous substances. Atom economy = (Formula weight of desired product / Sum of formula weights of all reactants) × 100%. Ozone layer depletion involves NO/CFCs.",
+      "sections": [
+        "16.2 Sustainable Development",
+        "16.3 Principles of Green Chemistry",
+        "16.4 Role of Green Chemistry"
+      ]
+    },
+    {
+      "id": "s02",
+      "title": "Nanochemistry, nanostructures, synthesis & applications",
+      "page": 345,
+      "inShort": "Nanomaterials have 1–100 nm dimensions. 0D (nanoparticles), 1D (nanorods, nanotubes, nanowires), 2D (nanofilms). Sol-gel process involves hydrolysis of metal alkoxides: M(OR)_n + H₂O → M(OR)_{n−1}(OH) + ROH. Silver nanoparticles remove E. coli from water.",
+      "sections": [
+        "16.5 Introduction to Nanochemistry",
+        "16.6 Characteristic Features",
+        "16.7 Synthesis (Sol-Gel)",
+        "16.9 Applications"
+      ]
+    }
+  ],
+  "formulas": [
+    {
+      "stop": "s01",
+      "items": [
+        {
+          "n": "Percent atom economy",
+          "f": "% Atom economy = (FW of desired product / ∑ FW of reactants) × 100",
+          "s": "Higher atom economy = greener reaction.",
+          "p": 342
+        }
+      ]
+    }
+  ],
+  "board": [
+    {
+      "id": "c16-2025-Q1iii",
+      "stop": "s01",
+      "year": 2025,
+      "qno": "Q1(iii)",
+      "marks": 1,
+      "kind": "mcq",
+      "page": 344,
+      "text": "Ozone layer is depleted by ____.",
+      "options": [
+        "NO",
+        "NO₂",
+        "NO₃",
+        "N₂O₅"
+      ],
+      "answerIndex": 0,
+      "answer": "(a) NO (nitric oxide reacts catalytically with ozone: NO + O₃ → NO₂ + O₂).",
+      "points": [
+        {
+          "text": "Correct option: (a) NO",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "c16-2025-Q1vi",
+      "stop": "s02",
+      "year": 2025,
+      "qno": "Q1(vi)",
+      "marks": 1,
+      "kind": "mcq",
+      "page": 346,
+      "text": "One dimensional nanostructure amongst the following is ____.",
+      "options": [
+        "Nanoparticles",
+        "Nanotubes",
+        "Nanofilms",
+        "Nanocrystals"
+      ],
+      "answerIndex": 1,
+      "answer": "(b) Nanotubes (or nanorods/nanowires — two dimensions are in nanoscale, one is outside).",
+      "points": [
+        {
+          "text": "Correct option: (b) Nanotubes",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "c16-2025-Q17",
+      "stop": "s01",
+      "year": 2025,
+      "qno": "Q17",
+      "marks": 3,
+      "kind": "theory",
+      "page": 342,
+      "text": "What is atom economy? Explain any two applications of nanomaterials.",
+      "answer": "Atom economy is a measure of the amount of atoms from the starting materials that are present in the useful products at the end of a chemical process: % Atom economy = (Formula weight of desired product / Sum of formula weights of all reactants) × 100.\nApplications of nanomaterials:\n1. Water purification: Silver nanoparticles (AgNPs) kill E. coli bacteria.\n2. Medicine: Targeted drug delivery and sunscreens (ZnO/TiO₂ nanoparticles).",
+      "points": [
+        {
+          "text": "Definition and formula of atom economy",
+          "marks": 1
+        },
+        {
+          "text": "Application 1 (water purification / E. coli)",
+          "marks": 1
+        },
+        {
+          "text": "Application 2 (medicine / electronics / catalysis)",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "c16-2024-Q2i",
+      "stop": "s02",
+      "year": 2024,
+      "qno": "Q2(i)",
+      "marks": 1,
+      "kind": "vsa",
+      "page": 350,
+      "text": "Write the name of metal nanoparticle used to remove E.coli bacteria from water.",
+      "answer": "Silver nanoparticles (Ag).",
+      "points": [
+        {
+          "text": "Silver nanoparticles",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "c16-2024-Q5",
+      "stop": "s02",
+      "year": 2024,
+      "qno": "Q5",
+      "marks": 2,
+      "kind": "theory",
+      "page": 348,
+      "text": "What is nano material? Write the reaction involved in sol-gel process during hydrolysis.",
+      "answer": "Nanomaterial: A material having structural components with at least one dimension in the nanometer scale (1–100 nm).\nHydrolysis in sol-gel process:\nM−OR + H₂O → M−OH + R−OH (e.g., Si(OC₂H₅)₄ + H₂O → Si(OC₂H₅)₃OH + C₂H₅OH).",
+      "points": [
+        {
+          "text": "Definition of nanomaterial (1–100 nm)",
+          "marks": 1
+        },
+        {
+          "text": "Hydrolysis reaction in sol-gel process",
+          "marks": 1
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,104 @@
+{
+  "id": "ch04",
+  "file": "content/maths1/ch04-pair-of-straight-lines.json",
+  "subject": "maths1",
+  "book": "maths1_xii",
+  "title": "Pair of Straight Lines",
+  "lite": true,
+  "startPage": 112,
+  "endPage": 132,
+  "examMarks": 4,
+  "examMarksWithOptions": 6,
+  "stops": [
+    {
+      "id": "s01",
+      "title": "Homogeneous equation of degree 2 & angle between lines",
+      "page": 112,
+      "inShort": "ax² + 2hxy + by² = 0 represents two lines through the origin if h² − ab ≥ 0. Slopes m₁ + m₂ = −2h/b, m₁m₂ = a/b. Acute angle: tan θ = |2√(h² − ab) / (a + b)|. Perpendicular if a + b = 0; coincident if h² = ab.",
+      "sections": [
+        "4.1 Combined Equation",
+        "4.2 Homogeneous Equation of Degree Two",
+        "4.3 Angle between Lines"
+      ]
+    },
+    {
+      "id": "s02",
+      "title": "General second degree equation",
+      "page": 124,
+      "inShort": "ax² + 2hxy + by² + 2gx + 2fy + c = 0 represents a pair of lines if Δ = abc + 2fgh − af² − bg² − ch² = 0 and h² − ab ≥ 0.",
+      "sections": [
+        "4.4 General Second Degree Equation in x and y"
+      ]
+    }
+  ],
+  "formulas": [
+    {
+      "stop": "s01",
+      "items": [
+        {
+          "n": "Angle between lines ax² + 2hxy + by² = 0",
+          "f": "tan θ = |2√(h² − ab) / (a + b)|",
+          "s": "Perpendicular if a + b = 0; coincident/parallel if h² = ab.",
+          "p": 119
+        }
+      ]
+    },
+    {
+      "stop": "s02",
+      "items": [
+        {
+          "n": "Pair of lines condition",
+          "f": "Δ = abc + 2fgh − af² − bg² − ch² = 0",
+          "s": "With h² − ab ≥ 0.",
+          "p": 125
+        }
+      ]
+    }
+  ],
+  "board": [
+    {
+      "id": "m1c4-imp-s01-angle",
+      "stop": "s01",
+      "source": "Important · Balbharati",
+      "marks": 3,
+      "kind": "proof",
+      "page": 119,
+      "text": "Prove that the acute angle θ between the lines represented by ax² + 2hxy + by² = 0 is given by tan θ = |2√(h² − ab) / (a + b)| (a + b ≠ 0).",
+      "answer": "Let m₁, m₂ be slopes of the two lines. Then m₁ + m₂ = −2h/b and m₁m₂ = a/b.\n(m₁ − m₂)² = (m₁ + m₂)² − 4m₁m₂ = 4h²/b² − 4a/b = 4(h² − ab)/b².\n|m₁ − m₂| = 2√(h² − ab)/|b|.\ntan θ = |(m₁ − m₂)/(1 + m₁m₂)| = |2√(h² − ab)/(a + b)|.",
+      "points": [
+        {
+          "text": "Sum and product of slopes m₁+m₂ = −2h/b, m₁m₂ = a/b",
+          "marks": 1
+        },
+        {
+          "text": "Finding |m₁ − m₂| = 2√(h² − ab)/|b|",
+          "marks": 1
+        },
+        {
+          "text": "Substituting in tan θ = |(m₁−m₂)/(1+m₁m₂)|",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "m1c4-imp-s01-joint",
+      "stop": "s01",
+      "source": "Important · Balbharati",
+      "marks": 2,
+      "kind": "problem",
+      "page": 114,
+      "text": "Find the joint equation of the pair of lines passing through the origin and perpendicular to the lines 5x² − 8xy + 3y² = 0.",
+      "answer": "5x² − 8xy + 3y² = (5x − 3y)(x − y) = 0.\nSlopes are 5/3 and 1. Slopes of perpendicular lines are −3/5 and −1.\nEquations: 3x + 5y = 0 and x + y = 0.\nJoint equation: (3x + 5y)(x + y) = 3x² + 8xy + 5y² = 0.",
+      "points": [
+        {
+          "text": "Slopes of given lines and perpendicular lines",
+          "marks": 1
+        },
+        {
+          "text": "Joint equation 3x² + 8xy + 5y² = 0",
+          "marks": 1
+        }
+      ]
+    }
+  ]
+}

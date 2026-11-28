@@ -1,0 +1,139 @@
+{
+  "id": "ch02",
+  "file": "content/maths2/ch02-applications-of-derivatives.json",
+  "subject": "maths2",
+  "book": "maths2_xii",
+  "title": "Applications of Derivatives",
+  "lite": true,
+  "startPage": 65,
+  "endPage": 94,
+  "examMarks": 6,
+  "examMarksWithOptions": 9,
+  "stops": [
+    {
+      "id": "s01",
+      "title": "Tangents, normals & rate of change",
+      "page": 65,
+      "inShort": "Slope of tangent at (x₁, y₁) is m = (dy/dx)_(x₁,y₁); slope of normal is −1/m. Equation of tangent: y − y₁ = m(x − x₁).",
+      "sections": [
+        "2.1 Tangent and Normal",
+        "2.2 Derivative as a Rate Measure"
+      ]
+    },
+    {
+      "id": "s02",
+      "title": "Approximations & Rolle's / Lagrange's Mean Value Theorems",
+      "page": 73,
+      "inShort": "Linear approximation: f(a + h) ≈ f(a) + h f'(a). Rolle's Theorem: if f(a) = f(b), ∃c ∈ (a,b) with f'(c) = 0. LMVT: f'(c) = [f(b) − f(a)]/(b − a).",
+      "sections": [
+        "2.3 Approximations",
+        "2.4 Rolle's Theorem and LMVT"
+      ]
+    },
+    {
+      "id": "s03",
+      "title": "Increasing/decreasing functions & Maxima/Minima",
+      "page": 80,
+      "inShort": "Strictly increasing for all x ∈ R: f'(x) > 0 ∀ x ∈ R. Second derivative test: at stationary point f'(c) = 0, if f''(c) < 0 ⇒ local maximum; if f''(c) > 0 ⇒ local minimum.",
+      "sections": [
+        "2.4 Increasing and Decreasing Functions",
+        "2.5 Maxima and Minima"
+      ]
+    }
+  ],
+  "formulas": [
+    {
+      "stop": "s01",
+      "items": [
+        {
+          "n": "Tangent & Normal",
+          "f": "y − y₁ = m(x − x₁),  m_normal = −1/m",
+          "s": "m = (dy/dx) at (x₁, y₁).",
+          "p": 66
+        }
+      ]
+    },
+    {
+      "stop": "s02",
+      "items": [
+        {
+          "n": "Approximation & LMVT",
+          "f": "f(a + h) ≈ f(a) + h f'(a),  f'(c) = [f(b) − f(a)]/(b − a)",
+          "s": "Rolle's theorem is special case f(a) = f(b) ⇒ f'(c) = 0.",
+          "p": 75
+        }
+      ]
+    }
+  ],
+  "board": [
+    {
+      "id": "m2c2-2025-Q2iv",
+      "stop": "s03",
+      "year": 2025,
+      "qno": "Q2(iv)",
+      "marks": 1,
+      "kind": "vsa",
+      "page": 81,
+      "text": "Write the condition for the function f(x) to be strictly increasing, for all x ∈ R.",
+      "answer": "f'(x) > 0 for all x ∈ R.",
+      "points": [
+        {
+          "text": "f'(x) > 0 for all x ∈ R",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "m2c2-2022-Q1vi",
+      "stop": "s03",
+      "year": 2022,
+      "qno": "Q1(vi)",
+      "marks": 2,
+      "kind": "mcq",
+      "page": 86,
+      "text": "The maximum value of the function f(x) = (log x)/x is ____.",
+      "options": [
+        "e",
+        "1/e",
+        "e²",
+        "1/e²"
+      ],
+      "answerIndex": 1,
+      "answer": "(b) 1/e (f'(x) = (1 − log x)/x² = 0 ⇒ x = e; f''(e) < 0 ⇒ f(e) = 1/e).",
+      "points": [
+        {
+          "text": "Correct option: (b) 1/e",
+          "marks": 2
+        }
+      ]
+    },
+    {
+      "id": "m2c2-imp-s03-box",
+      "stop": "s03",
+      "source": "Important · Balbharati",
+      "marks": 4,
+      "kind": "problem",
+      "page": 89,
+      "text": "An open box is to be made out of a square sheet of side 18 cm by cutting off equal squares from the corners and turning up the sides. Find the maximum volume of the box.",
+      "answer": "Let side of cut square be x cm (0 < x < 9). Box dimensions: (18 − 2x) × (18 − 2x) × x.\nV(x) = x(18 − 2x)² = 4x(9 − x)² = 4(x³ − 18x² + 81x).\nV'(x) = 4(3x² − 36x + 81) = 12(x − 3)(x − 9) = 0 ⇒ x = 3 (since x < 9).\nV''(3) = 12(6 − 12) = −72 < 0 ⇒ maximum at x = 3.\nV_max = 3 × (12)² = 432 cm³.",
+      "points": [
+        {
+          "text": "Volume function V(x) = x(18 − 2x)²",
+          "marks": 1
+        },
+        {
+          "text": "V'(x) = 0 giving x = 3",
+          "marks": 1
+        },
+        {
+          "text": "Second derivative V''(3) < 0 verification",
+          "marks": 1
+        },
+        {
+          "text": "Maximum volume = 432 cm³",
+          "marks": 1
+        }
+      ]
+    }
+  ]
+}
