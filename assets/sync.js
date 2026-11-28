@@ -144,6 +144,10 @@
   /* ---------- deterministic, commutative state merge ---------- */
   var BOARD_RANK = { got: 3, practice: 2, need: 1 };
   function boardRank(v) { return BOARD_RANK[v] || 0; }
+  function cmpStr(a, b) {
+    var sa = String(a || ""), sb = String(b || "");
+    return sa < sb ? -1 : sa > sb ? 1 : 0;
+  }
 
   function pickRoundRec(a, b) {
     if (!isObj(a)) return isObj(b) ? clone(b) : null;
@@ -167,13 +171,24 @@
 
   function pickBankItem(a, b) {
     var ua = num(a.updatedAt), ub = num(b.updatedAt);
-    if (ua !== ub) return ua > ub ? clone(a) : clone(b);
-    var sa = num(a.streak), sb = num(b.streak);
-    if (sa !== sb) return sa > sb ? clone(a) : clone(b);
-    if (!!a.prio !== !!b.prio) return a.prio ? clone(a) : clone(b);
-    var da = isDate(a.due) ? a.due : "9999-99-99", db = isDate(b.due) ? b.due : "9999-99-99";
-    if (da !== db) return da < db ? clone(a) : clone(b);
-    return String(a.reason || "") >= String(b.reason || "") ? clone(a) : clone(b);
+    var chosen;
+    if (ua !== ub) chosen = ua > ub ? clone(a) : clone(b);
+    else {
+      var sa = num(a.streak), sb = num(b.streak);
+      if (sa !== sb) chosen = sa > sb ? clone(a) : clone(b);
+      else if (!!a.prio !== !!b.prio) chosen = a.prio ? clone(a) : clone(b);
+      else {
+        var da = isDate(a.due) ? a.due : "9999-99-99", db = isDate(b.due) ? b.due : "9999-99-99";
+        if (da !== db) chosen = da < db ? clone(a) : clone(b);
+        else {
+          var ra = String(a.reason || ""), rb = String(b.reason || "");
+          if (ra !== rb) chosen = ra > rb ? clone(a) : clone(b);
+          else chosen = String(a.err || "") >= String(b.err || "") ? clone(a) : clone(b);
+        }
+      }
+    }
+    chosen.err = String(chosen.err || "");
+    return chosen;
   }
 
   function pickQP(a, b) {
@@ -275,6 +290,14 @@
       planStart: earlierDate(A.planStart, B.planStart),
       round: { modes: {}, complete: false, bestFull: 0, run: null, runDel: 0, last: null },
       rounds: {},
+      roundHist: {},
+      boardPts: {},
+      graduated: {},
+      errLog: [],
+      papers: [],
+      paperRun: null,
+      paperRunDel: Math.max(num(A.paperRunDel), num(B.paperRunDel)),
+      predSummary: {},
       timeByDay: mergeCounterMap(A.timeByDay, B.timeByDay),
       timeByCh: mergeCounterMap(A.timeByCh, B.timeByCh),
       dismissedNoteAt: Math.max(num(A.dismissedNoteAt), num(B.dismissedNoteAt)),
@@ -391,6 +414,115 @@
       out.rounds[chKey] = mergeRoundObj(A.rounds && A.rounds[chKey], B.rounds && B.rounds[chKey]);
     });
 
+    // roundHist: chKey -> Array<{at, date, mode, got, of, pct, secs?, errs?}> (cap 20)
+    unionKeys(A.roundHist, B.roundHist).forEach(function (chKey) {
+      var la = Array.isArray(A.roundHist && A.roundHist[chKey]) ? A.roundHist[chKey] : [];
+      var lb = Array.isArray(B.roundHist && B.roundHist[chKey]) ? B.roundHist[chKey] : [];
+      var map = Object.create(null);
+      la.concat(lb).forEach(function (x) {
+        if (!isObj(x) || typeof x.at !== "number") return;
+        var key = x.at + "|" + String(x.mode || "") + "|" + num(x.got) + "|" + num(x.of);
+        if (!map[key] || canonicalJSON(x) > canonicalJSON(map[key])) map[key] = clone(x);
+      });
+      var arr = Object.keys(map).map(function (k) { return map[k]; });
+      arr.sort(function (x, y) {
+        return num(y.at) - num(x.at) || cmpStr(x.mode, y.mode) || num(y.pct) - num(x.pct) || num(y.got) - num(x.got);
+      });
+      if (arr.length) out.roundHist[chKey] = arr.slice(0, 20);
+    });
+
+    // boardPts: qId -> { got, of, at, err }
+    unionKeys(A.boardPts, B.boardPts).forEach(function (qId) {
+      var pa = isObj(A.boardPts && A.boardPts[qId]) ? A.boardPts[qId] : null;
+      var pb = isObj(B.boardPts && B.boardPts[qId]) ? B.boardPts[qId] : null;
+      if (!pa && !pb) return;
+      var win;
+      if (pa && !pb) win = clone(pa);
+      else if (pb && !pa) win = clone(pb);
+      else {
+        var ta = num(pa.at), tb = num(pb.at);
+        if (ta !== tb) win = ta > tb ? clone(pa) : clone(pb);
+        else {
+          var ra = num(pa.of) > 0 ? num(pa.got) / num(pa.of) : 0;
+          var rb = num(pb.of) > 0 ? num(pb.got) / num(pb.of) : 0;
+          if (ra !== rb) win = ra > rb ? clone(pa) : clone(pb);
+          else if (num(pa.of) !== num(pb.of)) win = num(pa.of) > num(pb.of) ? clone(pa) : clone(pb);
+          else win = cmpStr(pa.err, pb.err) >= 0 ? clone(pa) : clone(pb);
+        }
+      }
+      win.err = String(win.err || "");
+      out.boardPts[qId] = win;
+    });
+
+    // graduated: bankId -> timestampMs
+    unionKeys(A.graduated, B.graduated).forEach(function (id) {
+      var m = Math.max(num(A.graduated && A.graduated[id]), num(B.graduated && B.graduated[id]));
+      if (m > 0) out.graduated[id] = m;
+    });
+
+    // errLog: cap 200
+    var errMap = Object.create(null);
+    (Array.isArray(A.errLog) ? A.errLog : []).concat(Array.isArray(B.errLog) ? B.errLog : []).forEach(function (x) {
+      if (!isObj(x) || typeof x.at !== "number" || typeof x.id !== "string") return;
+      var key = x.at + "|" + x.id + "|" + String(x.err || "");
+      if (!errMap[key] || canonicalJSON(x) > canonicalJSON(errMap[key])) errMap[key] = clone(x);
+    });
+    out.errLog = Object.keys(errMap).map(function (k) { return errMap[k]; })
+      .sort(function (x, y) { return num(y.at) - num(x.at) || cmpStr(x.id, y.id) || cmpStr(x.err, y.err); })
+      .slice(0, 200);
+
+    // papers: union by id, cap 30
+    var paperMap = Object.create(null);
+    (Array.isArray(A.papers) ? A.papers : []).concat(Array.isArray(B.papers) ? B.papers : []).forEach(function (x) {
+      if (!isObj(x) || typeof x.id !== "string") return;
+      var prev = paperMap[x.id];
+      if (!prev) { paperMap[x.id] = clone(x); return; }
+      var ta = num(prev.at), tb = num(x.at);
+      if (tb > ta || (tb === ta && (num(x.got) > num(prev.got) || (num(x.got) === num(prev.got) && canonicalJSON(x) > canonicalJSON(prev))))) {
+        paperMap[x.id] = clone(x);
+      }
+    });
+    out.papers = Object.keys(paperMap).map(function (k) { return paperMap[k]; })
+      .sort(function (x, y) { return num(y.at) - num(x.at) || cmpStr(x.id, y.id); })
+      .slice(0, 30);
+
+    // paperRun + paperRunDel tombstone
+    var prA = isObj(A.paperRun) ? A.paperRun : null;
+    var prB = isObj(B.paperRun) ? B.paperRun : null;
+    var winPR = null, fromRemotePR = false;
+    var phaseRank = function (p) { return p === "mark" ? 3 : p === "write" ? 2 : p === "read" ? 1 : 0; };
+    if (prA && prB) {
+      var pta = num(prA.at), ptb = num(prB.at);
+      if (ptb > pta) { winPR = clone(prB); fromRemotePR = true; }
+      else if (pta > ptb) { winPR = clone(prA); }
+      else {
+        var pra = phaseRank(prA.phase), prb = phaseRank(prB.phase);
+        if (prb > pra || (prb === pra && (num(prB.i) > num(prA.i) || (num(prB.i) === num(prA.i) && canonicalJSON(prB) > canonicalJSON(prA))))) {
+          winPR = clone(prB); fromRemotePR = true;
+        } else {
+          winPR = clone(prA);
+        }
+      }
+    } else if (prA) {
+      winPR = clone(prA);
+    } else if (prB) {
+      winPR = clone(prB);
+      fromRemotePR = true;
+    }
+    if (winPR && !(out.paperRunDel > 0 && num(winPR.at) <= out.paperRunDel)) {
+      if (fromRemotePR) { winPR.since = 0; winPR.resumed = true; }
+      out.paperRun = winPR;
+    }
+
+    // predSummary: keep larger at
+    var psA = isObj(A.predSummary) ? A.predSummary : null;
+    var psB = isObj(B.predSummary) ? B.predSummary : null;
+    if (psA && psB) {
+      var psa = num(psA.at), psb = num(psB.at);
+      out.predSummary = (psb > psa || (psb === psa && canonicalJSON(psB) > canonicalJSON(psA))) ? clone(psB) : clone(psA);
+    } else if (psA) out.predSummary = clone(psA);
+    else if (psB) out.predSummary = clone(psB);
+
     return out;
   }
 
@@ -411,6 +543,20 @@
     } else {
       c.rounds = {};
     }
+    if (isObj(c.bank)) {
+      Object.keys(c.bank).forEach(function (k) {
+        if (isObj(c.bank[k]) && !c.bank[k].err) delete c.bank[k].err;
+      });
+    }
+    if (!isObj(c.roundHist)) c.roundHist = {};
+    if (!isObj(c.boardPts)) c.boardPts = {};
+    if (!isObj(c.graduated)) c.graduated = {};
+    if (!Array.isArray(c.errLog)) c.errLog = [];
+    if (!Array.isArray(c.papers)) c.papers = [];
+    if (!isObj(c.paperRun)) c.paperRun = null;
+    else delete c.paperRun.resumed;
+    c.paperRunDel = num(c.paperRunDel);
+    if (!isObj(c.predSummary)) c.predSummary = {};
     if (!isObj(c.timeByDay)) c.timeByDay = {};
     if (!isObj(c.timeByCh)) c.timeByCh = {};
     c.dismissedNoteAt = num(c.dismissedNoteAt);

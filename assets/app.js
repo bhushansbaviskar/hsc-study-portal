@@ -4,6 +4,8 @@
 (function () {
   "use strict";
 
+  var HAS_DOM = typeof document !== "undefined";
+  var HAS_WIN = typeof window !== "undefined";
   var PLAN_DEFAULT_STOPS = 14;     // estimated stops for chapters that have no content yet
   var STORE_KEY = "hscPrep.v2", OLD_KEY = "hscPrep.v1";
   var XP_FIRST = 10, XP_SECOND = 5, HINT_COST = 2, PASS_MARK = 2, TOL = 0.02;
@@ -11,31 +13,44 @@
   var BASE = "#/" + SUBJ + "/" + CHID;
   var MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
-  var app = document.getElementById("app");
-  var titleEl = document.getElementById("title");
-  var backEl = document.getElementById("back");
-  var xpEl = document.getElementById("xp");
-  var dueEl = document.getElementById("due-badge");
-  var syncPillEl = document.getElementById("sync-pill");
-  var syncLabelEl = document.getElementById("sync-label");
-  var previewBarEl = document.getElementById("preview-bar");
-  var teacherBarEl = document.getElementById("teacher-bar");
-  var teacherPillEl = document.getElementById("teacher-pill");
-  var SYNC = window.HSCSync || null;
+  var app = HAS_DOM ? document.getElementById("app") : null;
+  var titleEl = HAS_DOM ? document.getElementById("title") : null;
+  var backEl = HAS_DOM ? document.getElementById("back") : null;
+  var xpEl = HAS_DOM ? document.getElementById("xp") : null;
+  var dueEl = HAS_DOM ? document.getElementById("due-badge") : null;
+  var syncPillEl = HAS_DOM ? document.getElementById("sync-pill") : null;
+  var syncLabelEl = HAS_DOM ? document.getElementById("sync-label") : null;
+  var previewBarEl = HAS_DOM ? document.getElementById("preview-bar") : null;
+  var teacherBarEl = HAS_DOM ? document.getElementById("teacher-bar") : null;
+  var teacherPillEl = HAS_DOM ? document.getElementById("teacher-pill") : null;
+  var SYNC = HAS_WIN ? (window.HSCSync || null) : null;
   var catalog = null, CH = null;
-  var CHAPTERS = {};               // "subj/chId" -> chapter JSON
-  var CHAPTER_LIST = [];           // ordered [{ key, subj, subjTitle, chId, ch }]
+  var LIVE_MAP = {};               // "subj/chId" -> { key, subj, subjTitle, chId, meta }
+  var LIVE_LIST = [];              // ordered live entries from catalog
+  var CHAPTERS = {};               // "subj/chId" -> loaded chapter JSON
+  var CHAPTER_LIST = [];           // ordered loaded [{ key, subj, subjTitle, chId, ch }]
+  var LOADING = {};                // "subj/chId" -> Promise
+  var routeGen = 0;                // generation guard against stale async renders
   var homeSubj = "all";            // subject filter pill on Home
   var formulaChKey = "";           // selected chapter on Formulas page
   var notesChFilter = "all";       // selected chapter filter on Notes page
   var lastRoundChKey = "";         // chapter key for #/review/round
   var redraw = null;               // re-renders the interactive view currently on screen
-  var Q = null, R = null, D = null; // quest, review and drill sessions (in memory)
+  var Q = null, R = null, D = null, PR = null; // quest, review, drill, paper sessions (in memory)
   var revealed = {};               // board answers shown this session
   var TState = { loading: false, error: "", data: null, checkedAt: 0 };
   var TActionMsg = {};             // studentId -> { ok, text }
   var PREVIEW = null;              // { name, blankMode, savedMem, savedTeacher }
   var lastActivityAt = Date.now();
+  var timerDirty = false;
+  var timerTicks = 0;
+
+  var KIND_LABEL = {
+    mcq: "MCQ", vsa: "VSA", define: "Definition", distinguish: "Distinguish",
+    numerical: "Numerical", derivation: "Derivation", proof: "Proof",
+    theory: "Theory", diagram: "Diagram", problem: "Problem"
+  };
+  function kindLabel(k) { return KIND_LABEL[k] || String(k || ""); }
 
   /* ---------- icons ---------- */
   var ICON = {
@@ -49,7 +64,7 @@
     chev: '<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>'
   };
 
-  /* ---------- chapter context helpers ---------- */
+  /* ---------- chapter context & lazy loader ---------- */
   function chKeyOf(subj, chid) { return subj + "/" + chid; }
   function curChKey() { return chKeyOf(SUBJ, CHID); }
   function chKeyFor(ch) { return ch ? chKeyOf(ch.subject, ch.id) : curChKey(); }
@@ -60,7 +75,80 @@
     return found ? found.title : subjId;
   }
   function chShortLabel(ch) { return subjTitle(ch.subject) + " · Ch " + ch.number; }
+  function chShortFromMeta(e) { return e.subjTitle + " · Ch " + e.meta.number; }
+  function rebuildChapterList() {
+    CHAPTER_LIST = LIVE_LIST.filter(function (e) { return !!CHAPTERS[e.key]; })
+      .map(function (e) { return { key: e.key, subj: e.subj, subjTitle: e.subjTitle, chId: e.chId, ch: CHAPTERS[e.key] }; });
+  }
+  function buildLiveCatalog(cat) {
+    catalog = cat;
+    LIVE_MAP = {};
+    LIVE_LIST = [];
+    if (!cat || !Array.isArray(cat.subjects)) return;
+    cat.subjects.forEach(function (sub) {
+      (sub.chapters || []).forEach(function (c) {
+        if (!c.file) return;
+        var key = chKeyOf(sub.id, c.id);
+        var entry = { key: key, subj: sub.id, subjTitle: sub.title, chId: c.id, meta: c };
+        LIVE_MAP[key] = entry;
+        LIVE_LIST.push(entry);
+      });
+    });
+    rebuildChapterList();
+  }
+  function ensureChapter(subj, chId) {
+    var key = chKeyOf(subj, chId);
+    if (CHAPTERS[key]) return Promise.resolve(CHAPTERS[key]);
+    var entry = LIVE_MAP[key];
+    if (!entry || !entry.meta || !entry.meta.file) return Promise.resolve(null);
+    if (LOADING[key]) return LOADING[key];
+    LOADING[key] = getJSON(entry.meta.file).then(function (ch) {
+      CHAPTERS[key] = ch;
+      rebuildChapterList();
+      delete LOADING[key];
+      return ch;
+    }, function (err) {
+      delete LOADING[key];
+      throw err;
+    });
+    return LOADING[key];
+  }
+  function ensureChapters(keys) {
+    var uniq = [], seen = {};
+    (keys || []).forEach(function (k) {
+      if (k && LIVE_MAP[k] && !CHAPTERS[k] && !seen[k]) { seen[k] = true; uniq.push(k); }
+    });
+    if (!uniq.length) return Promise.resolve([]);
+    return Promise.all(uniq.map(function (k) {
+      var sp = k.split("/");
+      return ensureChapter(sp[0], sp[1]);
+    }));
+  }
+  function ensureSubjectChapters(paperKey) {
+    var keys = LIVE_LIST.filter(function (e) {
+      if (paperKey === "maths") return e.subj === "maths1" || e.subj === "maths2";
+      return e.subj === paperKey;
+    }).map(function (e) { return e.key; });
+    return ensureChapters(keys);
+  }
+  function ensureAllChapters() {
+    return ensureChapters(LIVE_LIST.map(function (e) { return e.key; }));
+  }
+  function withChapters(keys, fn) {
+    var missing = (keys || []).filter(function (k) { return k && LIVE_MAP[k] && !CHAPTERS[k]; });
+    if (!missing.length) return fn();
+    var myGen = routeGen;
+    if (app) app.innerHTML = '<div class="card center"><p class="muted">Loading chapter…</p></div>';
+    ensureChapters(missing).then(function () {
+      if (myGen !== routeGen) return;
+      fn();
+    }, function (err) {
+      if (myGen !== routeGen) return;
+      errorView("Could not load chapter (" + err.message + ").");
+    });
+  }
   function updateMapTab() {
+    if (!HAS_DOM) return;
     var link = document.querySelector('.tabs a[data-tab="map"]');
     if (link) link.setAttribute("href", BASE);
   }
@@ -78,9 +166,17 @@
 
   /* ---------- storage (never throws) ---------- */
   var mem = null;
-  function blank() { return { v: 2, done: {}, xp: 0, quest: {}, bank: {}, bankDel: {}, notes: {}, noteAt: {}, board: {}, boardAt: {}, theme: "quest", lastChapter: "", qp: {}, qpDel: {}, drill: {}, planStart: "", round: blankRound(), rounds: {}, timeByDay: {}, timeByCh: {}, dismissedNoteAt: 0, updatedAt: 0 }; }
+  function blank() {
+    return {
+      v: 2, done: {}, xp: 0, quest: {}, bank: {}, bankDel: {}, notes: {}, noteAt: {},
+      board: {}, boardAt: {}, theme: "quest", lastChapter: "", qp: {}, qpDel: {}, drill: {},
+      planStart: "", round: blankRound(), rounds: {}, roundHist: {}, boardPts: {},
+      graduated: {}, errLog: [], papers: [], paperRun: null, paperRunDel: 0, predSummary: {},
+      timeByDay: {}, timeByCh: {}, dismissedNoteAt: 0, updatedAt: 0
+    };
+  }
   function blankRound() { return { modes: {}, complete: false, bestFull: 0, run: null, runDel: 0, last: null }; }
-  function isObj(x) { return x && typeof x === "object" && !Array.isArray(x); }
+  function isObj(x) { return !!(x && typeof x === "object" && !Array.isArray(x)); }
   function normalizeRound(rd) {
     if (!isObj(rd)) rd = blankRound();
     var rb = blankRound();
@@ -91,12 +187,20 @@
   function normalizeState(s) {
     if (!isObj(s)) s = blank();
     var b = blank();
-    for (var k in b) if (s[k] == null || typeof s[k] !== typeof b[k]) s[k] = b[k];
+    for (var k in b) {
+      if (Array.isArray(b[k])) { if (!Array.isArray(s[k])) s[k] = []; }
+      else if (b[k] === null) { if (s[k] !== null && !isObj(s[k])) s[k] = null; }
+      else if (s[k] == null || typeof s[k] !== typeof b[k] || Array.isArray(s[k])) s[k] = b[k];
+    }
     if (s.theme !== "quest" && s.theme !== "focus") s.theme = "quest";
     s.v = 2;
     s.round = normalizeRound(s.round);
     if (!isObj(s.rounds)) s.rounds = {};
     for (var ck in s.rounds) s.rounds[ck] = normalizeRound(s.rounds[ck]);
+    if (!isObj(s.roundHist)) s.roundHist = {};
+    if (!isObj(s.boardPts)) s.boardPts = {};
+    if (!isObj(s.graduated)) s.graduated = {};
+    if (!isObj(s.predSummary)) s.predSummary = {};
     if (!isObj(s.timeByDay)) s.timeByDay = {};
     if (!isObj(s.timeByCh)) s.timeByCh = {};
     return s;
@@ -238,14 +342,19 @@
       hasAny: sec > 0 || stops.length > 0 || drills.length > 0 || rounds.length > 0
     };
   }
+  function flushTimer() {
+    if (!timerDirty) return;
+    timerDirty = false;
+    save({ silentSync: true });
+  }
   function startStudyTimer() {
     var bump = function () { lastActivityAt = Date.now(); };
     ["click", "keydown", "input", "touchstart", "scroll"].forEach(function (ev) {
       window.addEventListener(ev, bump, { passive: true });
     });
     setInterval(function () {
-      if (PREVIEW || !CHAPTER_LIST.length) return;
-      if (typeof document !== "undefined" && document.visibilityState !== "visible") return;
+      if (PREVIEW || !LIVE_LIST.length) return;
+      if (HAS_DOM && document.visibilityState !== "visible") return;
       if (Date.now() - lastActivityAt > 120000) return;
       var h = (location.hash || "#/").split("?")[0];
       if (h === "#/teacher" || h === "#/sync") return;
@@ -254,12 +363,14 @@
       if (!isObj(st.timeByDay[d])) st.timeByDay[d] = {};
       st.timeByDay[d][devId] = (st.timeByDay[d][devId] || 0) + 15;
       var parts = h.replace(/^#\/?/, "").split("/").filter(Boolean);
-      if (parts.length >= 2 && CHAPTERS[chKeyOf(parts[0], parts[1])]) {
+      if (parts.length >= 2 && LIVE_MAP[chKeyOf(parts[0], parts[1])]) {
         var ck = chKeyOf(parts[0], parts[1]);
         if (!isObj(st.timeByCh[ck])) st.timeByCh[ck] = {};
         st.timeByCh[ck][devId] = (st.timeByCh[ck][devId] || 0) + 15;
       }
-      save({ silentSync: true });
+      timerDirty = true;
+      timerTicks++;
+      if (timerTicks % 4 === 0) flushTimer();
     }, 15000);
   }
   function getJSON(url) {
@@ -274,16 +385,27 @@
     return -1;
   }
   function stopById(id, ch) { var target = ch || CH, i = stopIndex(id, target); return i < 0 ? null : target.stops[i]; }
+  function doneCount(st, chKey) {
+    var prefix = chKey + "/", n = 0, d = (st || load()).done;
+    for (var k in d) if (k.indexOf(prefix) === 0 && d[k]) n++;
+    return n;
+  }
   function chapterProgress(st, ch) {
     var target = ch || CH;
     var done = target.stops.filter(function (s) { return isDone(s.id, st, target); }).length;
     return { done: done, total: target.stops.length, pct: Math.round(100 * done / target.stops.length) };
   }
   function totalActiveProgress(st) {
+    st = st || load();
     var done = 0, total = 0;
-    CHAPTER_LIST.forEach(function (entry) {
-      var p = chapterProgress(st, entry.ch);
-      done += p.done; total += p.total;
+    LIVE_LIST.forEach(function (entry) {
+      if (CHAPTERS[entry.key]) {
+        var p = chapterProgress(st, CHAPTERS[entry.key]);
+        done += p.done; total += p.total;
+      } else {
+        done += doneCount(st, entry.key);
+        total += entry.meta.stopCount || 0;
+      }
     });
     return { done: done, total: total, pct: total ? Math.round(100 * done / total) : 0 };
   }
@@ -330,7 +452,7 @@
   function dayDiff(a, b) { return Math.round((parseDate(b) - parseDate(a)) / 86400000); }
   function activeSubjects() {
     return catalog.subjects.filter(function (sub) {
-      return sub.chapters.some(function (c) { return !!CHAPTERS[chKeyOf(sub.id, c.id)]; });
+      return sub.chapters.some(function (c) { return !!LIVE_MAP[chKeyOf(sub.id, c.id)]; });
     });
   }
   function planInfo(st, subjFilter) {
@@ -344,7 +466,7 @@
       subIds[sub.id] = true;
       sub.chapters.forEach(function (c) {
         var loaded = CHAPTERS[chKeyOf(sub.id, c.id)];
-        total += loaded ? loaded.stops.length : (c.estStops || PLAN_DEFAULT_STOPS);
+        total += loaded ? loaded.stops.length : (c.stopCount || c.estStops || PLAN_DEFAULT_STOPS);
       });
     });
     for (var k in st.done) {
@@ -573,25 +695,53 @@
     return s ? { ch: ch, chKey: p.chKey, stop: s, kind: p.kind } : null;
   }
 
+  function itemLiveOrExists(id) {
+    var k = parseId(id).chKey;
+    return !!LIVE_MAP[k] && (!CHAPTERS[k] || itemExists(id));
+  }
+  function countDue(st) { return dueIds(st).filter(itemLiveOrExists).length; }
+  function countBank(st) { return bankIds(st).filter(itemLiveOrExists).length; }
+  function keysInBank(st) {
+    var seen = {}, out = [], b = (st || load()).bank;
+    for (var id in b) { var k = parseId(id).chKey; if (LIVE_MAP[k] && !seen[k]) { seen[k] = true; out.push(k); } }
+    return out;
+  }
+  function keysInNotes(st) {
+    var seen = {}, out = [], n = (st || load()).notes;
+    for (var nk in n) {
+      if (!n[nk] || !n[nk].trim()) continue;
+      var p = nk.split("/"), k = p.length >= 2 ? chKeyOf(p[0], p[1]) : "";
+      if (LIVE_MAP[k] && !seen[k]) { seen[k] = true; out.push(k); }
+    }
+    return out;
+  }
+
   /* ---------- teacher directives & preview mode ---------- */
   function activeTeacherData() {
     if (PREVIEW) return PREVIEW.savedTeacher || null;
     return SYNC ? SYNC.getTeacherData() : null;
   }
   function applyTeacherAssignments(teacherObj) {
-    if (!isObj(teacherObj) || !Array.isArray(teacherObj.assigned) || !CHAPTER_LIST.length) return;
-    var st = load(), changed = false;
+    if (!isObj(teacherObj) || !Array.isArray(teacherObj.assigned) || !LIVE_LIST.length) return;
+    var keys = [];
     teacherObj.assigned.forEach(function (entry) {
       var id = isObj(entry) ? entry.id : (typeof entry === "string" ? entry : "");
-      var at = isObj(entry) && typeof entry.at === "number" ? entry.at : 1;
-      if (!id || !itemExists(id)) return;
-      if (st.bank[id]) return;
-      if ((st.bankDel[id] || 0) >= at) return;
-      st.bank[id] = { due: today(), streak: 0, added: today(), reason: "teacher assigned", prio: true, updatedAt: at };
-      delete st.bankDel[id];
-      changed = true;
+      if (id) { var k = parseId(id).chKey; if (LIVE_MAP[k]) keys.push(k); }
     });
-    if (changed) { save({ silentSync: true }); updateChrome(); }
+    ensureChapters(keys).then(function () {
+      var st = load(), changed = false;
+      teacherObj.assigned.forEach(function (entry) {
+        var id = isObj(entry) ? entry.id : (typeof entry === "string" ? entry : "");
+        var at = isObj(entry) && typeof entry.at === "number" ? entry.at : 1;
+        if (!id || !itemExists(id)) return;
+        if (st.bank[id]) return;
+        if ((st.bankDel[id] || 0) >= at) return;
+        st.bank[id] = { due: today(), streak: 0, added: today(), reason: "teacher assigned", prio: true, updatedAt: at };
+        delete st.bankDel[id];
+        changed = true;
+      });
+      if (changed) { save({ silentSync: true }); updateChrome(); }
+    });
   }
   function rewardProgress(reward, st) {
     if (!isObj(reward) || !reward.title) return null;
@@ -725,21 +875,24 @@
     }
   }
   function updateChrome() {
+    if (!HAS_DOM) return;
     xpEl.innerHTML = ICON.bolt + " " + load().xp + " XP";
     var n = 0;
-    try { n = CHAPTER_LIST.length ? dueIds().filter(itemExists).length : 0; } catch (e) { n = 0; }
+    try { n = LIVE_LIST.length ? countDue() : 0; } catch (e) { n = 0; }
     if (n > 0) { dueEl.hidden = false; dueEl.textContent = n; dueEl.setAttribute("aria-label", n + " due"); } else dueEl.hidden = true;
     if (teacherPillEl && SYNC) teacherPillEl.hidden = !SYNC.hasTeacherConfig() || !!PREVIEW;
     updateSyncPill();
     renderTeacherBar();
   }
   function applyTheme() {
+    if (!HAS_DOM) return;
     var t = load().theme;
     document.documentElement.setAttribute("data-theme", t);
     document.getElementById("th-quest").setAttribute("aria-pressed", String(t === "quest"));
     document.getElementById("th-focus").setAttribute("aria-pressed", String(t === "focus"));
   }
   function errorView(msg) {
+    if (!HAS_DOM) return;
     setHeader("Something went wrong", "#/", {});
     app.innerHTML = '<div class="card"><h2>Something went wrong</h2><p class="muted">' + esc(msg) +
       '</p><a class="btn" href="#/">Go home</a></div>';
@@ -767,7 +920,7 @@
     setHeader("HSC Board Prep", null, { tab: "home" });
     var st = load(), left = daysLeft(catalog.examDate), dt = doneToday(st);
     var pl = planInfo(st, homeSubj), remaining = Math.max(0, pl.pace - dt);
-    var totProg = totalActiveProgress(st), due = dueIds(st).filter(itemExists).length;
+    var totProg = totalActiveProgress(st), due = countDue(st);
     var h = "";
 
     // Subject filter pills
@@ -838,20 +991,24 @@
     // Subjects & Chapters
     var subsToShow = homeSubj === "all" ? catalog.subjects : catalog.subjects.filter(function (s) { return s.id === homeSubj; });
     subsToShow.forEach(function (sub) {
-      var liveCount = sub.chapters.filter(function (c) { return !!CHAPTERS[chKeyOf(sub.id, c.id)]; }).length;
+      var liveCount = sub.chapters.filter(function (c) { return !!c.file; }).length;
       h += '<div class="card"><div class="row"><h2 class="grow">' + esc(sub.title) + '</h2><span class="small muted">' + liveCount + ' of ' + sub.chapters.length + ' live</span></div><ul class="list">' +
         sub.chapters.map(function (c) {
           var key = chKeyOf(sub.id, c.id), chObj = CHAPTERS[key];
-          if (!chObj) return '<li><div class="soon"><span class="num">' + c.number + '</span><span class="grow">' + esc(c.title) + '<br><span class="small">Coming soon</span></span></div></li>';
-          var p = chapterProgress(st, chObj), rc = roundComplete(st, key);
-          return '<li><a class="item" href="' + chBase(chObj) + '"><span class="num">' + c.number + '</span>' +
+          if (!c.file) return '<li><div class="soon"><span class="num">' + c.number + '</span><span class="grow">' + esc(c.title) + '<br><span class="small">Coming soon</span></span></div></li>';
+          var p = chObj ? chapterProgress(st, chObj) : { done: doneCount(st, key), total: c.stopCount || 0, pct: (c.stopCount ? Math.round(100 * doneCount(st, key) / c.stopCount) : 0) };
+          var rc = roundComplete(st, key);
+          var metaCh = chObj || { subject: sub.id, id: c.id, number: c.number };
+          var baseHref = "#/" + sub.id + "/" + c.id;
+          var boardN = chObj ? chObj.board.length : (c.boardCount || 0);
+          return '<li><a class="item" href="' + baseHref + '"><span class="num">' + c.number + '</span>' +
             '<span class="grow"><b>' + esc(c.title) + '</b><div class="bar" style="margin-top:6px"><i style="width:' + p.pct + '%"></i></div>' +
             '<span class="muted small">' + p.done + " of " + p.total + " stops</span></span>" + ICON.chev + "</a>" +
-            '<a class="rlink" href="' + chBase(chObj) + '/round"><span class="ricon">' + ICON.trophy + '</span><span class="grow"><b>Board round</b><br><span class="muted small">' + chObj.board.length + " exam questions · open now</span>" + (rc ? "<br>" + badgeHTML("home", st, chObj) : "") + "</span>" + ICON.chev + "</a></li>";
+            '<a class="rlink" href="' + baseHref + '/round"><span class="ricon">' + ICON.trophy + '</span><span class="grow"><b>Board round</b><br><span class="muted small">' + boardN + " exam questions · open now</span>" + (rc ? "<br>" + badgeHTML("home", st, metaCh) : "") + "</span>" + ICON.chev + "</a></li>";
         }).join("") + "</ul></div>";
     });
     if (!isFocus()) {
-      h += '<div class="stats"><div class="stat"><b>' + st.xp + '</b><span>XP</span></div><div class="stat"><b>' + totProg.done + "/" + totProg.total + '</b><span>stops done</span></div><div class="stat"><b>' + bankIds(st).filter(itemExists).length + '</b><span>in mistake bank</span></div></div>';
+      h += '<div class="stats"><div class="stat"><b>' + st.xp + '</b><span>XP</span></div><div class="stat"><b>' + totProg.done + "/" + totProg.total + '</b><span>stops done</span></div><div class="stat"><b>' + countBank(st) + '</b><span>in mistake bank</span></div></div>';
     }
     app.innerHTML = h;
   }
@@ -943,7 +1100,7 @@
     var s = stopById(q.stop);
     var h = '<article class="bq" data-q="' + esc(q.id) + '"><div class="bq-top">' + tag(boardTag(q)) +
       '<span class="marks">' + q.marks + (q.marks === 1 ? " mark" : " marks") + "</span>" +
-      (q.kind ? '<span class="kind">' + esc(q.kind) + "</span>" : "") + "</div>" +
+      (q.kind ? '<span class="kind">' + esc(kindLabel(q.kind)) + "</span>" : "") + "</div>" +
       '<p class="bq-text">' + fm(q.text) + "</p>";
     if (q.options) h += '<ul class="bq-opts">' + q.options.map(function (o) { return "<li>" + fm(o) + "</li>"; }).join("") + "</ul>";
     if (withStop && s) h += '<p class="small muted">Stop ' + (stopIndex(s.id) + 1) + ': <a href="' + BASE + "/" + s.id + '">' + esc(s.title) + "</a></p>";
@@ -1294,7 +1451,7 @@
     var c = document.getElementById("rclock");
     if (c) c.textContent = fmtClock(Math.ceil((run.limit * 1000 - runElapsed(run)) / 1000));
   }
-  window.__roundAdvance = function (sec) { tOff += sec * 1000; roundTick(); };   // test hook: fake the passing of time
+  if (HAS_WIN) window.__roundAdvance = function (sec) { tOff += sec * 1000; roundTick(); };   // test hook: fake the passing of time
 
   function roundStart(mode) {
     if (!validMode(mode)) return;
@@ -1414,7 +1571,7 @@
         return;
       }
     }
-    h += '<article class="card rq" data-q="' + esc(q.id) + '"><div class="bq-top">' + tag(boardTag(q)) + '<span class="marks">' + marksWord(q.marks) + "</span>" + (q.kind ? '<span class="kind">' + esc(q.kind) + "</span>" : "") + "</div>" +
+    h += '<article class="card rq" data-q="' + esc(q.id) + '"><div class="bq-top">' + tag(boardTag(q)) + '<span class="marks">' + marksWord(q.marks) + "</span>" + (q.kind ? '<span class="kind">' + esc(kindLabel(q.kind)) + "</span>" : "") + "</div>" +
       '<p class="bq-text">' + fm(q.text) + "</p>" + roundOptionsHTML(q);
     if (!run.rev) {
       h += '<p class="rinst">Write your answer on paper first.</p><button type="button" class="btn primary block" data-act="round-reveal">I\'ve written my answer</button>';
@@ -1539,17 +1696,17 @@
     }).join("");
   }
   function formulasView() {
-    var showAll = formulaChKey === "all" && CHAPTER_LIST.length > 1;
+    var showAll = formulaChKey === "all" && LIVE_LIST.length > 1;
     var fKey = !showAll && formulaChKey && CHAPTERS[formulaChKey] ? formulaChKey : curChKey();
     var ch = CHAPTERS[fKey] || CH;
     var label = ch.formulaLabel || "Formula card";
     setHeader(showAll ? "Formula sheet · All chapters" : label + " · " + chShortLabel(ch), null, { xp: true, tab: "formulas" });
     var h = "";
-    if (CHAPTER_LIST.length > 1) {
+    if (LIVE_LIST.length > 1) {
       h += '<div class="pills-row noprint" role="group" aria-label="Choose chapter">' +
         '<button type="button" class="pill-btn" data-act="formula-ch" data-ch="all" aria-pressed="' + showAll + '">All chapters</button>' +
-        CHAPTER_LIST.map(function (e) {
-          return '<button type="button" class="pill-btn" data-act="formula-ch" data-ch="' + esc(e.key) + '" aria-pressed="' + (!showAll && e.key === fKey) + '">' + esc(chShortLabel(e.ch)) + "</button>";
+        LIVE_LIST.map(function (e) {
+          return '<button type="button" class="pill-btn" data-act="formula-ch" data-ch="' + esc(e.key) + '" aria-pressed="' + (!showAll && e.key === fKey) + '">' + esc(chShortFromMeta(e)) + "</button>";
         }).join("") + "</div>";
     }
     if (showAll) {
@@ -2081,26 +2238,35 @@
   function applyRemoteState(merged) {
     if (PREVIEW) return;
     var prevRounds = mem ? JSON.stringify({ r: mem.round, rs: mem.rounds }) : "";
+    var prevPaperRun = mem ? JSON.stringify(mem.paperRun) : "";
     mem = normalizeState(merged);
     save({ fromRemote: true });
     if (RD && JSON.stringify({ r: mem.round, rs: mem.rounds }) !== prevRounds) {
       if (rTimer) { clearInterval(rTimer); rTimer = null; }
       RD = null;
     }
+    if (PR && JSON.stringify(mem.paperRun) !== prevPaperRun) {
+      PR = null;
+    }
     updateChrome();
+    if (!HAS_DOM) return;
     // Never clobber an active note textarea or sync/teacher form inputs
     var ae = document.activeElement;
     var editingInput = ae && (ae.id === "note" || ae.tagName === "INPUT" || ae.tagName === "TEXTAREA");
     var hash = location.hash || "#/";
+    var sy = window.scrollY;
     if (!editingInput && hash !== "#/sync" && hash !== "#/teacher") {
       route(true);
+      window.scrollTo(0, sy);
     } else if (hash === "#/sync" && SYNC && SYNC.isLinked()) {
       syncView();
+      window.scrollTo(0, sy);
     }
   }
 
   /* ---------- events ---------- */
   function dataI(t) { return +t.getAttribute("data-i"); }
+  if (HAS_DOM) {
   app.addEventListener("click", function (e) {
     var t = e.target.closest("[data-act]");
     if (!t || !app.contains(t)) return;
@@ -2112,7 +2278,8 @@
         return homeView();
       case "formula-ch":
         formulaChKey = t.getAttribute("data-ch") || curChKey();
-        return formulasView();
+        if (formulaChKey === "all") return withChapters(LIVE_LIST.map(function (x) { return x.key; }), formulasView);
+        return withChapters([formulaChKey], formulasView);
       case "notes-ch":
         notesChFilter = t.getAttribute("data-ch") || "all";
         return notesView();
@@ -2375,8 +2542,8 @@
     if (e.key === "Enter" && e.target.id === "numin") { var b = app.querySelector('[data-act="ce-check"]'); if (b) b.click(); }
   });
   app.addEventListener("focusout", function (e) { if (e.target.classList && e.target.classList.contains("note-ta")) flushNote(true); });
-  window.addEventListener("pagehide", function () { flushNote(true); saveRound(false); });
-  document.addEventListener("visibilitychange", function () { if (document.hidden) { flushNote(true); saveRound(false); } });
+  window.addEventListener("pagehide", function () { flushNote(true); saveRound(false); flushTimer(); });
+  document.addEventListener("visibilitychange", function () { if (document.hidden) { flushNote(true); saveRound(false); flushTimer(); } });
   document.querySelector(".themebar").addEventListener("click", function (e) {
     var b = e.target.closest("[data-theme-set]");
     if (!b) return;
@@ -2387,9 +2554,11 @@
     var a = e.target.closest("a[href]");     // tapping the tab you are already on restarts that page
     if (a && (location.hash || "#/") === a.getAttribute("href")) route(false);
   });
+  } // end if (HAS_DOM)
 
   /* ---------- router ---------- */
   function route(rerender) {
+    routeGen++;
     flushNote(false);
     var rawHash = (location.hash || "#/").split("?")[0];
     var parts = rawHash.replace(/^#\/?/, "").split("/").filter(Boolean);
@@ -2402,89 +2571,166 @@
     if (!parts.length) return homeView();
     if (p0 === "sync") return syncView();
     if (p0 === "teacher") {
-      if (!rerender && SYNC && SYNC.hasTeacherConfig() && !TState.loading) return teacherFetch();
-      return teacherView();
+      return withChapters(LIVE_LIST.map(function (e) { return e.key; }), function () {
+        if (!rerender && SYNC && SYNC.hasTeacherConfig() && !TState.loading) return teacherFetch();
+        return teacherView();
+      });
     }
     if (p0 === "review") {
-      if (parts[1] === "all") return bankListView();
-      if (parts[1] === "round") { if (rerender && R) { redraw = reviewRender; return reviewRender(); } return reviewRoundStart(); }
-      if (rerender && R) { redraw = reviewRender; return reviewRender(); }
-      return reviewStart();
+      var rKeys = keysInBank(load()).concat(lastRoundChKey ? [lastRoundChKey] : []);
+      return withChapters(rKeys, function () {
+        if (parts[1] === "all") return bankListView();
+        if (parts[1] === "round") { if (rerender && R) { redraw = reviewRender; return reviewRender(); } return reviewRoundStart(); }
+        if (rerender && R) { redraw = reviewRender; return reviewRender(); }
+        return reviewStart();
+      });
     }
-    if (p0 === "notes") return notesView();
-    if (p0 === "formulas") return formulasView();
-    if (p0 && p1 && CHAPTERS[chKeyOf(p0, p1)]) {
-      setActiveChapter(p0, p1, true);
-      formulaChKey = curChKey();
-      var p2 = parts[2], p3 = parts[3];
-      if (!p2) return chapterView();
-      if (p2 === "board") return boardView();
-      if (p2 === "round") {
-        if (!p3) { redraw = roundPickerView; return roundPickerView(); }
-        if (p3 === "run") return roundRunRoute(rerender);
-      }
-      if (p2 === "derive") {
-        if (!p3) return deriveListView();
-        if (rerender && D && D.chKey === curChKey() && D.d.id === p3) { redraw = drillRender; return drillRender(); }
-        return drillStart(p3);
-      }
-      if (p3 === "quest") {
-        if (rerender && Q && Q.chKey === curChKey() && Q.stop.id === p2) { redraw = questRender; return questRender(); }
-        return questStart(p2);
-      }
-      if (!p3) return stopView(p2);
+    if (p0 === "notes") return withChapters(keysInNotes(load()), notesView);
+    if (p0 === "formulas") {
+      var fKeys = formulaChKey === "all" ? LIVE_LIST.map(function (e) { return e.key; }) : [formulaChKey && LIVE_MAP[formulaChKey] ? formulaChKey : curChKey()];
+      return withChapters(fKeys, formulasView);
+    }
+    if (p0 && p1 && LIVE_MAP[chKeyOf(p0, p1)]) {
+      var targetKey = chKeyOf(p0, p1);
+      return withChapters([targetKey], function () {
+        setActiveChapter(p0, p1, true);
+        formulaChKey = curChKey();
+        var p2 = parts[2], p3 = parts[3];
+        if (!p2) return chapterView();
+        if (p2 === "board") return boardView();
+        if (p2 === "round") {
+          if (!p3) { redraw = roundPickerView; return roundPickerView(); }
+          if (p3 === "run") return roundRunRoute(rerender);
+        }
+        if (p2 === "derive") {
+          if (!p3) return deriveListView();
+          if (rerender && D && D.chKey === curChKey() && D.d.id === p3) { redraw = drillRender; return drillRender(); }
+          return drillStart(p3);
+        }
+        if (p3 === "quest") {
+          if (rerender && Q && Q.chKey === curChKey() && Q.stop.id === p2) { redraw = questRender; return questRender(); }
+          return questStart(p2);
+        }
+        if (!p3) return stopView(p2);
+        location.hash = "#/";
+      });
     }
     location.hash = "#/";
   }
 
-  /* ---------- boot: load catalog + all active chapter JSONs in parallel ---------- */
-  getJSON("content/catalog.json").then(function (cat) {
-    catalog = cat;
-    var entries = [];
-    catalog.subjects.forEach(function (sub) {
-      sub.chapters.forEach(function (c) {
-        if (c.file) entries.push({ subj: sub.id, subjTitle: sub.title, chId: c.id, file: c.file });
-      });
-    });
-    return Promise.all(entries.map(function (e) {
-      return getJSON(e.file).then(function (ch) { return { meta: e, ch: ch }; });
-    }));
-  }).then(function (loaded) {
-    CHAPTERS = {};
-    CHAPTER_LIST = [];
-    loaded.forEach(function (item) {
-      var key = chKeyOf(item.meta.subj, item.meta.chId);
-      CHAPTERS[key] = item.ch;
-      CHAPTER_LIST.push({ key: key, subj: item.meta.subj, subjTitle: item.meta.subjTitle, chId: item.meta.chId, ch: item.ch });
-    });
-    var st = load();
-    var initKey = st.lastChapter && CHAPTERS[st.lastChapter] ? st.lastChapter : (CHAPTER_LIST[0] && CHAPTER_LIST[0].key);
-    if (initKey) {
-      var sp = initKey.split("/");
-      setActiveChapter(sp[0], sp[1], false);
+  /* ---------- boot: load catalog + only chapters needed for exact Home ---------- */
+  function roundHasActivity(r) {
+    if (!isObj(r)) return false;
+    return !!(r.complete || r.bestFull > 0 || r.last || r.run || (isObj(r.modes) && Object.keys(r.modes).length));
+  }
+  function chKeyFromQid(qid) {
+    for (var i = 0; i < LIVE_LIST.length; i++) {
+      var e = LIVE_LIST[i];
+      if (e.meta.prefix && qid.indexOf(e.meta.prefix) === 0) return e.key;
     }
-    applyTheme();
-    if (SYNC) {
-      applyTeacherAssignments(SYNC.getTeacherData());
-      SYNC.init({
-        getState: function () { return load(); },
-        applyState: applyRemoteState,
-        onTeacherData: function (td) {
-          if (PREVIEW) return;
-          applyTeacherAssignments(td);
-          renderTeacherBar();
-          if ((location.hash || "#/") === "#/") homeView();
-        },
-        onStatus: function () {
-          updateSyncPill();
-          if (location.hash === "#/sync" && SYNC.isLinked()) syncView();
-        }
-      });
+    return LIVE_MAP["physics/ch01"] ? "physics/ch01" : "";
+  }
+  function bootNeededKeys(st, td) {
+    var seen = {}, out = [];
+    function add(k) { if (k && LIVE_MAP[k] && !seen[k]) { seen[k] = true; out.push(k); } }
+    add(st.lastChapter && LIVE_MAP[st.lastChapter] ? st.lastChapter : (LIVE_LIST[0] && LIVE_LIST[0].key));
+    [st.done, st.quest, st.qp].forEach(function (map) {
+      if (!isObj(map)) return;
+      for (var k in map) {
+        var p = k.split("/");
+        if (p.length >= 2) add(chKeyOf(p[0], p[1]));
+      }
+    });
+    if (isObj(st.rounds)) {
+      for (var rk in st.rounds) if (roundHasActivity(st.rounds[rk])) add(rk);
     }
-    startStudyTimer();
-    window.addEventListener("hashchange", function () { route(false); });
-    route(false);
-  }).catch(function (e) {
-    errorView("Could not load the portal (" + e.message + "). Check your connection and refresh.");
-  });
+    if (roundHasActivity(st.round)) add("physics/ch01");
+    if (isObj(st.boardPts)) {
+      for (var qid in st.boardPts) add(chKeyFromQid(qid));
+    }
+    if (isObj(td)) {
+      if (isObj(td.focus)) add(td.focus.chKey);
+      if (isObj(td.reward)) add(td.reward.chKey);
+    }
+    for (var i = 0; i < LIVE_LIST.length; i++) {
+      var e = LIVE_LIST[i];
+      if (doneCount(st, e.key) < (e.meta.stopCount || PLAN_DEFAULT_STOPS)) { add(e.key); break; }
+    }
+    return out;
+  }
+
+  if (HAS_DOM) {
+    getJSON("content/catalog.json").then(function (cat) {
+      buildLiveCatalog(cat);
+      var st = load();
+      var td = SYNC ? SYNC.getTeacherData() : null;
+      var keys = bootNeededKeys(st, td);
+      var rawHash = (location.hash || "#/").split("?")[0];
+      var parts = rawHash.replace(/^#\/?/, "").split("/").filter(Boolean);
+      if (parts.length >= 2 && LIVE_MAP[chKeyOf(parts[0], parts[1])]) keys.push(chKeyOf(parts[0], parts[1]));
+      return ensureChapters(keys).then(function () { return st; });
+    }).then(function (st) {
+      var initKey = st.lastChapter && CHAPTERS[st.lastChapter] ? st.lastChapter : (CHAPTER_LIST[0] && CHAPTER_LIST[0].key);
+      if (initKey) {
+        var sp = initKey.split("/");
+        setActiveChapter(sp[0], sp[1], false);
+      }
+      applyTheme();
+      if (SYNC) {
+        applyTeacherAssignments(SYNC.getTeacherData());
+        SYNC.init({
+          getState: function () { return load(); },
+          applyState: applyRemoteState,
+          onTeacherData: function (td) {
+            if (PREVIEW) return;
+            applyTeacherAssignments(td);
+            renderTeacherBar();
+            if ((location.hash || "#/") === "#/") homeView();
+          },
+          onStatus: function () {
+            updateSyncPill();
+            if (location.hash === "#/sync" && SYNC.isLinked()) syncView();
+          }
+        });
+      }
+      startStudyTimer();
+      window.addEventListener("hashchange", function () { route(false); });
+      route(false);
+    }).catch(function (e) {
+      errorView("Could not load the portal (" + e.message + "). Check your connection and refresh.");
+    });
+  }
+
+  /* ---------- test hook (browser & pure Node) ---------- */
+  var testApi = {
+    stopMastery: stopMastery,
+    gaugeData: gaugeData,
+    planInfo: planInfo,
+    parseNum: parseNum,
+    fm: fm,
+    nextReviewDate: nextReviewDate,
+    errorSummary: function () { return { total: 0, rows: [] }; },
+    buildPaper: function () { return null; },
+    todayFocusPlan: function () { return null; },
+    normalizeState: normalizeState,
+    blank: blank,
+    KIND_LABEL: KIND_LABEL,
+    kindLabel: kindLabel,
+    doneCount: doneCount,
+    bootNeededKeys: bootNeededKeys,
+    _setTestEnv: function (env) {
+      if (!env) return;
+      if (env.catalog) buildLiveCatalog(env.catalog);
+      if (env.chapters) {
+        CHAPTERS = {};
+        for (var k in env.chapters) CHAPTERS[k] = env.chapters[k];
+        rebuildChapterList();
+        if (CHAPTER_LIST[0]) { SUBJ = CHAPTER_LIST[0].subj; CHID = CHAPTER_LIST[0].chId; BASE = "#/" + SUBJ + "/" + CHID; CH = CHAPTER_LIST[0].ch; }
+      }
+      if (env.state) mem = normalizeState(env.state);
+      if (HAS_WIN && env.today !== undefined) window.__TODAY = env.today;
+    }
+  };
+  if (HAS_WIN) window.__HSC_TEST = testApi;
+  if (typeof module !== "undefined" && module.exports) module.exports = testApi;
 })();

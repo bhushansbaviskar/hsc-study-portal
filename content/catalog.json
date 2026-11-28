@@ -1,6 +1,19 @@
 {
   "examDate": "2027-02-01",
   "planEnd": "2027-01-22",
+  "exams": {
+    "physics": "2027-02-15",
+    "chemistry": "2027-02-20",
+    "maths": "2027-02-25"
+  },
+  "examsTentative": true,
+  "practicalsStart": "2027-01-25",
+  "dailyMinutes": { "weekday": 90, "weekend": 180 },
+  "paperGroups": {
+    "physics": { "title": "Physics", "paperMarks": 70, "withOptions": 98, "subjects": ["physics"] },
+    "chemistry": { "title": "Chemistry", "paperMarks": 70, "withOptions": 98, "subjects": ["chemistry"] },
+    "maths": { "title": "Maths & Statistics (I + II)", "paperMarks": 80, "withOptions": 112, "subjects": ["maths1", "maths2"] }
+  },
   "books": {
     "xii": { "label": "Std XII Physics", "driveUrl": "https://drive.google.com/file/d/1qNIdDxwykUw9iDD38k5HBPWNuuZbEVss/view", "pdfPageOffset": 10 },
     "xi": { "label": "Std XI Physics", "driveUrl": "https://drive.google.com/file/d/1z-Ra-Nh0ATDWKW8DDE-Z3fXH3BIwT5ZC/view", "pdfPageOffset": 10 },
@@ -13,71 +26,71 @@
       "id": "physics",
       "title": "Physics",
       "chapters": [
-        { "id": "ch01", "number": 1, "title": "Rotational Dynamics", "file": "content/physics/ch01-rotational-dynamics.json" },
-        { "id": "ch02", "number": 2, "title": "Mechanical Properties of Fluids", "file": "content/physics/ch02-mechanical-properties-of-fluids.json" },
-        { "id": "ch03", "number": 3, "title": "Kinetic Theory of Gases and Radiation", "estStops": 14 },
-        { "id": "ch04", "number": 4, "title": "Thermodynamics", "estStops": 14 },
-        { "id": "ch05", "number": 5, "title": "Oscillations", "estStops": 14 },
-        { "id": "ch06", "number": 6, "title": "Superposition of Waves", "estStops": 14 },
-        { "id": "ch07", "number": 7, "title": "Wave Optics", "estStops": 14 },
-        { "id": "ch08", "number": 8, "title": "Electrostatics", "estStops": 14 },
-        { "id": "ch09", "number": 9, "title": "Current Electricity", "estStops": 14 },
-        { "id": "ch10", "number": 10, "title": "Magnetic Fields due to Electric Current", "estStops": 14 },
-        { "id": "ch11", "number": 11, "title": "Magnetic Materials", "estStops": 14 },
-        { "id": "ch12", "number": 12, "title": "Electromagnetic Induction", "estStops": 14 },
-        { "id": "ch13", "number": 13, "title": "AC Circuits", "estStops": 14 },
-        { "id": "ch14", "number": 14, "title": "Dual Nature of Radiation and Matter", "estStops": 14 },
-        { "id": "ch15", "number": 15, "title": "Structure of Atoms and Nuclei", "estStops": 14 },
-        { "id": "ch16", "number": 16, "title": "Semiconductor Devices", "estStops": 14 }
+        { "id": "ch01", "number": 1, "title": "Rotational Dynamics", "file": "content/physics/ch01-rotational-dynamics.json", "marks": 5, "marksWithOptions": 7, "prefix": "p1-", "stopCount": 14, "boardCount": 15, "lite": false },
+        { "id": "ch02", "number": 2, "title": "Mechanical Properties of Fluids", "file": "content/physics/ch02-mechanical-properties-of-fluids.json", "marks": 5, "marksWithOptions": 7, "prefix": "p2-", "stopCount": 14, "boardCount": 15, "lite": false },
+        { "id": "ch03", "number": 3, "title": "Kinetic Theory of Gases and Radiation", "estStops": 14, "marks": 5, "marksWithOptions": 7, "prefix": "p3-" },
+        { "id": "ch04", "number": 4, "title": "Thermodynamics", "estStops": 14, "marks": 5, "marksWithOptions": 7, "prefix": "p4-" },
+        { "id": "ch05", "number": 5, "title": "Oscillations", "estStops": 14, "marks": 4, "marksWithOptions": 5, "prefix": "p5-" },
+        { "id": "ch06", "number": 6, "title": "Superposition of Waves", "estStops": 14, "marks": 4, "marksWithOptions": 6, "prefix": "p6-" },
+        { "id": "ch07", "number": 7, "title": "Wave Optics", "estStops": 14, "marks": 5, "marksWithOptions": 7, "prefix": "p7-" },
+        { "id": "ch08", "number": 8, "title": "Electrostatics", "estStops": 14, "marks": 4, "marksWithOptions": 6, "prefix": "p8-" },
+        { "id": "ch09", "number": 9, "title": "Current Electricity", "estStops": 14, "marks": 4, "marksWithOptions": 6, "prefix": "p9-" },
+        { "id": "ch10", "number": 10, "title": "Magnetic Fields due to Electric Current", "estStops": 14, "marks": 4, "marksWithOptions": 6, "prefix": "p10-" },
+        { "id": "ch11", "number": 11, "title": "Magnetic Materials", "estStops": 14, "marks": 4, "marksWithOptions": 5, "prefix": "p11-" },
+        { "id": "ch12", "number": 12, "title": "Electromagnetic Induction", "estStops": 14, "marks": 5, "marksWithOptions": 7, "prefix": "p12-" },
+        { "id": "ch13", "number": 13, "title": "AC Circuits", "estStops": 14, "marks": 4, "marksWithOptions": 6, "prefix": "p13-" },
+        { "id": "ch14", "number": 14, "title": "Dual Nature of Radiation and Matter", "estStops": 14, "marks": 4, "marksWithOptions": 5, "prefix": "p14-" },
+        { "id": "ch15", "number": 15, "title": "Structure of Atoms and Nuclei", "estStops": 14, "marks": 4, "marksWithOptions": 6, "prefix": "p15-" },
+        { "id": "ch16", "number": 16, "title": "Semiconductor Devices", "estStops": 14, "marks": 4, "marksWithOptions": 5, "prefix": "p16-" }
       ]
     },
     {
       "id": "chemistry",
       "title": "Chemistry",
       "chapters": [
-        { "id": "ch01", "number": 1, "title": "Solid State", "file": "content/chemistry/ch01-solid-state.json" },
-        { "id": "ch02", "number": 2, "title": "Solutions", "estStops": 12 },
-        { "id": "ch03", "number": 3, "title": "Ionic Equilibria", "estStops": 12 },
-        { "id": "ch04", "number": 4, "title": "Chemical Thermodynamics", "estStops": 12 },
-        { "id": "ch05", "number": 5, "title": "Electrochemistry", "estStops": 12 },
-        { "id": "ch06", "number": 6, "title": "Chemical Kinetics", "estStops": 12 },
-        { "id": "ch07", "number": 7, "title": "Elements of Groups 16, 17 and 18", "estStops": 12 },
-        { "id": "ch08", "number": 8, "title": "Transition and Inner Transition Elements", "estStops": 12 },
-        { "id": "ch09", "number": 9, "title": "Coordination Compounds", "estStops": 12 },
-        { "id": "ch10", "number": 10, "title": "Halogen Derivatives", "estStops": 12 },
-        { "id": "ch11", "number": 11, "title": "Alcohols, Phenols and Ethers", "estStops": 12 },
-        { "id": "ch12", "number": 12, "title": "Aldehydes, Ketones and Carboxylic Acids", "estStops": 12 },
-        { "id": "ch13", "number": 13, "title": "Amines", "estStops": 12 },
-        { "id": "ch14", "number": 14, "title": "Biomolecules", "estStops": 12 },
-        { "id": "ch15", "number": 15, "title": "Introduction to Polymer Chemistry", "estStops": 10 },
-        { "id": "ch16", "number": 16, "title": "Green Chemistry and Nanochemistry", "estStops": 10 }
+        { "id": "ch01", "number": 1, "title": "Solid State", "file": "content/chemistry/ch01-solid-state.json", "marks": 3, "marksWithOptions": 5, "prefix": "c1-", "stopCount": 12, "boardCount": 17, "lite": false },
+        { "id": "ch02", "number": 2, "title": "Solutions", "estStops": 12, "marks": 4, "marksWithOptions": 6, "prefix": "c2-" },
+        { "id": "ch03", "number": 3, "title": "Ionic Equilibria", "estStops": 12, "marks": 4, "marksWithOptions": 6, "prefix": "c3-" },
+        { "id": "ch04", "number": 4, "title": "Chemical Thermodynamics", "estStops": 12, "marks": 6, "marksWithOptions": 8, "prefix": "c4-" },
+        { "id": "ch05", "number": 5, "title": "Electrochemistry", "estStops": 12, "marks": 5, "marksWithOptions": 7, "prefix": "c5-" },
+        { "id": "ch06", "number": 6, "title": "Chemical Kinetics", "estStops": 12, "marks": 4, "marksWithOptions": 6, "prefix": "c6-" },
+        { "id": "ch07", "number": 7, "title": "Elements of Groups 16, 17 and 18", "estStops": 12, "marks": 6, "marksWithOptions": 8, "prefix": "c7-" },
+        { "id": "ch08", "number": 8, "title": "Transition and Inner Transition Elements", "estStops": 12, "marks": 6, "marksWithOptions": 8, "prefix": "c8-" },
+        { "id": "ch09", "number": 9, "title": "Coordination Compounds", "estStops": 12, "marks": 5, "marksWithOptions": 7, "prefix": "c9-" },
+        { "id": "ch10", "number": 10, "title": "Halogen Derivatives", "estStops": 12, "marks": 5, "marksWithOptions": 7, "prefix": "c10-" },
+        { "id": "ch11", "number": 11, "title": "Alcohols, Phenols and Ethers", "estStops": 12, "marks": 4, "marksWithOptions": 6, "prefix": "c11-" },
+        { "id": "ch12", "number": 12, "title": "Aldehydes, Ketones and Carboxylic Acids", "estStops": 12, "marks": 6, "marksWithOptions": 8, "prefix": "c12-" },
+        { "id": "ch13", "number": 13, "title": "Amines", "estStops": 12, "marks": 3, "marksWithOptions": 4, "prefix": "c13-" },
+        { "id": "ch14", "number": 14, "title": "Biomolecules", "estStops": 12, "marks": 3, "marksWithOptions": 4, "prefix": "c14-" },
+        { "id": "ch15", "number": 15, "title": "Introduction to Polymer Chemistry", "estStops": 10, "marks": 3, "marksWithOptions": 4, "prefix": "c15-" },
+        { "id": "ch16", "number": 16, "title": "Green Chemistry and Nanochemistry", "estStops": 10, "marks": 3, "marksWithOptions": 4, "prefix": "c16-" }
       ]
     },
     {
       "id": "maths1",
       "title": "Maths I",
       "chapters": [
-        { "id": "ch01", "number": 1, "title": "Mathematical Logic", "file": "content/maths1/ch01-mathematical-logic.json" },
-        { "id": "ch02", "number": 2, "title": "Matrices", "estStops": 11 },
-        { "id": "ch03", "number": 3, "title": "Trigonometric Functions", "estStops": 12 },
-        { "id": "ch04", "number": 4, "title": "Pair of Straight Lines", "estStops": 10 },
-        { "id": "ch05", "number": 5, "title": "Vectors", "estStops": 12 },
-        { "id": "ch06", "number": 6, "title": "Line and Plane", "estStops": 12 },
-        { "id": "ch07", "number": 7, "title": "Linear Programming", "estStops": 8 }
+        { "id": "ch01", "number": 1, "title": "Mathematical Logic", "file": "content/maths1/ch01-mathematical-logic.json", "marks": 6, "marksWithOptions": 8, "prefix": "m1-", "stopCount": 11, "boardCount": 14, "lite": false },
+        { "id": "ch02", "number": 2, "title": "Matrices", "estStops": 11, "marks": 4, "marksWithOptions": 6, "prefix": "m1c2-" },
+        { "id": "ch03", "number": 3, "title": "Trigonometric Functions", "estStops": 12, "marks": 7, "marksWithOptions": 10, "prefix": "m1c3-" },
+        { "id": "ch04", "number": 4, "title": "Pair of Straight Lines", "estStops": 10, "marks": 4, "marksWithOptions": 6, "prefix": "m1c4-" },
+        { "id": "ch05", "number": 5, "title": "Vectors", "estStops": 12, "marks": 9, "marksWithOptions": 12, "prefix": "m1c5-" },
+        { "id": "ch06", "number": 6, "title": "Line and Plane", "estStops": 12, "marks": 7, "marksWithOptions": 10, "prefix": "m1c6-" },
+        { "id": "ch07", "number": 7, "title": "Linear Programming", "estStops": 8, "marks": 3, "marksWithOptions": 4, "prefix": "m1c7-" }
       ]
     },
     {
       "id": "maths2",
       "title": "Maths II",
       "chapters": [
-        { "id": "ch01", "number": 1, "title": "Differentiation", "file": "content/maths2/ch01-differentiation.json" },
-        { "id": "ch02", "number": 2, "title": "Applications of Derivatives", "estStops": 12 },
-        { "id": "ch03", "number": 3, "title": "Indefinite Integration", "estStops": 12 },
-        { "id": "ch04", "number": 4, "title": "Definite Integration", "estStops": 10 },
-        { "id": "ch05", "number": 5, "title": "Application of Definite Integration", "estStops": 8 },
-        { "id": "ch06", "number": 6, "title": "Differential Equations", "estStops": 12 },
-        { "id": "ch07", "number": 7, "title": "Probability Distributions", "estStops": 10 },
-        { "id": "ch08", "number": 8, "title": "Binomial Distribution", "estStops": 8 }
+        { "id": "ch01", "number": 1, "title": "Differentiation", "file": "content/maths2/ch01-differentiation.json", "marks": 6, "marksWithOptions": 9, "prefix": "m2c1-", "stopCount": 12, "boardCount": 18, "lite": false },
+        { "id": "ch02", "number": 2, "title": "Applications of Derivatives", "estStops": 12, "marks": 6, "marksWithOptions": 9, "prefix": "m2c2-" },
+        { "id": "ch03", "number": 3, "title": "Indefinite Integration", "estStops": 12, "marks": 7, "marksWithOptions": 10, "prefix": "m2c3-" },
+        { "id": "ch04", "number": 4, "title": "Definite Integration", "estStops": 10, "marks": 4, "marksWithOptions": 6, "prefix": "m2c4-" },
+        { "id": "ch05", "number": 5, "title": "Application of Definite Integration", "estStops": 8, "marks": 3, "marksWithOptions": 4, "prefix": "m2c5-" },
+        { "id": "ch06", "number": 6, "title": "Differential Equations", "estStops": 12, "marks": 6, "marksWithOptions": 8, "prefix": "m2c6-" },
+        { "id": "ch07", "number": 7, "title": "Probability Distributions", "estStops": 10, "marks": 4, "marksWithOptions": 5, "prefix": "m2c7-" },
+        { "id": "ch08", "number": 8, "title": "Binomial Distribution", "estStops": 8, "marks": 4, "marksWithOptions": 5, "prefix": "m2c8-" }
       ]
     }
   ]

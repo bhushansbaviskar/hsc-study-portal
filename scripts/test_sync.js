@@ -275,6 +275,112 @@ async function run() {
     assert.strictEqual(tRes.students[0].rev, 5);
   });
 
+  await test("Golden pre-P0 legacy hscPrep.v2 state merges with zero phantom diff", () => {
+    const App = require(path.resolve(__dirname, "..", "assets", "app.js"));
+    const legacy = {
+      v: 2,
+      done: { "physics/ch01/s01": "2026-11-20" },
+      xp: 45,
+      quest: { "physics/ch01/s01": { best: 3, plays: 1, last: "2026-11-20" } },
+      bank: { "c|ch01|s01|0": { due: "2026-11-21", streak: 0, added: "2026-11-20", reason: "missed", prio: false } },
+      bankDel: {},
+      notes: { "physics/ch01/s01": "Remember omega" },
+      noteAt: { "physics/ch01/s01": 1795600000000 },
+      board: { "2022-Q1vii": "got" },
+      boardAt: { "2022-Q1vii": 1795600000000 },
+      theme: "quest",
+      lastChapter: "physics/ch01",
+      qp: {},
+      qpDel: {},
+      drill: { d01: { runs: 1, clean: true, last: "2026-11-20" } },
+      planStart: "2026-11-18",
+      round: { modes: {}, complete: false, bestFull: 0, run: null, runDel: 0, last: null },
+      rounds: {},
+      timeByDay: {},
+      timeByCh: {},
+      dismissedNoteAt: 0,
+      updatedAt: 1795600000000
+    };
+    const normalizedLegacy = App.normalizeState(JSON.parse(JSON.stringify(legacy)));
+    const mergedLegacy = Sync.mergeState(normalizedLegacy, legacy);
+    assert.strictEqual(Sync.statesEqual(normalizedLegacy, mergedLegacy), true);
+  });
+
+  await test("All 8 new P0 fields + pickBankItem.err are commutative and idempotent", () => {
+    const now = 1795700000000;
+    const A = {
+      v: 2,
+      bank: { "b|ch01|2023-Q5": { due: "2026-11-25", streak: 1, added: "2026-11-20", reason: "below full marks", prio: false, err: "units", updatedAt: now - 1000 } },
+      roundHist: { "physics/ch01": [{ at: now - 5000, date: "2026-11-20", mode: "most", got: 20, of: 25, pct: 80, secs: 600, errs: { units: 1 } }] },
+      boardPts: { "p2-2023-Q3": { got: 2, of: 2, at: now - 2000, err: "" }, "2023-Q5": { got: 1, of: 2, at: now - 3000, err: "calc" } },
+      graduated: { "c|ch01|s01|0": now - 4000 },
+      errLog: [{ at: now - 3000, date: "2026-11-21", id: "2023-Q5", chKey: "physics/ch01", err: "calc" }],
+      papers: [{ id: "pp1", at: now - 4000, date: "2026-11-21", paperKey: "physics", mode: "full", full: true, got: 56, of: 70, pct: 80, secs: 9000, secScores: { A: 16, B: 12, C: 18, D: 10 }, errs: { units: 2 } }],
+      paperRun: { id: "pr2", paperKey: "physics", phase: "write", i: 4, at: now - 500, since: 0 },
+      paperRunDel: 0,
+      predSummary: { physics: 35.5, chemistry: 12, maths: 20, at: now - 1000 }
+    };
+    const B = {
+      v: 2,
+      bank: { "b|ch01|2023-Q5": { due: "2026-11-25", streak: 1, added: "2026-11-20", reason: "below full marks", prio: false, err: "calc", updatedAt: now - 1000 } },
+      roundHist: { "physics/ch01": [{ at: now - 2000, date: "2026-11-22", mode: "mock", got: 22, of: 25, pct: 88 }] },
+      boardPts: { "2023-Q5": { got: 2, of: 2, at: now - 1000, err: "" } },
+      graduated: { "c|ch01|s01|0": now - 1000, "c|ch01|s02|0": now - 500 },
+      errLog: [{ at: now - 1000, date: "2026-11-22", id: "p2-2023-Q3", chKey: "physics/ch02", err: "units" }],
+      papers: [{ id: "pp2", at: now - 1000, date: "2026-11-22", paperKey: "chemistry", mode: "full", full: false, got: 20, of: 30, pct: 67, secs: 2400, secScores: { A: 10, B: 10 }, errs: {} }],
+      paperRun: { id: "pr2", paperKey: "physics", phase: "read", i: 1, at: now - 800, since: 0 },
+      paperRunDel: 0,
+      predSummary: { physics: 30, chemistry: 10, maths: 15, at: now - 5000 }
+    };
+    const ab = Sync.mergeState(A, B, now);
+    const ba = Sync.mergeState(B, A, now);
+    assert.strictEqual(Sync.statesEqual(ab, ba), true, "merge(A,B) must equal merge(B,A)");
+    const aa = Sync.mergeState(ab, ab, now);
+    assert.strictEqual(Sync.statesEqual(ab, aa), true, "merge must be idempotent");
+    assert.strictEqual(ab.roundHist["physics/ch01"].length, 2);
+    assert.strictEqual(ab.boardPts["2023-Q5"].got, 2);
+    assert.strictEqual(ab.graduated["c|ch01|s01|0"], now - 1000);
+    assert.strictEqual(ab.errLog.length, 2);
+    assert.strictEqual(ab.papers.length, 2);
+    assert.strictEqual(ab.paperRun.phase, "write");
+    assert.strictEqual(ab.predSummary.physics, 35.5);
+    assert.strictEqual(ab.bank["b|ch01|2023-Q5"].err, "units");
+    // Remote active paperRun comes back paused
+    const remPR = Sync.mergeState({ v: 2 }, { v: 2, paperRun: { id: "pr3", paperKey: "physics", phase: "write", i: 2, at: now, since: now - 100 } }, now);
+    assert.strictEqual(remPR.paperRun.since, 0);
+    assert.strictEqual(remPR.paperRun.resumed, true);
+  });
+
+  await test("Stress test: max-capped 47-chapter state stays well under 250 KB (< 500 KB limit)", () => {
+    const big = {
+      v: 2, done: {}, xp: 9999, quest: {}, bank: {}, bankDel: {}, notes: {}, noteAt: {},
+      board: {}, boardAt: {}, roundHist: {}, boardPts: {}, graduated: {}, errLog: [], papers: [],
+      paperRun: null, paperRunDel: 0, predSummary: { physics: 60, chemistry: 58, maths: 72, at: 1795700000000 },
+      timeByDay: {}, timeByCh: {}
+    };
+    for (let i = 0; i < 550; i++) big.done[`physics/ch${String((i % 16) + 1).padStart(2, "0")}/s${String((i % 14) + 1).padStart(2, "0")}`] = "2026-11-28";
+    for (let c = 0; c < 47; c++) {
+      const k = `subj/ch${String(c + 1).padStart(2, "0")}`;
+      big.roundHist[k] = [];
+      for (let r = 0; r < 20; r++) {
+        big.roundHist[k].push({ at: 1795700000000 - r * 1000, date: "2026-11-28", mode: "most", got: 20, of: 25, pct: 80, secs: 900, errs: { units: 1 } });
+      }
+    }
+    for (let q = 0; q < 700; q++) {
+      big.boardPts[`p${(q % 16) + 1}-2023-Q${q}`] = { got: 2, of: 3, at: 1795700000000, err: "units" };
+    }
+    for (let e = 0; e < 200; e++) {
+      big.errLog.push({ at: 1795700000000 - e * 1000, date: "2026-11-28", id: `p1-2023-Q${e}`, chKey: "physics/ch01", err: "units" });
+    }
+    for (let p = 0; p < 30; p++) {
+      big.papers.push({ id: `paper-${p}`, at: 1795700000000 - p * 1000, date: "2026-11-28", paperKey: "physics", mode: "full", full: true, got: 58, of: 70, pct: 83, secs: 9600, secScores: { A: 16, B: 14, C: 18, D: 10 }, errs: { units: 2 } });
+    }
+    const merged = Sync.mergeState(big, big, 1795700000000);
+    const bytes = Buffer.byteLength(JSON.stringify(merged), "utf8");
+    console.log(`  [stress payload: ${(bytes / 1024).toFixed(1)} KB]`);
+    assert.ok(bytes < 250000, `Expected < 250 KB, got ${bytes} bytes`);
+  });
+
   console.log(`\nALL ${passed} TESTS PASSED`);
 }
 
