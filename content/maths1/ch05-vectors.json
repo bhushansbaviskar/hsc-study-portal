@@ -4,7 +4,7 @@
   "subject": "maths1",
   "book": "maths1_xii",
   "title": "Vectors",
-  "lite": true,
+  "lite": false,
   "startPage": 133,
   "endPage": 193,
   "examMarks": 9,
@@ -18,7 +18,25 @@
       "sections": [
         "5.1 Vectors and their Types",
         "5.2 Section Formula"
-      ]
+      ],
+      "quest": {
+        "cards": [
+          {
+            "t": "Vectors, collinearity, coplanarity & section formula",
+            "text": "Unit vector û = u / |u|. Section formula for internal division in ratio m:n: r = (m b + n a)/(m + n). Three vectors are coplanar iff their scalar triple product [a b c] = 0.",
+            "page": 133
+          }
+        ],
+        "checks": [
+          {
+            "type": "tf",
+            "q": "Key concept check: Vectors, collinearity, coplanarity & section formula is covered on textbook p. 133.",
+            "answer": true,
+            "page": 133,
+            "explain": "Unit vector û = u / |u|. Section formula for internal division in ratio m:n: r = (m b + n a)/(m + n). Three vectors are coplanar iff their scalar triple product [a b c] = 0."
+          }
+        ]
+      }
     },
     {
       "id": "s02",
@@ -28,7 +46,26 @@
       "sections": [
         "5.3 Product of Vectors: Scalar Product",
         "5.3.1 Direction Angles & Direction Cosines"
-      ]
+      ],
+      "quest": {
+        "cards": [
+          {
+            "t": "Dot Product & Orthogonality",
+            "text": "a · b = |a||b| cos θ. Two non-zero vectors are perpendicular iff a · b = 0.",
+            "page": 152
+          }
+        ],
+        "checks": [
+          {
+            "type": "num",
+            "q": "If |a| = 5, |b| = 13 and |a × b| = 25, find |a · b|.",
+            "answer": 60,
+            "unit": "",
+            "page": 166,
+            "explain": "|a·b| = √(5²·13² − 25²) = √(4225 − 625) = 60."
+          }
+        ]
+      }
     },
     {
       "id": "s03",
@@ -38,7 +75,25 @@
       "sections": [
         "5.4 Vector Product",
         "5.5 Scalar Triple Product"
-      ]
+      ],
+      "quest": {
+        "cards": [
+          {
+            "t": "Vector (cross) product & Scalar/Vector triple product",
+            "text": "|a × b| = |a||b| sin θ. Area of triangle = ½ |AB × AC|. Volume of parallelepiped = |[a b c]|; volume of tetrahedron = (1/6)|[a b c]|. Lagrange's identity: |a × b|² + (a · b)² = |a|² |b|².",
+            "page": 164
+          }
+        ],
+        "checks": [
+          {
+            "type": "tf",
+            "q": "Key concept check: Vector (cross) product & Scalar/Vector triple product is covered on textbook p. 164.",
+            "answer": true,
+            "page": 164,
+            "explain": "|a × b| = |a||b| sin θ. Area of triangle = ½ |AB × AC|. Volume of parallelepiped = |[a b c]|; volume of tetrahedron = (1/6)|[a b c]|. Lagrange's identity: |a × b|² + (a · b)² = |a|² |b|²."
+          }
+        ]
+      }
     }
   ],
   "formulas": [
@@ -152,6 +207,29 @@
         {
           "text": "Correct option: (d) 3",
           "marks": 2
+        }
+      ]
+    }
+  ],
+  "derivations": [
+    {
+      "id": "m1c5-d1",
+      "stop": "s01",
+      "title": "Section formula for internal division",
+      "page": 141,
+      "given": "Point R divides segment AB internally in the ratio m : n, with position vectors a and b.",
+      "steps": [
+        {
+          "line": "m RB = n AR (collinear vectors in same direction)",
+          "note": "Ratio AR : RB = m : n"
+        },
+        {
+          "line": "m(b − r) = n(r − a)",
+          "note": "Position vectors"
+        },
+        {
+          "line": "r = (m b + n a) / (m + n)",
+          "note": "Section formula"
         }
       ]
     }

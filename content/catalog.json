@@ -45,11 +45,46 @@
       "durationMin": 180,
       "readingMin": 15,
       "sections": [
-        { "id": "A1", "title": "Section A · Q.1 (MCQ)", "marksEach": 1, "attempt": 10, "offer": 10, "kind": "mcq" },
-        { "id": "A2", "title": "Section A · Q.2 (VSA)", "marksEach": 1, "attempt": 8, "offer": 8, "kind": "!mcq" },
-        { "id": "B", "title": "Section B (Attempt any 8 of 12)", "marksEach": 2, "attempt": 8, "offer": 12, "kind": "!mcq" },
-        { "id": "C", "title": "Section C (Attempt any 8 of 12)", "marksEach": 3, "attempt": 8, "offer": 12, "kind": "!mcq" },
-        { "id": "D", "title": "Section D (Attempt any 3 of 5)", "marksEach": 4, "attempt": 3, "offer": 5, "kind": "!mcq" }
+        {
+          "id": "A1",
+          "title": "Section A · Q.1 (MCQ)",
+          "marksEach": 1,
+          "attempt": 10,
+          "offer": 10,
+          "kind": "mcq"
+        },
+        {
+          "id": "A2",
+          "title": "Section A · Q.2 (VSA)",
+          "marksEach": 1,
+          "attempt": 8,
+          "offer": 8,
+          "kind": "!mcq"
+        },
+        {
+          "id": "B",
+          "title": "Section B (Attempt any 8 of 12)",
+          "marksEach": 2,
+          "attempt": 8,
+          "offer": 12,
+          "kind": "!mcq"
+        },
+        {
+          "id": "C",
+          "title": "Section C (Attempt any 8 of 12)",
+          "marksEach": 3,
+          "attempt": 8,
+          "offer": 12,
+          "kind": "!mcq"
+        },
+        {
+          "id": "D",
+          "title": "Section D (Attempt any 3 of 5)",
+          "marksEach": 4,
+          "attempt": 3,
+          "offer": 5,
+          "kind": "!mcq"
+        }
       ]
     },
     "chemistry": {
@@ -57,11 +92,46 @@
       "durationMin": 180,
       "readingMin": 15,
       "sections": [
-        { "id": "A1", "title": "Section A · Q.1 (MCQ)", "marksEach": 1, "attempt": 10, "offer": 10, "kind": "mcq" },
-        { "id": "A2", "title": "Section A · Q.2 (VSA)", "marksEach": 1, "attempt": 8, "offer": 8, "kind": "!mcq" },
-        { "id": "B", "title": "Section B (Attempt any 8 of 12)", "marksEach": 2, "attempt": 8, "offer": 12, "kind": "!mcq" },
-        { "id": "C", "title": "Section C (Attempt any 8 of 12)", "marksEach": 3, "attempt": 8, "offer": 12, "kind": "!mcq" },
-        { "id": "D", "title": "Section D (Attempt any 3 of 5)", "marksEach": 4, "attempt": 3, "offer": 5, "kind": "!mcq" }
+        {
+          "id": "A1",
+          "title": "Section A · Q.1 (MCQ)",
+          "marksEach": 1,
+          "attempt": 10,
+          "offer": 10,
+          "kind": "mcq"
+        },
+        {
+          "id": "A2",
+          "title": "Section A · Q.2 (VSA)",
+          "marksEach": 1,
+          "attempt": 8,
+          "offer": 8,
+          "kind": "!mcq"
+        },
+        {
+          "id": "B",
+          "title": "Section B (Attempt any 8 of 12)",
+          "marksEach": 2,
+          "attempt": 8,
+          "offer": 12,
+          "kind": "!mcq"
+        },
+        {
+          "id": "C",
+          "title": "Section C (Attempt any 8 of 12)",
+          "marksEach": 3,
+          "attempt": 8,
+          "offer": 12,
+          "kind": "!mcq"
+        },
+        {
+          "id": "D",
+          "title": "Section D (Attempt any 3 of 5)",
+          "marksEach": 4,
+          "attempt": 3,
+          "offer": 5,
+          "kind": "!mcq"
+        }
       ]
     },
     "maths": {
@@ -69,11 +139,46 @@
       "durationMin": 180,
       "readingMin": 15,
       "sections": [
-        { "id": "A1", "title": "Section A · Q.1 (MCQ)", "marksEach": 2, "attempt": 8, "offer": 8, "kind": "mcq" },
-        { "id": "A2", "title": "Section A · Q.2 (VSA)", "marksEach": 1, "attempt": 4, "offer": 4, "kind": "!mcq" },
-        { "id": "B", "title": "Section B (Attempt any 8 of 12)", "marksEach": 2, "attempt": 8, "offer": 12, "kind": "!mcq" },
-        { "id": "C", "title": "Section C (Attempt any 8 of 12)", "marksEach": 3, "attempt": 8, "offer": 12, "kind": "!mcq" },
-        { "id": "D", "title": "Section D (Attempt any 5 of 8)", "marksEach": 4, "attempt": 5, "offer": 8, "kind": "!mcq" }
+        {
+          "id": "A1",
+          "title": "Section A · Q.1 (MCQ)",
+          "marksEach": 2,
+          "attempt": 8,
+          "offer": 8,
+          "kind": "mcq"
+        },
+        {
+          "id": "A2",
+          "title": "Section A · Q.2 (VSA)",
+          "marksEach": 1,
+          "attempt": 4,
+          "offer": 4,
+          "kind": "!mcq"
+        },
+        {
+          "id": "B",
+          "title": "Section B (Attempt any 8 of 12)",
+          "marksEach": 2,
+          "attempt": 8,
+          "offer": 12,
+          "kind": "!mcq"
+        },
+        {
+          "id": "C",
+          "title": "Section C (Attempt any 8 of 12)",
+          "marksEach": 3,
+          "attempt": 8,
+          "offer": 12,
+          "kind": "!mcq"
+        },
+        {
+          "id": "D",
+          "title": "Section D (Attempt any 5 of 8)",
+          "marksEach": 4,
+          "attempt": 5,
+          "offer": 8,
+          "kind": "!mcq"
+        }
       ]
     }
   },
@@ -194,7 +299,7 @@
           "marksWithOptions": 7,
           "prefix": "p7-",
           "file": "content/physics/ch07-wave-optics.json",
-          "lite": true,
+          "lite": false,
           "stopCount": 5,
           "boardCount": 4
         },
@@ -368,7 +473,7 @@
           "marksWithOptions": 8,
           "prefix": "c4-",
           "file": "content/chemistry/ch04-chemical-thermodynamics.json",
-          "lite": true,
+          "lite": false,
           "stopCount": 4,
           "boardCount": 5
         },
@@ -594,7 +699,7 @@
           "marksWithOptions": 12,
           "prefix": "m1c5-",
           "file": "content/maths1/ch05-vectors.json",
-          "lite": true,
+          "lite": false,
           "stopCount": 3,
           "boardCount": 4
         },
@@ -664,7 +769,7 @@
           "marksWithOptions": 10,
           "prefix": "m2c3-",
           "file": "content/maths2/ch03-indefinite-integration.json",
-          "lite": true,
+          "lite": false,
           "stopCount": 3,
           "boardCount": 4
         },

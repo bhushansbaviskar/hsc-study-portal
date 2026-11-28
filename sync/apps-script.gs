@@ -410,7 +410,11 @@ function updateSummarySheet(student, rev, nowMs, state) {
 
   var ss = SpreadsheetApp.openById(sheetId);
   var sh = ss.getSheetByName("Live Status") || ss.insertSheet("Live Status");
-  var headers = ["Student ID", "Name", "Rev", "Last Synced (" + tz + ")", "Stops Done", "Done Today", "XP", "Mistake Bank", "Due Now", "Best Board Round %"];
+  var headers = [
+    "Student ID", "Name", "Rev", "Last Synced (" + tz + ")",
+    "Stops Done", "Done Today", "XP", "Mistake Bank", "Due Now",
+    "Best Board Round %", "Latest Paper", "Predicted (Phy/Chem/Maths)", "Top Leak (14d)"
+  ];
   if (sh.getLastRow() === 0) {
     sh.appendRow(headers);
   }
@@ -427,7 +431,30 @@ function updateSummarySheet(student, rev, nowMs, state) {
   for (var j = 0; j < bankKeys.length; j++) {
     if (bank[bankKeys[j]] && bank[bankKeys[j]].due <= todayStr) dueNow++;
   }
+
   var bestRound = isObj(state.round) && typeof state.round.bestFull === "number" ? state.round.bestFull : 0;
+  if (isObj(state.rounds)) {
+    var rKeys = Object.keys(state.rounds);
+    for (var rk = 0; rk < rKeys.length; rk++) {
+      var rObj = state.rounds[rKeys[rk]];
+      if (isObj(rObj) && typeof rObj.bestFull === "number" && rObj.bestFull > bestRound) bestRound = rObj.bestFull;
+    }
+  }
+
+  var latestPaperStr = "-";
+  if (Array.isArray(state.papers) && state.papers.length) {
+    var lp = state.papers[state.papers.length - 1];
+    latestPaperStr = (lp.paperKey || "") + " " + (lp.got || 0) + "/" + (lp.of || 0) + " (" + (lp.pct || 0) + "%)";
+  }
+  var predStr = "-";
+  if (isObj(state.predSummary)) {
+    var ps = state.predSummary;
+    predStr = (ps.physics != null ? ps.physics : "-") + "/70 · " +
+      (ps.chemistry != null ? ps.chemistry : "-") + "/70 · " +
+      (ps.maths != null ? ps.maths : "-") + "/80";
+  }
+  var topErr = topErrorsFromLog(state.errLog, nowMs, 14);
+  var topErrStr = topErr.length ? (topErr[0].err + " (" + topErr[0].count + ")") : "-";
 
   var row = [
     student.id,
@@ -439,7 +466,10 @@ function updateSummarySheet(student, rev, nowMs, state) {
     typeof state.xp === "number" ? state.xp : 0,
     bankKeys.length,
     dueNow,
-    bestRound
+    bestRound,
+    latestPaperStr,
+    predStr,
+    topErrStr
   ];
 
   var data = sh.getDataRange().getValues();
@@ -450,6 +480,133 @@ function updateSummarySheet(student, rev, nowMs, state) {
     }
   }
   sh.appendRow(row);
+}
+
+/* ---------- P8: Weekly Parent Email Digest ---------- */
+function topErrorsFromLog(errLog, nowMs, days) {
+  if (!Array.isArray(errLog)) return [];
+  var cutoff = nowMs - days * 86400000;
+  var counts = {};
+  for (var i = 0; i < errLog.length; i++) {
+    var e = errLog[i];
+    if (!e || !e.err || (e.at && e.at < cutoff)) continue;
+    counts[e.err] = (counts[e.err] || 0) + 1;
+  }
+  return Object.keys(counts).map(function (k) { return { err: k, count: counts[k] }; })
+    .sort(function (a, b) { return b.count - a.count; });
+}
+
+function setupWeeklyTrigger() {
+  var props = PropertiesService.getScriptProperties();
+  var tz = props.getProperty("TIMEZONE") || DEFAULT_TIMEZONE;
+  var triggers = ScriptApp.getProjectTriggers();
+  for (var i = 0; i < triggers.length; i++) {
+    if (triggers[i].getHandlerFunction() === "sendWeeklyReport") {
+      ScriptApp.deleteTrigger(triggers[i]);
+    }
+  }
+  ScriptApp.newTrigger("sendWeeklyReport")
+    .timeBased()
+    .onWeekDay(ScriptApp.WeekDay.SUNDAY)
+    .atHour(20)
+    .inTimezone(tz)
+    .create();
+}
+
+function sendWeeklyReport() {
+  var props = PropertiesService.getScriptProperties();
+  var recipient = props.getProperty("REPORT_EMAIL") || Session.getEffectiveUser().getEmail();
+  if (!recipient) return { ok: false, error: "No recipient email configured." };
+  var folder = getFolderIfExists();
+  if (!folder) return { ok: false, error: "Sync folder not found." };
+  var tz = props.getProperty("TIMEZONE") || DEFAULT_TIMEZONE;
+  var nowMs = Date.now();
+  var weekDays = [];
+  for (var d = 0; d < 7; d++) {
+    weekDays.push(Utilities.formatDate(new Date(nowMs - d * 86400000), tz, "yyyy-MM-dd"));
+  }
+  var todayStr = weekDays[0];
+  var studentsJson = props.getProperty("STUDENTS_JSON");
+  var map = studentsJson ? JSON.parse(studentsJson) : {};
+  var seenIds = {};
+  var lines = ["HSC Board Prep — Weekly Progress Digest (" + todayStr + ")", ""];
+
+  var codes = Object.keys(map);
+  for (var i = 0; i < codes.length; i++) {
+    var stu = map[codes[i]];
+    if (!stu || !stu.id || seenIds[stu.id]) continue;
+    seenIds[stu.id] = true;
+    var rec = readStudentRecord(folder, stu.id);
+    var st = rec && isObj(rec.state) ? rec.state : null;
+    lines.push("=== " + (stu.name || stu.id) + " ===");
+    if (!st) {
+      lines.push("No synced activity yet.", "");
+      continue;
+    }
+
+    // 1. Study time this week
+    var timeByDay = isObj(st.timeByDay) ? st.timeByDay : {};
+    var weekSecs = 0, activeDays = 0;
+    for (var wd = 0; wd < weekDays.length; wd++) {
+      var s = Number(timeByDay[weekDays[wd]]) || 0;
+      if (s > 0) { weekSecs += s; activeDays++; }
+    }
+    var weekMins = Math.round(weekSecs / 60);
+
+    // 2. Stops, rounds & mock papers in last 7 days
+    var done = isObj(st.done) ? st.done : {};
+    var stopsTotal = Object.keys(done).length, stopsWeek = 0;
+    var doneVals = Object.keys(done);
+    for (var dv = 0; dv < doneVals.length; dv++) {
+      if (weekDays.indexOf(done[doneVals[dv]]) >= 0) stopsWeek++;
+    }
+    var roundsWeek = 0;
+    if (isObj(st.roundHist)) {
+      var rhKeys = Object.keys(st.roundHist);
+      for (var rk = 0; rk < rhKeys.length; rk++) {
+        var arr = st.roundHist[rhKeys[rk]];
+        if (!Array.isArray(arr)) continue;
+        for (var ai = 0; ai < arr.length; ai++) {
+          if (arr[ai] && weekDays.indexOf(arr[ai].date) >= 0) roundsWeek++;
+        }
+      }
+    }
+    var papersWeek = [];
+    if (Array.isArray(st.papers)) {
+      for (var pi = 0; pi < st.papers.length; pi++) {
+        if (st.papers[pi] && weekDays.indexOf(st.papers[pi].date) >= 0) papersWeek.push(st.papers[pi]);
+      }
+    }
+
+    // 3. Predicted marks
+    var pred = isObj(st.predSummary) ? st.predSummary : {};
+    var predLine = "Physics " + (pred.physics != null ? pred.physics : "-") + "/70 | Chemistry " +
+      (pred.chemistry != null ? pred.chemistry : "-") + "/70 | Maths " + (pred.maths != null ? pred.maths : "-") + "/80";
+
+    // 4. Top 3 mark leaks (14d) + Mistake bank
+    var leaks = topErrorsFromLog(st.errLog, nowMs, 14).slice(0, 3);
+    var leakStr = leaks.length ? leaks.map(function (l) { return l.err + " (" + l.count + ")"; }).join(", ") : "None logged";
+    var bank = isObj(st.bank) ? st.bank : {};
+    var bankN = Object.keys(bank).length, dueN = 0;
+    var bKeys = Object.keys(bank);
+    for (var bi = 0; bi < bKeys.length; bi++) {
+      if (bank[bKeys[bi]] && bank[bKeys[bi]].due <= todayStr) dueN++;
+    }
+
+    lines.push("Study time (7d): " + weekMins + " min across " + activeDays + "/7 days");
+    lines.push("Progress (7d): " + stopsWeek + " stops (" + stopsTotal + " total) | " + roundsWeek + " board rounds | " + papersWeek.length + " mock papers");
+    if (papersWeek.length) {
+      lines.push("Mock scores: " + papersWeek.map(function (p) { return p.paperKey + " " + p.got + "/" + p.of + " (" + p.pct + "%)"; }).join("; "));
+    }
+    lines.push("Predicted Board Marks: " + predLine);
+    lines.push("Top mark leaks (14d): " + leakStr);
+    lines.push("Mistake bank: " + bankN + " items (" + dueN + " due now)", "");
+  }
+
+  var subject = "HSC Board Prep Weekly Digest — " + todayStr;
+  var body = lines.join("\n");
+  MailApp.sendEmail(recipient, subject, body);
+  return { ok: true, subject: subject, body: body };
 }
 
 /* ---------- utils ---------- */

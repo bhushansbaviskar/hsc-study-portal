@@ -4,7 +4,7 @@
   "subject": "chemistry",
   "book": "chem_xii",
   "title": "Chemical Thermodynamics",
-  "lite": true,
+  "lite": false,
   "startPage": 63,
   "endPage": 89,
   "examMarks": 6,
@@ -19,7 +19,32 @@
         "4.2 Terms used in Thermodynamics",
         "4.3 Nature of Heat and Work",
         "4.4 Expression for PV Work"
-      ]
+      ],
+      "quest": {
+        "cards": [
+          {
+            "t": "IUPAC PV Work",
+            "text": "W = −P_ext ΔV. Compression (ΔV < 0) gives W > 0; expansion (ΔV > 0) gives W < 0.",
+            "page": 67
+          }
+        ],
+        "checks": [
+          {
+            "type": "num",
+            "q": "Volume decreases from 8 dm³ to 4 dm³ against 43 bar. Find work done in kJ (1 dm³·bar = 100 J).",
+            "answer": 17.2,
+            "unit": "kJ",
+            "unitOpts": [
+              "kJ",
+              "J",
+              "bar",
+              "mol"
+            ],
+            "page": 67,
+            "explain": "W = −43 × (4 − 8) × 100 J = +17.2 kJ."
+          }
+        ]
+      }
     },
     {
       "id": "s02",
@@ -30,7 +55,25 @@
         "4.5 Concept of Maximum Work",
         "4.6 Internal Energy",
         "4.7 First Law of Thermodynamics"
-      ]
+      ],
+      "quest": {
+        "cards": [
+          {
+            "t": "Maximum work & First law of thermodynamics",
+            "text": "Maximum work in isothermal reversible expansion: W_max = −2.303 n R T log₁₀(V₂/V₁) = −2.303 n R T log₁₀(P₁/P₂). First law: ΔU = Q + W.",
+            "page": 68
+          }
+        ],
+        "checks": [
+          {
+            "type": "tf",
+            "q": "Key concept check: Maximum work & First law of thermodynamics is covered on textbook p. 68.",
+            "answer": true,
+            "page": 68,
+            "explain": "Maximum work in isothermal reversible expansion: W_max = −2.303 n R T log₁₀(V₂/V₁) = −2.303 n R T log₁₀(P₁/P₂). First law: ΔU = Q + W."
+          }
+        ]
+      }
     },
     {
       "id": "s03",
@@ -41,7 +84,25 @@
         "4.8 Enthalpy",
         "4.10 Thermochemistry",
         "4.10.9 Hess's Law"
-      ]
+      ],
+      "quest": {
+        "cards": [
+          {
+            "t": "Enthalpy, ΔH vs ΔU & Thermochemistry",
+            "text": "Enthalpy H = U + PV; ΔH = ΔU + Δn_g R T. Hess's law: overall enthalpy change is independent of path. Δ_r H° = ∑Δ_f H°(products) − ∑Δ_f H°(reactants).",
+            "page": 72
+          }
+        ],
+        "checks": [
+          {
+            "type": "tf",
+            "q": "Key concept check: Enthalpy, ΔH vs ΔU & Thermochemistry is covered on textbook p. 72.",
+            "answer": true,
+            "page": 72,
+            "explain": "Enthalpy H = U + PV; ΔH = ΔU + Δn_g R T. Hess's law: overall enthalpy change is independent of path. Δ_r H° = ∑Δ_f H°(products) − ∑Δ_f H°(reactants)."
+          }
+        ]
+      }
     },
     {
       "id": "s04",
@@ -52,7 +113,31 @@
         "4.11 Spontaneous Process & Entropy",
         "4.11.5 Gibbs Energy",
         "4.11.6 Spontaneity Criteria"
-      ]
+      ],
+      "quest": {
+        "cards": [
+          {
+            "t": "Gibbs Energy & Spontaneity",
+            "text": "ΔG = ΔH − TΔS. ΔG < 0: spontaneous; ΔG = 0: equilibrium; ΔG > 0: non-spontaneous.",
+            "page": 86
+          }
+        ],
+        "checks": [
+          {
+            "type": "mcq",
+            "q": "For a spontaneous process at constant T and P, ΔG is always:",
+            "options": [
+              "Zero",
+              "Positive",
+              "Negative",
+              "Infinite"
+            ],
+            "answer": 2,
+            "page": 86,
+            "explain": "ΔG < 0 corresponds to ΔS_total > 0."
+          }
+        ]
+      }
     }
   ],
   "formulas": [
@@ -210,6 +295,29 @@
         {
           "text": "Correct answer: −890.3 kJ mol⁻¹",
           "marks": 1
+        }
+      ]
+    }
+  ],
+  "derivations": [
+    {
+      "id": "c4-d1",
+      "stop": "s02",
+      "title": "Maximum work in isothermal reversible expansion",
+      "page": 69,
+      "given": "n moles of an ideal gas expand isothermally and reversibly from V₁ to V₂ at temperature T.",
+      "steps": [
+        {
+          "line": "Small work done dW = −P_ext dV ≈ −P dV",
+          "note": "Reversible expansion"
+        },
+        {
+          "line": "Substitute P = nRT / V and integrate from V₁ to V₂",
+          "note": "T is constant"
+        },
+        {
+          "line": "W_max = −2.303 n R T log₁₀(V₂ / V₁)",
+          "note": "1 dm³·bar = 100 J"
         }
       ]
     }

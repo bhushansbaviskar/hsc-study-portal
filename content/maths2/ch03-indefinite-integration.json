@@ -4,7 +4,7 @@
   "subject": "maths2",
   "book": "maths2_xii",
   "title": "Indefinite Integration",
-  "lite": true,
+  "lite": false,
   "startPage": 95,
   "endPage": 150,
   "examMarks": 7,
@@ -18,7 +18,31 @@
       "sections": [
         "3.1 Elementary Integration",
         "3.2 Integration by Substitution"
-      ]
+      ],
+      "quest": {
+        "cards": [
+          {
+            "t": "Exponential Special Form",
+            "text": "∫ e^x [f(x) + f'(x)] dx = e^x f(x) + c.",
+            "page": 108
+          }
+        ],
+        "checks": [
+          {
+            "type": "mcq",
+            "q": "∫ x^x (1 + log x) dx equals:",
+            "options": [
+              "x^x + c",
+              "e^x + c",
+              "log x + c",
+              "x^(x+1) + c"
+            ],
+            "answer": 0,
+            "page": 104,
+            "explain": "d/dx(x^x) = x^x(1 + log x)."
+          }
+        ]
+      }
     },
     {
       "id": "s02",
@@ -27,7 +51,25 @@
       "inShort": "∫ dx/(x² − a²) = (1/2a) log|(x−a)/(x+a)| + c; ∫ dx/(x² + a²) = (1/a) tan⁻¹(x/a) + c; ∫ dx/√(a² − x²) = sin⁻¹(x/a) + c.",
       "sections": [
         "3.2.2 Integrals of Special Forms"
-      ]
+      ],
+      "quest": {
+        "cards": [
+          {
+            "t": "Special integrals (1/(ax²+bx+c), 1/√(ax²+bx+c))",
+            "text": "∫ dx/(x² − a²) = (1/2a) log|(x−a)/(x+a)| + c; ∫ dx/(x² + a²) = (1/a) tan⁻¹(x/a) + c; ∫ dx/√(a² − x²) = sin⁻¹(x/a) + c.",
+            "page": 112
+          }
+        ],
+        "checks": [
+          {
+            "type": "tf",
+            "q": "Key concept check: Special integrals (1/(ax²+bx+c), 1/√(ax²+bx+c)) is covered on textbook p. 112.",
+            "answer": true,
+            "page": 112,
+            "explain": "∫ dx/(x² − a²) = (1/2a) log|(x−a)/(x+a)| + c; ∫ dx/(x² + a²) = (1/a) tan⁻¹(x/a) + c; ∫ dx/√(a² − x²) = sin⁻¹(x/a) + c."
+          }
+        ]
+      }
     },
     {
       "id": "s03",
@@ -37,7 +79,25 @@
       "sections": [
         "3.3 Integration by Parts",
         "3.4 Integration by Partial Fractions"
-      ]
+      ],
+      "quest": {
+        "cards": [
+          {
+            "t": "Integration by parts & Partial fractions",
+            "text": "LIATE rule for ∫ u v dx = u ∫ v dx − ∫ [ (du/dx) ∫ v dx ] dx. Partial fractions decompose proper rational functions P(x)/Q(x) into linear and quadratic factors.",
+            "page": 125
+          }
+        ],
+        "checks": [
+          {
+            "type": "tf",
+            "q": "Key concept check: Integration by parts & Partial fractions is covered on textbook p. 125.",
+            "answer": true,
+            "page": 125,
+            "explain": "LIATE rule for ∫ u v dx = u ∫ v dx − ∫ [ (du/dx) ∫ v dx ] dx. Partial fractions decompose proper rational functions P(x)/Q(x) into linear and quadratic factors."
+          }
+        ]
+      }
     }
   ],
   "formulas": [
@@ -169,6 +229,29 @@
         {
           "text": "Final formula (x/2)√(a²−x²) + (a²/2)sin⁻¹(x/a) + c",
           "marks": 1
+        }
+      ]
+    }
+  ],
+  "derivations": [
+    {
+      "id": "m2c3-d1",
+      "stop": "s03",
+      "title": "Standard integral ∫ √(a² − x²) dx",
+      "page": 129,
+      "given": "Evaluate I = ∫ √(a² − x²) · 1 dx using integration by parts.",
+      "steps": [
+        {
+          "line": "I = x√(a² − x²) + ∫ x² / √(a² − x²) dx",
+          "note": "u = √(a²−x²), v = 1"
+        },
+        {
+          "line": "Split x² = a² − (a² − x²) to get I = x√(a² − x²) + a² sin⁻¹(x/a) − I",
+          "note": "Algebraic split"
+        },
+        {
+          "line": "I = (x/2)√(a² − x²) + (a²/2) sin⁻¹(x/a) + c",
+          "note": "Divide by 2"
         }
       ]
     }

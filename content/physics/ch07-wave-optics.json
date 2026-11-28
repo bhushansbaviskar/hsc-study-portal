@@ -4,7 +4,7 @@
   "subject": "physics",
   "book": "xii",
   "title": "Wave Optics",
-  "lite": true,
+  "lite": false,
   "startPage": 158,
   "endPage": 185,
   "examMarks": 5,
@@ -20,7 +20,38 @@
         "7.4 Huygens' Theory",
         "7.5 Reflection",
         "7.6 Refraction"
-      ]
+      ],
+      "quest": {
+        "cards": [
+          {
+            "t": "Huygens' Principle",
+            "text": "Every point on a wavefront acts as a secondary source emitting wavelets at wave speed. Forward envelope gives the new wavefront.",
+            "page": 160
+          }
+        ],
+        "checks": [
+          {
+            "type": "mcq",
+            "q": "According to Huygens' principle, light travels in a homogeneous medium in the form of:",
+            "options": [
+              "Corpuscles",
+              "Wavefronts",
+              "Stationary waves",
+              "Photons only"
+            ],
+            "answer": 1,
+            "page": 160,
+            "explain": "Huygens' wave theory propagates energy via wavefronts."
+          },
+          {
+            "type": "tf",
+            "q": "During reflection at a plane mirror, the angle of incidence equals the angle of reflection.",
+            "answer": true,
+            "page": 162,
+            "explain": "Proven using congruent triangles ABC and AEC from Huygens' construction."
+          }
+        ]
+      }
     },
     {
       "id": "s02",
@@ -31,7 +62,32 @@
         "7.7 Polarization",
         "7.7.1 Brewster's Law",
         "7.7.2 Polarization by Scattering"
-      ]
+      ],
+      "quest": {
+        "cards": [
+          {
+            "t": "Brewster's Law",
+            "text": "At polarizing angle θ_B, reflected and refracted rays are perpendicular: tan θ_B = n₂/n₁.",
+            "page": 166
+          }
+        ],
+        "checks": [
+          {
+            "type": "num",
+            "q": "If refractive index of glass is √3 (1.732), what is Brewster's angle in degrees?",
+            "answer": 60,
+            "unit": "°",
+            "unitOpts": [
+              "°",
+              "rad",
+              "cm",
+              "nm"
+            ],
+            "page": 166,
+            "explain": "tan θ_B = √3 ⇒ θ_B = 60°."
+          }
+        ]
+      }
     },
     {
       "id": "s03",
@@ -42,7 +98,31 @@
         "7.8 Interference",
         "7.8.2 Young's Double Slit Experiment",
         "7.8.3 Conditions for Steady Interference"
-      ]
+      ],
+      "quest": {
+        "cards": [
+          {
+            "t": "YDSE Fringe Width",
+            "text": "Fringe width β = λD/d is equal for all bright and dark fringes.",
+            "page": 171
+          }
+        ],
+        "checks": [
+          {
+            "type": "mcq",
+            "q": "In YDSE, if slit separation d is halved, the fringe width β becomes:",
+            "options": [
+              "Half",
+              "Double",
+              "Four times",
+              "Unchanged"
+            ],
+            "answer": 1,
+            "page": 171,
+            "explain": "β = λD/d ∝ 1/d."
+          }
+        ]
+      }
     },
     {
       "id": "s04",
@@ -53,7 +133,25 @@
         "7.9 Diffraction of Light",
         "7.9.3 Fraunhofer Diffraction at a Single Slit",
         "7.9.4 Interference vs Diffraction"
-      ]
+      ],
+      "quest": {
+        "cards": [
+          {
+            "t": "Diffraction of light at a single slit",
+            "text": "Bending of light around edges of an obstacle/aperture. For Fraunhofer single-slit diffraction (slit width a), minima occur at a sin θ = nλ; width of central maximum = 2λD/a.",
+            "page": 175
+          }
+        ],
+        "checks": [
+          {
+            "type": "tf",
+            "q": "Key concept check: Diffraction of light at a single slit is covered on textbook p. 175.",
+            "answer": true,
+            "page": 175,
+            "explain": "Bending of light around edges of an obstacle/aperture. For Fraunhofer single-slit diffraction (slit width a), minima occur at a sin θ = nλ; width of central maximum = 2λD/a."
+          }
+        ]
+      }
     },
     {
       "id": "s05",
@@ -64,7 +162,25 @@
         "7.10 Resolving Power",
         "7.10.2 Microscope",
         "7.10.3 Telescope"
-      ]
+      ],
+      "quest": {
+        "cards": [
+          {
+            "t": "Resolving power of microscope & telescope",
+            "text": "Rayleigh's criterion: two point sources are just resolved when the central maximum of one falls on the first minimum of the other. Microscope RP = 1/d_min = 2n sin θ / λ; Telescope RP = 1/dθ = D / (1.22 λ).",
+            "page": 180
+          }
+        ],
+        "checks": [
+          {
+            "type": "tf",
+            "q": "Key concept check: Resolving power of microscope & telescope is covered on textbook p. 180.",
+            "answer": true,
+            "page": 180,
+            "explain": "Rayleigh's criterion: two point sources are just resolved when the central maximum of one falls on the first minimum of the other. Microscope RP = 1/d_min = 2n sin θ / λ; Telescope RP = 1/dθ = D / (1.22 λ)."
+          }
+        ]
+      }
     }
   ],
   "formulas": [
@@ -212,6 +328,29 @@
         {
           "text": "Fringe width equality & contrast of minima",
           "marks": 1
+        }
+      ]
+    }
+  ],
+  "derivations": [
+    {
+      "id": "p7-d1",
+      "stop": "s02",
+      "title": "Brewster's Law: tan θ_B = n₂ / n₁",
+      "page": 166,
+      "given": "Unpolarized light is incident at polarizing angle θ_B on a transparent medium of refractive index n₂ from medium n₁.",
+      "steps": [
+        {
+          "line": "At Brewster's angle, reflected ray ⊥ refracted ray, so θ_B + r = 90°",
+          "note": "r = 90° − θ_B"
+        },
+        {
+          "line": "By Snell's law: n₁ sin θ_B = n₂ sin(90° − θ_B) = n₂ cos θ_B",
+          "note": "sin(90° − θ) = cos θ"
+        },
+        {
+          "line": "Therefore, tan θ_B = n₂ / n₁",
+          "note": "Brewster's law"
         }
       ]
     }
