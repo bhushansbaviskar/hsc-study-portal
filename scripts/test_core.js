@@ -152,4 +152,28 @@ test("P2: fm() converts newlines to <br> and escapes <script>", () => {
   assert.ok(!out.includes("<script>"));
 });
 
+test("P4: buildPaper is deterministic, has zero duplicates, keeps Maths 2m MCQs in A1, and handles mini-paper", () => {
+  // Load all maths1 + maths2 chapters from disk
+  const chs = {};
+  for (const sub of catalog.subjects) {
+    if (sub.id !== "maths1" && sub.id !== "maths2") continue;
+    for (const c of sub.chapters) {
+      if (c.file) chs[`${sub.id}/${c.id}`] = JSON.parse(fs.readFileSync(path.join(ROOT, c.file), "utf8"));
+    }
+  }
+  App._setTestEnv({ catalog, chapters: chs, state: App.blank(), today: "2026-11-28" });
+  const pA = App.buildPaper("maths", { seed: 42 });
+  const pB = App.buildPaper("maths", { seed: 42 });
+  assert.strictEqual(JSON.stringify(pA.sections.map(s => s.items.map(i => i.q.id))), JSON.stringify(pB.sections.map(s => s.items.map(i => i.q.id))), "Deterministic by seed");
+  const allIds = pA.sections.flatMap(s => s.items.map(i => i.q.id));
+  assert.strictEqual(new Set(allIds).size, allIds.length, "Zero duplicate IDs across sections");
+  const nonA1Mcqs = pA.sections.filter(s => s.id !== "A1").flatMap(s => s.items).filter(i => i.q.kind === "mcq");
+  assert.strictEqual(nonA1Mcqs.length, 0, "Maths 2m MCQs must never appear in B/C/D");
+
+  // Partial syllabus mini-paper (only 1 chapter) never crashes and sets full: false
+  const mini = App.buildPaper("maths", { seed: 7, chKeys: ["maths1/ch01"] });
+  assert.strictEqual(mini.full, false);
+  assert.ok(mini.maxAttemptMarks > 0 && mini.maxAttemptMarks < 80);
+});
+
 console.log(`\nALL ${passed} CORE TESTS PASSED`);

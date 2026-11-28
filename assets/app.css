@@ -489,4 +489,23 @@ html[data-theme="focus"] .btip { color: var(--amber-ink); background: var(--ambe
 .frm.fq-ok { border-left: 3px solid var(--green); padding-left: 10px; }
 .frm.fq-miss { border-left: 3px solid var(--amber); padding-left: 10px; }
 
+/* ---- P4: Mystery Drill & Board Paper Simulator ---- */
+.practice-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; margin-top: 10px; }
+.paper-bar { position: sticky; top: 56px; z-index: 8; background: var(--card); border: 1px solid var(--line);
+  border-radius: 14px; padding: 10px 14px; margin-bottom: 12px; box-shadow: 0 2px 10px rgba(0,0,0,.06); }
+.paper-pace { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; font-size: 12.5px; color: var(--muted); }
+.paper-sec-h { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 10px; }
+.paper-q { border-top: 1px solid var(--line); padding: 12px 0; }
+.paper-q:first-of-type { border-top: 0; }
+.paper-q.picked { background: var(--purple-soft); margin: 0 -10px; padding: 12px 10px; border-radius: 10px; }
+.mcq-strip { display: grid; gap: 8px; }
+.mcq-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px;
+  padding: 10px; border: 1px solid var(--line); border-radius: 10px; background: var(--bg); }
+.mcq-row-btns { display: flex; gap: 6px; }
+.ch-checks { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 6px; margin-top: 8px; }
+.ch-chk { display: flex; align-items: center; gap: 6px; font-size: 13.5px; padding: 6px 8px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); }
+.print-hdr { text-align: center; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 14px; }
+.print-meta { display: flex; justify-content: space-between; font-weight: 700; margin-top: 6px; font-size: 14px; }
+@media print { .paper-bar { display: none !important; } }
+
 

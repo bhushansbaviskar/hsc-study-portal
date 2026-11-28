@@ -1183,6 +1183,13 @@
       h += '<a class="card review-card" href="#/review"><span class="num amber">' + due + '</span><span class="grow"><b>Review: ' + due + ' due</b><br><span class="muted small">Redo what you got wrong across subjects</span></span>' + ICON.chev + "</a>";
     }
     h += planHTML(pl) + homeGaugeHTML(st, homeSubj) + errorBreakdownHTML(st, 14, 2);
+    h += '<div class="card"><h2>Exam Practice</h2><p class="muted small">Interleaved 6-Q Mystery Drills (no chapter hint) &amp; full 3-hr MSBSHSE Board Papers.</p>' +
+      '<div class="practice-grid">' +
+      '<a class="btn ghost" href="#/mix/physics">Physics Mystery</a>' +
+      '<a class="btn ghost" href="#/mix/chemistry">Chemistry Mystery</a>' +
+      '<a class="btn ghost" href="#/mix/maths">Maths Mystery</a>' +
+      '<a class="btn primary" href="#/paper">Board Paper Simulator</a>' +
+      "</div></div>";
 
     // Today's target
     var shownKey = showRound ? null : ri ? K(ri.s.id, ri.ch) : (nextPair ? K(nextPair.s.id, nextPair.ch) : null);
@@ -2958,6 +2965,120 @@
         }
         return;
       }
+      case "mix-reveal":
+        if (MIX && MIX.items[MIX.i]) { MIX.items[MIX.i].revealed = true; mixRender(); }
+        return;
+      case "mix-tick":
+        if (MIX && MIX.items[MIX.i]) {
+          var mit = MIX.items[MIX.i], mk = dataI(t);
+          mit.ticks[mk] = !mit.ticks[mk];
+          if (ptsGot(mit.q, mit.ticks) >= mit.q.marks) mit.err = "";
+          mixRender();
+        }
+        return;
+      case "mix-all":
+        if (MIX && MIX.items[MIX.i]) {
+          var mia = MIX.items[MIX.i], mpts = qPoints(mia.q);
+          var allOn = mia.ticks.length === mpts.length && mia.ticks.every(Boolean);
+          mia.ticks = mpts.map(function () { return !allOn; });
+          if (!allOn) mia.err = "";
+          mixRender();
+        }
+        return;
+      case "mix-err":
+        if (MIX && MIX.items[MIX.i]) {
+          var mev = t.getAttribute("data-err") || "";
+          MIX.items[MIX.i].err = MIX.items[MIX.i].err === mev ? "" : mev;
+          mixRender();
+        }
+        return;
+      case "mix-next": {
+        if (!MIX || !MIX.items[MIX.i]) return;
+        var mn = MIX.items[MIX.i], mgot = ptsGot(mn.q, mn.ticks), mof = mn.q.marks, mnow = Date.now();
+        var mst = load();
+        mst.boardPts[mn.q.id] = { got: mgot, of: mof, at: mnow, err: mgot < mof ? (mn.err || "") : "" };
+        mst.board[mn.q.id] = mgot >= mof ? "got" : "practice";
+        mst.boardAt[mn.q.id] = mnow;
+        if (mgot < mof) {
+          bankAdd(bankId("b", mn.q.id, null, mn.ch), "below full marks", mn.err || "");
+          if (mn.err) logError(mn.q.id, chKeyOf(mn.ch.subject, mn.ch.id), mn.err, mst);
+        }
+        save();
+        MIX.ok += mgot; MIX.total += mof; MIX.i++;
+        return mixRender();
+      }
+      case "paper-start": {
+        var pk1 = t.getAttribute("data-pk") || "physics";
+        var mode1 = t.getAttribute("data-mode") || "full";
+        var sec1 = t.getAttribute("data-sec") || "";
+        var customChs = null;
+        if (mode1 === "custom") {
+          customChs = Array.prototype.slice.call(app.querySelectorAll('input[name="p-ch"]:checked')).map(function (el) { return el.value; });
+          if (!customChs.length) return;
+        }
+        return paperStart(pk1, { sectionOnly: sec1 || undefined, chKeys: customChs });
+      }
+      case "pr-pick": {
+        if (!PR || PR.phase !== "read") return;
+        var psid = t.getAttribute("data-sec"), pqid = t.getAttribute("data-qid");
+        var psec = PR.paper.sections.filter(function (s) { return s.id === psid; })[0];
+        if (!psec) return;
+        var picks = PR.picks[psid] || (PR.picks[psid] = []);
+        var pidx = picks.indexOf(pqid);
+        if (pidx >= 0) picks.splice(pidx, 1);
+        else if (picks.length < psec.attempt) picks.push(pqid);
+        savePaperRun();
+        return paperRender();
+      }
+      case "pr-start-write":
+        if (!PR) return;
+        PR.phase = "write";
+        PR.writeStart = Date.now();
+        savePaperRun();
+        return paperRender();
+      case "pr-finish-write":
+        if (!PR) return;
+        if (pTimer) { clearInterval(pTimer); pTimer = null; }
+        PR.phase = "mark";
+        savePaperRun();
+        return paperRender();
+      case "pr-mcq": {
+        if (!PR || PR.phase !== "mark") return;
+        var mqid = t.getAttribute("data-qid"), mok = t.getAttribute("data-ok") === "1";
+        PR.mcq[mqid] = mok;
+        savePaperRun();
+        return paperRender();
+      }
+      case "pr-tick": {
+        if (!PR || PR.phase !== "mark") return;
+        var tqid = t.getAttribute("data-qid"), ti = dataI(t);
+        var arrT = PR.ticks[tqid] || [];
+        arrT[ti] = !arrT[ti];
+        PR.ticks[tqid] = arrT;
+        savePaperRun();
+        return paperRender();
+      }
+      case "pr-all": {
+        if (!PR || PR.phase !== "mark") return;
+        var aqid = t.getAttribute("data-qid");
+        var aqItem = paperFindItem(aqid);
+        if (!aqItem) return;
+        var apts = qPoints(aqItem.q), aCur = PR.ticks[aqid] || [];
+        var aAll = aCur.length === apts.length && aCur.every(Boolean);
+        PR.ticks[aqid] = apts.map(function () { return !aAll; });
+        if (!aAll) delete PR.errs[aqid];
+        savePaperRun();
+        return paperRender();
+      }
+      case "pr-err": {
+        if (!PR || PR.phase !== "mark") return;
+        var eqid = t.getAttribute("data-qid"), eVal = t.getAttribute("data-err") || "";
+        PR.errs[eqid] = PR.errs[eqid] === eVal ? "" : eVal;
+        savePaperRun();
+        return paperRender();
+      }
+      case "pr-submit-marks":
+        return paperSubmitMarks();
     }
   });
   if (previewBarEl) {
@@ -3009,6 +3130,419 @@
   });
   } // end if (HAS_DOM)
 
+  /* ---------- P4: Interleaved Mystery Drill & Board Paper Simulator ---------- */
+  var MIX = null, PR = null, pTimer = null;
+  function ptsGot(q, ticks) {
+    var g = 0;
+    qPoints(q).forEach(function (x, k) { if (ticks && ticks[k]) g += +x.marks || 0; });
+    return g;
+  }
+  function mulberry32(a) {
+    var t = a >>> 0;
+    return function () {
+      t = (t + 0x6D2B79F5) >>> 0;
+      var r = Math.imul(t ^ (t >>> 15), 1 | t);
+      r = (r + Math.imul(r ^ (r >>> 7), 61 | r)) ^ r;
+      return ((r ^ (r >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+  function paperKeysList(paperKey) {
+    var pg = (catalog.paperGroups || {})[paperKey];
+    var subs = pg && Array.isArray(pg.subjects) ? pg.subjects : [paperKey];
+    return LIVE_LIST.filter(function (e) { return subs.indexOf(e.subj) >= 0; }).map(function (e) { return e.key; });
+  }
+  function buildPaper(paperKey, opts) {
+    opts = opts || {};
+    var pat = (catalog.paperPatterns || {})[paperKey];
+    var pg = (catalog.paperGroups || {})[paperKey];
+    if (!pat || !pg) return null;
+    var seed = (opts.seed != null ? opts.seed : Math.floor(Date.now() / 1000)) | 0;
+    var rnd = mulberry32(seed);
+    var st = load();
+    var chFilter = Array.isArray(opts.chKeys) && opts.chKeys.length ? opts.chKeys : null;
+    var pool = [];
+    LIVE_LIST.forEach(function (e) {
+      if ((pg.subjects || []).indexOf(e.subj) < 0) return;
+      if (chFilter && chFilter.indexOf(e.key) < 0) return;
+      var ch = CHAPTERS[e.key];
+      if (!ch || !Array.isArray(ch.board)) return;
+      ch.board.forEach(function (q) {
+        pool.push({ q: q, chKey: e.key, ch: ch, rand: rnd() });
+      });
+    });
+
+    function itemScore(it) {
+      var bp = st.boardPts && st.boardPts[it.q.id];
+      var isWeak = !bp || bp.got < bp.of || st.board[it.q.id] === "need";
+      return (it.q.year ? 0 : 2) + (isWeak ? 0 : 1);
+    }
+    pool.sort(function (a, b) {
+      var sa = itemScore(a), sb = itemScore(b);
+      if (sa !== sb) return sa - sb;
+      return a.rand - b.rand;
+    });
+
+    var used = {};
+    var targetSecs = opts.sectionOnly ? pat.sections.filter(function (s) { return s.id === opts.sectionOnly; }) : pat.sections;
+    var outSecs = [];
+    var allFull = !opts.sectionOnly && !chFilter;
+    targetSecs.forEach(function (sec) {
+      var cands = pool.filter(function (it) {
+        if (used[it.q.id]) return false;
+        if (it.q.marks !== sec.marksEach) return false;
+        if (sec.kind === "mcq") return it.q.kind === "mcq";
+        return it.q.kind !== "mcq";
+      });
+      var picked = [], chCount = {};
+      for (var pass = 0; pass < 2 && picked.length < sec.offer; pass++) {
+        for (var i = 0; i < cands.length && picked.length < sec.offer; i++) {
+          var it = cands[i];
+          if (used[it.q.id]) continue;
+          var cc = chCount[it.chKey] || 0;
+          if (pass === 0 && cc >= 2) continue;
+          used[it.q.id] = true;
+          chCount[it.chKey] = cc + 1;
+          picked.push({ q: it.q, chKey: it.chKey, chTitle: chShortLabel(it.ch) });
+        }
+      }
+      if (sec.id === "D" && picked.length < sec.offer) {
+        var twosA = pool.filter(function (it) { return !used[it.q.id] && it.q.marks === 2 && it.q.kind !== "mcq" && it.q.kind !== "numerical" && it.q.kind !== "problem"; });
+        var twosB = pool.filter(function (it) { return !used[it.q.id] && it.q.marks === 2 && (it.q.kind === "numerical" || it.q.kind === "problem"); });
+        while (picked.length < sec.offer && twosA.length && twosB.length) {
+          var a2 = twosA.shift(), b2 = twosB.shift();
+          used[a2.q.id] = true; used[b2.q.id] = true;
+          var compQ = {
+            id: a2.q.id + "+" + b2.q.id,
+            marks: 4,
+            kind: "theory",
+            composite: true,
+            page: a2.q.page,
+            text: "(a) " + a2.q.text + "\n(b) " + b2.q.text,
+            answer: "(a) " + a2.q.answer + "\n\n(b) " + b2.q.answer,
+            points: qPoints(a2.q).concat(qPoints(b2.q))
+          };
+          picked.push({ q: compQ, chKey: a2.chKey, chTitle: chShortLabel(a2.ch) + " + " + chShortLabel(b2.ch) });
+        }
+      }
+      if (picked.length < sec.attempt) allFull = false;
+      outSecs.push({ id: sec.id, title: sec.title, marksEach: sec.marksEach, attempt: sec.attempt, offer: sec.offer, items: picked });
+    });
+
+    var maxMarks = outSecs.reduce(function (a, s) { return a + Math.min(s.attempt, s.items.length) * s.marksEach; }, 0);
+    return {
+      paperKey: paperKey,
+      title: pg.title,
+      totalMarks: pat.totalMarks,
+      maxAttemptMarks: maxMarks,
+      durationMin: opts.sectionOnly ? Math.max(20, Math.round(maxMarks * 2.2)) : pat.durationMin,
+      readingMin: opts.sectionOnly ? 5 : pat.readingMin,
+      seed: seed,
+      full: allFull && maxMarks === pat.totalMarks,
+      sectionOnly: opts.sectionOnly || "",
+      sections: outSecs
+    };
+  }
+
+  function mixStart(paperKey) {
+    var keys = paperKeysList(paperKey);
+    if (!keys.length) return errorView("No chapters available for " + paperKey);
+    return withChapters(keys, function () {
+      var st = load(), pool = [];
+      keys.forEach(function (k) {
+        var ch = CHAPTERS[k];
+        if (!ch || !Array.isArray(ch.board)) return;
+        ch.board.forEach(function (q) {
+          var bp = st.boardPts && st.boardPts[q.id];
+          var score = (!bp || bp.got < bp.of ? 0 : 2) + (q.year ? 0 : 1) + Math.random();
+          pool.push({ q: q, ch: ch, score: score });
+        });
+      });
+      pool.sort(function (a, b) { return a.score - b.score; });
+      var chosen = [], chUsed = {};
+      for (var pass = 0; pass < 2 && chosen.length < 6; pass++) {
+        for (var i = 0; i < pool.length && chosen.length < 6; i++) {
+          var it = pool[i];
+          if (chosen.indexOf(it) >= 0) continue;
+          var ck = chKeyOf(it.ch.subject, it.ch.id);
+          if (pass === 0 && chUsed[ck]) continue;
+          chUsed[ck] = true;
+          chosen.push(it);
+        }
+      }
+      MIX = {
+        paperKey: paperKey,
+        items: chosen.map(function (it) {
+          return { q: it.q, ch: it.ch, revealed: false, ticks: qPoints(it.q).map(function () { return false; }), err: "" };
+        }),
+        i: 0, ok: 0, total: 0
+      };
+      redraw = mixRender;
+      mixRender();
+    });
+  }
+  function mixRender() {
+    if (!MIX) return;
+    var pg = (catalog.paperGroups || {})[MIX.paperKey] || { title: MIX.paperKey };
+    setHeader("Mystery Drill · " + pg.title, "#/", { xp: true, tab: "home" });
+    if (MIX.i >= MIX.items.length) {
+      var pct = MIX.total ? Math.round(100 * MIX.ok / MIX.total) : 0;
+      var chList = {};
+      MIX.items.forEach(function (it) { chList[chShortLabel(it.ch) + ": " + it.ch.title] = true; });
+      app.innerHTML = '<div class="card center"><h2>Mystery Drill Complete</h2>' +
+        '<p class="big"><b>' + MIX.ok + " / " + MIX.total + " marks</b> (" + pct + "%)</p>" +
+        '<p class="muted small">Chapters tested: ' + esc(Object.keys(chList).join(" · ")) + "</p>" +
+        '<div class="actions two"><a class="btn primary" href="#/mix/' + esc(MIX.paperKey) + '">New Mystery Drill</a><a class="btn ghost" href="#/">Home</a></div></div>';
+      return;
+    }
+    var it = MIX.items[MIX.i], q = it.q;
+    var h = steps(MIX.items.length, MIX.i);
+    h += '<div class="card"><div class="check-head"><span class="pill">Question ' + (MIX.i + 1) + " of " + MIX.items.length + '</span><span class="pill">' + q.marks + " mark" + (q.marks > 1 ? "s" : "") + ' · Chapter hidden</span></div>' +
+      '<p class="q">' + fm(q.text) + "</p>" +
+      (q.options && q.options.length ? '<ul class="muted small">' + q.options.map(function (o, idx) { return "<li>(" + String.fromCharCode(97 + idx) + ") " + fm(o) + "</li>"; }).join("") + "</ul>" : "") +
+      (!it.revealed ? '<button type="button" class="btn primary block" data-act="mix-reveal">Show model answer &amp; reveal chapter</button>' :
+        '<div class="mix-rev"><p class="note"><b>Chapter:</b> ' + esc(chShortLabel(it.ch) + " — " + it.ch.title) + " (p. " + esc(q.page) + ")</p>" +
+        modelAnswerHTML(q, it.ch) +
+        '<div class="pts-box"><div class="row"><b class="small">Mark your points:</b><button type="button" class="btn ghost sm" data-act="mix-all">All correct ✓</button></div>' +
+        qPoints(q).map(function (pt, idx) {
+          var on = !!it.ticks[idx];
+          return '<label class="pt-row"><input type="checkbox" data-act="mix-tick" data-i="' + idx + '"' + (on ? " checked" : "") + '><span>' + fm(pt.text) + '</span><b class="pt-m">' + pt.marks + "m</b></label>";
+        }).join("") + "</div>" +
+        (ptsGot(q, it.ticks) < q.marks ? '<div class="err-box"><span class="small muted">Why lost marks? (optional)</span><div class="err-pills">' +
+          ERR_TAGS.map(function (tg) { return '<button type="button" class="err-pill" data-act="mix-err" data-err="' + esc(tg.id) + '" aria-pressed="' + (it.err === tg.id) + '">' + esc(tg.label) + "</button>"; }).join("") + "</div></div>" : "") +
+        '<button type="button" class="btn primary block" style="margin-top:10px" data-act="mix-next">Save (' + ptsGot(q, it.ticks) + "/" + q.marks + "m) &amp; Next</button></div>") +
+      "</div>";
+    app.innerHTML = h;
+  }
+
+  function savePaperRun() {
+    if (!PR || PR.phase === "report") return;
+    var st = load();
+    st.paperRun = { paper: PR.paper, phase: PR.phase, picks: PR.picks, mcq: PR.mcq, ticks: PR.ticks, errs: PR.errs, elapsed: PR.elapsed || 0, at: Date.now() };
+    save();
+  }
+  function paperFindItem(qid) {
+    if (!PR || !PR.paper) return null;
+    for (var i = 0; i < PR.paper.sections.length; i++) {
+      var items = PR.paper.sections[i].items;
+      for (var j = 0; j < items.length; j++) if (items[j].q.id === qid) return items[j];
+    }
+    return null;
+  }
+  function paperPickerView(paperKey) {
+    var pk = paperKey && (catalog.paperGroups || {})[paperKey] ? paperKey : "physics";
+    var pg = (catalog.paperGroups || {})[pk] || { title: pk, paperMarks: 70 };
+    var pat = (catalog.paperPatterns || {})[pk] || { durationMin: 180, sections: [] };
+    setHeader("Board Paper Simulator", "#/", { xp: true, tab: "home" });
+    var st = load();
+    var h = '<div class="pills-row">' + Object.keys(catalog.paperGroups || {}).map(function (k) {
+      return '<a class="pill-btn" href="#/paper/' + esc(k) + '" aria-pressed="' + (k === pk) + '">' + esc(catalog.paperGroups[k].title) + "</a>";
+    }).join("") + "</div>";
+    if (st.paperRun && st.paperRun.paper && st.paperRun.paper.paperKey === pk) {
+      h += '<div class="card cont-card"><div><b>Resume in-progress paper</b><br><span class="small muted">Phase: ' + esc(st.paperRun.phase) + '</span></div><a class="btn primary sm" href="#/paper/' + esc(pk) + '/run">Resume</a></div>';
+    }
+    h += '<div class="card"><h2>' + esc(pg.title) + " (" + pg.paperMarks + " marks · " + pat.durationMin + " min)</h2>" +
+      '<p class="muted small">Authentic MSBSHSE pattern with 15-min reading &amp; selection phase, section pacing, and printable paper + key.</p>' +
+      '<div class="actions two" style="margin-top:10px"><button type="button" class="btn primary" data-act="paper-start" data-pk="' + esc(pk) + '" data-mode="full">Start Full Paper</button>' +
+      '<a class="btn ghost" href="#/paper/' + esc(pk) + '/print">Print Paper + Key</a></div></div>';
+    h += '<div class="card"><h2>Section Drills (20–50 min)</h2><div class="practice-grid">' +
+      (pat.sections || []).map(function (s) {
+        return '<button type="button" class="btn ghost" data-act="paper-start" data-pk="' + esc(pk) + '" data-mode="sec" data-sec="' + esc(s.id) + '">' + esc(s.id + " (" + s.attempt + "×" + s.marksEach + "m)") + "</button>";
+      }).join("") + "</div></div>";
+    var chEntries = LIVE_LIST.filter(function (e) { return (pg.subjects || []).indexOf(e.subj) >= 0; });
+    h += '<div class="card"><h2>Custom Paper (Choose Chapters)</h2><div class="ch-checks">' +
+      chEntries.map(function (e) {
+        return '<label class="ch-chk"><input type="checkbox" name="p-ch" value="' + esc(e.key) + '" checked><span>' + esc(e.title) + "</span></label>";
+      }).join("") + '</div><button type="button" class="btn ghost block" style="margin-top:10px" data-act="paper-start" data-pk="' + esc(pk) + '" data-mode="custom">Start Custom Paper</button></div>';
+    var hist = (st.papers || []).filter(function (p) { return p.paperKey === pk; }).slice(-5).reverse();
+    if (hist.length) {
+      h += '<div class="card"><h2>Recent Papers</h2><ul class="t-list">' + hist.map(function (p) {
+        return '<li><span><b>' + esc(p.label) + "</b> · " + esc(niceDate(p.date)) + "</span><b>" + p.got + "/" + p.of + " (" + p.pct + "%)</b></li>";
+      }).join("") + "</ul></div>";
+    }
+    app.innerHTML = h;
+  }
+  function paperStart(paperKey, opts) {
+    var keys = paperKeysList(paperKey);
+    return withChapters(keys, function () {
+      var paper = buildPaper(paperKey, opts);
+      if (!paper) return errorView("Could not build paper.");
+      var picks = {};
+      paper.sections.forEach(function (s) {
+        picks[s.id] = s.items.slice(0, s.attempt).map(function (it) { return it.q.id; });
+      });
+      PR = { paper: paper, phase: "read", picks: picks, mcq: {}, ticks: {}, errs: {}, elapsed: 0, writeStart: Date.now() };
+      savePaperRun();
+      location.hash = "#/paper/" + paperKey + "/run";
+    });
+  }
+  function paperActiveItems(sec) {
+    var picks = (PR && PR.picks && PR.picks[sec.id]) || [];
+    if (sec.offer <= sec.attempt) return sec.items;
+    var chosen = sec.items.filter(function (it) { return picks.indexOf(it.q.id) >= 0; });
+    return chosen.length ? chosen : sec.items.slice(0, sec.attempt);
+  }
+  function paperSubmitMarks() {
+    if (!PR || !PR.paper) return;
+    var st = load(), got = 0, of = 0, secBreak = [], errMap = {}, now = Date.now();
+    PR.paper.sections.forEach(function (sec) {
+      var act = paperActiveItems(sec).slice(0, sec.attempt);
+      var sGot = 0, sOf = 0;
+      act.forEach(function (it) {
+        var q = it.q; sOf += q.marks;
+        var qGot = 0;
+        if (sec.id === "A1") {
+          qGot = PR.mcq[q.id] === true ? q.marks : 0;
+        } else {
+          qGot = ptsGot(q, PR.ticks[q.id] || []);
+        }
+        sGot += qGot;
+        var ch = CHAPTERS[it.chKey];
+        if (!q.composite && ch) {
+          st.boardPts[q.id] = { got: qGot, of: q.marks, at: now, err: qGot < q.marks ? (PR.errs[q.id] || "") : "" };
+          st.board[q.id] = qGot >= q.marks ? "got" : "practice";
+          st.boardAt[q.id] = now;
+          if (qGot < q.marks) {
+            bankAdd(bankId("b", q.id, null, ch), "below full marks", PR.errs[q.id] || "");
+            if (PR.errs[q.id]) {
+              logError(q.id, it.chKey, PR.errs[q.id], st);
+              errMap[PR.errs[q.id]] = (errMap[PR.errs[q.id]] || 0) + 1;
+            }
+          }
+        }
+      });
+      got += sGot; of += sOf;
+      secBreak.push({ id: sec.id, got: sGot, of: sOf });
+    });
+    var pct = of ? Math.round(100 * got / of) : 0;
+    var label = PR.paper.sectionOnly ? "Section " + PR.paper.sectionOnly : (PR.paper.full ? "Full Paper" : "Mini-Paper");
+    if (!Array.isArray(st.papers)) st.papers = [];
+    st.papers.push({ at: now, date: today(), paperKey: PR.paper.paperKey, label: label, full: !!PR.paper.full, got: got, of: of, pct: pct, secs: secBreak, errs: errMap });
+    if (st.papers.length > 30) st.papers = st.papers.slice(-30);
+    st.paperRun = null;
+    save();
+    PR.report = { got: got, of: of, pct: pct, label: label, secs: secBreak, errs: errMap };
+    PR.phase = "report";
+    paperRender();
+  }
+  function paperRender() {
+    if (!PR || !PR.paper) return;
+    var p = PR.paper;
+    setHeader(p.title + " · " + (p.sectionOnly ? "Section " + p.sectionOnly : (p.full ? "Full Paper" : "Mini-Paper")), "#/paper/" + p.paperKey, { xp: true, tab: "home" });
+    if (pTimer) { clearInterval(pTimer); pTimer = null; }
+    var h = "";
+    if (PR.phase === "read") {
+      h += '<div class="paper-bar"><div class="row"><div class="grow"><b>Phase 1 · Reading &amp; Selection (' + p.readingMin + ' min)</b><br><span class="small muted">Pick your best questions in Sections B, C &amp; D before writing.</span></div><button type="button" class="btn primary sm" data-act="pr-start-write">Start writing now</button></div></div>';
+      p.sections.forEach(function (sec) {
+        var picks = PR.picks[sec.id] || [];
+        h += '<div class="card"><div class="paper-sec-h"><h2>' + esc(sec.title) + '</h2><span class="pill">' + (sec.offer > sec.attempt ? picks.length + "/" + sec.attempt + " picked" : sec.items.length + " compulsory") + "</span></div>";
+        sec.items.forEach(function (it, idx) {
+          var isPicked = picks.indexOf(it.q.id) >= 0;
+          h += '<div class="paper-q' + (sec.offer > sec.attempt && isPicked ? " picked" : "") + '"><div class="row"><b class="grow">Q' + (idx + 1) + ". (" + it.q.marks + "m)</b>" +
+            (sec.offer > sec.attempt ? '<button type="button" class="btn sm ' + (isPicked ? "primary" : "ghost") + '" data-act="pr-pick" data-sec="' + esc(sec.id) + '" data-qid="' + esc(it.q.id) + '">' + (isPicked ? "Picked ✓" : "Pick") + "</button>" : "") +
+            '</div><p>' + fm(it.q.text) + "</p></div>";
+        });
+        h += "</div>";
+      });
+    } else if (PR.phase === "write") {
+      var totalSec = p.durationMin * 60, rem = Math.max(0, totalSec - (PR.elapsed || 0));
+      var mm = Math.floor(rem / 60), ss = rem % 60;
+      h += '<div class="paper-bar"><div class="row"><div class="grow"><b>Phase 2 · Writing · <span id="pr-clock">' + mm + ":" + (ss < 10 ? "0" : "") + ss + '</span> left</b><br><span class="small muted">Write on paper · Log table allowed · Calculator NOT allowed</span></div><button type="button" class="btn primary sm" data-act="pr-finish-write">Finish &amp; Mark</button></div>' +
+        '<div class="paper-pace"><span>Suggested pace: Sec A 25m · Sec B 35m · Sec C 60m · Sec D 45m · Check 15m</span></div></div>';
+      p.sections.forEach(function (sec) {
+        var act = paperActiveItems(sec);
+        h += '<div class="card"><h2>' + esc(sec.title) + "</h2>";
+        act.forEach(function (it, idx) {
+          h += '<div class="paper-q"><b>Q' + (idx + 1) + ". (" + it.q.marks + "m)</b><p>" + fm(it.q.text) + "</p>" +
+            (it.q.options && it.q.options.length ? '<ul class="muted small">' + it.q.options.map(function (o, oi) { return "<li>(" + String.fromCharCode(97 + oi) + ") " + fm(o) + "</li>"; }).join("") + "</ul>" : "") + "</div>";
+        });
+        h += "</div>";
+      });
+      pTimer = setInterval(function () {
+        if (!PR || PR.phase !== "write") { clearInterval(pTimer); pTimer = null; return; }
+        PR.elapsed = (PR.elapsed || 0) + 1;
+        var r = Math.max(0, p.durationMin * 60 - PR.elapsed);
+        var el = document.getElementById("pr-clock");
+        if (el) el.textContent = Math.floor(r / 60) + ":" + (r % 60 < 10 ? "0" : "") + (r % 60);
+      }, 1000);
+    } else if (PR.phase === "mark") {
+      h += '<div class="paper-bar"><div class="row"><div class="grow"><b>Phase 3 · Self-Marking</b><br><span class="small muted">Fast MCQ strip + examiner point ticks.</span></div><button type="button" class="btn primary sm" data-act="pr-submit-marks">Submit Marks</button></div></div>';
+      p.sections.forEach(function (sec) {
+        var act = paperActiveItems(sec).slice(0, sec.attempt);
+        h += '<div class="card"><h2>' + esc(sec.title) + "</h2>";
+        if (sec.id === "A1") {
+          h += '<div class="mcq-strip">' + act.map(function (it, idx) {
+            var q = it.q, stM = PR.mcq[q.id];
+            return '<div class="mcq-row"><div class="grow"><b>Q' + (idx + 1) + '.</b> ' + fm(q.answer) + '</div><div class="mcq-row-btns">' +
+              '<button type="button" class="btn sm ' + (stM === true ? "ok" : "ok ghost") + '" data-act="pr-mcq" data-qid="' + esc(q.id) + '" data-ok="1">Right ✓</button>' +
+              '<button type="button" class="btn sm ' + (stM === false ? "warn" : "warn ghost") + '" data-act="pr-mcq" data-qid="' + esc(q.id) + '" data-ok="0">Wrong ✗</button>' +
+              "</div></div>";
+          }).join("") + "</div>";
+        } else {
+          act.forEach(function (it, idx) {
+            var q = it.q, ticks = PR.ticks[q.id] || [], gotQ = ptsGot(q, ticks);
+            h += '<div class="paper-q"><div class="row"><b class="grow">Q' + (idx + 1) + ". (" + q.marks + 'm)</b><button type="button" class="btn ghost sm" data-act="pr-all" data-qid="' + esc(q.id) + '">All correct ✓</button></div>' +
+              '<p class="small muted">' + fm(q.text) + "</p>" + modelAnswerHTML(q, CHAPTERS[it.chKey]) +
+              qPoints(q).map(function (pt, pi) {
+                return '<label class="pt-row"><input type="checkbox" data-act="pr-tick" data-qid="' + esc(q.id) + '" data-i="' + pi + '"' + (ticks[pi] ? " checked" : "") + '><span>' + fm(pt.text) + '</span><b class="pt-m">' + pt.marks + "m</b></label>";
+              }).join("") +
+              (gotQ < q.marks ? '<div class="err-pills">' + ERR_TAGS.map(function (tg) {
+                return '<button type="button" class="err-pill" data-act="pr-err" data-qid="' + esc(q.id) + '" data-err="' + esc(tg.id) + '" aria-pressed="' + (PR.errs[q.id] === tg.id) + '">' + esc(tg.label) + "</button>";
+              }).join("") + "</div>" : "") + "</div>";
+          });
+        }
+        h += "</div>";
+      });
+    } else if (PR.phase === "report" && PR.report) {
+      var rep = PR.report;
+      h += '<div class="card center"><span class="pill">' + esc(rep.label) + '</span><h2>' + rep.got + " / " + rep.of + " marks (" + rep.pct + '%)</h2>' +
+        '<p class="muted small">Time used: ' + Math.round((PR.elapsed || 0) / 60) + " min</p></div>" +
+        '<div class="card"><h2>Section Breakdown</h2><ul class="t-list">' + rep.secs.map(function (s) {
+          return "<li><b>Section " + esc(s.id) + "</b><span>" + s.got + " / " + s.of + " marks</span></li>";
+        }).join("") + '</ul><div class="actions two" style="margin-top:12px"><a class="btn ghost" href="#/paper/' + esc(p.paperKey) + '/print">Print Paper + Key</a><a class="btn primary" href="#/paper/' + esc(p.paperKey) + '">Done</a></div></div>';
+    }
+    app.innerHTML = h;
+  }
+  function paperPrintView(paperKey) {
+    var keys = paperKeysList(paperKey);
+    return withChapters(keys, function () {
+      var p = (PR && PR.paper && PR.paper.paperKey === paperKey) ? PR.paper : buildPaper(paperKey, { seed: 2027 });
+      if (!p) return errorView("Could not generate printable paper.");
+      setHeader("Print · " + p.title, "#/paper/" + paperKey, { tab: "home" });
+      var h = '<div class="card noprint"><button type="button" class="btn primary block" onclick="window.print()">Print Question Paper + Answer Key</button></div>';
+      h += '<div class="card"><div class="print-hdr"><h2>MAHARASHTRA HSC BOARD PRACTICE PAPER — ' + esc(p.title.toUpperCase()) + '</h2>' +
+        '<div class="print-meta"><span>Time: ' + p.durationMin + ' min</span><span>Max. Marks: ' + p.maxAttemptMarks + '</span></div>' +
+        '<p class="small">General Instructions: Use of log table is allowed. Use of calculator is not allowed.</p></div>';
+      p.sections.forEach(function (sec) {
+        h += "<h3>" + esc(sec.title) + "</h3>";
+        sec.items.forEach(function (it, idx) {
+          h += '<p><b>Q' + (idx + 1) + ".</b> " + fm(it.q.text) + " <b>[" + it.q.marks + "]</b></p>";
+          if (it.q.options && it.q.options.length) h += '<p class="small">' + it.q.options.map(function (o, oi) { return "(" + String.fromCharCode(97 + oi) + ") " + fm(o); }).join(" &nbsp;&nbsp; ") + "</p>";
+        });
+      });
+      h += "</div>";
+      h += '<div class="card pbreak"><h2>Answer Key &amp; Marking Scheme</h2>';
+      p.sections.forEach(function (sec) {
+        h += "<h3>" + esc(sec.title) + "</h3>";
+        sec.items.forEach(function (it, idx) {
+          h += "<p><b>Q" + (idx + 1) + " (" + esc(it.chTitle) + "):</b> " + fm(it.q.answer) + "</p>";
+        });
+      });
+      h += "</div>";
+      app.innerHTML = h;
+    });
+  }
+  if (typeof window !== "undefined") {
+    window.__paperAdvance = function (sec) {
+      if (!PR) return false;
+      if (sec) PR.elapsed = (PR.elapsed || 0) + sec;
+      if (PR.phase === "read") PR.phase = "write";
+      else if (PR.phase === "write") PR.phase = "mark";
+      savePaperRun();
+      paperRender();
+      return PR.phase;
+    };
+  }
+
   /* ---------- router ---------- */
   function route(rerender) {
     routeGen++;
@@ -3019,10 +3553,27 @@
     redraw = null;
     var p0 = parts[0], p1 = parts[1];
     if (rTimer) { clearInterval(rTimer); rTimer = null; }
+    if (pTimer) { clearInterval(pTimer); pTimer = null; }
     var stayingOnSameRun = RD && RD.phase === "run" && p0 && p1 && chKeyOf(p0, p1) === RD.chKey && parts[2] === "round" && parts[3] === "run";
     if (!stayingOnSameRun) roundLeave();
     if (!parts.length) return homeView();
     if (p0 === "sync") return syncView();
+    if (p0 === "mix") return mixStart(p1 || "physics");
+    if (p0 === "paper") {
+      var pkR = p1 && (catalog.paperGroups || {})[p1] ? p1 : "physics";
+      if (parts[2] === "run") {
+        if (!PR && load().paperRun) {
+          var sr = load().paperRun;
+          PR = { paper: sr.paper, phase: sr.phase, picks: sr.picks || {}, mcq: sr.mcq || {}, ticks: sr.ticks || {}, errs: sr.errs || {}, elapsed: sr.elapsed || 0, writeStart: Date.now() };
+        }
+        if (PR && PR.paper && PR.paper.paperKey === pkR) {
+          return withChapters(paperKeysList(pkR), paperRender);
+        }
+        return paperStart(pkR, {});
+      }
+      if (parts[2] === "print") return paperPrintView(pkR);
+      return paperPickerView(pkR);
+    }
     if (p0 === "teacher") {
       return withChapters(LIVE_LIST.map(function (e) { return e.key; }), function () {
         if (!rerender && SYNC && SYNC.hasTeacherConfig() && !TState.loading) return teacherFetch();
@@ -3170,7 +3721,7 @@
     ERR_TAGS: ERR_TAGS,
     bankAdd: bankAdd,
     bankReview: bankReview,
-    buildPaper: function () { return null; },
+    buildPaper: buildPaper,
     todayFocusPlan: function () { return null; },
     normalizeState: normalizeState,
     blank: blank,

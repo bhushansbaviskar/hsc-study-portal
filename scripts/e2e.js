@@ -289,6 +289,43 @@ async function runSuiteForViewport(browser, baseUrl, vp) {
   await page.setOfflineMode(false);
   console.log("PASS: P2 manifest 200 OK, SW controls page, and offline reload renders");
 
+  // 9. P4: Mystery drill hides chapter before reveal & shows after
+  await page.goto(baseUrl + "/#/mix/physics", { waitUntil: "networkidle0" });
+  await page.waitForSelector('[data-act="mix-reveal"]');
+  const mixPre = await page.$eval("#app", (el) => el.textContent);
+  assert.ok(mixPre.includes("Chapter hidden"), "Mystery drill must hide chapter before reveal");
+  await page.$eval('[data-act="mix-reveal"]', (el) => el.scrollIntoView({ block: "center" }));
+  await page.click('[data-act="mix-reveal"]');
+  await page.waitForSelector('[data-act="mix-next"]');
+  const mixPost = await page.$eval("#app", (el) => el.textContent);
+  assert.ok(mixPost.includes("Chapter:"), "Mystery drill must reveal chapter after Show model answer");
+  await snap(page, vp, "mystery-drill");
+  console.log("PASS: P4 Mystery drill hides chapter before reveal & shows after");
+
+  // 10. P4: Paper Simulator Section B drill -> read -> __paperAdvance -> mark -> report card -> print
+  await page.goto(baseUrl + "/#/paper/physics", { waitUntil: "networkidle0" });
+  await page.waitForSelector('[data-act="paper-start"][data-sec="B"]');
+  await page.$eval('[data-act="paper-start"][data-sec="B"]', (el) => el.scrollIntoView({ block: "center" }));
+  await page.click('[data-act="paper-start"][data-sec="B"]');
+  await page.waitForSelector('[data-act="pr-start-write"]');
+  const adv1 = await page.evaluate(() => window.__paperAdvance(120));
+  assert.strictEqual(adv1, "write", "__paperAdvance moves read -> write");
+  await page.waitForSelector('[data-act="pr-finish-write"]');
+  const adv2 = await page.evaluate(() => window.__paperAdvance(60));
+  assert.strictEqual(adv2, "mark", "__paperAdvance moves write -> mark");
+  await page.waitForSelector('[data-act="pr-submit-marks"]');
+  await page.$eval('[data-act="pr-all"]', (el) => el.scrollIntoView({ block: "center" }));
+  await page.click('[data-act="pr-all"]');
+  await page.$eval('[data-act="pr-submit-marks"]', (el) => el.scrollIntoView({ block: "center" }));
+  await page.click('[data-act="pr-submit-marks"]');
+  await page.waitForFunction(() => document.querySelector("#app").textContent.includes("Section Breakdown"));
+  const papersSaved = await page.evaluate(() => JSON.parse(localStorage.getItem("hscPrep.v2") || "{}").papers || []);
+  assert.strictEqual(papersSaved.length, 1, "st.papers.length must be 1 after paper submission");
+  await snap(page, vp, "paper-report");
+  await page.goto(baseUrl + "/#/paper/physics/print", { waitUntil: "networkidle0" });
+  await page.waitForSelector(".pbreak");
+  console.log("PASS: P4 Section B paper simulator -> __paperAdvance -> report card & print view");
+
   assert.strictEqual(errors.length, 0, `Unexpected console/page errors: ${errors.join("; ")}`);
   await ctx.close();
 }
