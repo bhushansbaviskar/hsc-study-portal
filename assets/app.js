@@ -1132,11 +1132,160 @@
     }
     return null;
   }
+  /* ---------- P5: Marks-weighted Today's Focus & Study Phases ---------- */
+  function daysBetween(d1, d2) {
+    var t1 = Date.parse(d1 + "T12:00:00"), t2 = Date.parse(d2 + "T12:00:00");
+    if (isNaN(t1) || isNaN(t2)) return 0;
+    return Math.round((t2 - t1) / 86400000);
+  }
+  function isWeekendDate(dStr) {
+    var d = new Date(dStr + "T12:00:00").getDay();
+    return d === 0 || d === 6;
+  }
+  function paperKeyForSubj(subjId) {
+    return (subjId === "maths1" || subjId === "maths2") ? "maths" : subjId;
+  }
+  function studyPhase(paperKey, st) {
+    st = st || load();
+    var td = today(), dm = catalog.dailyMinutes || { weekday: 90, weekend: 180 };
+    var tData = activeTeacherData() || {};
+    var baseBudget = tData.dailyMin ? +tData.dailyMin : (isWeekendDate(td) ? (dm.weekend || 180) : (dm.weekday || 90));
+    var pStart = catalog.practicalsStart || "2027-01-25";
+    var pDiff = daysBetween(pStart, td);
+    if (pDiff >= 0 && pDiff <= 10) {
+      return { id: "practicals", label: "Practicals Week", budgetMin: Math.min(45, baseBudget), note: "Practicals week — keep theory light & protect your streak" };
+    }
+    var exams = catalog.exams || {};
+    var targetDate = paperKey && exams[paperKey] ? exams[paperKey] : null;
+    if (!targetDate) {
+      var keys = Object.keys(exams);
+      for (var i = 0; i < keys.length; i++) {
+        var ed = exams[keys[i]];
+        if (!targetDate || ed < targetDate) targetDate = ed;
+      }
+      targetDate = targetDate || catalog.examDate || "2027-02-15";
+    }
+    var left = daysBetween(td, targetDate);
+    if (left >= 0 && left <= 10) {
+      var title = (catalog.paperGroups && paperKey && catalog.paperGroups[paperKey]) ? catalog.paperGroups[paperKey].title : "Board";
+      return { id: "sprint", label: "Final 10-Day Sprint", budgetMin: baseBudget, daysLeft: left, note: "Final 10-Day Sprint for " + title + " — focus on cockpit & past mistakes" };
+    }
+    if (left >= 0 && left <= 28) {
+      return { id: "revise", label: "Revise & Mocks", budgetMin: baseBudget, daysLeft: left, note: "Target weak high-weightage chapters & timed papers" };
+    }
+    return { id: "learn", label: "Learn & Build", budgetMin: baseBudget, daysLeft: left, note: "Build concepts + daily Mistake Bank review + Mystery Drill" };
+  }
+  function todayFocusPlan(st, subjFilter) {
+    st = st || load();
+    var td = today(), pk = subjFilter && subjFilter !== "all" ? paperKeyForSubj(subjFilter) : null;
+    var phase = studyPhase(pk, st), budget = phase.budgetMin;
+    var da = dayAchievements(td, st);
+    var tData = activeTeacherData() || {};
+    var boost = tData.subjectBoost || "balanced";
+    var blocks = [];
+    var dueN = dueIds(st).length;
+    if (dueN > 0) {
+      blocks.push({
+        id: "review",
+        title: "Review Due (" + Math.min(10, dueN) + (dueN > 10 ? " of " + dueN : "") + ")",
+        sub: "Clear Mistake Bank items before new topics",
+        mins: Math.min(15, Math.max(10, Math.round(budget * 0.2))),
+        done: da.reviews >= 1,
+        href: "#/review"
+      });
+    }
+    var bestStop = null, bestCh = null, bestScore = -1;
+    if (tData.focus && CHAPTERS[tData.focus.chKey]) {
+      var fc = CHAPTERS[tData.focus.chKey], fs = stopById(tData.focus.stopId, fc);
+      if (fs && !isDone(fs.id, st, fc)) { bestCh = fc; bestStop = fs; }
+    }
+    if (!bestStop) {
+      CHAPTER_LIST.forEach(function (e) {
+        if (subjFilter && subjFilter !== "all" && e.subj !== subjFilter) return;
+        var ch = e.ch;
+        var nextS = ch.stops.filter(function (s) { return !isDone(s.id, st, ch); })[0];
+        if (!nextS) return;
+        var prog = chapterProgress(st, ch), m = prog.pct / 100;
+        var mult = (boost !== "balanced" && paperKeyForSubj(e.subj) === boost) ? 1.5 : 1;
+        var sc = (ch.examMarks ? (ch.examMarks.theory || 4) : 4) * (1 - m) * mult;
+        if (sc > bestScore) { bestScore = sc; bestCh = ch; bestStop = nextS; }
+      });
+    }
+    if (bestCh && bestStop) {
+      blocks.push({
+        id: "topic",
+        title: bestStop.title,
+        sub: chShortLabel(bestCh) + (bestStop.quest ? " · Quest" : " · Topic + PYQs"),
+        mins: Math.min(35, Math.max(15, Math.round(budget * 0.35))),
+        done: isDone(bestStop.id, st, bestCh) || da.stops >= 1,
+        href: chBase(bestCh) + "/" + bestStop.id + (bestStop.quest ? "/quest" : "")
+      });
+    }
+    var pracPk = pk || (bestCh ? paperKeyForSubj(bestCh.subject) : (boost !== "balanced" ? boost : "physics"));
+    blocks.push({
+      id: "practice",
+      title: "Mystery Drill (6 Qs)",
+      sub: ((catalog.paperGroups && catalog.paperGroups[pracPk]) ? catalog.paperGroups[pracPk].title : pracPk) + " · mixed chapters",
+      mins: phase.id === "practicals" ? 15 : 25,
+      done: da.rounds >= 1,
+      href: "#/mix/" + pracPk
+    });
+    if (isWeekendDate(td) && budget >= 120) {
+      var donePaperToday = Array.isArray(st.papers) && st.papers.some(function (p) { return p.date === td; });
+      blocks.push({
+        id: "mock",
+        title: "Timed Section / Full Paper",
+        sub: "Weekend 3-hr or 45-min section drill",
+        mins: 60,
+        done: donePaperToday,
+        href: "#/paper/" + pracPk
+      });
+    }
+    var doneCount = blocks.filter(function (b) { return b.done; }).length;
+    return {
+      date: td,
+      phase: phase,
+      budget: budget,
+      blocks: blocks,
+      doneCount: doneCount,
+      totalCount: blocks.length,
+      allDone: blocks.length > 0 && doneCount === blocks.length
+    };
+  }
+  function subjectCountdownsHTML() {
+    var exams = catalog.exams || {}, td = today();
+    var pks = ["physics", "chemistry", "maths"];
+    var h = '<div class="cd-strip" aria-label="Subject exam countdowns">';
+    pks.forEach(function (pk) {
+      if (!exams[pk]) return;
+      var d = daysBetween(td, exams[pk]);
+      var label = pk === "maths" ? "Maths" : pk.charAt(0).toUpperCase() + pk.slice(1);
+      h += '<a class="cd-pill' + (d >= 0 && d <= 10 ? " urgent" : "") + '" href="#/revise/' + pk + '"><span>' + label + "</span><b>" + Math.max(0, d) + "d</b></a>";
+    });
+    h += "</div>";
+    return h;
+  }
+  function todayFocusHTML(fp, pl) {
+    var h = '<div class="card focus-card"><div class="row"><div class="grow"><h2>Today\'s Focus · ' + esc(fp.phase.label) + '</h2>' +
+      '<p class="muted small">' + esc(fp.phase.note) + " · ~" + fp.budget + " min budget</p></div>" +
+      '<span class="pill' + (fp.allDone ? " ok" : "") + '">' + fp.doneCount + "/" + fp.totalCount + "</span></div>";
+    if (fp.allDone) h += '<div class="fb ok" style="margin-top:8px">Done for today ✓ — great consistency!</div>';
+    h += '<div class="focus-list">' + fp.blocks.map(function (b) {
+      return '<a class="focus-item' + (b.done ? " done" : "") + '" href="' + b.href + '">' +
+        '<span class="num' + (b.done ? " ok" : "") + '">' + (b.done ? ICON.checkS : ICON.play) + '</span>' +
+        '<span class="grow"><b>' + esc(b.title) + '</b><br><span class="muted small">' + esc(b.sub) + '</span></span>' +
+        '<span class="focus-mins">' + b.mins + "m</span></a>";
+    }).join("") + "</div>";
+    h += '<details class="how" style="margin-top:10px"><summary>Full syllabus pace</summary>' + planHTML(pl) + "</details></div>";
+    return h;
+  }
+
   function homeView() {
     setHeader("HSC Board Prep", null, { tab: "home" });
     var st = load(), left = daysLeft(catalog.examDate), dt = doneToday(st);
     var pl = planInfo(st, homeSubj), remaining = Math.max(0, pl.pace - dt);
     var totProg = totalActiveProgress(st), due = countDue(st);
+    var fp = todayFocusPlan(st, homeSubj);
     var h = "";
 
     // Subject filter pills
@@ -1145,6 +1294,16 @@
       catalog.subjects.map(function (sub) {
         return '<button type="button" class="pill-btn" data-act="home-subj" data-subj="' + esc(sub.id) + '" aria-pressed="' + (homeSubj === sub.id) + '">' + esc(sub.title) + "</button>";
       }).join("") + "</div>";
+
+    h += subjectCountdownsHTML();
+    var sprintPk = null;
+    ["physics", "chemistry", "maths"].forEach(function (pk) {
+      if (!sprintPk && studyPhase(pk, st).id === "sprint") sprintPk = pk;
+    });
+    if (sprintPk) {
+      var spTitle = (catalog.paperGroups && catalog.paperGroups[sprintPk]) ? catalog.paperGroups[sprintPk].title : sprintPk;
+      h += '<a class="card cont-card sprint-card" href="#/revise/' + sprintPk + '"><span class="num amber">' + ICON.bolt + '</span><span class="grow"><b>Final 10-Day Sprint · ' + esc(spTitle) + ' Cockpit</b><br><span class="muted small">Formulas, Top 25 PYQs, Past Mistakes &amp; Exam Constants</span></span>' + ICON.chev + "</a>";
+    }
 
     var tData = activeTeacherData();
     if (tData && isObj(tData.focus) && CHAPTERS[tData.focus.chKey]) {
@@ -1176,13 +1335,13 @@
         '<div class="cd-foot small muted"><span>Active chapters: ' + totProg.done + " of " + totProg.total + ' stops done</span><span>Streak ' + streak(st) + ' d · ' + st.xp + ' XP</span></div></div>';
     } else {
       h += '<div class="card streak">' + ICON.flame + '<div class="grow"><b class="s-big">' + streak(st) + '-day streak</b>' +
-        '<div class="muted">' + (remaining ? remaining + " more today" : "Today's target done") + '</div></div>' +
+        '<div class="muted">' + (fp.allDone ? "Today's focus done ✓" : (fp.totalCount - fp.doneCount) + " focus blocks left today") + '</div></div>' +
         '<div class="s-days"><b>' + left + '</b><span>days to exam</span></div></div>';
     }
     if (due > 0) {
       h += '<a class="card review-card" href="#/review"><span class="num amber">' + due + '</span><span class="grow"><b>Review: ' + due + ' due</b><br><span class="muted small">Redo what you got wrong across subjects</span></span>' + ICON.chev + "</a>";
     }
-    h += planHTML(pl) + homeGaugeHTML(st, homeSubj) + errorBreakdownHTML(st, 14, 2);
+    h += todayFocusHTML(fp, pl) + homeGaugeHTML(st, homeSubj) + errorBreakdownHTML(st, 14, 2);
     h += '<div class="card"><h2>Exam Practice</h2><p class="muted small">Interleaved 6-Q Mystery Drills (no chapter hint) &amp; full 3-hr MSBSHSE Board Papers.</p>' +
       '<div class="practice-grid">' +
       '<a class="btn ghost" href="#/mix/physics">Physics Mystery</a>' +
@@ -1190,26 +1349,6 @@
       '<a class="btn ghost" href="#/mix/maths">Maths Mystery</a>' +
       '<a class="btn primary" href="#/paper">Board Paper Simulator</a>' +
       "</div></div>";
-
-    // Today's target
-    var shownKey = showRound ? null : ri ? K(ri.s.id, ri.ch) : (nextPair ? K(nextPair.s.id, nextPair.ch) : null);
-    var targetPool = [];
-    CHAPTER_LIST.forEach(function (e) {
-      if (homeSubj !== "all" && e.subj !== homeSubj) return;
-      e.ch.stops.forEach(function (s) {
-        if (!isDone(s.id, st, e.ch) && K(s.id, e.ch) !== shownKey) targetPool.push({ ch: e.ch, s: s });
-      });
-    });
-    var nextItems = targetPool.slice(0, Math.max(0, (remaining || 1) - 1));
-    h += '<div class="card"><h2>' + (remaining ? "Today's target" : "Target done for today") + "</h2>";
-    h += '<p class="muted small">Today: ' + Math.min(dt, pl.pace) + " of " + pl.pace + " stops</p>";
-    if (!nextPair && !targetPool.length) h += "<p>All active chapters here are complete. More chapters are coming soon.</p>";
-    else if (!nextItems.length) h += '<p class="muted small">Start with the card at the top.</p>';
-    h += '<ul class="list">' + nextItems.map(function (it) {
-      var n = stopIndex(it.s.id, it.ch) + 1;
-      return '<li><a class="item" href="' + chBase(it.ch) + "/" + it.s.id + '"><span class="num">' + n + '</span>' +
-        '<span class="grow"><b>' + esc(it.s.title) + '</b><br><span class="muted small">' + esc(chShortLabel(it.ch)) + ' · p. ' + esc(it.s.page) + "</span></span>" + ICON.chev + "</a></li>";
-    }).join("") + "</ul></div>";
 
     // Subjects & Chapters
     var subsToShow = homeSubj === "all" ? catalog.subjects : catalog.subjects.filter(function (s) { return s.id === homeSubj; });
@@ -2542,6 +2681,11 @@
           return '<div style="margin-top:10px"><b>' + esc(chShortLabel(it.ch)) + " · " + (it.idx + 1) + ". " + esc(it.s.title) + '</b><p class="note-text small muted">' + esc(it.text) + "</p></div>";
         }).join("") + "</details></div>";
     }
+    var curBoost = (entry.teacher && entry.teacher.subjectBoost) || "balanced";
+    h += '<div class="card"><h2>This week\'s focus subject</h2><p class="small muted">Boosts a subject 1.5× in the student\'s Today\'s Focus plan.</p><div class="err-pills">' +
+      [{ id: "balanced", l: "Balanced" }, { id: "physics", l: "Physics" }, { id: "chemistry", l: "Chemistry" }, { id: "maths", l: "Maths" }].map(function (b) {
+        return '<button type="button" class="err-pill" data-act="t-boost" data-sid="' + esc(sid) + '" data-boost="' + b.id + '" aria-pressed="' + (curBoost === b.id) + '">' + b.l + "</button>";
+      }).join("") + "</div></div>";
     return h;
   }
   function teacherView() {
@@ -3079,6 +3223,11 @@
       }
       case "pr-submit-marks":
         return paperSubmitMarks();
+      case "t-boost": {
+        var bsid = t.getAttribute("data-sid") || "student1";
+        var bval = t.getAttribute("data-boost") || "balanced";
+        return saveTeacherPatch(bsid, function (td) { td.subjectBoost = bval; }, "Weekly focus set to " + bval + ".");
+      }
     }
   });
   if (previewBarEl) {
@@ -3722,7 +3871,8 @@
     bankAdd: bankAdd,
     bankReview: bankReview,
     buildPaper: buildPaper,
-    todayFocusPlan: function () { return null; },
+    studyPhase: studyPhase,
+    todayFocusPlan: todayFocusPlan,
     normalizeState: normalizeState,
     blank: blank,
     KIND_LABEL: KIND_LABEL,

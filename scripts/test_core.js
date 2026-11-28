@@ -176,4 +176,27 @@ test("P4: buildPaper is deterministic, has zero duplicates, keeps Maths 2m MCQs 
   assert.ok(mini.maxAttemptMarks > 0 && mini.maxAttemptMarks < 80);
 });
 
+test("P5: studyPhase and todayFocusPlan adapt across Learn, Weekend, Practicals Week, and 10-Day Sprint", () => {
+  // 2026-11-30 is Monday (Learn weekday -> 90m)
+  App._setTestEnv({ catalog, chapters: { "physics/ch01": phy1 }, state: App.blank(), today: "2026-11-30" });
+  assert.strictEqual(App.studyPhase("physics").id, "learn");
+  assert.strictEqual(App.todayFocusPlan().budget, 90);
+  assert.ok(App.todayFocusPlan().blocks.every(b => b.id !== "mock"));
+
+  // 2026-11-28 is Saturday (Learn weekend -> 180m + mock block)
+  App._setTestEnv({ today: "2026-11-28" });
+  const wk = App.todayFocusPlan();
+  assert.strictEqual(wk.budget, 180);
+  assert.ok(wk.blocks.some(b => b.id === "mock"));
+
+  // 2027-01-28 is Practicals Week -> 45m budget
+  App._setTestEnv({ today: "2027-01-28" });
+  assert.strictEqual(App.studyPhase("physics").id, "practicals");
+  assert.strictEqual(App.todayFocusPlan().budget, 45);
+
+  // 2027-02-08 is 7 days before Physics (2027-02-15) -> Final 10-Day Sprint
+  App._setTestEnv({ today: "2027-02-08" });
+  assert.strictEqual(App.studyPhase("physics").id, "sprint");
+});
+
 console.log(`\nALL ${passed} CORE TESTS PASSED`);

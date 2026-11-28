@@ -508,4 +508,16 @@ html[data-theme="focus"] .btip { color: var(--amber-ink); background: var(--ambe
 .print-meta { display: flex; justify-content: space-between; font-weight: 700; margin-top: 6px; font-size: 14px; }
 @media print { .paper-bar { display: none !important; } }
 
+/* ---- P5: Subject Countdowns, Today's Focus & Sprint Banner ---- */
+.cd-strip { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+.cd-pill { flex: 1 1 95px; display: flex; justify-content: space-between; align-items: center; padding: 8px 10px;
+  border-radius: 10px; border: 1px solid var(--line); background: var(--card); font-size: 13px; text-decoration: none; color: inherit; }
+.cd-pill.urgent { border-color: var(--amber); background: var(--amber-soft); color: var(--amber-ink); }
+.sprint-card { border: 1.5px solid var(--amber); background: var(--amber-soft); }
+.focus-list { display: grid; gap: 8px; margin-top: 10px; }
+.focus-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border: 1px solid var(--line);
+  border-radius: 10px; background: var(--bg); text-decoration: none; color: inherit; }
+.focus-item.done { opacity: 0.72; }
+.focus-mins { font-size: 12.5px; font-weight: 700; color: var(--muted); white-space: nowrap; }
+
 

@@ -326,6 +326,20 @@ async function runSuiteForViewport(browser, baseUrl, vp) {
   await page.waitForSelector(".pbreak");
   console.log("PASS: P4 Section B paper simulator -> __paperAdvance -> report card & print view");
 
+  // 11. P5: Home renders 3 subject countdowns + Today's Focus + ?today=2027-02-08 Sprint card
+  await page.goto(baseUrl + "/?today=2027-02-08#/", { waitUntil: "networkidle0" });
+  await page.waitForSelector(".cd-strip");
+  const p5Check = await page.evaluate(() => ({
+    pills: document.querySelectorAll(".cd-pill").length,
+    hasFocus: !!document.querySelector(".focus-card"),
+    hasSprint: !!document.querySelector(".sprint-card")
+  }));
+  assert.strictEqual(p5Check.pills, 3, "Home must show 3 subject countdown pills");
+  assert.ok(p5Check.hasFocus, "Home must render Today's Focus card");
+  assert.ok(p5Check.hasSprint, "?today=2027-02-08 must surface Physics Final 10-Day Sprint card");
+  await snap(page, vp, "home-focus-sprint");
+  console.log("PASS: P5 3 subject countdowns, Today's Focus, and Final 10-Day Sprint banner");
+
   assert.strictEqual(errors.length, 0, `Unexpected console/page errors: ${errors.join("; ")}`);
   await ctx.close();
 }
