@@ -1,0 +1,177 @@
+{
+  "id": "ch10",
+  "file": "content/physics/ch10-magnetic-fields-due-to-electric-current.json",
+  "subject": "physics",
+  "book": "xii",
+  "title": "Magnetic Fields due to Electric Current",
+  "lite": true,
+  "startPage": 230,
+  "endPage": 250,
+  "examMarks": 4,
+  "examMarksWithOptions": 6,
+  "stops": [
+    {
+      "id": "s01",
+      "title": "Lorentz force & cyclotron motion",
+      "page": 230,
+      "inShort": "Magnetic force on moving charge: F = q(v × B). Lorentz force: F = q(E + v × B). In a uniform perpendicular B, charge moves in a circle of radius r = mv/(qB) with cyclotron frequency f = qB/(2πm).",
+      "sections": [
+        "10.2 Magnetic Force",
+        "10.3 Cyclotron Motion",
+        "10.4 Helical Motion"
+      ]
+    },
+    {
+      "id": "s02",
+      "title": "Force on current-carrying wire & Moving Coil Galvanometer",
+      "page": 234,
+      "inShort": "Force on wire: F = I (L × B). Torque on current loop: τ = N I A B sin θ. In a radial-field MCG, deflecting torque N I A B balances restoring torque k θ, so θ ∝ I.",
+      "sections": [
+        "10.5 Force on Wire",
+        "10.7 Torque on Current Loop",
+        "10.7.1 Moving Coil Galvanometer"
+      ]
+    },
+    {
+      "id": "s03",
+      "title": "Biot-Savart law & circular loop",
+      "page": 239,
+      "inShort": "Biot-Savart law: dB = (μ₀/4π)(I dl sin θ / r²). At the centre of a circular arc subtending θ: B = μ₀ I θ / (4π R); for full circle (θ = 2π): B = μ₀ I / (2R). Force per unit length between parallel currents: f/L = μ₀ I₁ I₂ / (2π d).",
+      "sections": [
+        "10.10 Biot-Savart Law",
+        "10.11 Parallel Currents",
+        "10.12 Circular Loop"
+      ]
+    },
+    {
+      "id": "s04",
+      "title": "Ampere's circuital law, solenoid & toroid",
+      "page": 244,
+      "inShort": "Ampere's law: ∮ B·dl = μ₀ I_enclosed. Inside a long straight solenoid: B = μ₀ n I (n = N/L). Inside a toroid: B = μ₀ n I = μ₀ N I / (2π R).",
+      "sections": [
+        "10.15 Ampere's Law",
+        "10.16 Solenoid and Toroid"
+      ]
+    }
+  ],
+  "formulas": [
+    {
+      "stop": "s01",
+      "items": [
+        {
+          "n": "Magnetic force & cyclotron",
+          "f": "F = q(v × B),  r = m v / (q B),  f = q B / (2π m)",
+          "s": "Magnetic force does zero work on a moving charge.",
+          "p": 232
+        }
+      ]
+    },
+    {
+      "stop": "s03",
+      "items": [
+        {
+          "n": "Biot-Savart & circular coil",
+          "f": "B_arc = μ₀ I θ / (4π R),  B_centre = μ₀ N I / (2 R)",
+          "s": "On axis of circular loop: B = μ₀ I R² / [2(R² + z²)^(3/2)].",
+          "p": 241
+        }
+      ]
+    },
+    {
+      "stop": "s04",
+      "items": [
+        {
+          "n": "Solenoid & toroid",
+          "f": "B = μ₀ n I",
+          "s": "n = turns per unit length (N/L for solenoid, N/(2πR) for toroid).",
+          "p": 246
+        }
+      ]
+    }
+  ],
+  "board": [
+    {
+      "id": "p10-2025-Q2iii",
+      "stop": "s01",
+      "year": 2025,
+      "qno": "Q2(iii)",
+      "marks": 1,
+      "kind": "vsa",
+      "page": 231,
+      "text": "What is the work done by an external uniform magnetic field perpendicular to the velocity of a moving charge?",
+      "answer": "Zero. The magnetic force F = q(v × B) is always perpendicular to the velocity v (and displacement), so W = F · ds = 0.",
+      "points": [
+        {
+          "text": "Zero work done (force is perpendicular to velocity/displacement)",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "p10-2025-Q5",
+      "stop": "s03",
+      "year": 2025,
+      "qno": "Q5",
+      "marks": 2,
+      "kind": "derivation",
+      "page": 241,
+      "text": "State the formula for magnetic induction produced by a current in a circular arc of a wire. Hence find the magnetic induction at the centre of a current carrying circular loop.",
+      "answer": "Magnetic induction at the centre of a circular arc of radius R subtending angle θ (in rad): B = μ₀ I θ / (4π R).\nFor a full circular loop, θ = 2π.\nSubstituting θ = 2π: B = μ₀ I (2π) / (4π R) = μ₀ I / (2 R).",
+      "points": [
+        {
+          "text": "Formula for circular arc: B = μ₀Iθ / (4πR)",
+          "marks": 1
+        },
+        {
+          "text": "Substitution θ = 2π giving B = μ₀I / (2R)",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "p10-2022-Q4",
+      "stop": "s04",
+      "year": 2022,
+      "qno": "Q4",
+      "marks": 2,
+      "kind": "derivation",
+      "page": 247,
+      "text": "Obtain an expression for magnetic induction of a toroid of 'N' turns about an axis passing through its centre and perpendicular to its plane.",
+      "answer": "Consider a circular Amperian loop of radius r inside the core of the toroid (circumference 2πr). Magnetic field B is tangential everywhere along the loop.\nBy Ampere's circuital law: ∮ B·dl = μ₀ I_enclosed ⇒ B(2πr) = μ₀ N I.\nTherefore B = μ₀ N I / (2π r) = μ₀ n I, where n = N/(2πr) is turns per unit length.",
+      "points": [
+        {
+          "text": "Amperian loop of radius r with ∮ B·dl = B(2πr)",
+          "marks": 1
+        },
+        {
+          "text": "I_enclosed = NI giving B = μ₀NI/(2πr) = μ₀nI",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "p10-imp-s02-mcg",
+      "stop": "s02",
+      "source": "Important · Balbharati",
+      "marks": 3,
+      "kind": "theory",
+      "page": 236,
+      "text": "Explain the principle, construction and working of a Moving Coil Galvanometer (MCG).",
+      "answer": "Principle: A current-carrying coil suspended in a uniform radial magnetic field experiences a torque τ = N I A B.\nConstruction: Rectangular coil of N turns wound on a light frame, suspended in a radial magnetic field between concave pole pieces with a soft iron core inside.\nWorking: Deflecting torque τ_d = N I A B is balanced by restoring torque τ_r = k θ of the suspension fibre. At equilibrium, N I A B = k θ ⇒ I = (k / NAB) θ, so deflection θ ∝ I.",
+      "points": [
+        {
+          "text": "Principle & radial magnetic field role",
+          "marks": 1
+        },
+        {
+          "text": "Construction (coil, concave poles, soft iron core, suspension)",
+          "marks": 1
+        },
+        {
+          "text": "Equilibrium NIAB = kθ ⇒ I ∝ θ",
+          "marks": 1
+        }
+      ]
+    }
+  ]
+}

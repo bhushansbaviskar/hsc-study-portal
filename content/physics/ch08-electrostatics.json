@@ -1,0 +1,192 @@
+{
+  "id": "ch08",
+  "file": "content/physics/ch08-electrostatics.json",
+  "subject": "physics",
+  "book": "xii",
+  "title": "Electrostatics",
+  "lite": true,
+  "startPage": 186,
+  "endPage": 213,
+  "examMarks": 4,
+  "examMarksWithOptions": 6,
+  "stops": [
+    {
+      "id": "s01",
+      "title": "Applications of Gauss' law",
+      "page": 186,
+      "inShort": "Gauss' law: Φ = ∮ E·dA = q_enclosed / ε₀. Used to find E due to a uniformly charged sphere (E = q/(4πε₀r²)), infinitely long straight wire (E = λ/(2πε₀r)), and infinite plane sheet (E = σ/(2ε₀)).",
+      "sections": [
+        "8.2 Application of Gauss' Law",
+        "8.2.1 Charged Sphere",
+        "8.2.2 Straight Wire",
+        "8.2.3 Infinite Plane Sheet"
+      ]
+    },
+    {
+      "id": "s02",
+      "title": "Electric potential, potential energy & equipotential surfaces",
+      "page": 190,
+      "inShort": "Potential V = W/q₀ = q/(4πε₀r). Electric dipole potential V = p cos θ / (4πε₀r²). Equipotential surfaces have constant V, are perpendicular to E, and never intersect.",
+      "sections": [
+        "8.3 Electric Potential",
+        "8.4 Potential due to Point Charge & Dipole",
+        "8.5 Equipotential Surfaces",
+        "8.6 Potential Energy"
+      ]
+    },
+    {
+      "id": "s03",
+      "title": "Conductors, dielectrics & electric polarization",
+      "page": 196,
+      "inShort": "Inside a conductor in electrostatic equilibrium, E = 0 and V is constant. Polar dielectrics have permanent dipole moments; non-polar do not. Polarization P = χ_e ε₀ E.",
+      "sections": [
+        "8.7 Conductors and Insulators",
+        "8.8 Dielectrics and Electric Polarisation"
+      ]
+    },
+    {
+      "id": "s04",
+      "title": "Capacitors, combinations & energy stored",
+      "page": 201,
+      "inShort": "Parallel plate capacitor C = ε₀ A / d (with dielectric k: C = k ε₀ A / d). Series: 1/C_s = 1/C₁ + 1/C₂; Parallel: C_p = C₁ + C₂. Energy stored U = ½ C V² = ½ Q²/C = ½ Q V.",
+      "sections": [
+        "8.9 Capacitors",
+        "8.10 Parallel Plate Capacitor",
+        "8.12 Energy Stored in a Capacitor"
+      ]
+    },
+    {
+      "id": "s05",
+      "title": "Displacement current & Van de Graaff generator",
+      "page": 207,
+      "inShort": "Displacement current I_d = ε₀ dΦ_E/dt maintains continuity of current across a capacitor. Van de Graaff generator produces very high electrostatic potential (several MV) using corona discharge and hollow conductor shell.",
+      "sections": [
+        "8.11 Displacement Current",
+        "8.13 Van de Graaff Generator"
+      ]
+    }
+  ],
+  "formulas": [
+    {
+      "stop": "s01",
+      "items": [
+        {
+          "n": "Gauss' law fields",
+          "f": "E_wire = λ/(2πε₀r),  E_sheet = σ/(2ε₀),  E_conductor = σ/ε₀",
+          "s": "Flux Φ = q_enc / ε₀.",
+          "p": 188
+        }
+      ]
+    },
+    {
+      "stop": "s02",
+      "items": [
+        {
+          "n": "Potential due to dipole",
+          "f": "V = (1 / 4πε₀) (p cos θ / r²)",
+          "s": "On axis θ = 0°; on equator θ = 90° ⇒ V = 0.",
+          "p": 192
+        }
+      ]
+    },
+    {
+      "stop": "s04",
+      "items": [
+        {
+          "n": "Parallel plate capacitor",
+          "f": "C = k ε₀ A / d,  U = (1/2) C V²",
+          "s": "Energy density u = (1/2) ε₀ E².",
+          "p": 203
+        }
+      ]
+    }
+  ],
+  "board": [
+    {
+      "id": "p8-2025-Q1iv",
+      "stop": "s02",
+      "year": 2025,
+      "qno": "Q1(iv)",
+      "marks": 1,
+      "kind": "mcq",
+      "page": 191,
+      "text": "Electric potential 'V' at a distance 'r' from a point charge is directly proportional to ____.",
+      "options": [
+        "r",
+        "1/r",
+        "r²",
+        "1/r²"
+      ],
+      "answerIndex": 1,
+      "answer": "(b) 1/r (since V = q / (4πε₀r)).",
+      "points": [
+        {
+          "text": "Correct option: (b) 1/r",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "p8-2025-Q2vii",
+      "stop": "s01",
+      "year": 2025,
+      "qno": "Q2(vii)",
+      "marks": 1,
+      "kind": "numerical",
+      "page": 189,
+      "text": "Calculate the electric field intensity at a point just near the surface of a charged plane sheet, measured from its mid-point. [σ = 8.85 μC/m², ε₀ = 8.85 × 10⁻¹² C²/N·m²]",
+      "answer": "E = σ / (2 ε₀) = (8.85 × 10⁻⁶) / (2 × 8.85 × 10⁻¹²) = 0.5 × 10⁶ = 5 × 10⁵ N/C.",
+      "points": [
+        {
+          "text": "E = σ/(2ε₀) = 5 × 10⁵ N/C",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "p8-2022-Q6",
+      "stop": "s04",
+      "year": 2022,
+      "qno": "Q6",
+      "marks": 2,
+      "kind": "derivation",
+      "page": 202,
+      "text": "Obtain an expression for equivalent capacitance of two capacitors C₁ and C₂ connected in series.",
+      "answer": "In series combination, charge Q on each capacitor is the same, while total potential difference V = V₁ + V₂.\nV₁ = Q/C₁, V₂ = Q/C₂, and V = Q/C_s.\nThus Q/C_s = Q/C₁ + Q/C₂ ⇒ 1/C_s = 1/C₁ + 1/C₂, or C_s = C₁C₂ / (C₁ + C₂).",
+      "points": [
+        {
+          "text": "Same charge Q and V = V₁ + V₂",
+          "marks": 1
+        },
+        {
+          "text": "Derivation giving 1/C_s = 1/C₁ + 1/C₂",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "p8-imp-s04-energy",
+      "stop": "s04",
+      "source": "Important · Balbharati",
+      "marks": 3,
+      "kind": "derivation",
+      "page": 206,
+      "text": "Derive an expression for the energy stored in a charged capacitor.",
+      "answer": "Let a capacitor of capacitance C be charged to charge Q. At an intermediate stage with charge q, potential v = q/C.\nWork done to add small charge dq: dW = v dq = (q/C) dq.\nTotal work W = ∫(0 to Q) (q/C) dq = Q² / (2C).\nSince Q = CV, energy stored U = ½ Q²/C = ½ C V² = ½ Q V.",
+      "points": [
+        {
+          "text": "dW = (q/C) dq",
+          "marks": 1
+        },
+        {
+          "text": "Integration from 0 to Q",
+          "marks": 1
+        },
+        {
+          "text": "U = ½ Q²/C = ½ C V² = ½ Q V",
+          "marks": 1
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,262 @@
+{
+  "id": "ch04",
+  "file": "content/physics/ch04-thermodynamics.json",
+  "subject": "physics",
+  "book": "xii",
+  "title": "Thermodynamics",
+  "lite": true,
+  "startPage": 75,
+  "endPage": 108,
+  "examMarks": 5,
+  "examMarksWithOptions": 7,
+  "stops": [
+    {
+      "id": "s01",
+      "title": "Thermal equilibrium & Zeroth law",
+      "page": 75,
+      "inShort": "Two systems in thermal equilibrium have the same temperature. Zeroth law: if A and B are separately in thermal equilibrium with C, then A and B are in thermal equilibrium with each other.",
+      "sections": [
+        "4.1 Introduction",
+        "4.2 Thermal Equilibrium",
+        "4.3 Zeroth Law of Thermodynamics"
+      ]
+    },
+    {
+      "id": "s02",
+      "title": "Heat, internal energy & First law of thermodynamics",
+      "page": 77,
+      "inShort": "First law of thermodynamics is conservation of energy: Q = ΔU + W, where W = ∫ P dV is work done by the system. Positive Q means heat added; positive W means expansion.",
+      "sections": [
+        "4.4 Heat, Internal Energy and Work",
+        "4.5 First Law of Thermodynamics"
+      ]
+    },
+    {
+      "id": "s03",
+      "title": "Thermodynamic state variables & p-V diagram",
+      "page": 81,
+      "inShort": "Intensive variables (P, T, ρ) are independent of system size; extensive variables (V, M, U) depend on mass/size. Area under the p-V curve gives work done W = ∫ P dV.",
+      "sections": [
+        "4.6 Thermodynamic State Variables",
+        "4.6.3 The p-V diagram"
+      ]
+    },
+    {
+      "id": "s04",
+      "title": "Thermodynamic processes (isothermal, adiabatic, isobaric, isochoric)",
+      "page": 84,
+      "inShort": "Isothermal (T const): W = nRT ln(V₂/V₁). Isobaric (P const): W = P(V₂−V₁). Isochoric (V const): W = 0, Q = ΔU. Adiabatic (Q = 0): PV^γ = const, W = (P₁V₁ − P₂V₂)/(γ−1).",
+      "sections": [
+        "4.7 Thermodynamic Process",
+        "4.7.3 Classification of Processes"
+      ]
+    },
+    {
+      "id": "s05",
+      "title": "Heat engines, refrigerators & Second law",
+      "page": 93,
+      "inShort": "Heat engine efficiency η = W/Q_H = 1 − Q_C/Q_H. Refrigerator COP K = Q_C/W = Q_C/(Q_H − Q_C). Kelvin-Planck and Clausius statements of the Second Law are equivalent.",
+      "sections": [
+        "4.8 Heat Engines",
+        "4.9 Refrigerators and Heat Pumps",
+        "4.10 Second Law of Thermodynamics"
+      ]
+    },
+    {
+      "id": "s06",
+      "title": "Carnot cycle & Carnot engine",
+      "page": 99,
+      "inShort": "Carnot cycle consists of two isothermal and two adiabatic reversible processes. Maximum efficiency η_max = 1 − T_C/T_H depends only on reservoir temperatures.",
+      "sections": [
+        "4.11 Carnot Cycle and Carnot Engine",
+        "4.12 Sterling Cycle"
+      ]
+    }
+  ],
+  "formulas": [
+    {
+      "stop": "s02",
+      "items": [
+        {
+          "n": "First law of thermodynamics",
+          "f": "Q = ΔU + W",
+          "s": "Q: heat supplied; ΔU: change in internal energy; W: work done by system.",
+          "p": 79
+        }
+      ]
+    },
+    {
+      "stop": "s04",
+      "items": [
+        {
+          "n": "Isothermal work done",
+          "f": "W = n R T ln(V₂/V₁) = 2.303 n R T log₁₀(V₂/V₁)",
+          "s": "ΔU = 0 for ideal gas in isothermal process, so Q = W.",
+          "p": 88
+        },
+        {
+          "n": "Adiabatic relation & work",
+          "f": "P V^γ = const,  W = (P₁V₁ − P₂V₂)/(γ − 1) = nR(T₁ − T₂)/(γ − 1)",
+          "s": "Q = 0; adiabatic curve is steeper than isothermal by factor γ.",
+          "p": 90
+        }
+      ]
+    },
+    {
+      "stop": "s05",
+      "items": [
+        {
+          "n": "Heat engine & Refrigerator",
+          "f": "η = 1 − Q_C/Q_H,  K = Q_C / (Q_H − Q_C)",
+          "s": "For Carnot cycle, Q_C/Q_H = T_C/T_H.",
+          "p": 94
+        }
+      ]
+    },
+    {
+      "stop": "s06",
+      "items": [
+        {
+          "n": "Carnot efficiency",
+          "f": "η_max = 1 − T_C / T_H",
+          "s": "Temperatures T_C and T_H must be in Kelvin.",
+          "p": 101
+        }
+      ]
+    }
+  ],
+  "board": [
+    {
+      "id": "p4-2025-Q1i",
+      "stop": "s01",
+      "year": 2025,
+      "qno": "Q1(i)",
+      "marks": 1,
+      "kind": "mcq",
+      "page": 76,
+      "text": "\"If two systems are each in thermal equilibrium with a third system, they are also in thermal equilibrium with each other.\" This statement refers to ____.",
+      "options": [
+        "zeroth law of thermodynamics",
+        "first law of thermodynamics",
+        "second law of thermodynamics",
+        "Carnot's law"
+      ],
+      "answerIndex": 0,
+      "answer": "(a) zeroth law of thermodynamics.",
+      "points": [
+        {
+          "text": "Correct option: (a) zeroth law of thermodynamics",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "p4-2025-Q2iv",
+      "stop": "s01",
+      "year": 2025,
+      "qno": "Q2(iv)",
+      "marks": 1,
+      "kind": "define",
+      "page": 75,
+      "text": "What do you mean by a thermodynamic system?",
+      "answer": "A thermodynamic system is a collection or a quantity of matter enclosed within a well-defined boundary, separated from its surroundings, whose state can be described by macroscopic variables (P, V, T).",
+      "points": [
+        {
+          "text": "Clear definition of thermodynamic system and boundary",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "p4-2025-Q14",
+      "stop": "s04",
+      "year": 2025,
+      "qno": "Q14",
+      "marks": 2,
+      "kind": "numerical",
+      "page": 88,
+      "text": "A gas of 0.5 mole at 300 K expands isothermally from an initial volume of 2.0 litre to a final volume of 6.0 litre. What is the work done by gas? (R = 8.314 J/mol·K)",
+      "answer": "W = 2.303 n R T log₁₀(V₂ / V₁)\n= 2.303 × 0.5 × 8.314 × 300 × log₁₀(6.0 / 2.0)\n= 2872.07 × log₁₀(3) = 2872.07 × 0.4771 = 1370.3 J.",
+      "points": [
+        {
+          "text": "Formula W = 2.303 nRT log₁₀(V₂/V₁) and substitution",
+          "marks": 1
+        },
+        {
+          "text": "Correct answer: W = 1370.3 J (or 1.37 kJ)",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "p4-2025-Q16",
+      "stop": "s03",
+      "year": 2025,
+      "qno": "Q16",
+      "marks": 3,
+      "kind": "define",
+      "page": 81,
+      "text": "In a thermodynamic system, define: (a) Mechanical equilibrium (b) Chemical equilibrium and (c) Thermal equilibrium.",
+      "answer": "(a) Mechanical equilibrium: There are no unbalanced forces within the system or between the system and its surroundings (pressure is uniform throughout).\n(b) Chemical equilibrium: There are no net chemical reactions or transfer of matter from one part of the system to another.\n(c) Thermal equilibrium: The temperature of the system is uniform throughout and does not change with time.",
+      "points": [
+        {
+          "text": "Definition of mechanical equilibrium (no unbalanced forces / uniform P)",
+          "marks": 1
+        },
+        {
+          "text": "Definition of chemical equilibrium (no net chemical reaction)",
+          "marks": 1
+        },
+        {
+          "text": "Definition of thermal equilibrium (uniform constant temperature)",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "p4-2022-Q13",
+      "stop": "s04",
+      "year": 2022,
+      "qno": "Q13",
+      "marks": 2,
+      "kind": "numerical",
+      "page": 90,
+      "text": "An ideal mono-atomic gas is adiabatically compressed so that its final temperature is twice its initial temperature. Calculate the ratio of final pressure to its initial pressure.",
+      "answer": "For adiabatic process: T^γ P^(1−γ) = constant ⇒ P₂/P₁ = (T₂/T₁)^(γ/(γ−1)).\nFor monoatomic gas, γ = 5/3 ⇒ γ/(γ−1) = (5/3)/(2/3) = 5/2 = 2.5.\nGiven T₂/T₁ = 2.\nP₂/P₁ = 2^(2.5) = 4√2 ≈ 5.657.",
+      "points": [
+        {
+          "text": "Adiabatic P-T relation P₂/P₁ = (T₂/T₁)^(γ/(γ−1)) with γ = 5/3",
+          "marks": 1
+        },
+        {
+          "text": "Correct ratio: 2^(5/2) = 4√2 ≈ 5.66",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "p4-imp-s04-iso",
+      "stop": "s04",
+      "source": "Important · Balbharati",
+      "marks": 3,
+      "kind": "derivation",
+      "page": 88,
+      "text": "Derive an expression for work done during an isothermal process.",
+      "answer": "In an isothermal process, temperature T = constant and PV = nRT.\nSmall work done dW = P dV = (nRT/V) dV.\nIntegrating from V₁ to V₂:\nW = ∫(V₁ to V₂) (nRT/V) dV = nRT [ln V](V₁ to V₂) = nRT ln(V₂/V₁) = 2.303 nRT log₁₀(V₂/V₁).",
+      "points": [
+        {
+          "text": "dW = P dV and P = nRT/V",
+          "marks": 1
+        },
+        {
+          "text": "Integration from V₁ to V₂",
+          "marks": 1
+        },
+        {
+          "text": "Final expression W = 2.303 nRT log₁₀(V₂/V₁)",
+          "marks": 1
+        }
+      ]
+    }
+  ]
+}

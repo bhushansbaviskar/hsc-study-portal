@@ -1,0 +1,282 @@
+{
+  "id": "ch03",
+  "file": "content/physics/ch03-kinetic-theory-of-gases-and-radiation.json",
+  "subject": "physics",
+  "book": "xii",
+  "title": "Kinetic Theory of Gases and Radiation",
+  "lite": true,
+  "startPage": 56,
+  "endPage": 74,
+  "examMarks": 5,
+  "examMarksWithOptions": 7,
+  "stops": [
+    {
+      "id": "s01",
+      "title": "Ideal gas, real gas and mean free path",
+      "page": 56,
+      "inShort": "An ideal gas obeys PV = nRT at all pressures and temperatures. Real gases approach ideal behaviour at low pressure and high temperature. Mean free path λ = 1/(√2 π d² n) is the average distance travelled between two successive collisions.",
+      "sections": [
+        "3.2 Behaviour of a Gas",
+        "3.3 Ideal Gas and Real Gas",
+        "3.4 Mean Free Path"
+      ]
+    },
+    {
+      "id": "s02",
+      "title": "Pressure of an ideal gas and RMS speed",
+      "page": 58,
+      "inShort": "From kinetic theory, pressure exerted by an ideal gas is P = (1/3) ρ v_rms² = (1/3)(N m / V) v_rms². Root mean square speed v_rms = √(3RT / M) depends only on absolute temperature and molar mass.",
+      "sections": [
+        "3.5 Pressure of Ideal Gas",
+        "3.6 Root Mean Square (rms) Speed",
+        "3.7 Interpretation of Temperature"
+      ]
+    },
+    {
+      "id": "s03",
+      "title": "Degrees of freedom, equipartition & Mayer's relation",
+      "page": 60,
+      "inShort": "Each quadratic degree of freedom contributes ½ k_B T per molecule (½ RT per mole) to internal energy. Monoatomic f = 3, diatomic (rigid) f = 5. Mayer's relation: C_p − C_v = R, and γ = C_p/C_v = 1 + 2/f.",
+      "sections": [
+        "3.8 Law of Equipartition of Energy",
+        "3.9 Specific Heat Capacity",
+        "3.9.1 Mayer's Relation"
+      ]
+    },
+    {
+      "id": "s04",
+      "title": "Thermal radiation, Ferry's blackbody & emissivity",
+      "page": 64,
+      "inShort": "When radiant heat Q falls on a body, a + r + t = 1 (coefficients of absorption, reflection, transmission). A perfectly black body has a = 1, r = t = 0 (realised by Ferry's blackbody). Diathermanous substances transmit heat radiation; athermanous do not.",
+      "sections": [
+        "3.10 Interaction of Thermal Radiation",
+        "3.11 Perfect Blackbody",
+        "3.12 Emission of Heat Radiation"
+      ]
+    },
+    {
+      "id": "s05",
+      "title": "Kirchhoff's law, Wien's law & Stefan-Boltzmann law",
+      "page": 67,
+      "inShort": "Kirchhoff's law: at a given temperature, a = e (good absorbers are good emitters). Wien's displacement law: λ_m T = b = 2.897 × 10⁻³ m·K. Stefan-Boltzmann law: emissive power R = e σ T⁴, and net rate of heat loss dQ/dt = e σ A (T⁴ − T₀⁴).",
+      "sections": [
+        "3.13 Kirchhoff's Law of Heat Radiation",
+        "3.14 Spectral Distribution",
+        "3.14.1 Wien's Displacement Law",
+        "3.15 Stefan-Boltzmann Law"
+      ]
+    }
+  ],
+  "formulas": [
+    {
+      "stop": "s02",
+      "items": [
+        {
+          "n": "Pressure of ideal gas",
+          "f": "P = (1/3) ρ v_rms² = (1/3)(N m / V) v_rms²",
+          "s": "ρ is gas density; v_rms = √(3RT/M) = √(3P/ρ).",
+          "p": 58
+        },
+        {
+          "n": "Average KE per molecule",
+          "f": "E_avg = (3/2) k_B T",
+          "s": "Depends only on absolute temperature T; k_B = R/N_A.",
+          "p": 59
+        }
+      ]
+    },
+    {
+      "stop": "s03",
+      "items": [
+        {
+          "n": "Mayer's relation & γ",
+          "f": "C_p − C_v = R,  γ = C_p / C_v = 1 + 2/f",
+          "s": "Monoatomic γ = 5/3; rigid diatomic γ = 7/5.",
+          "p": 62
+        }
+      ]
+    },
+    {
+      "stop": "s04",
+      "items": [
+        {
+          "n": "Radiation coefficients",
+          "f": "a + r + t = 1",
+          "s": "Perfect blackbody: a = 1, r = 0, t = 0; Diathermanous: t ≈ 1.",
+          "p": 64
+        }
+      ]
+    },
+    {
+      "stop": "s05",
+      "items": [
+        {
+          "n": "Wien's displacement law",
+          "f": "λ_m · T = b = 2.897 × 10⁻³ m·K",
+          "s": "Peak wavelength shifts to shorter λ as T increases.",
+          "p": 68
+        },
+        {
+          "n": "Stefan-Boltzmann law",
+          "f": "dQ/dt = e σ A (T⁴ − T₀⁴)",
+          "s": "σ = 5.67 × 10⁻⁸ W·m⁻²·K⁻⁴; for blackbody e = 1.",
+          "p": 69
+        }
+      ]
+    }
+  ],
+  "board": [
+    {
+      "id": "p3-2025-Q1iii",
+      "stop": "s04",
+      "year": 2025,
+      "qno": "Q1(iii)",
+      "marks": 1,
+      "kind": "mcq",
+      "page": 64,
+      "text": "Which of the following materials belongs to diathermanous substance?",
+      "options": [
+        "wood",
+        "iron",
+        "glass",
+        "copper"
+      ],
+      "answerIndex": 2,
+      "answer": "(c) glass (note: quartz/dry air/rock salt are ideal diathermanous; among the given options glass transmits visible/near-IR radiation unlike wood, iron, copper).",
+      "points": [
+        {
+          "text": "Correct option: (c) glass",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "p3-2025-Q2viii",
+      "stop": "s02",
+      "year": 2025,
+      "qno": "Q2(viii)",
+      "marks": 1,
+      "kind": "numerical",
+      "page": 59,
+      "text": "Find kinetic energy of 1 litre of an ideal gas at S.T.P.",
+      "answer": "KE = (3/2) P V.\nAt STP, P = 1.013 × 10⁵ N/m², V = 1 litre = 10⁻³ m³.\nKE = 1.5 × 1.013 × 10⁵ × 10⁻³ = 151.95 J.",
+      "points": [
+        {
+          "text": "Formula KE = (3/2)PV and substitution giving 151.95 J",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "p3-2025-Q8",
+      "stop": "s05",
+      "year": 2025,
+      "qno": "Q8",
+      "marks": 2,
+      "kind": "numerical",
+      "page": 69,
+      "text": "Calculate the energy radiated in one minute by a perfectly black body of surface area 200 cm² when it is maintained at 127°C. (σ = 5.67 × 10⁻⁸ W/m²K⁴)",
+      "answer": "Given: A = 200 cm² = 2 × 10⁻² m², T = 127 + 273 = 400 K, t = 60 s, e = 1.\nQ = σ A T⁴ t = 5.67 × 10⁻⁸ × (2 × 10⁻²) × (400)⁴ × 60\n= 5.67 × 10⁻⁸ × 2 × 10⁻² × 2.56 × 10¹⁰ × 60 = 1741.8 J.",
+      "points": [
+        {
+          "text": "Formula Q = σ A T⁴ t with T = 400 K and A = 2 × 10⁻² m²",
+          "marks": 1
+        },
+        {
+          "text": "Correct calculation: Q = 1741.8 J",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "p3-2025-Q19",
+      "stop": "s05",
+      "year": 2025,
+      "qno": "Q19",
+      "marks": 3,
+      "kind": "proof",
+      "page": 67,
+      "text": "State and prove Kirchhoff's law of heat radiation.",
+      "answer": "Statement: At a given temperature, the ratio of emissive power to coefficient of absorption of a body is constant for all bodies and equals the emissive power of a perfectly black body at the same temperature (a = e).\nProof: Consider two identical bodies A (ordinary, emissive power R, absorptance a) and B (perfect blackbody, R_b, a_b = 1) suspended in an insulated enclosure at temperature T.\nAt thermal equilibrium, heat absorbed = heat emitted.\nFor A: a Q = R; For B: 1·Q = R_b.\nDividing: R / a = R_b ⇒ e = R / R_b = a. Hence proved.",
+      "points": [
+        {
+          "text": "Statement of Kirchhoff's law (R/a = R_b or a = e)",
+          "marks": 1
+        },
+        {
+          "text": "Experimental/enclosure setup with ordinary body A and blackbody B at thermal equilibrium",
+          "marks": 1
+        },
+        {
+          "text": "Derivation showing e = R/R_b = a",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "p3-2022-Q12",
+      "stop": "s05",
+      "year": 2022,
+      "qno": "Q12",
+      "marks": 2,
+      "kind": "numerical",
+      "page": 69,
+      "text": "Compare the rate of loss of heat from a metal sphere at 827°C with rate of loss of heat from the same at 427°C, if the temperature of surrounding is 27°C.",
+      "answer": "T₁ = 827 + 273 = 1100 K, T₂ = 427 + 273 = 700 K, T₀ = 27 + 273 = 300 K.\nRate of loss of heat R ∝ (T⁴ − T₀⁴).\nR₁/R₂ = (1100⁴ − 300⁴) / (700⁴ − 300⁴) = (11⁴ − 3⁴)/(7⁴ − 3⁴) = (14641 − 81)/(2401 − 81) = 14560 / 2320 = 6.276 : 1.",
+      "points": [
+        {
+          "text": "Formula R₁/R₂ = (T₁⁴ − T₀⁴)/(T₂⁴ − T₀⁴) with Kelvin conversion",
+          "marks": 1
+        },
+        {
+          "text": "Correct ratio: 6.276 : 1",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "p3-imp-s02-press",
+      "stop": "s02",
+      "source": "Important · Balbharati",
+      "marks": 3,
+      "kind": "derivation",
+      "page": 58,
+      "text": "Derive an expression for the pressure exerted by an ideal gas on the walls of a cubical container.",
+      "answer": "Consider N molecules each of mass m in a cube of side L (volume V = L³).\nFor a molecule with velocity v₁ = (v_x1, v_y1, v_z1), change in x-momentum on elastic collision = −2 m v_x1.\nTime between collisions with same face = 2L / v_x1.\nForce on face by one molecule = m v_x1² / L.\nSumming over N molecules and using v_rms² = v_x² + v_y² + v_z² = 3 v_x² (isotropy):\nF = (N m v_rms²) / (3 L).\nPressure P = F / L² = (1/3)(N m / V) v_rms² = (1/3) ρ v_rms².",
+      "points": [
+        {
+          "text": "Change in momentum Δp = 2mv_x and collision time Δt = 2L/v_x",
+          "marks": 1
+        },
+        {
+          "text": "Total force summing over N molecules using v_x² = v_rms²/3",
+          "marks": 1
+        },
+        {
+          "text": "Pressure P = (1/3)(Nm/V)v_rms² = (1/3)ρv_rms²",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "p3-imp-s03-mayer",
+      "stop": "s03",
+      "source": "Important · Balbharati",
+      "marks": 2,
+      "kind": "derivation",
+      "page": 62,
+      "text": "Derive Mayer's relation: C_p − C_v = R (for 1 mole of an ideal gas).",
+      "answer": "At constant volume: dQ_v = C_v dT = dU (since dW = 0).\nAt constant pressure: dQ_p = C_p dT = dU + P dV.\nSince U depends only on T for an ideal gas, dU = C_v dT.\nFrom PV = RT (1 mole), at constant P: P dV = R dT.\nSubstituting: C_p dT = C_v dT + R dT ⇒ C_p − C_v = R.",
+      "points": [
+        {
+          "text": "dQ_v = C_v dT = dU and dQ_p = C_p dT = dU + P dV",
+          "marks": 1
+        },
+        {
+          "text": "Using P dV = R dT to get C_p − C_v = R",
+          "marks": 1
+        }
+      ]
+    }
+  ]
+}

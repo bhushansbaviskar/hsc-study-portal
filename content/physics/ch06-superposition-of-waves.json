@@ -1,0 +1,238 @@
+{
+  "id": "ch06",
+  "file": "content/physics/ch06-superposition-of-waves.json",
+  "subject": "physics",
+  "book": "xii",
+  "title": "Superposition of Waves",
+  "lite": true,
+  "startPage": 131,
+  "endPage": 157,
+  "examMarks": 4,
+  "examMarksWithOptions": 6,
+  "stops": [
+    {
+      "id": "s01",
+      "title": "Progressive waves & reflection of waves",
+      "page": 131,
+      "inShort": "A simple harmonic progressive wave is y = A sin(ωt − kx). On reflection from a denser medium, a transverse wave undergoes a phase change of π (crest becomes trough); from a rarer medium, phase change is 0.",
+      "sections": [
+        "6.2 Progressive Wave",
+        "6.3 Reflection of Waves"
+      ]
+    },
+    {
+      "id": "s02",
+      "title": "Superposition of waves & stationary waves",
+      "page": 135,
+      "inShort": "Superposition: y = y₁ + y₂. Two identical progressive waves travelling in opposite directions interfere to form a stationary wave: y = 2A cos(kx) sin(ωt). Distance between two consecutive nodes (or antinodes) is λ/2; node to adjacent antinode is λ/4.",
+      "sections": [
+        "6.4 Superposition of Waves",
+        "6.5 Stationary Waves",
+        "6.5.4 Comparison of Progressive and Stationary Waves"
+      ]
+    },
+    {
+      "id": "s03",
+      "title": "Free, forced vibrations, harmonics & overtones",
+      "page": 141,
+      "inShort": "The lowest natural frequency is the fundamental frequency (1st harmonic). Integral multiples of the fundamental are harmonics; frequencies actually present above the fundamental are overtones.",
+      "sections": [
+        "6.6 Free and Forced Vibrations",
+        "6.7 Harmonics and Overtones"
+      ]
+    },
+    {
+      "id": "s04",
+      "title": "Vibrations of air column in pipes & end correction",
+      "page": 142,
+      "inShort": "Pipe closed at one end: only odd harmonics (n, 3n, 5n...), n = v/(4L). Pipe open at both ends: all harmonics (n, 2n, 3n...), n = v/(2L). End correction e = 0.3 d (or from two lengths).",
+      "sections": [
+        "6.7.1 End Correction",
+        "6.7.2 Closed Pipe",
+        "6.7.3 Open Pipe",
+        "6.7.4 Practical Determination of End Correction"
+      ]
+    },
+    {
+      "id": "s05",
+      "title": "Vibrations of a stretched string & sonometer",
+      "page": 146,
+      "inShort": "Fundamental frequency of stretched string: n = (1/2l) √(T/m). Laws of vibrating string: n ∝ 1/l, n ∝ √T, n ∝ 1/√m. Verified using a sonometer.",
+      "sections": [
+        "6.7.5 Vibrations in a String",
+        "6.7.6 Laws of a Vibrating String",
+        "6.8 Sonometer"
+      ]
+    },
+    {
+      "id": "s06",
+      "title": "Beats & characteristics of sound",
+      "page": 150,
+      "inShort": "Beats are periodic waxing and waning of sound due to superposition of two waves of slightly different frequencies: beat frequency N = |n₁ − n₂|. Used in tuning instruments and Doppler radar.",
+      "sections": [
+        "6.9 Beats",
+        "6.10 Characteristics of Sound",
+        "6.11 Musical Instruments"
+      ]
+    }
+  ],
+  "formulas": [
+    {
+      "stop": "s02",
+      "items": [
+        {
+          "n": "Stationary wave equation",
+          "f": "y = 2A cos(kx) sin(ωt)",
+          "s": "Nodes: cos(kx) = 0 (spacing λ/2); Antinodes: |cos(kx)| = 1.",
+          "p": 138
+        }
+      ]
+    },
+    {
+      "stop": "s04",
+      "items": [
+        {
+          "n": "Closed vs Open pipe fundamental",
+          "f": "n_closed = v / (4L),  n_open = v / (2L)",
+          "s": "Corrected length L = l + e (closed) and L = l + 2e (open).",
+          "p": 143
+        }
+      ]
+    },
+    {
+      "stop": "s05",
+      "items": [
+        {
+          "n": "Law of vibrating string",
+          "f": "n = (1 / 2l) √(T / m)",
+          "s": "m is linear mass density (mass per unit length).",
+          "p": 147
+        }
+      ]
+    },
+    {
+      "stop": "s06",
+      "items": [
+        {
+          "n": "Beat frequency",
+          "f": "N = |n₁ − n₂|,  T_beat = 1 / |n₁ − n₂|",
+          "s": "Two successive maxima or minima are separated by T_beat.",
+          "p": 151
+        }
+      ]
+    }
+  ],
+  "board": [
+    {
+      "id": "p6-2025-Q1ix",
+      "stop": "s02",
+      "year": 2025,
+      "qno": "Q1(ix)",
+      "marks": 1,
+      "kind": "mcq",
+      "page": 138,
+      "text": "A string of length 2 m is vibrating with 2 loops. The distance between its node and adjacent antinode is ____.",
+      "options": [
+        "0.5 m",
+        "1.0 m",
+        "1.5 m",
+        "2.0 m"
+      ],
+      "answerIndex": 0,
+      "answer": "(a) 0.5 m (2 loops = λ = 2 m, so node to adjacent antinode = λ/4 = 0.5 m).",
+      "points": [
+        {
+          "text": "Correct option: (a) 0.5 m",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "p6-2025-Q3",
+      "stop": "s03",
+      "year": 2025,
+      "qno": "Q3",
+      "marks": 2,
+      "kind": "theory",
+      "page": 141,
+      "text": "Explain harmonics and overtones.",
+      "answer": "Harmonics: Integral multiples of the fundamental frequency (n, 2n, 3n, ...) are called harmonics. The fundamental frequency is the first harmonic.\nOvertones: The frequencies higher than the fundamental frequency which are actually present in a given sound are called overtones. The first higher frequency present is the first overtone.",
+      "points": [
+        {
+          "text": "Explanation of harmonics with fundamental = 1st harmonic",
+          "marks": 1
+        },
+        {
+          "text": "Explanation of overtones (actual frequencies above fundamental)",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "p6-2025-Q20",
+      "stop": "s04",
+      "year": 2025,
+      "qno": "Q20",
+      "marks": 3,
+      "kind": "derivation",
+      "page": 145,
+      "text": "Obtain an expression for practical determination of end correction: (i) for a pipe open at both ends and (ii) for a pipe closed at one end.",
+      "answer": "(i) Open pipe: v = 2 n₁ (l₁ + 2e) = 2 n₂ (l₂ + 2e) ⇒ n₁ l₁ + 2 n₁ e = n₂ l₂ + 2 n₂ e ⇒ e = (n₂ l₂ − n₁ l₁) / [2(n₁ − n₂)].\n(ii) Closed pipe: v = 4 n₁ (l₁ + e) = 4 n₂ (l₂ + e) ⇒ n₁ l₁ + n₁ e = n₂ l₂ + n₂ e ⇒ e = (n₂ l₂ − n₁ l₁) / (n₁ − n₂).",
+      "points": [
+        {
+          "text": "End correction formula for open pipe: e = (n₂l₂ − n₁l₁)/[2(n₁ − n₂)]",
+          "marks": 1.5
+        },
+        {
+          "text": "End correction formula for closed pipe: e = (n₂l₂ − n₁l₁)/(n₁ − n₂)",
+          "marks": 1.5
+        }
+      ]
+    },
+    {
+      "id": "p6-2022-Q11",
+      "stop": "s03",
+      "year": 2022,
+      "qno": "Q11",
+      "marks": 2,
+      "kind": "distinguish",
+      "page": 141,
+      "text": "Distinguish between free vibrations and forced vibrations (two points).",
+      "answer": "1. Free vibrations occur when a body is displaced and left to vibrate on its own without any external periodic force; forced vibrations occur under the action of an external periodic force.\n2. Frequency of free vibrations is the natural frequency of the body; frequency of forced vibrations equals the frequency of the external periodic force.",
+      "points": [
+        {
+          "text": "Presence/absence of external periodic force",
+          "marks": 1
+        },
+        {
+          "text": "Natural frequency vs driving frequency",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "p6-imp-s06-beats",
+      "stop": "s06",
+      "source": "Important · Balbharati",
+      "marks": 3,
+      "kind": "derivation",
+      "page": 151,
+      "text": "Explain the analytical method to determine beat frequency.",
+      "answer": "Let two sound waves of equal amplitude A and slightly different frequencies n₁ and n₂ arrive at a point: y₁ = A sin(2π n₁ t), y₂ = A sin(2π n₂ t).\nResultant y = y₁ + y₂ = 2A cos[π(n₁ − n₂)t] sin[π(n₁ + n₂)t] = R sin[π(n₁ + n₂)t].\nIntensity is maximum when R = ±2A, i.e. cos[π(n₁−n₂)t] = ±1 ⇒ π(n₁−n₂)t = 0, π, 2π...\nTime between two consecutive maxima = 1/|n₁ − n₂|. Hence beat frequency N = |n₁ − n₂|.",
+      "points": [
+        {
+          "text": "Superposition of two waves to get R = 2A cos[π(n₁−n₂)t]",
+          "marks": 1
+        },
+        {
+          "text": "Condition for maxima (or minima) and time interval",
+          "marks": 1
+        },
+        {
+          "text": "Beat frequency N = |n₁ − n₂|",
+          "marks": 1
+        }
+      ]
+    }
+  ]
+}

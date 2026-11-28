@@ -102,7 +102,11 @@
           "estStops": 14,
           "marks": 5,
           "marksWithOptions": 7,
-          "prefix": "p3-"
+          "prefix": "p3-",
+          "file": "content/physics/ch03-kinetic-theory-of-gases-and-radiation.json",
+          "lite": true,
+          "stopCount": 5,
+          "boardCount": 7
         },
         {
           "id": "ch04",
@@ -111,7 +115,11 @@
           "estStops": 14,
           "marks": 5,
           "marksWithOptions": 7,
-          "prefix": "p4-"
+          "prefix": "p4-",
+          "file": "content/physics/ch04-thermodynamics.json",
+          "lite": true,
+          "stopCount": 6,
+          "boardCount": 6
         },
         {
           "id": "ch05",
@@ -120,7 +128,11 @@
           "estStops": 14,
           "marks": 4,
           "marksWithOptions": 5,
-          "prefix": "p5-"
+          "prefix": "p5-",
+          "file": "content/physics/ch05-oscillations.json",
+          "lite": true,
+          "stopCount": 5,
+          "boardCount": 5
         },
         {
           "id": "ch06",
@@ -129,7 +141,11 @@
           "estStops": 14,
           "marks": 4,
           "marksWithOptions": 6,
-          "prefix": "p6-"
+          "prefix": "p6-",
+          "file": "content/physics/ch06-superposition-of-waves.json",
+          "lite": true,
+          "stopCount": 6,
+          "boardCount": 5
         },
         {
           "id": "ch07",
@@ -138,7 +154,11 @@
           "estStops": 14,
           "marks": 5,
           "marksWithOptions": 7,
-          "prefix": "p7-"
+          "prefix": "p7-",
+          "file": "content/physics/ch07-wave-optics.json",
+          "lite": true,
+          "stopCount": 5,
+          "boardCount": 4
         },
         {
           "id": "ch08",
@@ -147,7 +167,11 @@
           "estStops": 14,
           "marks": 4,
           "marksWithOptions": 6,
-          "prefix": "p8-"
+          "prefix": "p8-",
+          "file": "content/physics/ch08-electrostatics.json",
+          "lite": true,
+          "stopCount": 5,
+          "boardCount": 4
         },
         {
           "id": "ch09",
@@ -156,7 +180,11 @@
           "estStops": 14,
           "marks": 4,
           "marksWithOptions": 6,
-          "prefix": "p9-"
+          "prefix": "p9-",
+          "file": "content/physics/ch09-current-electricity.json",
+          "lite": true,
+          "stopCount": 4,
+          "boardCount": 5
         },
         {
           "id": "ch10",
@@ -165,7 +193,11 @@
           "estStops": 14,
           "marks": 4,
           "marksWithOptions": 6,
-          "prefix": "p10-"
+          "prefix": "p10-",
+          "file": "content/physics/ch10-magnetic-fields-due-to-electric-current.json",
+          "lite": true,
+          "stopCount": 4,
+          "boardCount": 4
         },
         {
           "id": "ch11",

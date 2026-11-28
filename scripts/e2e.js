@@ -152,10 +152,10 @@ async function runSuiteForViewport(browser, baseUrl, vp) {
   await page.goto(baseUrl + "/#/formulas", { waitUntil: "networkidle0" });
   await page.waitForSelector('[data-act="formula-ch"][data-ch="all"]');
   await page.click('[data-act="formula-ch"][data-ch="all"]');
-  await page.waitForFunction(() => document.querySelectorAll(".fchap").length === 5);
+  await page.waitForFunction(() => document.querySelectorAll(".fchap").length >= 5);
   await checkLayout(page, "Formulas all chapters");
   await snap(page, vp, "formulas-all");
-  console.log("PASS: #/formulas All chapters lazy-loads all 5 live chapters");
+  console.log("PASS: #/formulas All chapters lazy-loads all live chapters");
 
   // 3. Direct deep-link #/maths2/ch01/s03/quest on cold load
   const page2 = await ctx.newPage();
@@ -246,12 +246,16 @@ async function runSuiteForViewport(browser, baseUrl, vp) {
   }));
   assert.ok(hiddenCheck.hasFn && hiddenCheck.hasCover, "Formula quiz must hide formula while keeping name visible");
   await snap(page, vp, "formula-quiz");
+  await page.$eval('[data-act="formula-reveal"]', (el) => el.scrollIntoView({ block: "center" }));
   await page.click('[data-act="formula-reveal"]');
   await page.waitForSelector('[data-act="formula-mark"][data-ok="0"]');
+  await page.$eval('[data-act="formula-mark"][data-ok="0"]', (el) => el.scrollIntoView({ block: "center" }));
   await page.click('[data-act="formula-mark"][data-ok="0"]');
   await page.waitForSelector('[data-act="formula-miss"]');
+  await page.$eval('[data-act="formula-miss"]', (el) => el.scrollIntoView({ block: "center" }));
   await page.click('[data-act="formula-miss"]');
   assert.strictEqual(await page.$$eval(".frm", (els) => els.length), 1, "Missed only filter must show 1 missed formula");
+  await page.$eval('[data-act="formula-quiz"]', (el) => el.scrollIntoView({ block: "center" }));
   await page.click('[data-act="formula-quiz"]'); // exit quiz
   console.log("PASS: P2 Active Formula Recall mode");
 

@@ -1,0 +1,239 @@
+{
+  "id": "ch05",
+  "file": "content/physics/ch05-oscillations.json",
+  "subject": "physics",
+  "book": "xii",
+  "title": "Oscillations",
+  "lite": true,
+  "startPage": 109,
+  "endPage": 130,
+  "examMarks": 4,
+  "examMarksWithOptions": 5,
+  "stops": [
+    {
+      "id": "s01",
+      "title": "Linear S.H.M. and differential equation",
+      "page": 109,
+      "inShort": "In linear S.H.M., restoring force F = −kx is directly proportional to displacement x from mean position and directed towards it. Differential equation: d²x/dt² + ω²x = 0 where ω² = k/m.",
+      "sections": [
+        "5.2 Periodic Motion",
+        "5.3 Linear S.H.M.",
+        "5.4 Differential Equation of S.H.M."
+      ]
+    },
+    {
+      "id": "s02",
+      "title": "Displacement, velocity, acceleration & phase",
+      "page": 112,
+      "inShort": "x = A sin(ωt + φ), v = ±ω√(A² − x²), a = −ω²x. Velocity is maximum (Aω) at mean position; acceleration is maximum (Aω²) at extreme positions.",
+      "sections": [
+        "5.5 Acceleration, Velocity and Displacement",
+        "5.6 Amplitude, Period and Frequency",
+        "5.7 Reference Circle Method",
+        "5.8 Phase in S.H.M."
+      ]
+    },
+    {
+      "id": "s03",
+      "title": "Energy in S.H.M. & composition of two S.H.M.s",
+      "page": 118,
+      "inShort": "KE = ½ m ω²(A² − x²), PE = ½ m ω² x², Total energy E = ½ m ω² A² = ½ k A² (constant). Resultant amplitude of two collinear S.H.M.s of same period: R = √(A₁² + A₂² + 2A₁A₂ cos(φ₁−φ₂)).",
+      "sections": [
+        "5.9 Graphical Representation",
+        "5.10 Composition of Two S.H.M.s",
+        "5.11 Energy of a Particle Performing S.H.M."
+      ]
+    },
+    {
+      "id": "s04",
+      "title": "Simple pendulum & seconds pendulum",
+      "page": 122,
+      "inShort": "Period of simple pendulum T = 2π √(L/g) for small amplitude. A seconds pendulum has T = 2 s (length ≈ 0.994 m at g = 9.8 m/s²).",
+      "sections": [
+        "5.12 Simple Pendulum",
+        "5.12.1 Second's Pendulum"
+      ]
+    },
+    {
+      "id": "s05",
+      "title": "Angular S.H.M., damped & forced oscillations",
+      "page": 125,
+      "inShort": "Period of bar magnet in uniform magnetic field: T = 2π √(I / μB). Damped oscillations decay exponentially due to resistive forces. Resonance occurs when driving frequency equals natural frequency.",
+      "sections": [
+        "5.13 Angular S.H.M.",
+        "5.14 Damped Oscillations",
+        "5.15 Free, Forced Oscillations and Resonance"
+      ]
+    }
+  ],
+  "formulas": [
+    {
+      "stop": "s01",
+      "items": [
+        {
+          "n": "Differential equation of S.H.M.",
+          "f": "d²x/dt² + ω²x = 0,  ω = √(k/m) = 2π/T",
+          "s": "Restoring force F = −kx.",
+          "p": 111
+        }
+      ]
+    },
+    {
+      "stop": "s02",
+      "items": [
+        {
+          "n": "Velocity & acceleration in S.H.M.",
+          "f": "v = ±ω√(A² − x²),  a = −ω²x",
+          "s": "v_max = Aω (at x = 0); |a|_max = Aω² (at x = ±A).",
+          "p": 113
+        }
+      ]
+    },
+    {
+      "stop": "s03",
+      "items": [
+        {
+          "n": "Total energy of S.H.M.",
+          "f": "E = KE + PE = (1/2) m ω² A² = (1/2) k A²",
+          "s": "KE = PE at x = ±A/√2.",
+          "p": 121
+        }
+      ]
+    },
+    {
+      "stop": "s04",
+      "items": [
+        {
+          "n": "Period of simple pendulum",
+          "f": "T = 2π √(L / g)",
+          "s": "Seconds pendulum: T = 2 s.",
+          "p": 123
+        }
+      ]
+    },
+    {
+      "stop": "s05",
+      "items": [
+        {
+          "n": "Bar magnet in uniform B-field",
+          "f": "T = 2π √(I / (μ B))",
+          "s": "I is moment of inertia; μ is magnetic dipole moment.",
+          "p": 126
+        }
+      ]
+    }
+  ],
+  "board": [
+    {
+      "id": "p5-2025-Q13",
+      "stop": "s01",
+      "year": 2025,
+      "qno": "Q13",
+      "marks": 2,
+      "kind": "numerical",
+      "page": 114,
+      "text": "A body of mass 0.8 kg performs linear S.H.M. It experiences a restoring force of 0.4 N, when its displacement from mean position is 4 cm. Determine Force constant and Period of S.H.M.",
+      "answer": "Given: m = 0.8 kg, F = 0.4 N, x = 4 cm = 0.04 m.\nForce constant k = F / x = 0.4 / 0.04 = 10 N/m.\nPeriod T = 2π √(m/k) = 2 × 3.142 × √(0.8 / 10) = 6.284 × √0.08 = 6.284 × 0.2828 = 1.777 s.",
+      "points": [
+        {
+          "text": "Force constant k = F/x = 10 N/m",
+          "marks": 1
+        },
+        {
+          "text": "Period T = 2π√(m/k) = 1.777 s",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "p5-2025-Q15",
+      "stop": "s05",
+      "year": 2025,
+      "qno": "Q15",
+      "marks": 3,
+      "kind": "derivation",
+      "page": 126,
+      "text": "Obtain an expression for the period of a bar magnet vibrating in a uniform magnetic field, performing S.H.M.",
+      "answer": "When a bar magnet of magnetic moment μ is deflected by small angle θ in uniform magnetic field B, restoring torque is:\nτ = −μ B sin θ ≈ −μ B θ (for small θ).\nAlso τ = I α = I (d²θ/dt²).\nThus I (d²θ/dt²) + μ B θ = 0 ⇒ d²θ/dt² + (μB/I) θ = 0.\nComparing with d²θ/dt² + ω²θ = 0, ω = √(μB/I).\nPeriod T = 2π/ω = 2π √(I / μB).",
+      "points": [
+        {
+          "text": "Restoring torque τ = −μB sin θ ≈ −μB θ",
+          "marks": 1
+        },
+        {
+          "text": "Angular S.H.M. equation d²θ/dt² + (μB/I)θ = 0",
+          "marks": 1
+        },
+        {
+          "text": "Period T = 2π √(I / μB)",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "p5-2022-Q10",
+      "stop": "s05",
+      "year": 2022,
+      "qno": "Q10",
+      "marks": 2,
+      "kind": "numerical",
+      "page": 126,
+      "text": "A bar magnet of mass 120 g in the form of a rectangular parallelepiped has dimensions l = 40 mm, b = 10 mm and h = 80 mm with its dimension 'h' vertical; the magnet performs angular oscillations in the plane of the magnetic field with period π seconds. If the magnetic moment is 3.4 A·m², determine the influencing magnetic field.",
+      "answer": "m = 0.12 kg, l = 0.04 m, b = 0.01 m, T = π s, μ = 3.4 A·m².\nI = m(l² + b²)/12 = 0.12 × (0.04² + 0.01²)/12 = 0.01 × 0.0017 = 1.7 × 10⁻⁵ kg·m².\nT = 2π √(I / μB) ⇒ B = 4π² I / (μ T²) = 4π² × 1.7 × 10⁻⁵ / (3.4 × π²) = 2 × 10⁻⁵ T.",
+      "points": [
+        {
+          "text": "Moment of inertia I = m(l² + b²)/12 = 1.7 × 10⁻⁵ kg·m²",
+          "marks": 1
+        },
+        {
+          "text": "Magnetic field B = 4π²I/(μT²) = 2 × 10⁻⁵ T",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "p5-imp-s01-diff",
+      "stop": "s01",
+      "source": "Important · Balbharati",
+      "marks": 2,
+      "kind": "derivation",
+      "page": 111,
+      "text": "Define linear S.H.M. and obtain its differential equation.",
+      "answer": "Linear S.H.M. is the linear periodic motion of a body in which the restoring force (or acceleration) is always directed towards the mean position and its magnitude is directly proportional to the displacement from the mean position.\nF = −kx. By Newton's 2nd law, m(d²x/dt²) = −kx ⇒ d²x/dt² + (k/m)x = 0.\nPutting k/m = ω², we get d²x/dt² + ω²x = 0.",
+      "points": [
+        {
+          "text": "Definition of linear S.H.M.",
+          "marks": 1
+        },
+        {
+          "text": "Differential equation d²x/dt² + ω²x = 0",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "p5-imp-s04-pend",
+      "stop": "s04",
+      "source": "Important · Balbharati",
+      "marks": 3,
+      "kind": "derivation",
+      "page": 123,
+      "text": "Derive an expression for the period of a simple pendulum.",
+      "answer": "For a bob of mass m suspended by a string of length L deflected by small angle θ:\nRestoring force F = −mg sin θ ≈ −mg θ = −mg (x/L).\nAcceleration a = F/m = −(g/L) x = −ω² x.\nThus ω = √(g/L).\nPeriod T = 2π/ω = 2π √(L/g).",
+      "points": [
+        {
+          "text": "Restoring force F = −mg sin θ ≈ −mg(x/L)",
+          "marks": 1
+        },
+        {
+          "text": "Showing a ∝ −x with ω² = g/L",
+          "marks": 1
+        },
+        {
+          "text": "Period T = 2π √(L/g)",
+          "marks": 1
+        }
+      ]
+    }
+  ]
+}

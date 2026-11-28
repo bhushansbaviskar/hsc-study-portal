@@ -1,0 +1,205 @@
+{
+  "id": "ch09",
+  "file": "content/physics/ch09-current-electricity.json",
+  "subject": "physics",
+  "book": "xii",
+  "title": "Current Electricity",
+  "lite": true,
+  "startPage": 214,
+  "endPage": 229,
+  "examMarks": 4,
+  "examMarksWithOptions": 6,
+  "stops": [
+    {
+      "id": "s01",
+      "title": "Kirchhoff's laws of electrical networks",
+      "page": 214,
+      "inShort": "KCL (Junction law): ∑I = 0 (conservation of charge). KVL (Loop law): ∑IR + ∑E = 0 around any closed loop (conservation of energy).",
+      "sections": [
+        "9.2 Kirchhoff's Laws",
+        "9.2.1 Current Law",
+        "9.2.2 Voltage Law"
+      ]
+    },
+    {
+      "id": "s02",
+      "title": "Wheatstone bridge & Metre bridge",
+      "page": 217,
+      "inShort": "Balanced Wheatstone bridge: P/Q = R/S (no current through galvanometer). Metre bridge uses a 1 m uniform wire to find unknown resistance X = R (l_X / l_R).",
+      "sections": [
+        "9.3 Wheatstone Bridge",
+        "9.3.1 Metre Bridge"
+      ]
+    },
+    {
+      "id": "s03",
+      "title": "Potentiometer principle & applications",
+      "page": 220,
+      "inShort": "Potential drop across uniform wire carrying steady current is proportional to length: V = K l (K = potential gradient). Used to compare emfs (E₁/E₂ = l₁/l₂) and find internal resistance r = R(l₁/l₂ − 1). Draws zero current at null point.",
+      "sections": [
+        "9.4 Potentiometer",
+        "9.4.2 Uses of Potentiometer",
+        "9.4.3 Advantages over Voltmeter"
+      ]
+    },
+    {
+      "id": "s04",
+      "title": "Galvanometer as ammeter & voltmeter",
+      "page": 224,
+      "inShort": "To convert MCG (resistance G, full-scale I_g) into ammeter of range I: connect low shunt S = I_g G / (I − I_g) in parallel. To convert into voltmeter of range V: connect high resistance X = V/I_g − G in series.",
+      "sections": [
+        "9.5 Galvanometer",
+        "9.5.1 Galvanometer as an Ammeter",
+        "9.5.2 Galvanometer as a Voltmeter"
+      ]
+    }
+  ],
+  "formulas": [
+    {
+      "stop": "s02",
+      "items": [
+        {
+          "n": "Wheatstone bridge balance",
+          "f": "P / Q = R / S",
+          "s": "Metre bridge: X = R · l_X / (100 − l_X).",
+          "p": 218
+        }
+      ]
+    },
+    {
+      "stop": "s03",
+      "items": [
+        {
+          "n": "Potentiometer uses",
+          "f": "E₁/E₂ = l₁/l₂,  r = R (l₁/l₂ − 1)",
+          "s": "Potential gradient K = V / L.",
+          "p": 221
+        }
+      ]
+    },
+    {
+      "stop": "s04",
+      "items": [
+        {
+          "n": "Ammeter shunt & Voltmeter series R",
+          "f": "S = I_g G / (I − I_g),  X = (V / I_g) − G",
+          "s": "Ideal ammeter R = 0; ideal voltmeter R = ∞.",
+          "p": 225
+        }
+      ]
+    }
+  ],
+  "board": [
+    {
+      "id": "p9-2025-Q1v",
+      "stop": "s03",
+      "year": 2025,
+      "qno": "Q1(v)",
+      "marks": 1,
+      "kind": "mcq",
+      "page": 222,
+      "text": "Which of the following equations gives correct expression for the internal resistance of a cell by using potentiometer?",
+      "options": [
+        "r = R(V/E − 1)",
+        "r = R(1 − l₁/l₂)",
+        "r = R(1 − l₂/l₁)",
+        "r = R(l₁/l₂ − 1)"
+      ],
+      "answerIndex": 3,
+      "answer": "(d) r = R(l₁/l₂ − 1).",
+      "points": [
+        {
+          "text": "Correct option: (d) r = R(l₁/l₂ − 1)",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "p9-2025-Q11",
+      "stop": "s03",
+      "year": 2025,
+      "qno": "Q11",
+      "marks": 2,
+      "kind": "theory",
+      "page": 223,
+      "text": "State the advantages of a potentiometer over a voltmeter.",
+      "answer": "1. Potentiometer is more sensitive than a voltmeter and can measure very small potential differences accurately.\n2. At the null point, potentiometer draws no current from the cell, so it measures the true emf (whereas a voltmeter draws current and measures terminal p.d.).\n3. Accuracy can be increased simply by increasing the length of the wire.",
+      "points": [
+        {
+          "text": "Draws zero current at null point (measures true emf)",
+          "marks": 1
+        },
+        {
+          "text": "Higher sensitivity and adjustable accuracy",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "p9-2025-Q24",
+      "stop": "s04",
+      "year": 2025,
+      "qno": "Q24",
+      "marks": 3,
+      "kind": "numerical",
+      "page": 225,
+      "text": "A galvanometer has a resistance of 50 Ω and a current of 2 mA is needed for its full scale deflection. Calculate resistance required to convert it into (i) an ammeter of 0.5 A range and (ii) a voltmeter of 10 V range.",
+      "answer": "Given: G = 50 Ω, I_g = 2 mA = 2 × 10⁻³ A.\n(i) Ammeter (I = 0.5 A): S = I_g G / (I − I_g) = (2 × 10⁻³ × 50) / (0.5 − 0.002) = 0.1 / 0.498 ≈ 0.2008 Ω (connected in parallel).\n(ii) Voltmeter (V = 10 V): X = V/I_g − G = (10 / 2×10⁻³) − 50 = 5000 − 50 = 4950 Ω (connected in series).",
+      "points": [
+        {
+          "text": "Shunt S = I_g G/(I − I_g) = 0.201 Ω in parallel",
+          "marks": 1.5
+        },
+        {
+          "text": "Series resistance X = V/I_g − G = 4950 Ω in series",
+          "marks": 1.5
+        }
+      ]
+    },
+    {
+      "id": "p9-2022-Q8",
+      "stop": "s04",
+      "year": 2022,
+      "qno": "Q8",
+      "marks": 2,
+      "kind": "theory",
+      "page": 225,
+      "text": "How will you convert a moving coil galvanometer into an ammeter?",
+      "answer": "A moving coil galvanometer is converted into an ammeter of range I by connecting a very small resistance called shunt (S) in parallel with the galvanometer coil.\nSince G and S are in parallel, I_g G = (I − I_g) S ⇒ S = I_g G / (I − I_g).",
+      "points": [
+        {
+          "text": "Connect low resistance (shunt S) in parallel with galvanometer",
+          "marks": 1
+        },
+        {
+          "text": "Formula S = I_g G / (I − I_g)",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "p9-imp-s02-wheat",
+      "stop": "s02",
+      "source": "Important · Balbharati",
+      "marks": 3,
+      "kind": "derivation",
+      "page": 217,
+      "text": "Obtain the balancing condition for a Wheatstone bridge using Kirchhoff's laws.",
+      "answer": "Four resistors P, Q, R, S form a bridge ABCD with galvanometer G between B and D.\nAt balance, I_g = 0, so I₁ = I₃ and I₂ = I₄.\nApplying KVL to loop ABDA: −I₁P + I₂R = 0 ⇒ I₁P = I₂R.\nApplying KVL to loop BCDB: −I₁Q + I₂S = 0 ⇒ I₁Q = I₂S.\nDividing the two equations: P/Q = R/S.",
+      "points": [
+        {
+          "text": "At balance I_g = 0 so I₁ = I₃ and I₂ = I₄",
+          "marks": 1
+        },
+        {
+          "text": "KVL equations for loops ABDA and BCDB",
+          "marks": 1
+        },
+        {
+          "text": "Dividing to get P/Q = R/S",
+          "marks": 1
+        }
+      ]
+    }
+  ]
+}

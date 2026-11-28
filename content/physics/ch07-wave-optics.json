@@ -1,0 +1,212 @@
+{
+  "id": "ch07",
+  "file": "content/physics/ch07-wave-optics.json",
+  "subject": "physics",
+  "book": "xii",
+  "title": "Wave Optics",
+  "lite": true,
+  "startPage": 158,
+  "endPage": 185,
+  "examMarks": 5,
+  "examMarksWithOptions": 7,
+  "stops": [
+    {
+      "id": "s01",
+      "title": "Huygens' principle, reflection & refraction",
+      "page": 158,
+      "inShort": "Every point on a wavefront acts as a secondary source emitting secondary wavelets. The forward envelope gives the new wavefront. Used to prove laws of reflection (i = r) and Snell's law (sin i / sin r = v₁/v₂ = n₂/n₁).",
+      "sections": [
+        "7.2 Nature of Light",
+        "7.4 Huygens' Theory",
+        "7.5 Reflection",
+        "7.6 Refraction"
+      ]
+    },
+    {
+      "id": "s02",
+      "title": "Polarization & Brewster's law",
+      "page": 165,
+      "inShort": "Polarization proves the transverse nature of light. Malus' law: I = I₀ cos²θ. Brewster's law: at polarizing angle θ_B, reflected and refracted rays are perpendicular and tan θ_B = n₂/n₁.",
+      "sections": [
+        "7.7 Polarization",
+        "7.7.1 Brewster's Law",
+        "7.7.2 Polarization by Scattering"
+      ]
+    },
+    {
+      "id": "s03",
+      "title": "Interference & Young's double slit experiment (YDSE)",
+      "page": 168,
+      "inShort": "Constructive interference: path difference Δx = nλ; destructive: Δx = (2n−1)λ/2. Fringe width β = λD/d (constant for all bright and dark fringes). Coherent sources have constant phase difference.",
+      "sections": [
+        "7.8 Interference",
+        "7.8.2 Young's Double Slit Experiment",
+        "7.8.3 Conditions for Steady Interference"
+      ]
+    },
+    {
+      "id": "s04",
+      "title": "Diffraction of light at a single slit",
+      "page": 175,
+      "inShort": "Bending of light around edges of an obstacle/aperture. For Fraunhofer single-slit diffraction (slit width a), minima occur at a sin θ = nλ; width of central maximum = 2λD/a.",
+      "sections": [
+        "7.9 Diffraction of Light",
+        "7.9.3 Fraunhofer Diffraction at a Single Slit",
+        "7.9.4 Interference vs Diffraction"
+      ]
+    },
+    {
+      "id": "s05",
+      "title": "Resolving power of microscope & telescope",
+      "page": 180,
+      "inShort": "Rayleigh's criterion: two point sources are just resolved when the central maximum of one falls on the first minimum of the other. Microscope RP = 1/d_min = 2n sin θ / λ; Telescope RP = 1/dθ = D / (1.22 λ).",
+      "sections": [
+        "7.10 Resolving Power",
+        "7.10.2 Microscope",
+        "7.10.3 Telescope"
+      ]
+    }
+  ],
+  "formulas": [
+    {
+      "stop": "s02",
+      "items": [
+        {
+          "n": "Brewster's law & Malus' law",
+          "f": "tan θ_B = n₂ / n₁,  I = I₀ cos²θ",
+          "s": "At θ_B, reflected ray is completely plane polarized.",
+          "p": 166
+        }
+      ]
+    },
+    {
+      "stop": "s03",
+      "items": [
+        {
+          "n": "YDSE fringe width",
+          "f": "β = λ D / d",
+          "s": "Path difference at distance y from centre: Δx = y d / D.",
+          "p": 171
+        }
+      ]
+    },
+    {
+      "stop": "s04",
+      "items": [
+        {
+          "n": "Single slit diffraction",
+          "f": "a sin θ_n = n λ (minima),  W_central = 2 λ D / a",
+          "s": "Central maximum is twice as wide as secondary maxima.",
+          "p": 177
+        }
+      ]
+    },
+    {
+      "stop": "s05",
+      "items": [
+        {
+          "n": "Resolving power",
+          "f": "RP_micro = (2 n sin θ)/λ,  RP_tele = D / (1.22 λ)",
+          "s": "Larger aperture D or smaller λ increases resolving power.",
+          "p": 181
+        }
+      ]
+    }
+  ],
+  "board": [
+    {
+      "id": "p7-2025-Q17",
+      "stop": "s02",
+      "year": 2025,
+      "qno": "Q17",
+      "marks": 3,
+      "kind": "derivation",
+      "page": 166,
+      "text": "What is Brewster's law? Derive the formula for Brewster's angle.",
+      "answer": "Brewster's law: The tangent of the polarizing angle (Brewster's angle θ_B) for a transparent medium is equal to its refractive index (tan θ_B = n₂/n₁).\nDerivation: When unpolarized light is incident at θ_B, the reflected and refracted rays are perpendicular to each other: θ_B + r + 90° = 180° ⇒ r = 90° − θ_B.\nBy Snell's law: n₁ sin θ_B = n₂ sin r = n₂ sin(90° − θ_B) = n₂ cos θ_B.\nTherefore tan θ_B = n₂ / n₁.",
+      "points": [
+        {
+          "text": "Statement of Brewster's law",
+          "marks": 1
+        },
+        {
+          "text": "Condition θ_B + r = 90° between reflected and refracted rays",
+          "marks": 1
+        },
+        {
+          "text": "Snell's law derivation giving tan θ_B = n₂/n₁",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "p7-2022-Q15",
+      "stop": "s01",
+      "year": 2022,
+      "qno": "Q15",
+      "marks": 3,
+      "kind": "derivation",
+      "page": 162,
+      "text": "Derive laws of reflection of light using Huygens' principle.",
+      "answer": "Consider a plane wavefront AB incident at angle i on a plane reflecting surface MN. As A touches MN, secondary wavelet from A spreads in the same medium with speed c while B reaches C in time t (BC = ct).\nDraw a hemisphere of radius AE = ct from A and tangent plane EC.\nIn right ΔABC and ΔAEC: AC is common, AE = BC = ct, ∠ABC = ∠AEC = 90°.\nHence ΔABC ≅ ΔAEC ⇒ ∠BAC = ∠ECA, i.e., angle of incidence i = angle of reflection r. Incident ray, normal, and reflected ray lie in the same plane.",
+      "points": [
+        {
+          "text": "Wavefront diagram and secondary wavelet radius AE = BC = ct",
+          "marks": 1
+        },
+        {
+          "text": "Congruence of ΔABC and ΔAEC",
+          "marks": 1
+        },
+        {
+          "text": "Conclusion i = r and coplanarity",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "p7-imp-s03-ydse",
+      "stop": "s03",
+      "source": "Important · Balbharati",
+      "marks": 3,
+      "kind": "derivation",
+      "page": 170,
+      "text": "Obtain an expression for fringe width in Young's double slit experiment.",
+      "answer": "Let two coherent slits S₁, S₂ separated by d be at distance D from screen (D >> d).\nAt point P at distance y from central point O: S₂P² − S₁P² = [D² + (y + d/2)²] − [D² + (y − d/2)²] = 2 y d.\nSince S₂P + S₁P ≈ 2D, path difference Δx = S₂P − S₁P ≈ y d / D.\nFor nth bright fringe: y_n = n λ D / d.\nFringe width β = y_{n+1} − y_n = λ D / d.",
+      "points": [
+        {
+          "text": "Path difference Δx = yd/D",
+          "marks": 1
+        },
+        {
+          "text": "Position of nth bright fringe y_n = nλD/d",
+          "marks": 1
+        },
+        {
+          "text": "Fringe width β = λD/d",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "p7-imp-s04-diff",
+      "stop": "s04",
+      "source": "Important · Balbharati",
+      "marks": 2,
+      "kind": "distinguish",
+      "page": 178,
+      "text": "Distinguish between interference and diffraction of light (any four points).",
+      "answer": "1. Interference is due to superposition of waves from two distinct coherent sources; diffraction is due to superposition of secondary wavelets from different parts of the same wavefront.\n2. All bright fringes in interference have equal intensity; in diffraction, intensity decreases rapidly away from central maximum.\n3. Fringe width is constant in interference; central maximum is twice as wide as secondary maxima in diffraction.\n4. Dark fringes are usually completely dark in interference; minima are never perfectly dark in diffraction.",
+      "points": [
+        {
+          "text": "Origin (two coherent sources vs single wavefront) & intensity",
+          "marks": 1
+        },
+        {
+          "text": "Fringe width equality & contrast of minima",
+          "marks": 1
+        }
+      ]
+    }
+  ]
+}
