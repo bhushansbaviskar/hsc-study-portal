@@ -1,0 +1,212 @@
+{
+  "id": "ch12",
+  "file": "content/physics/ch12-electromagnetic-induction.json",
+  "subject": "physics",
+  "book": "xii",
+  "title": "Electromagnetic Induction",
+  "lite": true,
+  "startPage": 265,
+  "endPage": 287,
+  "examMarks": 5,
+  "examMarksWithOptions": 7,
+  "stops": [
+    {
+      "id": "s01",
+      "title": "Faraday's laws & Lenz's law",
+      "page": 265,
+      "inShort": "Faraday's laws: (1) Changing magnetic flux induces an emf; (2) Magnitude |e| = dΦ_B/dt. Lenz's law: direction of induced current opposes the cause producing it (conservation of energy): e = −N dΦ_B/dt.",
+      "sections": [
+        "12.2 Faraday's Laws",
+        "12.3 Lenz's Law",
+        "12.4 Flux of the Field"
+      ]
+    },
+    {
+      "id": "s02",
+      "title": "Motional emf & eddy currents",
+      "page": 270,
+      "inShort": "Translational motional emf in rod of length l moving at v perpendicular to B: e = B l v. Rotational emf in rod of length l rotating with ω about one end: e = ½ B ω l². Eddy currents are circulating currents induced in bulk conductors.",
+      "sections": [
+        "12.5 Motional Electromotive Force",
+        "12.7 Generators",
+        "12.10 Eddy Currents"
+      ]
+    },
+    {
+      "id": "s03",
+      "title": "Self-inductance, mutual inductance & energy density",
+      "page": 276,
+      "inShort": "Self-inductance L: Φ = L I, e = −L dI/dt. Energy stored U = ½ L I²; energy density u_B = B²/(2μ₀). Mutual inductance M = k √(L₁ L₂), e₂ = −M dI₁/dt.",
+      "sections": [
+        "12.11 Self-Inductance",
+        "12.12 Energy Stored in Magnetic Field",
+        "12.14 Mutual Inductance"
+      ]
+    },
+    {
+      "id": "s04",
+      "title": "Transformer",
+      "page": 282,
+      "inShort": "Works on mutual induction for AC only. Transformer equation: E_s / E_p = N_s / N_p = I_p / I_s (ideal). Step-up: N_s > N_p; Step-down: N_s < N_p.",
+      "sections": [
+        "12.15 Transformer"
+      ]
+    }
+  ],
+  "formulas": [
+    {
+      "stop": "s01",
+      "items": [
+        {
+          "n": "Faraday-Lenz law",
+          "f": "e = −N dΦ_B / dt",
+          "s": "Φ_B = B A cos θ.",
+          "p": 267
+        }
+      ]
+    },
+    {
+      "stop": "s02",
+      "items": [
+        {
+          "n": "Motional emf (linear & rotating)",
+          "f": "e = B l v,  e_rot = (1/2) B ω l²",
+          "s": "For rod rotating about one end in perpendicular B.",
+          "p": 271
+        }
+      ]
+    },
+    {
+      "stop": "s03",
+      "items": [
+        {
+          "n": "Self & Mutual inductance",
+          "f": "e = −L dI/dt,  U = (1/2) L I²,  M = k √(L₁ L₂)",
+          "s": "k is coupling coefficient (0 ≤ k ≤ 1).",
+          "p": 277
+        }
+      ]
+    },
+    {
+      "stop": "s04",
+      "items": [
+        {
+          "n": "Transformer ratio",
+          "f": "E_s / E_p = N_s / N_p = I_p / I_s",
+          "s": "Ideal transformer: output power = input power.",
+          "p": 283
+        }
+      ]
+    }
+  ],
+  "board": [
+    {
+      "id": "p12-2025-Q1x",
+      "stop": "s04",
+      "year": 2025,
+      "qno": "Q1(x)",
+      "marks": 1,
+      "kind": "mcq",
+      "page": 283,
+      "text": "A transformer increases an alternating e.m.f. from 220 V to 880 V. If primary coil has 1000 turns, the number of turns in the secondary coil are ____.",
+      "options": [
+        "1000",
+        "2000",
+        "3000",
+        "4000"
+      ],
+      "answerIndex": 3,
+      "answer": "(d) 4000 (N_s = N_p × E_s/E_p = 1000 × 880/220 = 4000).",
+      "points": [
+        {
+          "text": "Correct option: (d) 4000",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "p12-2025-Q2ii",
+      "stop": "s03",
+      "year": 2025,
+      "qno": "Q2(ii)",
+      "marks": 1,
+      "kind": "define",
+      "page": 276,
+      "text": "Define self inductance.",
+      "answer": "Self-inductance (L) of a coil is defined as the magnetic flux linked with the coil per unit current flowing through it (L = Φ/I), or numerically equal to the emf induced in the coil per unit rate of change of current (|e| = L |dI/dt|).",
+      "points": [
+        {
+          "text": "Definition L = Φ/I or |e|/(dI/dt)",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "p12-2025-Q9",
+      "stop": "s03",
+      "year": 2025,
+      "qno": "Q9",
+      "marks": 2,
+      "kind": "numerical",
+      "page": 281,
+      "text": "Two coils having self inductances 60 mH each are coupled with each other. If the coefficient of coupling is 0.75, calculate the mutual inductance between them.",
+      "answer": "Given: L₁ = L₂ = 60 mH, k = 0.75.\nM = k √(L₁ L₂) = 0.75 × √(60 × 60) = 0.75 × 60 = 45 mH.",
+      "points": [
+        {
+          "text": "Formula M = k √(L₁ L₂)",
+          "marks": 1
+        },
+        {
+          "text": "Correct answer: M = 45 mH",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "p12-2025-Q21",
+      "stop": "s02",
+      "year": 2025,
+      "qno": "Q21",
+      "marks": 3,
+      "kind": "derivation",
+      "page": 272,
+      "text": "A conducting bar is rotating with constant angular speed around a pivot at one end in a uniform magnetic field perpendicular to its plane of rotation. Obtain an expression for the rotational e.m.f. induced between the ends of the bar.",
+      "answer": "Consider a conducting rod of length l rotating with constant angular speed ω in uniform perpendicular magnetic field B.\nTake a small element dr at distance r from the pivot. Its linear speed is v = ω r.\nSmall emf induced across dr: de = B v dr = B ω r dr.\nIntegrating from r = 0 to r = l:\ne = ∫(0 to l) B ω r dr = B ω [r²/2](0 to l) = ½ B ω l².",
+      "points": [
+        {
+          "text": "Small element dr with v = ωr and de = Bωr dr",
+          "marks": 1
+        },
+        {
+          "text": "Integration from 0 to l",
+          "marks": 1
+        },
+        {
+          "text": "Final expression e = ½ B ω l²",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "p12-2022-Q7",
+      "stop": "s03",
+      "year": 2022,
+      "qno": "Q7",
+      "marks": 2,
+      "kind": "theory",
+      "page": 278,
+      "text": "Explain why the equivalent inductance of two coils connected in parallel is less than the inductance of either of the coils.",
+      "answer": "When two coils L₁ and L₂ (far apart, M = 0) are connected in parallel across a changing source, the same induced emf e acts across both: I = I₁ + I₂ ⇒ dI/dt = dI₁/dt + dI₂/dt.\nSince |e| = L_p (dI/dt) = L₁(dI₁/dt) = L₂(dI₂/dt), we get 1/L_p = 1/L₁ + 1/L₂.\nBecause 1/L_p > 1/L₁ and 1/L_p > 1/L₂, L_p is smaller than both L₁ and L₂.",
+      "points": [
+        {
+          "text": "Same induced emf and I = I₁ + I₂ giving 1/L_p = 1/L₁ + 1/L₂",
+          "marks": 1
+        },
+        {
+          "text": "Conclusion that L_p < L₁ and L_p < L₂",
+          "marks": 1
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,149 @@
+{
+  "id": "ch11",
+  "file": "content/physics/ch11-magnetic-materials.json",
+  "subject": "physics",
+  "book": "xii",
+  "title": "Magnetic Materials",
+  "lite": true,
+  "startPage": 251,
+  "endPage": 264,
+  "examMarks": 4,
+  "examMarksWithOptions": 5,
+  "stops": [
+    {
+      "id": "s01",
+      "title": "Orbital magnetic moment & Bohr magneton",
+      "page": 251,
+      "inShort": "An electron revolving in an orbit of radius r with speed v produces orbital magnetic moment m_orb = evr/2 = (e/2m_e) L. Minimum orbital magnetic moment for n = 1 in hydrogen atom is Bohr magneton μ_B = eh / (4π m_e) = 9.274 × 10⁻²⁴ A·m².",
+      "sections": [
+        "11.2 Torque on a Magnetic Dipole",
+        "11.3 Origin of Magnetism in Materials",
+        "11.3.1 Magnetic Moment of an Electron"
+      ]
+    },
+    {
+      "id": "s02",
+      "title": "Magnetization, magnetic intensity & susceptibility",
+      "page": 254,
+      "inShort": "Magnetization M = m_net / V (A/m). Magnetic intensity H = B₀/μ₀. In a material: B = μ₀(H + M). Magnetic susceptibility χ = M/H; relative permeability μ_r = 1 + χ.",
+      "sections": [
+        "11.4 Magnetization and Magnetic Intensity",
+        "11.5 Magnetic Properties of Materials"
+      ]
+    },
+    {
+      "id": "s03",
+      "title": "Dia-, Para- and Ferromagnetism, Curie's law & Hysteresis",
+      "page": 256,
+      "inShort": "Diamagnetic (χ < 0, weakly repelled), Paramagnetic (χ > 0 small, obeys Curie's law χ = C/T), Ferromagnetic (χ >> 0, domains, loses ferromagnetism above Curie temperature T_c). Hysteresis loop area represents energy loss per unit volume per cycle; retentivity is B when H = 0.",
+      "sections": [
+        "11.5.1 Diamagnetism",
+        "11.5.2 Paramagnetism",
+        "11.5.3 Ferromagnetism",
+        "11.6 Hysteresis",
+        "11.7 Permanent Magnet and Electromagnet"
+      ]
+    }
+  ],
+  "formulas": [
+    {
+      "stop": "s01",
+      "items": [
+        {
+          "n": "Orbital magnetic moment",
+          "f": "m_orb = e v r / 2 = (e / 2m_e) L",
+          "s": "Gyromagnetic ratio = e/(2m_e) = 8.8 × 10¹⁰ C/kg.",
+          "p": 253
+        },
+        {
+          "n": "Bohr magneton",
+          "f": "μ_B = e h / (4π m_e) = 9.274 × 10⁻²⁴ A·m²",
+          "s": "Magnetic moment of electron in 1st Bohr orbit.",
+          "p": 253
+        }
+      ]
+    },
+    {
+      "stop": "s02",
+      "items": [
+        {
+          "n": "B, H, M relation & susceptibility",
+          "f": "B = μ₀(H + M),  χ = M/H,  μ_r = 1 + χ",
+          "s": "μ = μ₀ μ_r.",
+          "p": 255
+        }
+      ]
+    },
+    {
+      "stop": "s03",
+      "items": [
+        {
+          "n": "Curie's law",
+          "f": "χ = C / T",
+          "s": "For paramagnetic materials; C is Curie constant.",
+          "p": 258
+        }
+      ]
+    }
+  ],
+  "board": [
+    {
+      "id": "p11-2025-Q2v",
+      "stop": "s03",
+      "year": 2025,
+      "qno": "Q2(v)",
+      "marks": 1,
+      "kind": "define",
+      "page": 261,
+      "text": "What is value of B called, when H = 0 is in the hysteresis loop?",
+      "answer": "Retentivity (or remanence) — the magnetic induction B remaining in the ferromagnetic specimen when the magnetizing field H is reduced to zero.",
+      "points": [
+        {
+          "text": "Retentivity / Remanence",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "p11-2022-Q2iii",
+      "stop": "s01",
+      "year": 2022,
+      "qno": "Q2(iii)",
+      "marks": 1,
+      "kind": "vsa",
+      "page": 253,
+      "text": "Write the mathematical formula for Bohr magneton for an electron revolving in nth orbital.",
+      "answer": "μ_n = n e h / (4π m_e), and for n = 1 (Bohr magneton): μ_B = e h / (4π m_e).",
+      "points": [
+        {
+          "text": "Formula μ_B = eh/(4πm_e) (or n·eh/(4πm_e))",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "p11-imp-s03-dist",
+      "stop": "s03",
+      "source": "Important · Balbharati",
+      "marks": 3,
+      "kind": "distinguish",
+      "page": 256,
+      "text": "Distinguish between diamagnetic, paramagnetic and ferromagnetic substances (any three points).",
+      "answer": "1. Susceptibility χ: small negative for diamagnetic; small positive for paramagnetic; very large positive for ferromagnetic.\n2. Relative permeability μ_r: slightly less than 1 (diamagnetic); slightly greater than 1 (paramagnetic); much greater than 1 (ferromagnetic).\n3. In non-uniform magnetic field: weakly repelled (diamagnetic); weakly attracted (paramagnetic); strongly attracted (ferromagnetic).",
+      "points": [
+        {
+          "text": "Susceptibility χ sign and magnitude",
+          "marks": 1
+        },
+        {
+          "text": "Relative permeability μ_r comparison",
+          "marks": 1
+        },
+        {
+          "text": "Behaviour in non-uniform magnetic field",
+          "marks": 1
+        }
+      ]
+    }
+  ]
+}

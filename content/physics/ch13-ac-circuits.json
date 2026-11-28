@@ -1,0 +1,170 @@
+{
+  "id": "ch13",
+  "file": "content/physics/ch13-ac-circuits.json",
+  "subject": "physics",
+  "book": "xii",
+  "title": "AC Circuits",
+  "lite": true,
+  "startPage": 288,
+  "endPage": 305,
+  "examMarks": 4,
+  "examMarksWithOptions": 6,
+  "stops": [
+    {
+      "id": "s01",
+      "title": "AC generator, RMS & average values",
+      "page": 288,
+      "inShort": "Alternating emf e = e₀ sin(ωt). RMS values: I_rms = I₀/√2 ≈ 0.707 I₀, E_rms = E₀/√2 ≈ 0.707 E₀. Average value over half cycle: I_avg = 2I₀/π ≈ 0.637 I₀ (zero over full cycle).",
+      "sections": [
+        "13.2 AC Generator",
+        "13.3 Average and RMS Values",
+        "13.4 Phasors"
+      ]
+    },
+    {
+      "id": "s02",
+      "title": "AC through R, L, C & series LCR circuit",
+      "page": 291,
+      "inShort": "Pure R: I in phase with V. Pure L: I lags V by π/2, X_L = ωL = 2πfL. Pure C: I leads V by π/2, X_C = 1/(ωC) = 1/(2πfC). Series LCR impedance Z = √(R² + (X_L − X_C)²), tan φ = (X_L − X_C)/R.",
+      "sections": [
+        "13.5 Different Types of AC Circuits",
+        "13.5.4 Series LCR Circuit"
+      ]
+    },
+    {
+      "id": "s03",
+      "title": "Power in AC circuit & LC oscillations",
+      "page": 298,
+      "inShort": "Average power P_avg = E_rms I_rms cos φ, where cos φ = R/Z is the power factor. In pure L or pure C, φ = ±90° so cos φ = 0 (wattless current).",
+      "sections": [
+        "13.6 Power in AC Circuit",
+        "13.7 LC Oscillations"
+      ]
+    },
+    {
+      "id": "s04",
+      "title": "Electric resonance, Q-factor & choke coil",
+      "page": 300,
+      "inShort": "At series resonance X_L = X_C, Z_min = R, current is maximum, resonant frequency f_r = 1 / (2π √(LC)). Quality factor Q = ω_r L / R = (1/R) √(L/C).",
+      "sections": [
+        "13.8 Electric Resonance",
+        "13.9 Sharpness of Resonance: Q factor",
+        "13.10 Choke Coil"
+      ]
+    }
+  ],
+  "formulas": [
+    {
+      "stop": "s01",
+      "items": [
+        {
+          "n": "RMS & peak relation",
+          "f": "I_rms = I₀ / √2,  E_rms = E₀ / √2",
+          "s": "1/√2 ≈ 0.707.",
+          "p": 290
+        }
+      ]
+    },
+    {
+      "stop": "s02",
+      "items": [
+        {
+          "n": "Reactance & LCR impedance",
+          "f": "X_L = 2π f L,  X_C = 1/(2π f C),  Z = √(R² + (X_L − X_C)²)",
+          "s": "Phase angle: tan φ = (X_L − X_C) / R.",
+          "p": 295
+        }
+      ]
+    },
+    {
+      "stop": "s03",
+      "items": [
+        {
+          "n": "Average AC power",
+          "f": "P_avg = E_rms I_rms cos φ,  cos φ = R / Z",
+          "s": "cos φ is power factor.",
+          "p": 298
+        }
+      ]
+    },
+    {
+      "stop": "s04",
+      "items": [
+        {
+          "n": "Resonant frequency & Q-factor",
+          "f": "f_r = 1 / (2π √(L C)),  Q = ω_r L / R",
+          "s": "At resonance, X_L = X_C and Z = R.",
+          "p": 301
+        }
+      ]
+    }
+  ],
+  "board": [
+    {
+      "id": "p13-2025-Q10",
+      "stop": "s02",
+      "year": 2025,
+      "qno": "Q10",
+      "marks": 2,
+      "kind": "numerical",
+      "page": 296,
+      "text": "In a series LCR circuit, if resistance, inductive reactance and capacitive reactance are 3 Ω, 8 Ω and 4 Ω respectively, calculate phase difference between voltage and current.",
+      "answer": "Given: R = 3 Ω, X_L = 8 Ω, X_C = 4 Ω.\ntan φ = (X_L − X_C) / R = (8 − 4) / 3 = 4 / 3 ≈ 1.3333.\nφ = tan⁻¹(4/3) = 53° 8' (or 53.13°), voltage leads current.",
+      "points": [
+        {
+          "text": "Formula tan φ = (X_L − X_C)/R = 4/3",
+          "marks": 1
+        },
+        {
+          "text": "Phase difference φ = 53°8' (53.13°)",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "p13-2022-Q9",
+      "stop": "s03",
+      "year": 2022,
+      "qno": "Q9",
+      "marks": 2,
+      "kind": "numerical",
+      "page": 298,
+      "text": "A 100 Ω resistor is connected to a 220 V, 50 Hz supply. Calculate: (a) r.m.s. value of current and (b) net power consumed over the full cycle.",
+      "answer": "Given: R = 100 Ω, E_rms = 220 V, f = 50 Hz.\n(a) I_rms = E_rms / R = 220 / 100 = 2.2 A.\n(b) P_avg = E_rms × I_rms × cos 0° = 220 × 2.2 × 1 = 484 W.",
+      "points": [
+        {
+          "text": "(a) I_rms = E_rms / R = 2.2 A",
+          "marks": 1
+        },
+        {
+          "text": "(b) P_avg = E_rms I_rms = 484 W",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "p13-imp-s04-res",
+      "stop": "s04",
+      "source": "Important · Balbharati",
+      "marks": 3,
+      "kind": "derivation",
+      "page": 300,
+      "text": "What is series resonance? Obtain an expression for resonant frequency of a series LCR circuit.",
+      "answer": "Series resonance is the condition in a series LCR circuit when inductive reactance equals capacitive reactance (X_L = X_C), making impedance minimum (Z = R) and current maximum.\nAt resonance: X_L = X_C ⇒ ω_r L = 1 / (ω_r C) ⇒ 2π f_r L = 1 / (2π f_r C)\n⇒ f_r² = 1 / (4π² L C) ⇒ f_r = 1 / (2π √(L C)).",
+      "points": [
+        {
+          "text": "Definition of series resonance (X_L = X_C, Z_min = R, I_max)",
+          "marks": 1
+        },
+        {
+          "text": "Equating 2π f_r L = 1/(2π f_r C)",
+          "marks": 1
+        },
+        {
+          "text": "Final expression f_r = 1/(2π√(LC))",
+          "marks": 1
+        }
+      ]
+    }
+  ]
+}

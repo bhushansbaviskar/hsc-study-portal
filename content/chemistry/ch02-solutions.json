@@ -1,0 +1,219 @@
+{
+  "id": "ch02",
+  "file": "content/chemistry/ch02-solutions.json",
+  "subject": "chemistry",
+  "book": "chem_xii",
+  "title": "Solutions",
+  "lite": true,
+  "startPage": 28,
+  "endPage": 46,
+  "examMarks": 4,
+  "examMarksWithOptions": 6,
+  "stops": [
+    {
+      "id": "s01",
+      "title": "Solubility, Henry's law & Raoult's law",
+      "page": 28,
+      "inShort": "Henry's law: solubility S = K_H P (at constant T). Raoult's law for volatile liquids: P_total = P₁° x₁ + P₂° x₂. Ideal solutions obey Raoult's law with ΔH_mix = 0, ΔV_mix = 0.",
+      "sections": [
+        "2.2 Types of Solutions",
+        "2.4 Solubility & Henry's Law",
+        "2.5 Vapour Pressure & Raoult's Law"
+      ]
+    },
+    {
+      "id": "s02",
+      "title": "Lowering of vapour pressure & Boiling point elevation",
+      "page": 33,
+      "inShort": "Relative lowering of vapour pressure: (P₁° − P₁)/P₁° = x₂ ≈ (W₂ M₁)/(M₂ W₁). Boiling point elevation: ΔT_b = K_b m, so M₂ = (1000 K_b W₂)/(ΔT_b W₁).",
+      "sections": [
+        "2.6 Colligative Properties",
+        "2.7 Vapour Pressure Lowering",
+        "2.8 Boiling Point Elevation"
+      ]
+    },
+    {
+      "id": "s03",
+      "title": "Freezing point depression & Osmotic pressure",
+      "page": 38,
+      "inShort": "Freezing point depression: ΔT_f = K_f m. Osmotic pressure: π = M R T = (W₂ R T)/(M₂ V). Reverse osmosis occurs when applied pressure exceeds osmotic pressure (P > π).",
+      "sections": [
+        "2.9 Depression in Freezing Point",
+        "2.10 Osmotic Pressure",
+        "2.10.6 Reverse Osmosis"
+      ]
+    },
+    {
+      "id": "s04",
+      "title": "Colligative properties of electrolytes & van't Hoff factor",
+      "page": 42,
+      "inShort": "van't Hoff factor i = (normal molar mass)/(observed molar mass) = (observed colligative property)/(calculated property). Degree of dissociation α = (i − 1)/(n − 1). Modified formulas: ΔT_f = i K_f m, π = i M R T.",
+      "sections": [
+        "2.11 Colligative Properties of Electrolytes",
+        "2.11.2 van't Hoff Factor"
+      ]
+    }
+  ],
+  "formulas": [
+    {
+      "stop": "s01",
+      "items": [
+        {
+          "n": "Henry's law",
+          "f": "S = K_H · P",
+          "s": "S: solubility (mol/dm³), P: partial pressure (bar).",
+          "p": 30
+        }
+      ]
+    },
+    {
+      "stop": "s02",
+      "items": [
+        {
+          "n": "Relative lowering & ΔT_b",
+          "f": "(P₁° − P₁)/P₁° = x₂,  ΔT_b = K_b · m",
+          "s": "M₂ = 1000 K_b W₂ / (ΔT_b W₁).",
+          "p": 35
+        }
+      ]
+    },
+    {
+      "stop": "s03",
+      "items": [
+        {
+          "n": "Freezing depression & Osmotic pressure",
+          "f": "ΔT_f = i K_f m,  π = i C R T = i (n₂/V) R T",
+          "s": "i = 1 for non-electrolytes like urea, glucose, sucrose.",
+          "p": 40
+        }
+      ]
+    }
+  ],
+  "board": [
+    {
+      "id": "c2-2025-Q1ii",
+      "stop": "s03",
+      "year": 2025,
+      "qno": "Q1(ii)",
+      "marks": 1,
+      "kind": "mcq",
+      "page": 38,
+      "text": "The freezing point of 0.1 m aqueous solution of urea, if K_f for water is 1.86 K kg mol⁻¹ is ____.",
+      "options": [
+        "1.86 °C",
+        "−1.86 °C",
+        "0.186 °C",
+        "−0.186 °C"
+      ],
+      "answerIndex": 3,
+      "answer": "(d) −0.186 °C (ΔT_f = K_f × m = 1.86 × 0.1 = 0.186 K ⇒ T_f = 0 − 0.186 = −0.186 °C).",
+      "points": [
+        {
+          "text": "Correct option: (d) −0.186 °C",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "c2-2025-Q2v",
+      "stop": "s04",
+      "year": 2025,
+      "qno": "Q2(v)",
+      "marks": 1,
+      "kind": "numerical",
+      "page": 43,
+      "text": "What is the molality of an aqueous solution of KBr having freezing point −3.72°C (K_f for water is 1.86 K kg mol⁻¹)?",
+      "answer": "For KBr → K⁺ + Br⁻, i = 2. ΔT_f = 0 − (−3.72) = 3.72 K.\nm = ΔT_f / (i K_f) = 3.72 / (2 × 1.86) = 1.0 mol/kg (1 m).",
+      "points": [
+        {
+          "text": "ΔT_f = i K_f m with i = 2 giving m = 1 mol/kg",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "c2-2025-Q4",
+      "stop": "s01",
+      "year": 2025,
+      "qno": "Q4",
+      "marks": 2,
+      "kind": "define",
+      "page": 30,
+      "text": "(a) State Henry's law. (b) Define: Osmotic pressure.",
+      "answer": "(a) Henry's law: The solubility of a gas in a liquid at constant temperature is directly proportional to the pressure of the gas above the solution (S = K_H P).\n(b) Osmotic pressure: The excess hydrostatic pressure that must be applied on the solution side to just stop the spontaneous flow of solvent into the solution through a semipermeable membrane.",
+      "points": [
+        {
+          "text": "Statement of Henry's law",
+          "marks": 1
+        },
+        {
+          "text": "Definition of osmotic pressure",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "c2-2024-Q2viii",
+      "stop": "s03",
+      "year": 2024,
+      "qno": "Q2(viii)",
+      "marks": 1,
+      "kind": "vsa",
+      "page": 41,
+      "text": "Write the condition of reverse osmosis.",
+      "answer": "Applied external pressure on the solution side must be greater than the osmotic pressure of the solution (P_applied > π).",
+      "points": [
+        {
+          "text": "Applied pressure > osmotic pressure (P > π)",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "c2-2024-Q11",
+      "stop": "s01",
+      "year": 2024,
+      "qno": "Q11",
+      "marks": 2,
+      "kind": "numerical",
+      "page": 30,
+      "text": "Henry's constant for CH₃Br(g) is 0.159 mol dm⁻³ bar⁻¹ at 25°C. Calculate its solubility in water at 25°C, if its partial pressure is 0.164 bar.",
+      "answer": "S = K_H × P = 0.159 × 0.164 = 0.02608 mol dm⁻³.",
+      "points": [
+        {
+          "text": "Formula S = K_H × P",
+          "marks": 1
+        },
+        {
+          "text": "Correct answer: 0.02608 mol dm⁻³",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "c2-2024-Q15",
+      "stop": "s03",
+      "year": 2024,
+      "qno": "Q15",
+      "marks": 3,
+      "kind": "derivation",
+      "page": 40,
+      "text": "What is osmotic pressure? How will you determine molar mass of solute from osmotic pressure?",
+      "answer": "Osmotic pressure (π) is the excess pressure applied to the solution to stop osmosis.\nFor dilute solutions, π = C R T = (n₂ / V) R T.\nSubstituting n₂ = W₂ / M₂:\nπ = (W₂ R T) / (M₂ V) ⇒ M₂ = (W₂ R T) / (π V).",
+      "points": [
+        {
+          "text": "Definition of osmotic pressure",
+          "marks": 1
+        },
+        {
+          "text": "Relation π = CRT = (n₂/V)RT",
+          "marks": 1
+        },
+        {
+          "text": "Molar mass formula M₂ = (W₂RT)/(πV)",
+          "marks": 1
+        }
+      ]
+    }
+  ]
+}

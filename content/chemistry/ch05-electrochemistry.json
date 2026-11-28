@@ -1,0 +1,227 @@
+{
+  "id": "ch05",
+  "file": "content/chemistry/ch05-electrochemistry.json",
+  "subject": "chemistry",
+  "book": "chem_xii",
+  "title": "Electrochemistry",
+  "lite": true,
+  "startPage": 90,
+  "endPage": 119,
+  "examMarks": 5,
+  "examMarksWithOptions": 7,
+  "stops": [
+    {
+      "id": "s01",
+      "title": "Conductivity, molar conductivity & Kohlrausch law",
+      "page": 90,
+      "inShort": "Molar conductivity Λ = 1000 κ / c (SI unit: S·m²·mol⁻¹ or Ω⁻¹·cm²·mol⁻¹). Kohlrausch law: Λ₀ = n₊ λ°₊ + n₋ λ°₋. Degree of dissociation α = Λ / Λ₀.",
+      "sections": [
+        "5.3 Electrical Conductance",
+        "5.3.7 Kohlrausch Law"
+      ]
+    },
+    {
+      "id": "s02",
+      "title": "Electrolysis & Faraday's laws",
+      "page": 98,
+      "inShort": "Faraday's 1st law: mass deposited W = Q·M / (n·F) = I·t·M / (n·F), where 1 F = 96500 C/mol.",
+      "sections": [
+        "5.5 Electrolytic Cell",
+        "5.5.3 Quantitative Aspects of Electrolysis"
+      ]
+    },
+    {
+      "id": "s03",
+      "title": "Galvanic cell, Nernst equation & Gibbs energy",
+      "page": 103,
+      "inShort": "E°_cell = E°_cathode − E°_anode. Nernst equation at 298 K: E_cell = E°_cell − (0.0592/n) log₁₀ Q. Thermodynamics: ΔG° = −n F E°_cell.",
+      "sections": [
+        "5.6 Galvanic Cell",
+        "5.7 Electrode Potential & Nernst Equation",
+        "5.8 Thermodynamics of Galvanic Cells"
+      ]
+    },
+    {
+      "id": "s04",
+      "title": "Reference electrode (SHE), Batteries, Fuel cell & Electrochemical series",
+      "page": 110,
+      "inShort": "SHE: E° = 0.00 V. Lead accumulator discharging net reaction: Pb + PbO₂ + 2H₂SO₄ → 2PbSO₄ + 2H₂O. H₂-O₂ fuel cell converts chemical energy directly to electricity. Electrochemical series lists E°_red values.",
+      "sections": [
+        "5.9 Reference Electrodes",
+        "5.10 Batteries (Lead Storage)",
+        "5.11 Fuel Cells",
+        "5.12 Electrochemical Series"
+      ]
+    }
+  ],
+  "formulas": [
+    {
+      "stop": "s01",
+      "items": [
+        {
+          "n": "Molar conductivity",
+          "f": "Λ = 1000 κ / c",
+          "s": "SI unit: S·m²·mol⁻¹; common: S·cm²·mol⁻¹.",
+          "p": 92
+        }
+      ]
+    },
+    {
+      "stop": "s02",
+      "items": [
+        {
+          "n": "Faraday's law",
+          "f": "W = (I · t · M) / (n · F)",
+          "s": "F = 96500 C·mol⁻¹.",
+          "p": 101
+        }
+      ]
+    },
+    {
+      "stop": "s03",
+      "items": [
+        {
+          "n": "Nernst equation (298 K) & ΔG°",
+          "f": "E_cell = E°_cell − (0.0592 / n) log₁₀ Q,  ΔG° = −n F E°_cell",
+          "s": "At equilibrium E_cell = 0 ⇒ E°_cell = (0.0592/n) log₁₀ K.",
+          "p": 108
+        }
+      ]
+    }
+  ],
+  "board": [
+    {
+      "id": "c5-2025-Q1ix",
+      "stop": "s01",
+      "year": 2025,
+      "qno": "Q1(ix)",
+      "marks": 1,
+      "kind": "mcq",
+      "page": 92,
+      "text": "The formula used to calculate molar conductivity of an electrolyte is ____.",
+      "options": [
+        "Λ = 1000c/k",
+        "c = 1000Λ/k",
+        "Λ = 1000k/c",
+        "k = 1000/(Λc)"
+      ],
+      "answerIndex": 2,
+      "answer": "(c) Λ = 1000k / c.",
+      "points": [
+        {
+          "text": "Correct option: (c) Λ = 1000k/c",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "c5-2025-Q11",
+      "stop": "s02",
+      "year": 2025,
+      "qno": "Q11",
+      "marks": 2,
+      "kind": "numerical",
+      "page": 101,
+      "text": "How many coulombs of electricity is required to produce 1 g of sodium metal by reduction of sodium ion?",
+      "answer": "Na⁺ + e⁻ → Na (n = 1, M = 23 g/mol).\n23 g Na requires 1 F = 96500 C.\n1 g Na requires Q = 96500 / 23 = 4195.65 C.",
+      "points": [
+        {
+          "text": "1 mol Na (23 g) requires 1 F = 96500 C",
+          "marks": 1
+        },
+        {
+          "text": "Q = 96500/23 = 4195.65 C",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "c5-2025-Q29",
+      "stop": "s04",
+      "year": 2025,
+      "qno": "Q29",
+      "marks": 4,
+      "kind": "diagram",
+      "page": 113,
+      "text": "Draw a neat and labelled diagram of a lead accumulator cell. Write the overall reactions taking place at cathode and anode during discharging of the cell.",
+      "answer": "Diagram: Lead grids packed with spongy Pb (anode) and PbO₂ (cathode) immersed in 38% H₂SO₄ (density 1.2 g/mL).\nAnode (oxidation): Pb(s) + SO₄²⁻(aq) → PbSO₄(s) + 2e⁻\nCathode (reduction): PbO₂(s) + 4H⁺(aq) + SO₄²⁻(aq) + 2e⁻ → PbSO₄(s) + 2H₂O(l)\nNet reaction: Pb(s) + PbO₂(s) + 2H₂SO₄(aq) → 2PbSO₄(s) + 2H₂O(l).",
+      "points": [
+        {
+          "text": "Neat labelled diagram (Pb anode, PbO₂ cathode, H₂SO₄)",
+          "marks": 2
+        },
+        {
+          "text": "Anode oxidation reaction",
+          "marks": 1
+        },
+        {
+          "text": "Cathode reduction reaction",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "c5-2024-Q2vi",
+      "stop": "s01",
+      "year": 2024,
+      "qno": "Q2(vi)",
+      "marks": 1,
+      "kind": "vsa",
+      "page": 92,
+      "text": "Write SI unit of molar conductivity.",
+      "answer": "S·m²·mol⁻¹ (or Ω⁻¹·m²·mol⁻¹).",
+      "points": [
+        {
+          "text": "S·m²·mol⁻¹",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "c5-2024-Q7",
+      "stop": "s02",
+      "year": 2024,
+      "qno": "Q7",
+      "marks": 2,
+      "kind": "numerical",
+      "page": 101,
+      "text": "Calculate the time required to deposit 2.4 g of Cu, when 2.03 A of current passed through CuSO₄ solution. (At. mass of Cu = 63.5 g·mol⁻¹)",
+      "answer": "Cu²⁺ + 2e⁻ → Cu (n = 2).\nW = (I × t × M) / (n × F) ⇒ t = (W × n × F) / (I × M)\n= (2.4 × 2 × 96500) / (2.03 × 63.5) = 463200 / 128.905 ≈ 3593.3 s (≈ 59.9 min).",
+      "points": [
+        {
+          "text": "Formula W = ItM/(nF) with n = 2",
+          "marks": 1
+        },
+        {
+          "text": "Correct time t = 3593.3 s",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "c5-2024-Q23",
+      "stop": "s04",
+      "year": 2024,
+      "qno": "Q23",
+      "marks": 3,
+      "kind": "theory",
+      "page": 117,
+      "text": "Define electrochemical series and write its two applications.",
+      "answer": "Electrochemical series: The arrangement of electrodes (half-cells) in the order of their decreasing standard reduction potentials (E°).\nApplications:\n1. Relative strength of oxidizing and reducing agents (higher E° = stronger oxidizing agent).\n2. Predicting spontaneity of redox reactions (E°_cell = E°_cathode − E°_anode > 0 is spontaneous).",
+      "points": [
+        {
+          "text": "Definition of electrochemical series",
+          "marks": 1
+        },
+        {
+          "text": "Application 1 (oxidizing/reducing strength)",
+          "marks": 1
+        },
+        {
+          "text": "Application 2 (spontaneity of redox reaction)",
+          "marks": 1
+        }
+      ]
+    }
+  ]
+}

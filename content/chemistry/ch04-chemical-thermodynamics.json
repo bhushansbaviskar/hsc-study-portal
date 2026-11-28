@@ -1,0 +1,217 @@
+{
+  "id": "ch04",
+  "file": "content/chemistry/ch04-chemical-thermodynamics.json",
+  "subject": "chemistry",
+  "book": "chem_xii",
+  "title": "Chemical Thermodynamics",
+  "lite": true,
+  "startPage": 63,
+  "endPage": 89,
+  "examMarks": 6,
+  "examMarksWithOptions": 8,
+  "stops": [
+    {
+      "id": "s01",
+      "title": "Systems, properties, processes & PV work",
+      "page": 63,
+      "inShort": "Extensive properties depend on amount of matter (mass, V, U, H); intensive properties do not (T, P, density). IUPAC sign convention: work done ON system is +W, BY system is −W: W = −P_ext ΔV.",
+      "sections": [
+        "4.2 Terms used in Thermodynamics",
+        "4.3 Nature of Heat and Work",
+        "4.4 Expression for PV Work"
+      ]
+    },
+    {
+      "id": "s02",
+      "title": "Maximum work & First law of thermodynamics",
+      "page": 68,
+      "inShort": "Maximum work in isothermal reversible expansion: W_max = −2.303 n R T log₁₀(V₂/V₁) = −2.303 n R T log₁₀(P₁/P₂). First law: ΔU = Q + W.",
+      "sections": [
+        "4.5 Concept of Maximum Work",
+        "4.6 Internal Energy",
+        "4.7 First Law of Thermodynamics"
+      ]
+    },
+    {
+      "id": "s03",
+      "title": "Enthalpy, ΔH vs ΔU & Thermochemistry",
+      "page": 72,
+      "inShort": "Enthalpy H = U + PV; ΔH = ΔU + Δn_g R T. Hess's law: overall enthalpy change is independent of path. Δ_r H° = ∑Δ_f H°(products) − ∑Δ_f H°(reactants).",
+      "sections": [
+        "4.8 Enthalpy",
+        "4.10 Thermochemistry",
+        "4.10.9 Hess's Law"
+      ]
+    },
+    {
+      "id": "s04",
+      "title": "Entropy, Second law & Gibbs energy (spontaneity)",
+      "page": 82,
+      "inShort": "Entropy S is a measure of disorder (ΔS_total = ΔS_sys + ΔS_surr > 0 for spontaneous process). Gibbs energy G = H − TS; at constant T, P: ΔG = ΔH − TΔS (< 0 spontaneous, = 0 equilibrium, > 0 non-spontaneous).",
+      "sections": [
+        "4.11 Spontaneous Process & Entropy",
+        "4.11.5 Gibbs Energy",
+        "4.11.6 Spontaneity Criteria"
+      ]
+    }
+  ],
+  "formulas": [
+    {
+      "stop": "s02",
+      "items": [
+        {
+          "n": "Maximum work (IUPAC)",
+          "f": "W_max = −2.303 n R T log₁₀(V₂ / V₁)",
+          "s": "1 dm³·bar = 100 J.",
+          "p": 69
+        },
+        {
+          "n": "First law (IUPAC)",
+          "f": "ΔU = Q + W",
+          "s": "W = −P_ext ΔV for irreversible process.",
+          "p": 71
+        }
+      ]
+    },
+    {
+      "stop": "s03",
+      "items": [
+        {
+          "n": "Enthalpy & Internal energy",
+          "f": "ΔH = ΔU + Δn_g R T",
+          "s": "Δn_g = n_g(products) − n_g(reactants).",
+          "p": 73
+        }
+      ]
+    },
+    {
+      "stop": "s04",
+      "items": [
+        {
+          "n": "Gibbs energy & equilibrium",
+          "f": "ΔG = ΔH − T ΔS,  ΔG° = −2.303 R T log₁₀ K",
+          "s": "ΔG < 0 for spontaneous process.",
+          "p": 86
+        }
+      ]
+    }
+  ],
+  "board": [
+    {
+      "id": "c4-2025-Q1v",
+      "stop": "s03",
+      "year": 2025,
+      "qno": "Q1(v)",
+      "marks": 1,
+      "kind": "mcq",
+      "page": 73,
+      "text": "The value of Δn_g for the oxidation of 4 mole of sulphur dioxide to sulphur trioxide is ____.",
+      "options": [
+        "−2",
+        "2",
+        "−4",
+        "4"
+      ],
+      "answerIndex": 0,
+      "answer": "(a) −2 (4SO₂(g) + 2O₂(g) → 4SO₃(g); Δn_g = 4 − (4 + 2) = −2).",
+      "points": [
+        {
+          "text": "Correct option: (a) −2",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "c4-2025-Q8",
+      "stop": "s01",
+      "year": 2025,
+      "qno": "Q8",
+      "marks": 2,
+      "kind": "numerical",
+      "page": 67,
+      "text": "Calculate the work done in kJ in a reaction, if volume of the reactant decreases from 8 dm³ to 4 dm³ against 43 bar pressure. [1 dm³·bar = 100 J]",
+      "answer": "W = −P_ext (V₂ − V₁) = −43 × (4 − 8) = +172 dm³·bar.\nIn Joules: W = 172 × 100 = 17200 J = +17.2 kJ.",
+      "points": [
+        {
+          "text": "Formula W = −P_ext ΔV = +172 dm³·bar",
+          "marks": 1
+        },
+        {
+          "text": "Conversion to kJ: +17.2 kJ",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "c4-2025-Q25",
+      "stop": "s03",
+      "year": 2025,
+      "qno": "Q25",
+      "marks": 3,
+      "kind": "numerical",
+      "page": 73,
+      "text": "ΔH for formation of ethane gas is −84.4 kJ at 300 K. Calculate ΔU for the reaction.",
+      "answer": "Reaction: 2 C(s) + 3 H₂(g) → C₂H₆(g).\nΔn_g = 1 − 3 = −2 mol.\nΔH = ΔU + Δn_g R T ⇒ ΔU = ΔH − Δn_g R T\n= −84.4 kJ − (−2)(8.314 × 10⁻³ kJ/mol·K)(300 K)\n= −84.4 + 4.988 = −79.41 kJ.",
+      "points": [
+        {
+          "text": "Balanced formation equation and Δn_g = −2",
+          "marks": 1
+        },
+        {
+          "text": "Formula ΔU = ΔH − Δn_g RT",
+          "marks": 1
+        },
+        {
+          "text": "Correct calculation: −79.41 kJ",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "c4-2024-Q3",
+      "stop": "s02",
+      "year": 2024,
+      "qno": "Q3",
+      "marks": 2,
+      "kind": "derivation",
+      "page": 69,
+      "text": "Derive an expression for maximum work obtainable during isothermal reversible expansion of an ideal gas from initial volume (V₁) to final volume (V₂).",
+      "answer": "For an infinitesimally small reversible expansion dV against external pressure P_ext = P − dP ≈ P:\ndW = −P dV.\nIntegrating from V₁ to V₂ and using PV = nRT:\nW_max = −∫(V₁ to V₂) (nRT/V) dV = −nRT ln(V₂/V₁) = −2.303 nRT log₁₀(V₂/V₁).",
+      "points": [
+        {
+          "text": "dW = −P dV with P = nRT/V",
+          "marks": 1
+        },
+        {
+          "text": "Integration giving W_max = −2.303 nRT log₁₀(V₂/V₁)",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "c4-2024-Q17",
+      "stop": "s03",
+      "year": 2024,
+      "qno": "Q17",
+      "marks": 3,
+      "kind": "numerical",
+      "page": 79,
+      "text": "Calculate the standard enthalpy of combustion of methane, if the standard enthalpy of formation of methane, carbon dioxide and water are −74.8, −393.5 and −285.8 kJ mol⁻¹ respectively.",
+      "answer": "CH₄(g) + 2O₂(g) → CO₂(g) + 2H₂O(l).\nΔ_c H° = [Δ_f H°(CO₂) + 2 Δ_f H°(H₂O)] − [Δ_f H°(CH₄) + 0]\n= [−393.5 + 2(−285.8)] − (−74.8)\n= −965.1 + 74.8 = −890.3 kJ mol⁻¹.",
+      "points": [
+        {
+          "text": "Balanced combustion equation",
+          "marks": 1
+        },
+        {
+          "text": "Hess's formula ΔH° = ∑Δ_f H°(prod) − ∑Δ_f H°(react)",
+          "marks": 1
+        },
+        {
+          "text": "Correct answer: −890.3 kJ mol⁻¹",
+          "marks": 1
+        }
+      ]
+    }
+  ]
+}

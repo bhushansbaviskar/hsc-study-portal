@@ -238,6 +238,7 @@ async function runSuiteForViewport(browser, baseUrl, vp) {
   // 6. P2: Active Formula Recall (#/formulas -> Test yourself -> reveal -> Missed -> Missed only)
   await page.goto(baseUrl + "/#/formulas", { waitUntil: "networkidle0" });
   await page.waitForSelector('[data-act="formula-quiz"]');
+  await page.$eval('[data-act="formula-quiz"]', (el) => el.scrollIntoView({ block: "center" }));
   await page.click('[data-act="formula-quiz"]');
   await page.waitForSelector('[data-act="formula-reveal"]');
   const hiddenCheck = await page.evaluate(() => ({

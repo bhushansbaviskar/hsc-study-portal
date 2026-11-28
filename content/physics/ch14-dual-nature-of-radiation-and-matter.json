@@ -1,0 +1,121 @@
+{
+  "id": "ch14",
+  "file": "content/physics/ch14-dual-nature-of-radiation-and-matter.json",
+  "subject": "physics",
+  "book": "xii",
+  "title": "Dual Nature of Radiation and Matter",
+  "lite": true,
+  "startPage": 306,
+  "endPage": 323,
+  "examMarks": 4,
+  "examMarksWithOptions": 5,
+  "stops": [
+    {
+      "id": "s01",
+      "title": "Photoelectric effect & experimental observations",
+      "page": 306,
+      "inShort": "Emission of electrons from a metal surface when light of frequency ν ≥ ν₀ (threshold frequency) is incident. Stopping potential V₀ measures K_max = e V₀. Photocurrent ∝ intensity; K_max depends only on frequency, not intensity.",
+      "sections": [
+        "14.2 The Photoelectric Effect",
+        "14.2.2 Experimental Observations",
+        "14.2.3 Failure of Wave Theory"
+      ]
+    },
+    {
+      "id": "s02",
+      "title": "Einstein's photoelectric equation & photocell",
+      "page": 311,
+      "inShort": "Light consists of photons of energy E = hν. Einstein's equation: hν = φ₀ + K_max = hν₀ + eV₀, where φ₀ = hν₀ is work function. Slope of V₀ vs ν graph is h/e.",
+      "sections": [
+        "14.2.4 Einstein's Postulate",
+        "14.3 Wave-Particle Duality of EM Radiation",
+        "14.4 Photo Cell"
+      ]
+    },
+    {
+      "id": "s03",
+      "title": "De Broglie hypothesis & Davisson-Germer experiment",
+      "page": 315,
+      "inShort": "Every moving particle has an associated matter wave of wavelength λ = h/p = h/(mv) = h/√(2mK). For electron accelerated through V volts: λ = 1.227 / √V nm. Davisson-Germer experiment verified electron diffraction.",
+      "sections": [
+        "14.5 De Broglie Hypothesis",
+        "14.6 Davisson and Germer Experiment",
+        "14.7 Wave-Particle Duality of Matter"
+      ]
+    }
+  ],
+  "formulas": [
+    {
+      "stop": "s02",
+      "items": [
+        {
+          "n": "Einstein's photoelectric equation",
+          "f": "h ν = φ₀ + K_max = h ν₀ + e V₀",
+          "s": "φ₀ = h ν₀ = h c / λ₀ is work function.",
+          "p": 312
+        }
+      ]
+    },
+    {
+      "stop": "s03",
+      "items": [
+        {
+          "n": "De Broglie wavelength",
+          "f": "λ = h / p = h / √(2 m K) = 1.227 / √V nm (electron)",
+          "s": "For same KE, λ ∝ 1/√m.",
+          "p": 316
+        }
+      ]
+    }
+  ],
+  "board": [
+    {
+      "id": "p14-2025-Q1vi",
+      "stop": "s03",
+      "year": 2025,
+      "qno": "Q1(vi)",
+      "marks": 1,
+      "kind": "mcq",
+      "page": 316,
+      "text": "An electron, a proton, an α-particle and a hydrogen atom are moving with the same kinetic energy. The associated de-Broglie wavelength will be longest for ____.",
+      "options": [
+        "proton",
+        "electron",
+        "hydrogen atom",
+        "α-particle"
+      ],
+      "answerIndex": 1,
+      "answer": "(b) electron (since λ = h/√(2mK) ⇒ λ ∝ 1/√m, and electron has the smallest mass).",
+      "points": [
+        {
+          "text": "Correct option: (b) electron",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "p14-imp-s02-ein",
+      "stop": "s02",
+      "source": "Important · Balbharati",
+      "marks": 3,
+      "kind": "theory",
+      "page": 312,
+      "text": "State Einstein's photoelectric equation and explain any two characteristics of photoelectric effect on its basis.",
+      "answer": "Einstein's photoelectric equation: hν = φ₀ + K_max = hν₀ + ½ m v_max².\n1. Threshold frequency: If ν < ν₀, K_max becomes negative, which is impossible; hence no photoemission occurs below ν₀ regardless of intensity.\n2. Instantaneous emission: A single photon transfers its entire energy hν to one electron in a single elastic-like collision, so emission occurs without time lag.",
+      "points": [
+        {
+          "text": "Statement of Einstein's equation hν = φ₀ + K_max",
+          "marks": 1
+        },
+        {
+          "text": "Explanation of threshold frequency",
+          "marks": 1
+        },
+        {
+          "text": "Explanation of instantaneous emission or linear K_max vs ν",
+          "marks": 1
+        }
+      ]
+    }
+  ]
+}

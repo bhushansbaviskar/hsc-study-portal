@@ -206,7 +206,11 @@
           "estStops": 14,
           "marks": 4,
           "marksWithOptions": 5,
-          "prefix": "p11-"
+          "prefix": "p11-",
+          "file": "content/physics/ch11-magnetic-materials.json",
+          "lite": true,
+          "stopCount": 3,
+          "boardCount": 3
         },
         {
           "id": "ch12",
@@ -215,7 +219,11 @@
           "estStops": 14,
           "marks": 5,
           "marksWithOptions": 7,
-          "prefix": "p12-"
+          "prefix": "p12-",
+          "file": "content/physics/ch12-electromagnetic-induction.json",
+          "lite": true,
+          "stopCount": 4,
+          "boardCount": 5
         },
         {
           "id": "ch13",
@@ -224,7 +232,11 @@
           "estStops": 14,
           "marks": 4,
           "marksWithOptions": 6,
-          "prefix": "p13-"
+          "prefix": "p13-",
+          "file": "content/physics/ch13-ac-circuits.json",
+          "lite": true,
+          "stopCount": 4,
+          "boardCount": 3
         },
         {
           "id": "ch14",
@@ -233,7 +245,11 @@
           "estStops": 14,
           "marks": 4,
           "marksWithOptions": 5,
-          "prefix": "p14-"
+          "prefix": "p14-",
+          "file": "content/physics/ch14-dual-nature-of-radiation-and-matter.json",
+          "lite": true,
+          "stopCount": 3,
+          "boardCount": 2
         },
         {
           "id": "ch15",
@@ -242,7 +258,11 @@
           "estStops": 14,
           "marks": 4,
           "marksWithOptions": 6,
-          "prefix": "p15-"
+          "prefix": "p15-",
+          "file": "content/physics/ch15-structure-of-atoms-and-nuclei.json",
+          "lite": true,
+          "stopCount": 3,
+          "boardCount": 3
         },
         {
           "id": "ch16",
@@ -251,7 +271,11 @@
           "estStops": 14,
           "marks": 4,
           "marksWithOptions": 5,
-          "prefix": "p16-"
+          "prefix": "p16-",
+          "file": "content/physics/ch16-semiconductor-devices.json",
+          "lite": true,
+          "stopCount": 4,
+          "boardCount": 3
         }
       ]
     },
@@ -278,7 +302,11 @@
           "estStops": 12,
           "marks": 4,
           "marksWithOptions": 6,
-          "prefix": "c2-"
+          "prefix": "c2-",
+          "file": "content/chemistry/ch02-solutions.json",
+          "lite": true,
+          "stopCount": 4,
+          "boardCount": 6
         },
         {
           "id": "ch03",
@@ -287,7 +315,11 @@
           "estStops": 12,
           "marks": 4,
           "marksWithOptions": 6,
-          "prefix": "c3-"
+          "prefix": "c3-",
+          "file": "content/chemistry/ch03-ionic-equilibria.json",
+          "lite": true,
+          "stopCount": 4,
+          "boardCount": 5
         },
         {
           "id": "ch04",
@@ -296,7 +328,11 @@
           "estStops": 12,
           "marks": 6,
           "marksWithOptions": 8,
-          "prefix": "c4-"
+          "prefix": "c4-",
+          "file": "content/chemistry/ch04-chemical-thermodynamics.json",
+          "lite": true,
+          "stopCount": 4,
+          "boardCount": 5
         },
         {
           "id": "ch05",
@@ -305,7 +341,11 @@
           "estStops": 12,
           "marks": 5,
           "marksWithOptions": 7,
-          "prefix": "c5-"
+          "prefix": "c5-",
+          "file": "content/chemistry/ch05-electrochemistry.json",
+          "lite": true,
+          "stopCount": 4,
+          "boardCount": 6
         },
         {
           "id": "ch06",

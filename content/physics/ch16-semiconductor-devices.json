@@ -1,0 +1,151 @@
+{
+  "id": "ch16",
+  "file": "content/physics/ch16-semiconductor-devices.json",
+  "subject": "physics",
+  "book": "xii",
+  "title": "Semiconductor Devices",
+  "lite": true,
+  "startPage": 344,
+  "endPage": 364,
+  "examMarks": 4,
+  "examMarksWithOptions": 5,
+  "stops": [
+    {
+      "id": "s01",
+      "title": "p-n junction rectifier & filter circuits",
+      "page": 344,
+      "inShort": "Half-wave rectifier uses 1 diode (ripple freq = f_in); full-wave / bridge rectifier uses 2 or 4 diodes (ripple freq = 2 f_in). Capacitor filter smooths pulsating DC.",
+      "sections": [
+        "16.2 p-n Junction Diode as a Rectifier",
+        "16.2.1 Half Wave Rectifier",
+        "16.2.2 Full Wave Rectifier",
+        "16.2.4 Filter Circuits"
+      ]
+    },
+    {
+      "id": "s02",
+      "title": "Special purpose diodes (Zener, Photodiode, Solar cell, LED)",
+      "page": 349,
+      "inShort": "Zener diode operates in reverse breakdown as a voltage regulator. Photodiode (reverse biased) detects light. Solar cell generates emf from light. LED (forward biased) emits light via recombination.",
+      "sections": [
+        "16.3 Special Purpose Junction Diodes",
+        "16.3.1 Zener Diode",
+        "16.3.2 Photo Diode",
+        "16.3.3 Solar Cell",
+        "16.3.4 LED"
+      ]
+    },
+    {
+      "id": "s03",
+      "title": "Bipolar Junction Transistor (BJT) & amplifier",
+      "page": 354,
+      "inShort": "Emitter current I_E = I_B + I_C. Current gains: α_dc = I_C/I_E (< 1), β_dc = I_C/I_B (>> 1), relation β = α/(1 − α). CE amplifier provides 180° phase reversal and high voltage/power gain.",
+      "sections": [
+        "16.4 Bipolar Junction Transistor",
+        "16.4.2 CE Characteristics",
+        "16.4.3 Transistor as an Amplifier"
+      ]
+    },
+    {
+      "id": "s04",
+      "title": "Logic gates (NOT, OR, AND, NAND, NOR, X-OR)",
+      "page": 359,
+      "inShort": "AND: Y = A·B (high only when both inputs are high). OR: Y = A+B. NOT: Y = Ā. NAND and NOR are universal gates. X-OR: Y = A⊕B.",
+      "sections": [
+        "16.5 Logic Gates"
+      ]
+    }
+  ],
+  "formulas": [
+    {
+      "stop": "s03",
+      "items": [
+        {
+          "n": "BJT current & gain relations",
+          "f": "I_E = I_B + I_C,  β = α / (1 − α),  α = β / (1 + β)",
+          "s": "α = I_C/I_E, β = I_C/I_B.",
+          "p": 355
+        }
+      ]
+    },
+    {
+      "stop": "s04",
+      "items": [
+        {
+          "n": "Basic logic gate Boolean expressions",
+          "f": "AND: Y=A·B,  OR: Y=A+B,  NAND: Y=!(A·B),  NOR: Y=!(A+B)",
+          "s": "NAND and NOR are universal gates.",
+          "p": 360
+        }
+      ]
+    }
+  ],
+  "board": [
+    {
+      "id": "p16-2025-Q1vii",
+      "stop": "s04",
+      "year": 2025,
+      "qno": "Q1(vii)",
+      "marks": 1,
+      "kind": "mcq",
+      "page": 360,
+      "text": "The gate which produces high output, when its both inputs are high is ____.",
+      "options": [
+        "X-OR gate",
+        "AND gate",
+        "NAND gate",
+        "NOR gate"
+      ],
+      "answerIndex": 1,
+      "answer": "(b) AND gate (Y = A · B = 1 only when A = 1 and B = 1).",
+      "points": [
+        {
+          "text": "Correct option: (b) AND gate",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "p16-2025-Q7",
+      "stop": "s02",
+      "year": 2025,
+      "qno": "Q7",
+      "marks": 2,
+      "kind": "theory",
+      "page": 353,
+      "text": "State any four advantages of light emitting diode (LED).",
+      "answer": "1. Energy efficient (consumes very low power).\n2. Long operational lifetime.\n3. Fast switching (instantaneous on/off).\n4. Compact size, ruggedness, and available in many colours.",
+      "points": [
+        {
+          "text": "Any two advantages (low power, long life)",
+          "marks": 1
+        },
+        {
+          "text": "Any two more advantages (fast switching, compact/rugged)",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "p16-2025-Q12",
+      "stop": "s01",
+      "year": 2025,
+      "qno": "Q12",
+      "marks": 2,
+      "kind": "diagram",
+      "page": 346,
+      "text": "Draw a neat and labelled circuit diagram for a full wave rectifier.",
+      "answer": "Circuit consists of: (1) Step-down centre-tapped transformer (primary connected to AC mains, secondary with centre tap CT), (2) Two p-n junction diodes D₁ and D₂ connected to the two ends of secondary, (3) Load resistor R_L connected between common cathode junction and centre tap CT.",
+      "points": [
+        {
+          "text": "Centre-tapped transformer and two diodes D₁, D₂",
+          "marks": 1
+        },
+        {
+          "text": "Correct polarity and load resistor R_L labelling",
+          "marks": 1
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,155 @@
+{
+  "id": "ch15",
+  "file": "content/physics/ch15-structure-of-atoms-and-nuclei.json",
+  "subject": "physics",
+  "book": "xii",
+  "title": "Structure of Atoms and Nuclei",
+  "lite": true,
+  "startPage": 324,
+  "endPage": 343,
+  "examMarks": 4,
+  "examMarksWithOptions": 6,
+  "stops": [
+    {
+      "id": "s01",
+      "title": "Rutherford model & Bohr's atomic model",
+      "page": 324,
+      "inShort": "Bohr's postulates: quantized angular momentum L = nh/(2π); radiation emitted/absorbed when jumping between stationary orbits: hν = E_i − E_f. Radius r_n ∝ n²/Z; velocity v_n ∝ Z/n; energy E_n = −13.6 Z²/n² eV.",
+      "sections": [
+        "15.3 Geiger-Marsden Experiment",
+        "15.4 Rutherford Model",
+        "15.6 Bohr's Atomic Model"
+      ]
+    },
+    {
+      "id": "s02",
+      "title": "Hydrogen spectrum & de Broglie's explanation",
+      "page": 330,
+      "inShort": "Rydberg formula: 1/λ = R (1/n_f² − 1/n_i²), R = 1.097 × 10⁷ m⁻¹. Series: Lyman (UV, n_f=1), Balmer (Visible, n_f=2), Paschen (IR, n_f=3). Standing electron waves: 2π r_n = n λ.",
+      "sections": [
+        "15.5 Atomic Spectra",
+        "15.6.3 Hydrogen Spectrum",
+        "15.6.4 De Broglie's Explanation"
+      ]
+    },
+    {
+      "id": "s03",
+      "title": "Nuclear size, mass defect, binding energy & radioactivity",
+      "page": 333,
+      "inShort": "Nuclear radius R = R₀ A^(1/3) (R₀ ≈ 1.2 fm). Binding energy ΔE_b = Δm c². Law of radioactive decay: N = N₀ e^(−λt); half-life T_½ = 0.693/λ; activity A = λN (1 Bq = 1 decay/s).",
+      "sections": [
+        "15.7 Nucleus & Binding Energy",
+        "15.9 Radioactive Decays",
+        "15.10 Law of Radioactive Decay"
+      ]
+    }
+  ],
+  "formulas": [
+    {
+      "stop": "s01",
+      "items": [
+        {
+          "n": "Bohr orbit radius & energy (H)",
+          "f": "r_n = 0.529 n² Å,  E_n = −13.6 / n² eV",
+          "s": "L = n h / (2π).",
+          "p": 328
+        }
+      ]
+    },
+    {
+      "stop": "s02",
+      "items": [
+        {
+          "n": "Rydberg formula",
+          "f": "1/λ = R (1/n_f² − 1/n_i²)",
+          "s": "R = 1.097 × 10⁷ m⁻¹.",
+          "p": 331
+        }
+      ]
+    },
+    {
+      "stop": "s03",
+      "items": [
+        {
+          "n": "Radioactive decay & half-life",
+          "f": "N = N₀ e^(−λt),  T_½ = 0.693 / λ,  τ = 1 / λ",
+          "s": "1 Bq = 1 disintegration/second.",
+          "p": 339
+        }
+      ]
+    }
+  ],
+  "board": [
+    {
+      "id": "p15-2025-Q18",
+      "stop": "s03",
+      "year": 2025,
+      "qno": "Q18",
+      "marks": 3,
+      "kind": "derivation",
+      "page": 339,
+      "text": "Derive an expression for law of radioactive decay. Define one becquerel (Bq).",
+      "answer": "By the law of radioactive decay, the rate of decay (−dN/dt) at any instant is directly proportional to the number of undecayed nuclei N present at that instant:\n−dN/dt = λ N ⇒ dN/N = −λ dt.\nIntegrating from t = 0 (N = N₀) to t (N = N): ln(N/N₀) = −λt ⇒ N = N₀ e^(−λt).\nOne becquerel (1 Bq): Activity of a radioactive sample is 1 Bq if 1 nucleus decays per second.",
+      "points": [
+        {
+          "text": "Differential equation −dN/dt = λN",
+          "marks": 1
+        },
+        {
+          "text": "Integration giving N = N₀ e^(−λt)",
+          "marks": 1
+        },
+        {
+          "text": "Definition of 1 Bq = 1 decay per second",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "p15-2025-Q22",
+      "stop": "s01",
+      "year": 2025,
+      "qno": "Q22",
+      "marks": 3,
+      "kind": "numerical",
+      "page": 328,
+      "text": "An electron in hydrogen atom stays in its second orbit for 10⁻⁸ s. How many revolutions will it make around the nucleus in that time? [e = 1.6 × 10⁻¹⁹ C, m = 9.1 × 10⁻³¹ kg, ε₀ = 8.85 × 10⁻¹² C²/Nm², h = 6.63 × 10⁻³⁴ J·s]",
+      "answer": "For n = 2 in H-atom: r₂ = 4 r₁ = 4 × 0.53 × 10⁻¹⁰ m = 2.12 × 10⁻¹⁰ m.\nv₂ = v₁ / 2 = 2.18 × 10⁶ / 2 = 1.09 × 10⁶ m/s.\nTime period T₂ = 2π r₂ / v₂ = (2 × 3.142 × 2.12 × 10⁻¹⁰) / (1.09 × 10⁶) = 1.222 × 10⁻¹⁵ s.\nNumber of revolutions N = t / T₂ = 10⁻⁸ / (1.222 × 10⁻¹⁵) ≈ 8.18 × 10⁶ revolutions.",
+      "points": [
+        {
+          "text": "Radius r₂ and speed v₂ in second Bohr orbit",
+          "marks": 1
+        },
+        {
+          "text": "Time period T₂ = 2πr₂/v₂ ≈ 1.22 × 10⁻¹⁵ s",
+          "marks": 1
+        },
+        {
+          "text": "Number of revolutions N = t/T₂ ≈ 8.18 × 10⁶",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "p15-2022-Q14",
+      "stop": "s03",
+      "year": 2022,
+      "qno": "Q14",
+      "marks": 2,
+      "kind": "numerical",
+      "page": 340,
+      "text": "Disintegration rate of a radio-active sample is 10¹⁰ per hour at 20 hours from the start. It reduces to 5 × 10⁹ per hour after 30 hours. Calculate the decay constant.",
+      "answer": "Activity A₁ = 10¹⁰ /hr at t₁ = 20 hr; A₂ = 5 × 10⁹ /hr at t₂ = 30 hr.\nSince A₂ = A₁ / 2, the half-life T_½ = t₂ − t₁ = 30 − 20 = 10 hours.\nDecay constant λ = 0.693 / T_½ = 0.693 / 10 = 0.0693 hr⁻¹ (or 1.925 × 10⁻⁵ s⁻¹).",
+      "points": [
+        {
+          "text": "Identifying half-life T_½ = 10 hours (activity halves)",
+          "marks": 1
+        },
+        {
+          "text": "Decay constant λ = 0.693/10 = 0.0693 hr⁻¹",
+          "marks": 1
+        }
+      ]
+    }
+  ]
+}

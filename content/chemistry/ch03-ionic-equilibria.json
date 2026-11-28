@@ -1,0 +1,213 @@
+{
+  "id": "ch03",
+  "file": "content/chemistry/ch03-ionic-equilibria.json",
+  "subject": "chemistry",
+  "book": "chem_xii",
+  "title": "Ionic Equilibria",
+  "lite": true,
+  "startPage": 47,
+  "endPage": 62,
+  "examMarks": 4,
+  "examMarksWithOptions": 6,
+  "stops": [
+    {
+      "id": "s01",
+      "title": "Electrolytes, Acids-Bases & Ostwald's dilution law",
+      "page": 47,
+      "inShort": "Bronsted-Lowry: acid = H⁺ donor, base = H⁺ acceptor (conjugate acid-base pair differs by one H⁺). Lewis: acid = e⁻ pair acceptor, base = e⁻ pair donor. Ostwald's dilution law for weak acid/base: K_a = α² c / (1 − α) ≈ α² c ⇒ α = √(K_a / c).",
+      "sections": [
+        "3.2 Types of Electrolyte",
+        "3.3 Acids and Bases",
+        "3.4.2 Ostwald's Dilution Law"
+      ]
+    },
+    {
+      "id": "s02",
+      "title": "Autoionization of water, pH & pOH",
+      "page": 51,
+      "inShort": "Ionic product of water K_w = [H₃O⁺][OH⁻] = 1 × 10⁻¹⁴ at 298 K. pH = −log₁₀[H₃O⁺], pOH = −log₁₀[OH⁻], and pH + pOH = 14.",
+      "sections": [
+        "3.5 Autoionization of Water",
+        "3.6 pH Scale",
+        "3.6.1 Relationship between pH and pOH"
+      ]
+    },
+    {
+      "id": "s03",
+      "title": "Hydrolysis of salts & Buffer solutions",
+      "page": 53,
+      "inShort": "Strong acid + strong base salt: neutral (pH 7); weak acid + strong base: basic (pH > 7); strong acid + weak base: acidic (pH < 7). Buffers resist pH change on small acid/base addition (e.g. CH₃COOH + CH₃COONa).",
+      "sections": [
+        "3.7 Hydrolysis of Salts",
+        "3.8 Buffer Solutions",
+        "3.8.2 Buffer Action"
+      ]
+    },
+    {
+      "id": "s04",
+      "title": "Solubility product & Common ion effect",
+      "page": 58,
+      "inShort": "For A_x B_y(s) ⇌ x A^(y+) + y B^(x−), K_sp = x^x y^y S^(x+y). Precipitation occurs when Ionic Product (IP) > K_sp. Common ion effect suppresses ionization of weak electrolyte.",
+      "sections": [
+        "3.9 Solubility Product",
+        "3.10 Common Ion Effect"
+      ]
+    }
+  ],
+  "formulas": [
+    {
+      "stop": "s01",
+      "items": [
+        {
+          "n": "Ostwald's dilution law",
+          "f": "α = √(K_a / c) = √(K_a · V)",
+          "s": "Valid for weak electrolytes (α << 1).",
+          "p": 50
+        }
+      ]
+    },
+    {
+      "stop": "s02",
+      "items": [
+        {
+          "n": "pH and pOH relation",
+          "f": "pH = −log₁₀[H₃O⁺],  pH + pOH = 14 (at 298 K)",
+          "s": "K_w = [H₃O⁺][OH⁻] = 10⁻¹⁴.",
+          "p": 52
+        }
+      ]
+    },
+    {
+      "stop": "s04",
+      "items": [
+        {
+          "n": "Solubility product",
+          "f": "K_sp = x^x y^y S^(x+y)",
+          "s": "Precipitation occurs if IP > K_sp.",
+          "p": 59
+        }
+      ]
+    }
+  ],
+  "board": [
+    {
+      "id": "c3-2025-Q1vii",
+      "stop": "s01",
+      "year": 2025,
+      "qno": "Q1(vii)",
+      "marks": 1,
+      "kind": "mcq",
+      "page": 50,
+      "text": "Which formula co-relates degree of dissociation and concentration of electrolyte?",
+      "options": [
+        "c = √(Ka/α)",
+        "α = √(Ka/c)",
+        "c = √(Ka·α)",
+        "c = √(α/Ka)"
+      ],
+      "answerIndex": 1,
+      "answer": "(b) α = √(K_a / c).",
+      "points": [
+        {
+          "text": "Correct option: (b) α = √(Ka/c)",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "c3-2025-Q16",
+      "stop": "s02",
+      "year": 2025,
+      "qno": "Q16",
+      "marks": 3,
+      "kind": "numerical",
+      "page": 52,
+      "text": "Define conjugate acid-base pair. The hydroxyl ion concentration in aqueous solution of NaOH is 2 × 10⁻⁴ mol dm⁻³. Calculate pH of the solution.",
+      "answer": "Conjugate acid-base pair: A pair of an acid and a base differing by a single proton (H⁺).\nGiven: [OH⁻] = 2 × 10⁻⁴ M.\npOH = −log₁₀(2 × 10⁻⁴) = 4 − log₁₀(2) = 4 − 0.3010 = 3.699.\npH = 14 − pOH = 14 − 3.699 = 10.301.",
+      "points": [
+        {
+          "text": "Definition of conjugate acid-base pair",
+          "marks": 1
+        },
+        {
+          "text": "pOH = 3.699",
+          "marks": 1
+        },
+        {
+          "text": "pH = 14 − pOH = 10.301",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "c3-2024-Q1iv",
+      "stop": "s02",
+      "year": 2024,
+      "qno": "Q1(iv)",
+      "marks": 1,
+      "kind": "mcq",
+      "page": 52,
+      "text": "The pH of 0.001 M HCl solution is ____.",
+      "options": [
+        "10",
+        "3",
+        "2",
+        "11"
+      ],
+      "answerIndex": 1,
+      "answer": "(b) 3 ([H⁺] = 10⁻³ M ⇒ pH = −log₁₀(10⁻³) = 3).",
+      "points": [
+        {
+          "text": "Correct option: (b) 3",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "c3-2024-Q9",
+      "stop": "s03",
+      "year": 2024,
+      "qno": "Q9",
+      "marks": 2,
+      "kind": "theory",
+      "page": 56,
+      "text": "Explain buffer action of sodium acetate-acetic acid buffer.",
+      "answer": "Sodium acetate-acetic acid buffer contains large reservoirs of undissociated CH₃COOH and CH₃COO⁻ ions.\n1. On adding a small amount of acid (H⁺): CH₃COO⁻ + H⁺ → CH₃COOH (added H⁺ is removed, pH remains constant).\n2. On adding a small amount of base (OH⁻): CH₃COOH + OH⁻ → CH₃COO⁻ + H₂O (added OH⁻ is neutralized, pH remains constant).",
+      "points": [
+        {
+          "text": "Reaction on addition of small acid (CH₃COO⁻ + H⁺ → CH₃COOH)",
+          "marks": 1
+        },
+        {
+          "text": "Reaction on addition of small base (CH₃COOH + OH⁻ → CH₃COO⁻ + H₂O)",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "c3-2024-Q25",
+      "stop": "s02",
+      "year": 2024,
+      "qno": "Q25",
+      "marks": 3,
+      "kind": "derivation",
+      "page": 52,
+      "text": "Define acids and bases according to Bronsted-Lowry theory. Derive relationship between pH and pOH.",
+      "answer": "Bronsted-Lowry: Acid is a proton (H⁺) donor; Base is a proton (H⁺) acceptor.\nDerivation: Ionic product of water at 298 K is K_w = [H₃O⁺][OH⁻] = 1 × 10⁻¹⁴.\nTaking −log₁₀ on both sides:\n−log₁₀[H₃O⁺] − log₁₀[OH⁻] = −log₁₀(10⁻¹⁴)\n⇒ pH + pOH = 14.",
+      "points": [
+        {
+          "text": "Bronsted-Lowry definitions of acid and base",
+          "marks": 1
+        },
+        {
+          "text": "K_w = [H₃O⁺][OH⁻] = 10⁻¹⁴",
+          "marks": 1
+        },
+        {
+          "text": "Taking −log₁₀ to get pH + pOH = 14",
+          "marks": 1
+        }
+      ]
+    }
+  ]
+}
