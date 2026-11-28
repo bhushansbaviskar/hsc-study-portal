@@ -897,7 +897,9 @@
           "text": "Calculation n ≈ 4 and identification: face-centred cubic (fcc / ccp) unit cell",
           "marks": 1
         }
-      ]
+      ],
+      "page": 8,
+      "kind": "numerical"
     },
     {
       "id": "c1-2025-Q30a",
@@ -916,7 +918,9 @@
           "text": "Colour shown by NaCl crystal due to F-centre: yellow colour",
           "marks": 1
         }
-      ]
+      ],
+      "page": 4,
+      "kind": "define"
     },
     {
       "id": "c1-2025-Q1i",
@@ -924,7 +928,7 @@
       "qno": "Q1(i)",
       "marks": 1,
       "stop": "s09",
-      "kind": "MCQ",
+      "kind": "mcq",
       "text": "Schottky defect is NOT observed in _____.",
       "options": [
         "(a) NaCl",
@@ -938,7 +942,8 @@
           "text": "Correct option (d) NiO",
           "marks": 1
         }
-      ]
+      ],
+      "page": 16
     },
     {
       "id": "c1-2024-Q14",
@@ -946,7 +951,7 @@
       "qno": "Q14",
       "marks": 2,
       "stop": "s05",
-      "kind": "Derivation",
+      "kind": "derivation",
       "text": "Derive the relationship between molar mass, density of the substance and unit cell edge length.",
       "answer": "Let the edge length of a cubic unit cell be a, so its volume is a³. If the mass of one particle is m and there are n particles per unit cell, mass of the unit cell = m × n, and density ρ = (mass of unit cell) / (volume of unit cell) = (m × n) / a³. Molar mass M = m × N_{A}, so m = M / N_{A}. Substituting m gives ρ = nM / (a³ N_{A}).",
       "points": [
@@ -958,7 +963,8 @@
           "text": "Substitute m = M / N_{A} to obtain ρ = nM / (a³ N_{A})",
           "marks": 1
         }
-      ]
+      ],
+      "page": 8
     },
     {
       "id": "c1-2024-Q29",
@@ -977,7 +983,9 @@
           "text": "Calculation n ≈ 4 and prediction: face-centred cubic (fcc) lattice",
           "marks": 1
         }
-      ]
+      ],
+      "page": 8,
+      "kind": "numerical"
     },
     {
       "id": "c1-2024-Q1vi",
@@ -985,7 +993,7 @@
       "qno": "Q1(vi)",
       "marks": 1,
       "stop": "s04",
-      "kind": "MCQ",
+      "kind": "mcq",
       "text": "The number of particles present in Face Centred Cubic Unit Cell is/are _____.",
       "options": [
         "(a) 1",
@@ -999,7 +1007,8 @@
           "text": "Correct option (d) 4",
           "marks": 1
         }
-      ]
+      ],
+      "page": 6
     },
     {
       "id": "c1-2023-Q6",
@@ -1018,7 +1027,9 @@
           "text": "(b) Interstitial impurity defect: foreign atoms occupy interstitial spaces in the lattice, with example (e.g. C atoms in Fe lattice of steel)",
           "marks": 1
         }
-      ]
+      ],
+      "page": 16,
+      "kind": "theory"
     },
     {
       "id": "c1-2023-Q29",
@@ -1037,7 +1048,9 @@
           "text": "Final answer 11.21 g cm^{-3} with correct unit",
           "marks": 1
         }
-      ]
+      ],
+      "page": 8,
+      "kind": "numerical"
     },
     {
       "id": "c1-2023-Q1i",
@@ -1045,7 +1058,7 @@
       "qno": "Q1(i)",
       "marks": 1,
       "stop": "s07",
-      "kind": "MCQ",
+      "kind": "mcq",
       "text": "The relation between radius of sphere and edge length in body centered cubic lattice is given by formula:",
       "options": [
         "(a) √3 r = 4a",
@@ -1059,7 +1072,8 @@
           "text": "Correct option (c) r = (√3 / 4) a",
           "marks": 1
         }
-      ]
+      ],
+      "page": 11
     },
     {
       "id": "c1-2022-Q4",
@@ -1078,7 +1092,9 @@
           "text": "Electrical neutrality is preserved because equal numbers of cations and anions are missing",
           "marks": 1
         }
-      ]
+      ],
+      "page": 16,
+      "kind": "theory"
     },
     {
       "id": "c1-2022-Q27",
@@ -1097,7 +1113,9 @@
           "text": "Final answer 19.27 g cm^{-3} with correct unit",
           "marks": 1
         }
-      ]
+      ],
+      "page": 8,
+      "kind": "numerical"
     },
     {
       "id": "c1-2022-Q30",
@@ -1116,7 +1134,9 @@
           "text": "Example: in NiO, one missing Ni^{2+} is balanced by two Ni^{3+} ions, yielding Ni_{0.97}O_{1.0}",
           "marks": 1
         }
-      ]
+      ],
+      "page": 16,
+      "kind": "theory"
     },
     {
       "id": "c1-2022-Q1i",
@@ -1124,7 +1144,7 @@
       "qno": "Q1(i)",
       "marks": 1,
       "stop": "s06",
-      "kind": "MCQ",
+      "kind": "mcq",
       "text": "The co-ordination number of atoms in body centred cubic structure (bcc) is _____.",
       "options": [
         "(a) 4",
@@ -1138,14 +1158,15 @@
           "text": "Correct option (c) 8",
           "marks": 1
         }
-      ]
+      ],
+      "page": 8
     },
     {
       "id": "c1-imp-s01-cryst",
       "stop": "s01",
       "source": "Important · Balbharati",
       "marks": 2,
-      "kind": "Distinguish",
+      "kind": "distinguish",
       "text": "Distinguish between crystalline solids and amorphous solids (any four points).",
       "answer": "1. Particle arrangement: Crystalline solids have a regular, periodic long-range order; amorphous solids have random arrangement with only short-range order. 2. Melting point: Crystalline solids melt at a sharp, definite temperature; amorphous solids soften and melt gradually over a temperature range. 3. Isotropy: Crystalline solids (except cubic) are anisotropic; amorphous solids are isotropic. 4. Nature & examples: Crystalline solids are true solids (NaCl, diamond, Cu); amorphous solids are supercooled liquids (glass, plastic, rubber).",
       "points": [
@@ -1157,14 +1178,44 @@
           "text": "Isotropy & nature/examples: anisotropic true solids like NaCl/diamond vs isotropic supercooled liquids like glass/rubber",
           "marks": 1
         }
-      ]
+      ],
+      "page": 1,
+      "table": {
+        "headers": [
+          "Property",
+          "Crystalline Solids",
+          "Amorphous Solids"
+        ],
+        "rows": [
+          [
+            "Particle arrangement",
+            "Regular, periodic long-range order",
+            "Random, short-range order only"
+          ],
+          [
+            "Melting point",
+            "Sharp and definite melting point",
+            "Melts gradually over a range of temperature"
+          ],
+          [
+            "Isotropy",
+            "Anisotropic (except cubic crystals)",
+            "Isotropic (same properties in all directions)"
+          ],
+          [
+            "Nature & Examples",
+            "True solids (NaCl, diamond, Cu)",
+            "Pseudo-solids / supercooled liquids (glass, rubber)"
+          ]
+        ]
+      }
     },
     {
       "id": "c1-imp-s02-ionic",
       "stop": "s02",
       "source": "Important · Balbharati",
       "marks": 2,
-      "kind": "Distinguish",
+      "kind": "distinguish",
       "text": "Distinguish between ionic solids and molecular solids.",
       "answer": "1. Constituent particles: Ionic solids consist of cations and anions; molecular solids consist of monoatomic or polyatomic molecules. 2. Interparticle forces: Ionic solids are held by strong electrostatic forces; molecular solids are held by weak London, dipole-dipole or hydrogen-bond forces. 3. Hardness & melting point: Ionic solids are hard, brittle and high-melting (600 °C–3000 °C); molecular solids are soft and low-melting (−272 °C to 400 °C). 4. Electrical conductivity: Ionic solids conduct electricity when molten or in aqueous solution (e.g. NaCl, CaF_{2}); molecular solids are poor conductors/insulators (e.g. ice, benzoic acid).",
       "points": [
@@ -1176,14 +1227,15 @@
           "text": "Properties & examples: hard, brittle, high m.p., conduct when molten/aqueous (NaCl) vs soft, low m.p., insulators (ice, CO_{2})",
           "marks": 1
         }
-      ]
+      ],
+      "page": 3
     },
     {
       "id": "c1-imp-s10-bands",
       "stop": "s10",
       "source": "Important · Balbharati",
       "marks": 3,
-      "kind": "Theory",
+      "kind": "theory",
       "text": "Distinguish between metallic conductors, insulators and semiconductors on the basis of band theory.",
       "answer": "1. Metallic conductors: Have a partially filled conduction band (e.g. 3s band in Na) or overlapping filled valence and empty conduction bands (e.g. 3s and 3p in Mg) with zero band gap; electrons move freely, giving high conductivity (10^{4}–10^{7} Ω^{-1}m^{-1}) that decreases on heating. 2. Insulators: Have a completely filled valence band and an empty conduction band separated by a large band gap (forbidden zone, e.g. diamond 5.47 eV); thermal energy cannot promote electrons, so conductivity is very low (10^{-20}–10^{-10} Ω^{-1}m^{-1}). 3. Semiconductors: Have a filled valence band and empty conduction band separated by a small band gap (Si 1.12 eV, Ge 0.67 eV); electrons thermally jump to the conduction band, giving intermediate conductivity (10^{-6}–10^{4} Ω^{-1}m^{-1}) that increases with temperature.",
       "points": [
@@ -1199,14 +1251,15 @@
           "text": "Semiconductors: small band gap (Si, Ge), electrons thermally promoted to conduction band, conductivity increases with temperature (10^{-6}–10^{4} Ω^{-1}m^{-1})",
           "marks": 1
         }
-      ]
+      ],
+      "page": 20
     },
     {
       "id": "c1-imp-s11-doping",
       "stop": "s11",
       "source": "Important · Balbharati",
       "marks": 3,
-      "kind": "Theory",
+      "kind": "theory",
       "text": "What are n-type and p-type semiconductors? Explain how doping pure silicon with phosphorus and with boron increases its conductivity.",
       "answer": "n-type semiconductor: Formed by doping a group-14 semiconductor (Si or Ge) with a group-15 element (P, As, Sb, Bi). Phosphorus has 5 valence electrons: 4 form covalent bonds with neighbouring Si atoms, and the 5th extra electron enters the conduction band and moves freely under an applied potential, raising conductivity. p-type semiconductor: Formed by doping Si or Ge with a group-13 element (B, Ga, In). Boron has only 3 valence electrons, forming 3 bonds with Si and leaving an electron vacancy (hole) in the valence band. Electrons move into adjacent holes under an applied field so holes act as mobile positive charge carriers, increasing conductivity while the crystal stays electrically neutral.",
       "points": [
@@ -1220,6 +1273,63 @@
         },
         {
           "text": "Conductivity rises due to extra conduction-band electrons (n-type) or valence-band holes (p-type), while overall electrical neutrality is maintained",
+          "marks": 1
+        }
+      ],
+      "page": 23
+    },
+    {
+      "id": "c1-imp-s05-4m",
+      "stop": "s05",
+      "source": "Important · Section D (4m)",
+      "marks": 4,
+      "kind": "derivation",
+      "page": 8,
+      "text": "(a) Define packing efficiency. (1)\n(b) Calculate the packing efficiency of a metal crystal that has simple cubic lattice structure and also write the relation between density and molar mass of a cubic unit cell. (3)",
+      "answer": "(a) Packing efficiency is the percentage of total space occupied by particles in a unit cell.\n(b) In simple cubic unit cell: 1 particle per unit cell, a = 2r.\nVolume of sphere = (4/3)πr³; Volume of unit cell = a³ = 8r³.\nPacking efficiency = [(4/3)πr³ / 8r³] × 100 = (π/6) × 100 = 52.36%.\nDensity relation: ρ = (n · M) / (a³ · N_A).",
+      "points": [
+        {
+          "text": "Definition of packing efficiency",
+          "marks": 1
+        },
+        {
+          "text": "Simple cubic: Z = 1 and edge length a = 2r",
+          "marks": 1
+        },
+        {
+          "text": "Packing efficiency calculation = (π/6) × 100 = 52.36%",
+          "marks": 1
+        },
+        {
+          "text": "Density formula ρ = (n·M)/(a³·N_A)",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "c1-imp-s09-4m",
+      "stop": "s09",
+      "source": "Important · Section D (4m)",
+      "marks": 4,
+      "kind": "theory",
+      "page": 16,
+      "text": "(a) What is a point defect in crystal? (1)\n(b) Distinguish between Schottky defect and Frenkel defect (any two points) and give one example of an ionic solid showing both defects. (3)",
+      "answer": "(a) A point defect is an irregularity or deviation from ideal arrangement around a point or an atom in a crystalline substance.\n(b) Schottky vs Frenkel: (1) Schottky arises due to equal number of missing cations and anions (vacancy defect); Frenkel arises when a smaller cation leaves its lattice site and occupies an interstitial site. (2) Schottky lowers density of the crystal; Frenkel keeps density unchanged.\nExample showing both defects: AgBr.",
+      "points": [
+        {
+          "text": "Definition of point defect",
+          "marks": 1
+        },
+        {
+          "text": "Vacancy vs interstitial origin of Schottky and Frenkel defects",
+          "marks": 1
+        },
+        {
+          "text": "Density decreases in Schottky vs unchanged in Frenkel",
+          "marks": 1
+        },
+        {
+          "text": "Example showing both defects: AgBr",
           "marks": 1
         }
       ]

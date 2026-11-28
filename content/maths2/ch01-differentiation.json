@@ -838,7 +838,7 @@
       "qno": "Q1(v)",
       "marks": 2,
       "stop": "s02",
-      "kind": "MCQ",
+      "kind": "mcq",
       "text": "Let f(1) = 3, f '(1) = −1/3, g(1) = −4 and g '(1) = −8/3. The derivative of √([f(x)]² + [g(x)]²) w.r.t. x at x = 1 is ______.",
       "options": [
         "(a) −29/15",
@@ -849,14 +849,11 @@
       "answer": "(d) 29/15. Let h(x) = √([f(x)]² + [g(x)]²). By the chain rule h '(x) = [f(x)f '(x) + g(x)g '(x)]/√([f(x)]² + [g(x)]²). At x = 1: numerator = 3(−1/3) + (−4)(−8/3) = −1 + 32/3 = 29/3; denominator = √(9 + 16) = 5. So h '(1) = (29/3)/5 = 29/15.",
       "points": [
         {
-          "text": "Chain rule: h '(x) = [f f ' + g g ']/√(f² + g²); substitute to get (29/3)/5",
-          "marks": 1
-        },
-        {
-          "text": "Write the correct option with letter: (d) 29/15",
-          "marks": 1
+          "text": "Chain rule: h '(x) = [f f ' + g g ']/√(f² + g²); substitute to get (29/3)/5; Write the correct option with letter: (d) 29/15",
+          "marks": 2
         }
-      ]
+      ],
+      "page": 4
     },
     {
       "id": "m2c1-2025-Q21",
@@ -879,7 +876,9 @@
           "text": "Conclude dⁿy/dxⁿ = (−1)^{n−1}(n − 1)!/xⁿ",
           "marks": 1
         }
-      ]
+      ],
+      "page": 56,
+      "kind": "numerical"
     },
     {
       "id": "m2c1-2025-Q31",
@@ -906,7 +905,9 @@
           "text": "Hence: du/dv = 7^{x} log 7/(7x⁶)",
           "marks": 1
         }
-      ]
+      ],
+      "page": 46,
+      "kind": "numerical"
     },
     {
       "id": "m2c1-2023-Q1v",
@@ -914,7 +915,7 @@
       "qno": "Q1(v)",
       "marks": 2,
       "stop": "s07",
-      "kind": "MCQ",
+      "kind": "mcq",
       "text": "If y is a function of x and log(x + y) = 2xy, then the value of y'(0) = ______.",
       "options": [
         "(a) 2",
@@ -925,14 +926,11 @@
       "answer": "(d) 1. At x = 0: log(0 + y) = 0 ⇒ y = 1. Differentiating implicitly: (1 + y')/(x + y) = 2y + 2xy'. At (0, 1): (1 + y')/1 = 2(1) + 0 ⇒ y'(0) = 1.",
       "points": [
         {
-          "text": "Find y = 1 at x = 0 and differentiate: (1 + y')/(x + y) = 2y + 2xy'",
-          "marks": 1
-        },
-        {
-          "text": "Substitute (0, 1) to get y'(0) = 1 and write option (d) 1",
-          "marks": 1
+          "text": "Find y = 1 at x = 0 and differentiate: (1 + y')/(x + y) = 2y + 2xy'; Substitute (0, 1) to get y'(0) = 1 and write option (d) 1",
+          "marks": 2
         }
-      ]
+      ],
+      "page": 34
     },
     {
       "id": "m2c1-2023-Q21",
@@ -955,7 +953,9 @@
           "text": "At x = 0, y = 1, so dy/dx = 1",
           "marks": 1
         }
-      ]
+      ],
+      "page": 36,
+      "kind": "numerical"
     },
     {
       "id": "m2c1-2023-Q31",
@@ -982,7 +982,9 @@
           "text": "Divide by 2·dy/dx and arrange to the required result",
           "marks": 1
         }
-      ]
+      ],
+      "page": 49,
+      "kind": "numerical"
     },
     {
       "id": "m2c1-2022-Q1v",
@@ -990,7 +992,7 @@
       "qno": "Q1(v)",
       "marks": 2,
       "stop": "s03",
-      "kind": "MCQ",
+      "kind": "mcq",
       "text": "If f(x) = x⁵ + 2x − 3, then (f^{−1})'(−3) = ______.",
       "options": [
         "(a) 0",
@@ -1001,14 +1003,11 @@
       "answer": "(d) 1/2. f '(x) = 5x⁴ + 2. f(x) = −3 ⇒ x⁵ + 2x = 0 ⇒ x = 0 (only real root). Hence (f^{−1})'(−3) = 1/f '(0) = 1/2.",
       "points": [
         {
-          "text": "Note f(0) = −3 and use (f^{−1})'(−3) = 1/f '(0) with f '(x) = 5x⁴ + 2",
-          "marks": 1
-        },
-        {
-          "text": "Write the correct option with letter: (d) 1/2",
-          "marks": 1
+          "text": "Note f(0) = −3 and use (f^{−1})'(−3) = 1/f '(0) with f '(x) = 5x⁴ + 2; Write the correct option with letter: (d) 1/2",
+          "marks": 2
         }
-      ]
+      ],
+      "page": 13
     },
     {
       "id": "m2c1-2022-Q21",
@@ -1031,7 +1030,9 @@
           "text": "Rearrange to (1 + x²)y₂ + (2x − m)y₁ = 0",
           "marks": 1
         }
-      ]
+      ],
+      "page": 49,
+      "kind": "numerical"
     },
     {
       "id": "m2c1-2022-Q31",
@@ -1058,14 +1059,16 @@
           "text": "Hence: dx/dt = cos t, dy/dt = −sin t, so dy/dx = −tan t",
           "marks": 1
         }
-      ]
+      ],
+      "page": 41,
+      "kind": "numerical"
     },
     {
       "id": "m2c1-imp-s01-table",
       "stop": "s01",
       "source": "Important · Balbharati",
       "marks": 4,
-      "kind": "Short answer",
+      "kind": "problem",
       "text": "A table of values is given — at x = 2: f = 1, g = 6, f ' = −3, g ' = 4; at x = 4: f = 3, g = 4, f ' = 5, g ' = −6; at x = 6: f = 5, g = 2, f ' = −4, g ' = 7. (i) If r(x) = f[g(x)], find r '(2). (ii) If R(x) = g[3 + f(x)], find R '(4). (iii) If s(x) = f[9 − f(x)], find s '(4). (iv) If S(x) = g[g(x)], find S '(6).",
       "answer": "(i) r '(x) = f '[g(x)]·g '(x) ⇒ r '(2) = f '(6)·g '(2) = (−4)(4) = −16. (ii) R '(x) = g '[3 + f(x)]·f '(x) ⇒ R '(4) = g '(3 + 3)·f '(4) = g '(6)·5 = 7 × 5 = 35. (iii) s '(x) = f '[9 − f(x)]·(−f '(x)) ⇒ s '(4) = f '(9 − 3)·(−5) = (−4)(−5) = 20. (iv) S '(x) = g '[g(x)]·g '(x) ⇒ S '(6) = g '(2)·g '(6) = 4 × 7 = 28.",
       "points": [
@@ -1085,14 +1088,15 @@
           "text": "(iv) S '(6) = g '(2)·g '(6) = 28",
           "marks": 1
         }
-      ]
+      ],
+      "page": 2
     },
     {
       "id": "m2c1-imp-s04-tancot",
       "stop": "s04",
       "source": "Important · Balbharati",
       "marks": 2,
-      "kind": "Proof",
+      "kind": "proof",
       "text": "Using derivative, prove that tan^{−1}x + cot^{−1}x = π/2.",
       "answer": "Let f(x) = tan^{−1}x + cot^{−1}x. Then f '(x) = 1/(1 + x²) − 1/(1 + x²) = 0 for all x ∈ R, so f(x) is a constant, say c. Putting x = 0: c = f(0) = tan^{−1}0 + cot^{−1}0 = 0 + π/2 = π/2. Hence tan^{−1}x + cot^{−1}x = π/2.",
       "points": [
@@ -1104,14 +1108,15 @@
           "text": "Evaluate at x = 0 to get the constant π/2",
           "marks": 1
         }
-      ]
+      ],
+      "page": 17
     },
     {
       "id": "m2c1-imp-s04-secmcq",
       "stop": "s04",
       "source": "Important · Balbharati",
       "marks": 2,
-      "kind": "MCQ",
+      "kind": "mcq",
       "text": "If y = sec(tan^{−1}x), then dy/dx at x = 1 is equal to:",
       "options": [
         "(a) 1/2",
@@ -1122,21 +1127,18 @@
       "answer": "(c) 1/√2. dy/dx = sec(tan^{−1}x)·tan(tan^{−1}x)·1/(1 + x²) = sec(tan^{−1}x)·x/(1 + x²). At x = 1: sec(π/4)·1/2 = √2/2 = 1/√2. (Alternatively y = √(1 + x²), so dy/dx = x/√(1 + x²) = 1/√2 at x = 1.)",
       "points": [
         {
-          "text": "Differentiate with the chain rule and substitute x = 1: sec(π/4)·(1/2)",
-          "marks": 1
-        },
-        {
-          "text": "Write the correct option with letter: (c) 1/√2",
-          "marks": 1
+          "text": "Differentiate with the chain rule and substitute x = 1: sec(π/4)·(1/2); Write the correct option with letter: (c) 1/√2",
+          "marks": 2
         }
-      ]
+      ],
+      "page": 17
     },
     {
       "id": "m2c1-imp-s05-subst",
       "stop": "s05",
       "source": "Important · Balbharati",
       "marks": 3,
-      "kind": "Short answer",
+      "kind": "problem",
       "text": "Differentiate sin^{−1}(2x√(1 − x²)) w.r.t. x, for |x| < 1/√2.",
       "answer": "Let y = sin^{−1}(2x√(1 − x²)). Put x = sin θ, so θ = sin^{−1}x; since |x| < 1/√2, −π/4 < θ < π/4 and −π/2 < 2θ < π/2. Then 2x√(1 − x²) = 2 sin θ cos θ = sin 2θ, so y = sin^{−1}(sin 2θ) = 2θ = 2 sin^{−1}x. Differentiating: dy/dx = 2/√(1 − x²).",
       "points": [
@@ -1152,14 +1154,15 @@
           "text": "Differentiate: dy/dx = 2/√(1 − x²)",
           "marks": 1
         }
-      ]
+      ],
+      "page": 20
     },
     {
       "id": "m2c1-imp-s06-xtanx",
       "stop": "s06",
       "source": "Important · Balbharati",
       "marks": 3,
-      "kind": "Short answer",
+      "kind": "problem",
       "text": "Differentiate x^{tan x} w.r.t. x.",
       "answer": "Let y = x^{tan x}. Taking log: log y = tan x·log x. Differentiating w.r.t. x: (1/y)·dy/dx = tan x·(1/x) + log x·sec²x. Therefore dy/dx = x^{tan x}[tan x/x + sec²x·log x].",
       "points": [
@@ -1175,14 +1178,15 @@
           "text": "Final: dy/dx = x^{tan x}[tan x/x + sec²x log x]",
           "marks": 1
         }
-      ]
+      ],
+      "page": 30
     },
     {
       "id": "m2c1-imp-s07-xy",
       "stop": "s07",
       "source": "Important · Balbharati",
       "marks": 3,
-      "kind": "Proof",
+      "kind": "proof",
       "text": "If x^{y} = e^{x − y}, then show that dy/dx = log x/(1 + log x)².",
       "answer": "Taking log on both sides: y log x = (x − y) log e = x − y. So y(1 + log x) = x, i.e. y = x/(1 + log x). Differentiating by the quotient rule: dy/dx = [(1 + log x)·1 − x·(1/x)]/(1 + log x)² = (1 + log x − 1)/(1 + log x)² = log x/(1 + log x)².",
       "points": [
@@ -1198,14 +1202,15 @@
           "text": "Quotient rule to get dy/dx = log x/(1 + log x)²",
           "marks": 1
         }
-      ]
+      ],
+      "page": 34
     },
     {
       "id": "m2c1-imp-s08-x7y5",
       "stop": "s08",
       "source": "Important · Balbharati",
       "marks": 3,
-      "kind": "Proof",
+      "kind": "proof",
       "text": "If x⁷·y⁵ = (x + y)^{12}, show that dy/dx = y/x.",
       "answer": "Taking log: 7 log x + 5 log y = 12 log(x + y). Differentiating: 7/x + (5/y)·dy/dx = [12/(x + y)]·(1 + dy/dx). So dy/dx·[5/y − 12/(x + y)] = 12/(x + y) − 7/x, i.e. dy/dx·(5x + 5y − 12y)/[y(x + y)] = (12x − 7x − 7y)/[x(x + y)], i.e. dy/dx·(5x − 7y)/[y(x + y)] = (5x − 7y)/[x(x + y)]. Cancelling (5x − 7y)/(x + y): dy/dx = y/x.",
       "points": [
@@ -1221,14 +1226,15 @@
           "text": "Cancel common factor to get dy/dx = y/x",
           "marks": 1
         }
-      ]
+      ],
+      "page": 36
     },
     {
       "id": "m2c1-imp-s11-cycloid",
       "stop": "s11",
       "source": "Important · Balbharati",
       "marks": 3,
-      "kind": "Short answer",
+      "kind": "problem",
       "text": "Find d²y/dx² if x = a(θ − sin θ), y = a(1 − cos θ).",
       "answer": "dx/dθ = a(1 − cos θ) = 2a sin²(θ/2); dy/dθ = a sin θ = 2a sin(θ/2)cos(θ/2). So dy/dx = cot(θ/2). Then d²y/dx² = d/dθ[cot(θ/2)]·dθ/dx = −(1/2)cosec²(θ/2)·1/(2a sin²(θ/2)) = −1/(4a sin⁴(θ/2)) = −(1/4a)cosec⁴(θ/2).",
       "points": [
@@ -1244,14 +1250,15 @@
           "text": "Simplify: d²y/dx² = −(1/4a)cosec⁴(θ/2)",
           "marks": 1
         }
-      ]
+      ],
+      "page": 49
     },
     {
       "id": "m2c1-imp-s12-recip",
       "stop": "s12",
       "source": "Important · Balbharati",
       "marks": 3,
-      "kind": "Short answer",
+      "kind": "problem",
       "text": "Find the nth derivative of 1/(3x − 5).",
       "answer": "Let y = (3x − 5)^{−1}. y₁ = (−1)·3·(3x − 5)^{−2}; y₂ = (−1)(−2)·3²·(3x − 5)^{−3} = (−1)²·2!·3²/(3x − 5)³; y₃ = (−1)(−2)(−3)·3³·(3x − 5)^{−4} = (−1)³·3!·3³/(3x − 5)⁴. In general, dⁿy/dxⁿ = (−1)ⁿ·n!·3ⁿ/(3x − 5)^{n+1}.",
       "points": [
@@ -1267,7 +1274,8 @@
           "text": "Conclude dⁿy/dxⁿ = (−1)ⁿ n! 3ⁿ/(3x − 5)^{n+1}",
           "marks": 1
         }
-      ]
+      ],
+      "page": 56
     }
   ],
   "derivations": [

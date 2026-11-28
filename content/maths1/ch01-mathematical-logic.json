@@ -787,7 +787,7 @@
       "qno": "Q1(i)",
       "marks": 2,
       "stop": "s07",
-      "kind": "MCQ",
+      "kind": "mcq",
       "text": "If A = {1, 2, 3, 4, 5} then which of the following is not true?",
       "options": [
         "(a) ∃x ∈ A such that x + 3 = 8",
@@ -798,14 +798,11 @@
       "answer": "(c) ∀x ∈ A, x + 6 ≥ 9. Check each option: (a) true for x = 5 since 5 + 3 = 8; (b) true for x = 1 since 1 + 2 = 3 < 9; (c) false for x = 1 since 1 + 6 = 7 < 9 (and for x = 2, 2 + 6 = 8 < 9); (d) true for x = 1 since 1 + 6 = 7 < 10. Therefore (c) is not true.",
       "points": [
         {
-          "text": "Identify counterexample x = 1 ∈ A giving x + 6 = 7 < 9, so ∀x ∈ A, x + 6 ≥ 9 is false",
-          "marks": 1
-        },
-        {
-          "text": "Write the correct option with letter: (c) ∀x ∈ A, x + 6 ≥ 9",
-          "marks": 1
+          "text": "Identify counterexample x = 1 ∈ A giving x + 6 = 7 < 9, so ∀x ∈ A, x + 6 ≥ 9 is false; Write the correct option with letter: (c) ∀x ∈ A, x + 6 ≥ 9",
+          "marks": 2
         }
-      ]
+      ],
+      "page": 14
     },
     {
       "id": "m1-2025-Q2i",
@@ -820,7 +817,9 @@
           "text": "Replace ∃ with ∀ and negate > to ≤: ∀n ∈ N, n + 8 ≤ 11",
           "marks": 1
         }
-      ]
+      ],
+      "page": 15,
+      "kind": "vsa"
     },
     {
       "id": "m1-2025-Q3",
@@ -839,7 +838,9 @@
           "text": "Note that the columns for p ↔ q and (p ∧ q) ∨ (~p ∧ ~q) are identical (T, F, F, T) and conclude logical equivalence",
           "marks": 1
         }
-      ]
+      ],
+      "page": 8,
+      "kind": "proof"
     },
     {
       "id": "m1-2025-Q15",
@@ -862,7 +863,9 @@
           "text": "Interpretation: the lamp will not glow irrespective of the status of the switches",
           "marks": 1
         }
-      ]
+      ],
+      "page": 21,
+      "kind": "problem"
     },
     {
       "id": "m1-2023-Q1i",
@@ -870,7 +873,7 @@
       "qno": "Q1(i)",
       "marks": 2,
       "stop": "s03",
-      "kind": "MCQ",
+      "kind": "mcq",
       "text": "If p ∧ q is F, p → q is F then the truth values of p and q are ______ respectively.",
       "options": [
         "(a) T, T",
@@ -881,14 +884,11 @@
       "answer": "(b) T, F. The implication p → q is false only when p is T and q is F; with p = T and q = F, p ∧ q = T ∧ F = F, satisfying both conditions.",
       "points": [
         {
-          "text": "Use conditional truth table: p → q is F only when p ≡ T and q ≡ F (which also makes p ∧ q ≡ F)",
-          "marks": 1
-        },
-        {
-          "text": "Write the correct option with letter: (b) T, F",
-          "marks": 1
+          "text": "Use conditional truth table: p → q is F only when p ≡ T and q ≡ F (which also makes p ∧ q ≡ F); Write the correct option with letter: (b) T, F",
+          "marks": 2
         }
-      ]
+      ],
+      "page": 4
     },
     {
       "id": "m1-2023-Q3",
@@ -907,7 +907,9 @@
           "text": "Contrapositive (~q → ~p): If x² ≥ y², then x ≥ y",
           "marks": 1
         }
-      ]
+      ],
+      "page": 15,
+      "kind": "problem"
     },
     {
       "id": "m1-2023-Q27",
@@ -934,7 +936,9 @@
           "text": "Conclusion: the lamp will never glow irrespective of the status of switches S_{1} and S_{2}",
           "marks": 1
         }
-      ]
+      ],
+      "page": 21,
+      "kind": "problem"
     },
     {
       "id": "m1-2022-Q1i",
@@ -942,7 +946,7 @@
       "qno": "Q1(i)",
       "marks": 2,
       "stop": "s08",
-      "kind": "MCQ",
+      "kind": "mcq",
       "text": "The negation of p ∧ (q → r) is",
       "options": [
         "(a) ~p ∧ (~q → ~r)",
@@ -953,14 +957,11 @@
       "answer": "(d) p → (q ∧ ~r). Using De Morgan's law and negation of conditional: ~[p ∧ (q → r)] ≡ ~p ∨ ~(q → r) ≡ ~p ∨ (q ∧ ~r). Applying the conditional law (~p ∨ X ≡ p → X) gives p → (q ∧ ~r).",
       "points": [
         {
-          "text": "Apply De Morgan's law and negation of conditional: ~[p ∧ (q → r)] ≡ ~p ∨ (q ∧ ~r)",
-          "marks": 1
-        },
-        {
-          "text": "Rewrite ~p ∨ (q ∧ ~r) ≡ p → (q ∧ ~r) by the Conditional law and state option (d) p → (q ∧ ~r)",
-          "marks": 1
+          "text": "Apply De Morgan's law and negation of conditional: ~[p ∧ (q → r)] ≡ ~p ∨ (q ∧ ~r); Rewrite ~p ∨ (q ∧ ~r) ≡ p → (q ∧ ~r) by the Conditional law and state option (d) p → (q ∧ ~r)",
+          "marks": 2
         }
-      ]
+      ],
+      "page": 15
     },
     {
       "id": "m1-2022-Q3",
@@ -979,7 +980,9 @@
           "text": "Observe columns V and VI are identical (T, T, F, T) and conclude (p ∧ q) ∨ ~q ≡ p ∨ ~q",
           "marks": 1
         }
-      ]
+      ],
+      "page": 8,
+      "kind": "proof"
     },
     {
       "id": "m1-2022-Q27",
@@ -1006,14 +1009,16 @@
           "text": "Apply Complement, Identity and Commutative laws to reach p ∨ q with all laws named",
           "marks": 1
         }
-      ]
+      ],
+      "page": 18,
+      "kind": "proof"
     },
     {
       "id": "m1-imp-s06-tautology",
       "stop": "s06",
       "source": "Important · Balbharati",
       "marks": 3,
-      "kind": "Truth table",
+      "kind": "problem",
       "text": "Using a truth table, examine whether the statement pattern [(p → q) ∧ ~q] → ~p is a tautology, a contradiction, or a contingency.",
       "answer": "Build the 4-row truth table for p, q, ~p, ~q, p → q, (p → q) ∧ ~q, and [(p → q) ∧ ~q] → ~p. Row (T,T): ~p = F, ~q = F, p → q = T, (p → q) ∧ ~q = F, final = T. Row (T,F): ~p = F, ~q = T, p → q = F, (p → q) ∧ ~q = F, final = T. Row (F,T): ~p = T, ~q = F, p → q = T, (p → q) ∧ ~q = F, final = T. Row (F,F): ~p = T, ~q = T, p → q = T, (p → q) ∧ ~q = T, final = T. Since all entries in the final column are T, the statement pattern is a tautology.",
       "points": [
@@ -1029,14 +1034,15 @@
           "text": "Conclude that since all truth values in the last column are T, it is a tautology",
           "marks": 1
         }
-      ]
+      ],
+      "page": 8
     },
     {
       "id": "m1-imp-s07-duals",
       "stop": "s07",
       "source": "Important · Balbharati",
       "marks": 2,
-      "kind": "Short answer",
+      "kind": "problem",
       "text": "Write the duals of each of the following statement patterns: (i) p ∧ [~q ∨ (p ∧ q) ∨ ~r]   (ii) (p ∧ t) ∨ (c ∧ ~q)",
       "answer": "Interchange ∨ ↔ ∧ and t ↔ c while keeping ~ unchanged: (i) p ∨ [~q ∧ (p ∨ q) ∧ ~r]   (ii) (p ∨ c) ∧ (t ∨ ~q).",
       "points": [
@@ -1048,14 +1054,15 @@
           "text": "Dual of (ii): (p ∨ c) ∧ (t ∨ ~q)",
           "marks": 1
         }
-      ]
+      ],
+      "page": 14
     },
     {
       "id": "m1-imp-s02-truthval",
       "stop": "s02",
       "source": "Important · Balbharati",
       "marks": 2,
-      "kind": "Short answer",
+      "kind": "problem",
       "text": "If statements p, q are true and r, s are false, determine the truth values of: (i) ~p ∧ (q ∨ ~r)   (ii) (~p → q) ∧ (r ↔ s)",
       "answer": "(i) ~p ∧ (q ∨ ~r) ≡ ~T ∧ (T ∨ ~F) ≡ F ∧ (T ∨ T) ≡ F ∧ T ≡ F.   (ii) (~p → q) ∧ (r ↔ s) ≡ (~T → T) ∧ (F ↔ F) ≡ (F → T) ∧ T ≡ T ∧ T ≡ T.",
       "points": [
@@ -1067,14 +1074,15 @@
           "text": "Evaluate (ii): (~T → T) ∧ (F ↔ F) ≡ (F → T) ∧ T ≡ T",
           "marks": 1
         }
-      ]
+      ],
+      "page": 3
     },
     {
       "id": "m1-imp-s10-algebra",
       "stop": "s10",
       "source": "Important · Balbharati",
       "marks": 3,
-      "kind": "Proof",
+      "kind": "proof",
       "text": "Without using a truth table, prove that ~(p ∨ q) ∨ (~p ∧ q) ≡ ~p, stating the laws used at each step.",
       "answer": "LHS = ~(p ∨ q) ∨ (~p ∧ q) ≡ (~p ∧ ~q) ∨ (~p ∧ q) [De Morgan's law] ≡ ~p ∧ (~q ∨ q) [Distributive law] ≡ ~p ∧ t [Complement law] ≡ ~p [Identity law] = RHS.",
       "points": [
@@ -1090,7 +1098,8 @@
           "text": "Apply Complement law (~p ∧ t) and Identity law (~p) with laws named",
           "marks": 1
         }
-      ]
+      ],
+      "page": 18
     }
   ],
   "derivations": [

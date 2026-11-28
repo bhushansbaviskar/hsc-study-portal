@@ -985,7 +985,7 @@
       "marks": 2,
       "stop": "s12",
       "text": "State and prove the principle (law) of conservation of angular momentum.",
-      "answer": "Statement: if the net external torque on a system is zero, its angular momentum stays constant. Proof: τ = dL/dt. If τ = 0 then dL/dt = 0, so L = Iω = constant, i.e. I_{1}ω_{1} = I_{2}ω_{2}.",
+      "answer": "Statement: When the net external torque acting on a rotating body is zero, its angular momentum remains constant.\nProof:\n1. Angular momentum L = r × p.\n2. Differentiating w.r.t. time: dL/dt = (dr/dt) × p + r × (dp/dt) = v × mv + r × F = 0 + τ = τ.\n3. If net external torque τ = 0, then dL/dt = 0.\n4. Therefore L = Iω = constant, i.e., I₁ω₁ = I₂ω₂.",
       "points": [
         {
           "text": "Statement: if the net external torque is zero, angular momentum stays constant",
@@ -998,7 +998,9 @@
       ],
       "alsoAsked": [
         "2025 Q6"
-      ]
+      ],
+      "page": 18,
+      "kind": "proof"
     },
     {
       "id": "2025-Q23",
@@ -1021,7 +1023,9 @@
           "text": "Final answer 16000π J ≈ 5.03 × 10^{4} J with unit",
           "marks": 1
         }
-      ]
+      ],
+      "page": 16,
+      "kind": "numerical"
     },
     {
       "id": "2025-Q1viii",
@@ -1029,7 +1033,7 @@
       "qno": "Q1(viii)",
       "marks": 1,
       "stop": "s11",
-      "kind": "MCQ",
+      "kind": "mcq",
       "text": "The power rating of a ceiling fan rotating with a constant torque of 2 N m at an angular speed of 2π rad/s is:",
       "options": [
         "(a) π W",
@@ -1043,7 +1047,8 @@
           "text": "Correct option (d) 4π W",
           "marks": 1
         }
-      ]
+      ],
+      "page": 16
     },
     {
       "id": "2025-Q2vi",
@@ -1058,7 +1063,9 @@
           "text": "tanθ = v²/(rg), i.e. θ = tan⁻¹(v²/rg)",
           "marks": 1
         }
-      ]
+      ],
+      "page": 5,
+      "kind": "vsa"
     },
     {
       "id": "2023-Q31",
@@ -1067,7 +1074,7 @@
       "marks": 4,
       "stop": "s07",
       "text": "Derive expressions for the linear velocity at the lowest position, midway position and topmost position for a particle revolving in a vertical circle, if it has to just complete circular motion without the string slackening at the top.",
-      "answer": "At the top, the critical case is T = 0, so mg = mv_{t}²/r and v_{t} = √(rg). Top to midway (fall r): v_{m}² = v_{t}² + 2gr = 3rg, so v_{m} = √(3rg). Top to bottom (fall 2r): v_{b}² = v_{t}² + 4gr = 5rg, so v_{b} = √(5rg).",
+      "answer": "Consider a particle of mass m performing vertical circular motion of radius r tied to a string.\n1. At the topmost position (A), for just completing the circle, tension T_A = 0.\n   Thus mg = mv_t²/r  ⇒  v_t = √(rg).\n2. From top (A) to midway position (B), vertical fall h = r.\n   By conservation of energy: ½mv_m² = ½mv_t² + mgr  ⇒  v_m² = rg + 2gr = 3rg  ⇒  v_m = √(3rg).\n3. From top (A) to lowest position (C), vertical fall h = 2r.\n   By conservation of energy: ½mv_b² = ½mv_t² + mg(2r)  ⇒  v_b² = rg + 4gr = 5rg  ⇒  v_b = √(5rg).",
       "points": [
         {
           "text": "Top, just completing the circle: T = 0, so mg = mv_{t}²/r",
@@ -1085,7 +1092,9 @@
           "text": "Bottom (fall 2r): v_{b}² = v_{t}² + 4gr, so v_{b} = √(5rg)",
           "marks": 1
         }
-      ]
+      ],
+      "page": 9,
+      "kind": "derivation"
     },
     {
       "id": "2023-Q2v",
@@ -1100,7 +1109,9 @@
           "text": "Yes, only if the road is banked and the vehicle moves at the safe speed v = √(rg tanθ)",
           "marks": 1
         }
-      ]
+      ],
+      "page": 5,
+      "kind": "vsa"
     },
     {
       "id": "2022-Q19",
@@ -1123,7 +1134,9 @@
           "text": "Result KE = ½Iω², with I = Σ m_{i}r_{i}²",
           "marks": 1
         }
-      ]
+      ],
+      "page": 12,
+      "kind": "derivation"
     },
     {
       "id": "2022-Q3",
@@ -1142,7 +1155,9 @@
           "text": "SI unit kg m² and dimensions [M¹L²T⁰]",
           "marks": 1
         }
-      ]
+      ],
+      "page": 12,
+      "kind": "define"
     },
     {
       "id": "2022-Q10",
@@ -1161,7 +1176,9 @@
           "text": "Final answer 1.447 × 10^{-34} with unit kg m²/s",
           "marks": 1
         }
-      ]
+      ],
+      "page": 16,
+      "kind": "numerical"
     },
     {
       "id": "2022-Q1vii",
@@ -1169,7 +1186,7 @@
       "qno": "Q1(vii)",
       "marks": 1,
       "stop": "s07",
-      "kind": "MCQ",
+      "kind": "mcq",
       "text": "A bob performs vertical circular motion on a string. The difference in tension in the string at the horizontal position and at the uppermost position is:",
       "options": [
         "(a) mg",
@@ -1183,7 +1200,8 @@
           "text": "Correct option (c) 3mg",
           "marks": 1
         }
-      ]
+      ],
+      "page": 9
     },
     {
       "id": "2022-Q2viii",
@@ -1198,14 +1216,16 @@
           "text": "Formula I = ½MR², correct substitution (0.6 m) and final answer 1.8 kg m² with unit",
           "marks": 1
         }
-      ]
+      ],
+      "page": 12,
+      "kind": "vsa"
     },
     {
       "id": "imp-s06-conical",
       "stop": "s06",
       "source": "Important · Balbharati",
       "marks": 3,
-      "kind": "Derivation",
+      "kind": "derivation",
       "text": "Obtain an expression for the period of a conical pendulum. State the factors on which its period depends.",
       "answer": "Resolve string tension T₀ into vertical and horizontal components: T₀ cosθ = mg and T₀ sinθ = mrω² (with r = L sinθ). Dividing gives ω² = g / (L cosθ), so ω = √(g / (L cosθ)). Since T = 2π/ω, the period is T = 2π√(L cosθ / g). It depends on length L, semi-vertical angle θ, and acceleration due to gravity g (independent of the bob mass).",
       "points": [
@@ -1221,14 +1241,15 @@
           "text": "State factors: length L, angle θ, and g (independent of mass)",
           "marks": 1
         }
-      ]
+      ],
+      "page": 7
     },
     {
       "id": "imp-s10-parallel",
       "stop": "s10",
       "source": "Important · Balbharati",
       "marks": 3,
-      "kind": "Derivation",
+      "kind": "derivation",
       "text": "State and prove the theorem of parallel axes for moment of inertia.",
       "answer": "Statement: The moment of inertia I_{o} of a body about any axis equals its moment of inertia I_{c} about a parallel axis through its centre of mass plus Mh², where M is the mass and h is the perpendicular distance between the two axes (I_{o} = I_{c} + Mh²). Proof: Take C at the origin and O at (−h, 0). For mass element dm at (x, y), I_{o} = ∫[(x + h)² + y²] dm = ∫(x² + y²) dm + 2h∫x dm + h²∫dm = I_{c} + 0 + Mh² (since ∫x dm = 0 about the centre of mass).",
       "points": [
@@ -1244,14 +1265,15 @@
           "text": "Use ∫x dm = 0 about centre of mass to arrive at I_{o} = I_{c} + Mh²",
           "marks": 1
         }
-      ]
+      ],
+      "page": 14
     },
     {
       "id": "imp-s13-rolling",
       "stop": "s13",
       "source": "Important · Balbharati",
       "marks": 3,
-      "kind": "Derivation",
+      "kind": "derivation",
       "text": "Derive expressions for the linear speed at the bottom and linear acceleration of a rigid body rolling without slipping down an inclined plane of height h and inclination θ.",
       "answer": "By conservation of energy: Mgh = ½Mv² + ½Iω² = ½Mv²(1 + K²/R²), giving v = √[2gh / (1 + K²/R²)]. Along the incline of length s = h / sinθ, using v² = 2as gives a = v²/(2s) = (g sinθ) / (1 + K²/R²).",
       "points": [
@@ -1267,14 +1289,15 @@
           "text": "Use s = h/sinθ and v² = 2as to get a = (g sinθ)/(1 + K²/R²)",
           "marks": 1
         }
-      ]
+      ],
+      "page": 19
     },
     {
       "id": "imp-s04-well",
       "stop": "s04",
       "source": "Important · Balbharati",
       "marks": 2,
-      "kind": "Derivation",
+      "kind": "derivation",
       "text": "Derive an expression for the minimum safe speed of a vehicle moving in a horizontal circle along the inner vertical wall of a well of death of radius r.",
       "answer": "The normal reaction N from the vertical wall supplies the centripetal force: N = mv²/r. To prevent sliding down, the upward static friction f_{s} balances the weight: f_{s} = mg. Since f_{s} ≤ μ_{s}N, we need mg ≤ μ_{s}(mv²/r), giving v² ≥ rg/μ_{s}. Therefore, the minimum safe speed is v_{min} = √(rg / μ_{s}).",
       "points": [
@@ -1286,7 +1309,8 @@
           "text": "Apply f_{s} ≤ μ_{s}N to obtain v_{min} = √(rg / μ_{s})",
           "marks": 1
         }
-      ]
+      ],
+      "page": 4
     }
   ],
   "derivations": [
@@ -1993,5 +2017,6 @@
         }
       ]
     }
-  ]
+  ],
+  "startPage": 1
 }

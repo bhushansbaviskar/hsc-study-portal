@@ -1002,7 +1002,9 @@
           "text": "Final total pressure inside the drop p_{i} = 1.0178 × 10^{5} N/m² (101780 N/m²) with unit",
           "marks": 1
         }
-      ]
+      ],
+      "page": 40,
+      "kind": "theory"
     },
     {
       "id": "p2-2025-Q4",
@@ -1021,7 +1023,9 @@
           "text": "Rearrange to obtain η = f / [A(dv/dx)] and identify symbols f, A and dv/dx",
           "marks": 1
         }
-      ]
+      ],
+      "page": 45,
+      "kind": "derivation"
     },
     {
       "id": "p2-2025-Q1ii",
@@ -1029,7 +1033,7 @@
       "qno": "Q1(ii)",
       "marks": 1,
       "stop": "s13",
-      "kind": "MCQ",
+      "kind": "mcq",
       "text": "In Bernoulli's theorem, which of the following is constant?",
       "options": [
         "(a) Linear momentum",
@@ -1043,7 +1047,8 @@
           "text": "Correct option (d) Energy",
           "marks": 1
         }
-      ]
+      ],
+      "page": 48
     },
     {
       "id": "p2-2025-Q2i",
@@ -1058,7 +1063,9 @@
           "text": "At the critical temperature of the liquid",
           "marks": 1
         }
-      ]
+      ],
+      "page": 37,
+      "kind": "vsa"
     },
     {
       "id": "p2-2023-Q30",
@@ -1085,7 +1092,9 @@
           "text": "Final answer W = 6.284 × 10^{-5} J with unit",
           "marks": 1
         }
-      ]
+      ],
+      "page": 35,
+      "kind": "theory"
     },
     {
       "id": "p2-2023-Q3",
@@ -1104,7 +1113,9 @@
           "text": "Formula η = f / [A(dv/dx)] and SI unit N s/m² (or Pa·s)",
           "marks": 1
         }
-      ]
+      ],
+      "page": 45,
+      "kind": "define"
     },
     {
       "id": "p2-2023-Q1vi",
@@ -1112,7 +1123,7 @@
       "qno": "Q1(vi)",
       "marks": 1,
       "stop": "s07",
-      "kind": "MCQ",
+      "kind": "mcq",
       "text": "If 'θ' represents the angle of contact made by a liquid which completely wets the surface of the container then _____.",
       "options": [
         "(a) θ = 0",
@@ -1126,7 +1137,8 @@
           "text": "Correct option (a) θ = 0",
           "marks": 1
         }
-      ]
+      ],
+      "page": 37
     },
     {
       "id": "p2-2022-Q21",
@@ -1149,7 +1161,9 @@
           "text": "Simplify to final expression v = 2r²(ρ − σ)g / (9η)",
           "marks": 1
         }
-      ]
+      ],
+      "page": 47,
+      "kind": "derivation"
     },
     {
       "id": "p2-2022-Q12",
@@ -1168,7 +1182,9 @@
           "text": "Correct substitution and final answer ΔA = 2.011 × 10^{-6} m² (or 2.011 mm²) with unit",
           "marks": 1
         }
-      ]
+      ],
+      "page": 35,
+      "kind": "numerical"
     },
     {
       "id": "p2-2022-Q1viii",
@@ -1176,7 +1192,7 @@
       "qno": "Q1(viii)",
       "marks": 1,
       "stop": "s09",
-      "kind": "MCQ",
+      "kind": "mcq",
       "text": "A liquid rises in glass capillary tube upto a height of 2.5 cm at room temperature. If another glass capillary tube having radius half that of the earlier tube is immersed in the same liquid, the rise of liquid in it will be _____.",
       "options": [
         "(a) 1.25 cm",
@@ -1190,7 +1206,8 @@
           "text": "Correct option (c) 5 cm",
           "marks": 1
         }
-      ]
+      ],
+      "page": 41
     },
     {
       "id": "p2-2022-Q2ii",
@@ -1205,14 +1222,16 @@
           "text": "Formula v_{c} = R_{n}η / (ρd) with symbol meanings",
           "marks": 1
         }
-      ]
+      ],
+      "page": 44,
+      "kind": "vsa"
     },
     {
       "id": "p2-imp-s03-pascal",
       "stop": "s03",
       "source": "Important · Balbharati",
       "marks": 3,
-      "kind": "Theory",
+      "kind": "theory",
       "text": "State Pascal's law. Explain the principle and working of a hydraulic lift and obtain the expression for the output force.",
       "answer": "Pascal's law: The pressure applied at any point of an enclosed fluid at rest is transmitted equally and undiminished to every point of the fluid and to the walls of the container, neglecting the effect of gravity. Working of hydraulic lift: A fluid-filled tank has two pistons S_{1} (small cross-sectional area A_{1}) and S_{2} (large area A_{2}, with A_{2} ≫ A_{1}). Pushing S_{1} down with a small force F_{1} generates pressure p = F_{1}/A_{1}. By Pascal's law, this pressure transmits undiminished to S_{2}, exerting an upward force F_{2} = pA_{2} = F_{1}(A_{2}/A_{1}). Since A_{2} ≫ A_{1}, F_{2} ≫ F_{1}, lifting a heavy load with a small effort.",
       "points": [
@@ -1228,14 +1247,15 @@
           "text": "Obtain F_{2} = pA_{2} = F_{1}(A_{2}/A_{1}) and explain force multiplication",
           "marks": 1
         }
-      ]
+      ],
+      "page": 30
     },
     {
       "id": "p2-imp-s05-molecular",
       "stop": "s05",
       "source": "Important · Balbharati",
       "marks": 3,
-      "kind": "Theory",
+      "kind": "theory",
       "text": "Explain the phenomenon of surface tension on the basis of molecular theory.",
       "answer": "Consider three molecules A (deep inside the liquid), B (within the surface film of thickness equal to the molecular range) and C (on the free surface). Molecule A has its entire sphere of influence inside the liquid, so equal cohesive forces act in all directions and the net force on A is zero. For molecule B, most of the sphere of influence lies in the liquid and a small part in air; since liquid density far exceeds air density, the downward cohesive pull dominates the weak upward adhesive pull from air. For molecule C, half its sphere is in liquid and half in air, so it also experiences a strong net inward cohesive pull. Hence all molecules in the surface film are pulled inward, minimizing the number of surface molecules and keeping the surface film under tension like a stretched elastic membrane.",
       "points": [
@@ -1251,14 +1271,15 @@
           "text": "Conclude that net inward pull minimizes surface area, making the surface film behave like a stretched membrane",
           "marks": 1
         }
-      ]
+      ],
+      "page": 33
     },
     {
       "id": "p2-imp-s09-capillary",
       "stop": "s09",
       "source": "Important · Balbharati",
       "marks": 3,
-      "kind": "Derivation",
+      "kind": "derivation",
       "text": "Derive an expression for capillary rise for a liquid having a concave meniscus in a capillary tube.",
       "answer": "Consider a capillary tube of radius r dipped vertically in a wetting liquid of density ρ, surface tension T and angle of contact θ. The liquid rises to height h forming a concave meniscus. Along the inner circumference 2πr of the tube, surface tension exerts a tangential force f_{T} = 2πrT directed at angle θ to the vertical. Its upward vertical component is f_{Tv} = 2πrT cosθ. Neglecting the tiny volume in the meniscus, the weight of the raised liquid column is w = πr²hρg. At equilibrium, 2πrT cosθ = πr²hρg, giving h = 2T cosθ / (rρg).",
       "points": [
@@ -1274,14 +1295,15 @@
           "text": "Equate forces (2πrT cosθ = πr²hρg) and simplify to h = 2T cosθ / (rρg)",
           "marks": 1
         }
-      ]
+      ],
+      "page": 41
     },
     {
       "id": "p2-imp-s13-bernoulli",
       "stop": "s13",
       "source": "Important · Balbharati",
       "marks": 3,
-      "kind": "Derivation",
+      "kind": "derivation",
       "text": "Derive Bernoulli's equation for the steady streamline flow of an incompressible, non-viscous fluid through a tube of varying cross-section and height.",
       "answer": "Consider an ideal fluid of density ρ flowing steadily from lower section P (area A_{1}, pressure P_{1}, speed v_{1}, height h_{1}) to upper section R (area A_{2}, pressure P_{2}, speed v_{2}, height h_{2}). In time dt, equal volume dV = A_{1}d_{1} = A_{2}d_{2} passes both ends. Net work done on the fluid element by pressure forces is W = P_{1}A_{1}d_{1} − P_{2}A_{2}d_{2} = (P_{1} − P_{2})dV. By the work-energy theorem, W = ΔKE + ΔPE, where ΔKE = ½ρ dV(v_{2}² − v_{1}²) and ΔPE = ρ dV g(h_{2} − h_{1}). Equating and dividing by dV gives P_{1} − P_{2} = ½ρ(v_{2}² − v_{1}²) + ρg(h_{2} − h_{1}), or P + ½ρv² + ρgh = constant.",
       "points": [
@@ -1297,7 +1319,8 @@
           "text": "Apply W = ΔKE + ΔPE and divide by dV to obtain P + ½ρv² + ρgh = constant",
           "marks": 1
         }
-      ]
+      ],
+      "page": 48
     }
   ],
   "derivations": [

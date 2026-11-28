@@ -412,7 +412,7 @@
       ch.stops.forEach(function (s, idx) {
         if (st.done[K(s.id, ch)] === dateStr) stops.push({ ch: ch, s: s, idx: idx });
       });
-      ch.derivations.forEach(function (d) {
+      (ch.derivations || []).forEach(function (d) {
         if (st.drill[d.id] && st.drill[d.id].last === dateStr) drills.push({ ch: ch, d: d, clean: !!st.drill[d.id].clean });
       });
       var rs = RS(st, e.key);
@@ -531,7 +531,7 @@
     return (ch || CH).board.reduce(function (n, b) { return b.stop === stopId ? n + pyqAskCount(b) : n; }, 0);
   }
   function getBoard(id, ch) { return (ch || CH).board.filter(function (b) { return b.id === id; })[0]; }
-  function getDeriv(id, ch) { return (ch || CH).derivations.filter(function (d) { return d.id === id; })[0]; }
+  function getDeriv(id, ch) { return ((ch || CH).derivations || []).filter(function (d) { return d.id === id; })[0]; }
 
   /* ---------- plan worked back from the exam ---------- */
   function dayDiff(a, b) { return Math.round((parseDate(b) - parseDate(a)) / 86400000); }
@@ -767,6 +767,7 @@
     save();
   }
   function restoreQuest(s, ch) {
+    if (!s || !s.quest) return null;
     var target = ch || CH;
     var r = load().qp[K(s.id, target)], cards = s.quest.cards, checks = s.quest.checks;
     if (!isObj(r) || (r.phase !== "cards" && r.phase !== "check")) return null;
@@ -894,7 +895,7 @@
   function itemExists(id) {
     var p = parseId(id), ch = CHAPTERS[p.chKey];
     if (!ch) return false;
-    if (p.kind === "c") { var s = stopById(p.a, ch); return !!(s && s.quest.checks[+p.b]); }
+    if (p.kind === "c") { var s = stopById(p.a, ch); return !!(s && s.quest && s.quest.checks && s.quest.checks[+p.b]); }
     if (p.kind === "d") { var d = getDeriv(p.a, ch); return !!(d && d.steps[+p.b]); }
     if (p.kind === "b") return !!getBoard(p.a, ch);
     return false;
@@ -1149,7 +1150,7 @@
     if (tData && isObj(tData.focus) && CHAPTERS[tData.focus.chKey]) {
       var fCh = CHAPTERS[tData.focus.chKey], fStop = stopById(tData.focus.stopId, fCh);
       if (fStop) {
-        h += '<a class="card cont-card t-focus-card" href="' + chBase(fCh) + "/" + fStop.id + '/quest"><span class="num">' + ICON.play + '</span><span class="grow"><b>Assigned by teacher: ' + esc(fStop.title) + '</b><br><span class="small">' + esc(chShortLabel(fCh)) + ' · Stop ' + (stopIndex(fStop.id, fCh) + 1) + ' · p. ' + esc(fStop.page) + (isDone(fStop.id, st, fCh) ? " · Done ✓" : "") + '</span></span>' + ICON.chev + "</a>";
+        h += '<a class="card cont-card t-focus-card" href="' + chBase(fCh) + "/" + fStop.id + (fStop.quest ? "/quest" : "") + '"><span class="num">' + ICON.play + '</span><span class="grow"><b>Assigned by teacher: ' + esc(fStop.title) + '</b><br><span class="small">' + esc(chShortLabel(fCh)) + ' · Stop ' + (stopIndex(fStop.id, fCh) + 1) + ' · p. ' + esc(fStop.page) + (isDone(fStop.id, st, fCh) ? " · Done ✓" : "") + '</span></span>' + ICON.chev + "</a>";
       }
     }
 
@@ -1160,7 +1161,7 @@
     } else if (ri) {
       h += '<a class="card cont-card" href="' + chBase(ri.ch) + "/" + ri.s.id + '/quest"><span class="num">' + ICON.play + '</span><span class="grow"><b>Continue: ' + esc(ri.s.title) + " · " + progressText(ri.q) + '</b><br><span class="small">' + esc(chShortLabel(ri.ch)) + ' · pick up where you stopped</span></span>' + ICON.chev + "</a>";
     } else if (nextPair) {
-      h += '<a class="card cont-card" href="' + chBase(nextPair.ch) + "/" + nextPair.s.id + '/quest"><span class="num">' + ICON.play + '</span><span class="grow"><b>Next up: ' + esc(nextPair.s.title) + '</b><br><span class="small">' + esc(chShortLabel(nextPair.ch)) + ' · Stop ' + (stopIndex(nextPair.s.id, nextPair.ch) + 1) + " · p. " + esc(nextPair.s.page) + "</span></span>" + ICON.chev + "</a>";
+      h += '<a class="card cont-card" href="' + chBase(nextPair.ch) + "/" + nextPair.s.id + (nextPair.s.quest ? "/quest" : "") + '"><span class="num">' + ICON.play + '</span><span class="grow"><b>Next up: ' + esc(nextPair.s.title) + '</b><br><span class="small">' + esc(chShortLabel(nextPair.ch)) + ' · Stop ' + (stopIndex(nextPair.s.id, nextPair.ch) + 1) + " · p. " + esc(nextPair.s.page) + "</span></span>" + ICON.chev + "</a>";
     }
     if (tData && isObj(tData.reward)) {
       var rp = rewardProgress(tData.reward, st);
@@ -1216,8 +1217,9 @@
           var metaCh = chObj || { subject: sub.id, id: c.id, number: c.number };
           var baseHref = "#/" + sub.id + "/" + c.id;
           var boardN = chObj ? chObj.board.length : (c.boardCount || 0);
+          var isLite = !!(c.lite || (chObj && chObj.lite));
           return '<li><a class="item" href="' + baseHref + '"><span class="num">' + c.number + '</span>' +
-            '<span class="grow"><b>' + esc(c.title) + '</b><div class="bar" style="margin-top:6px"><i style="width:' + p.pct + '%"></i></div>' +
+            '<span class="grow"><b>' + esc(c.title) + '</b>' + (isLite ? ' <span class="pill">PYQs + Formulas</span>' : "") + '<div class="bar" style="margin-top:6px"><i style="width:' + p.pct + '%"></i></div>' +
             '<span class="muted small">' + p.done + " of " + p.total + " stops</span></span>" + ICON.chev + "</a>" +
             '<a class="rlink" href="' + baseHref + '/round"><span class="ricon">' + ICON.trophy + '</span><span class="grow"><b>Board round</b><br><span class="muted small">' + boardN + " exam questions · open now</span>" + (rc ? "<br>" + badgeHTML("home", st, metaCh) : "") + "</span>" + ICON.chev + "</a></li>";
         }).join("") + "</ul></div>";
@@ -1246,6 +1248,7 @@
     var firstOpen = CH.stops.filter(function (s) { return !isDone(s.id); })[0];
     var startPage = CH.startPage || 1;
     var h = '<div class="card"><div class="row"><div class="grow"><b>' + prog.done + " of " + prog.total + ' stops</b>' +
+      (CH.lite ? ' <span class="pill">PYQs + Formulas</span>' : "") +
       '<div class="bar" style="margin-top:6px"><i style="width:' + prog.pct + '%"></i></div></div><b>' + prog.pct + '%</b></div>' +
       (roundComplete() ? '<div class="cb-row">' + badgeHTML("page") + "</div>" : "") +
       '<div class="chips">' + bookChip(CH.book, startPage, "Chapter in textbook") + "</div>" +
@@ -1254,8 +1257,10 @@
     var pyqN = CH.board.filter(isBoardPYQ).length, impN = CH.board.length - pyqN;
     var drillTitle = CH.drillLabel || "Derivation drills";
     var formTitle = CH.formulaLabel || "Formula card";
+    var derivs = CH.derivations || [];
     h += '<div class="tiles"><a class="tile" href="' + BASE + '/board"><b>Board questions</b><span class="muted small">' + pyqN + ' PYQs' + (impN ? ' + ' + impN + ' imp' : '') + '</span></a>' +
-      '<a class="tile" href="' + BASE + '/derive"><b>' + esc(drillTitle) + '</b><span class="muted small">' + CH.derivations.length + ' drills</span></a>' +
+      (derivs.length ? '<a class="tile" href="' + BASE + '/derive"><b>' + esc(drillTitle) + '</b><span class="muted small">' + derivs.length + ' drills</span></a>' :
+        '<div class="tile muted" aria-disabled="true"><b>' + esc(drillTitle) + '</b><span class="muted small">Drills coming soon</span></div>') +
       '<a class="tile" href="#/formulas"><b>' + esc(formTitle) + '</b><span class="muted small">All of Ch ' + CH.number + '</span></a></div>';
     if (isFocus()) {
       var order = CH.stops.map(function (s, i) { return { s: s, i: i, c: askedCount(s.id) }; })
@@ -1363,14 +1368,21 @@
     var s = CH.stops[i], done = isDone(s.id), qr = load().quest[K(s.id)], sq = restoreQuest(s);
     setHeader((i + 1) + ". " + s.title, BASE, { xp: true, tab: "map" });
     var h = '<div class="card"><h2>In short</h2><p>' + fm(s.inShort) + "</p></div>";
-    var nChecks = s.quest.checks.length;
-    h += '<div class="card quest-card"><div class="row"><div class="grow"><h2>Quest' + (done ? ' <span class="pill ok">' + ICON.checkS + " Done</span>" : "") + "</h2>" +
-      '<p class="muted small">' + s.quest.cards.length + " concept cards, then " + nChecks + " checks. Up to " + nChecks * XP_FIRST + " XP." +
-      (qr ? " Best score: <b>" + qr.best + "/" + nChecks + "</b>." : "") + "</p></div></div>" +
-      (sq ? '<a class="btn primary block" href="' + BASE + "/" + s.id + '/quest">Resume quest · ' + progressText(sq) + '</a><button type="button" class="btn ghost block" style="margin-top:8px" data-act="q-over" data-stop="' + esc(s.id) + '">Start over</button>' :
-        '<a class="btn primary block" href="' + BASE + "/" + s.id + '/quest">' + (qr ? "Replay quest" : "Start quest") + "</a>") +
-      (done ? '<p class="note">Completed ' + niceDate(load().done[K(s.id)]) + ". Finish with at least " + PASS_MARK + " of " + nChecks + " correct to count a stop as done.</p>" :
-        '<p class="note">Finish with at least ' + PASS_MARK + " of " + nChecks + " correct to complete this stop. Read the textbook section first for the full story.</p>") + "</div>";
+    if (s.quest) {
+      var nChecks = s.quest.checks.length;
+      h += '<div class="card quest-card"><div class="row"><div class="grow"><h2>Quest' + (done ? ' <span class="pill ok">' + ICON.checkS + " Done</span>" : "") + "</h2>" +
+        '<p class="muted small">' + s.quest.cards.length + " concept cards, then " + nChecks + " checks. Up to " + nChecks * XP_FIRST + " XP." +
+        (qr ? " Best score: <b>" + qr.best + "/" + nChecks + "</b>." : "") + "</p></div></div>" +
+        (sq ? '<a class="btn primary block" href="' + BASE + "/" + s.id + '/quest">Resume quest · ' + progressText(sq) + '</a><button type="button" class="btn ghost block" style="margin-top:8px" data-act="q-over" data-stop="' + esc(s.id) + '">Start over</button>' :
+          '<a class="btn primary block" href="' + BASE + "/" + s.id + '/quest">' + (qr ? "Replay quest" : "Start quest") + "</a>") +
+        (done ? '<p class="note">Completed ' + niceDate(load().done[K(s.id)]) + ". Finish with at least " + PASS_MARK + " of " + nChecks + " correct to count a stop as done.</p>" :
+          '<p class="note">Finish with at least ' + PASS_MARK + " of " + nChecks + " correct to complete this stop. Read the textbook section first for the full story.</p>") + "</div>";
+    } else {
+      h += '<div class="card quest-card"><div class="row"><div class="grow"><h2>Topic revision' + (done ? ' <span class="pill ok">' + ICON.checkS + " Revised</span>" : "") + "</h2>" +
+        '<p class="muted small">Read the textbook section, then mark this topic revised (+5 XP once) and practise its board questions.</p></div></div>' +
+        '<button type="button" class="btn ' + (done ? "ghost" : "primary") + ' block" data-act="stop-revised" data-stop="' + esc(s.id) + '">' + (done ? "Revised on " + niceDate(load().done[K(s.id)]) : "Mark topic revised (+5 XP)") + "</button>" +
+        '<a class="btn ' + (done ? "primary" : "ghost") + ' block" style="margin-top:8px" href="' + BASE + '/board">Practise board questions</a></div>';
+    }
     h += '<div class="card"><h2>Textbook sections</h2><ul class="sections">' +
       s.sections.map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ul>" +
       '<div class="chips">' + bookChip(CH.book, s.page, (catalog.books[CH.book] && catalog.books[CH.book].label) || "Std XII") +
@@ -1498,6 +1510,7 @@
   function questStart(stopId, fresh) {
     var s = stopById(stopId);
     if (!s) return errorView("That stop doesn't exist.");
+    if (!s.quest) return stopView(stopId);
     if (fresh) { var st = load(); delete st.qp[K(s.id)]; st.qpDel[K(s.id)] = Date.now(); save(); }
     Q = (fresh ? null : restoreQuest(s)) || { stop: s, chKey: curChKey(), phase: "cards", ci: 0, ki: 0, ce: null, results: [], xp: 0, added: 0 };
     Q.chKey = curChKey();
@@ -1887,8 +1900,13 @@
   function deriveListView() {
     var dLabel = CH.drillLabel || "Derivation drills";
     setHeader(dLabel + " · " + chShortLabel(CH), BASE, { xp: true, tab: "map" });
+    var derivs = CH.derivations || [];
+    if (!derivs.length) {
+      app.innerHTML = '<div class="card"><h2>' + esc(dLabel) + '</h2><p class="muted">Drills coming soon for this chapter. Practise the board questions and formula recall meanwhile.</p><a class="btn primary block" style="margin-top:12px" href="' + BASE + '/board">Practise board questions</a></div>';
+      return;
+    }
     var h = '<div class="card"><p>Build each step-by-step solution one line at a time. At every step pick the correct next line from three. Slips go to your mistake bank.</p></div>';
-    h += CH.derivations.map(function (d) {
+    h += derivs.map(function (d) {
       var s = stopById(d.stop);
       return '<div class="card"><h2>' + fm(d.title) + "</h2>" +
         '<p class="small muted">Stop ' + (stopIndex(d.stop) + 1) + ": " + esc(s ? s.title : d.stop) + " · Textbook p. " + d.page + " · " + d.steps.length + " steps</p>" +
@@ -2034,9 +2052,9 @@
     var p = parseId(id), ch = CHAPTERS[p.chKey];
     if (!ch) return id;
     var prefix = CHAPTER_LIST.length > 1 ? "[" + chShortLabel(ch) + "] " : "";
-    if (p.kind === "c") { var s = stopById(p.a, ch), c = s.quest.checks[+p.b]; return prefix + "Stop " + (stopIndex(s.id, ch) + 1) + ", check " + (+p.b + 1) + ": " + plain(c.q); }
-    if (p.kind === "d") { var d = getDeriv(p.a, ch); return prefix + "Drill: " + plain(d.title) + ", step " + (+p.b + 1); }
-    var b = getBoard(p.a, ch); return prefix + "Board " + boardTag(b) + ": " + plain(b.text);
+    if (p.kind === "c") { var s = stopById(p.a, ch), c = s && s.quest && s.quest.checks && s.quest.checks[+p.b]; return c ? prefix + "Stop " + (stopIndex(s.id, ch) + 1) + ", check " + (+p.b + 1) + ": " + plain(c.q) : id; }
+    if (p.kind === "d") { var d = getDeriv(p.a, ch); return d ? prefix + "Drill: " + plain(d.title) + ", step " + (+p.b + 1) : id; }
+    var b = getBoard(p.a, ch); return b ? prefix + "Board " + boardTag(b) + ": " + plain(b.text) : id;
   }
   function trunc(s, n) { return s.length > n ? s.slice(0, n - 1).replace(/\s+\S*$/, "") + "…" : s; }
   function reviewStart() {
@@ -2051,7 +2069,10 @@
     if (R.i >= R.queue.length) return;
     var p = parseId(R.queue[R.i]), ch = CHAPTERS[p.chKey];
     if (!ch) return;
-    if (p.kind === "c") R.ce = newCE(stopById(p.a, ch).quest.checks[+p.b], "review");
+    if (p.kind === "c") {
+      var stp = stopById(p.a, ch);
+      if (stp && stp.quest && stp.quest.checks && stp.quest.checks[+p.b]) R.ce = newCE(stp.quest.checks[+p.b], "review");
+    }
     if (p.kind === "d") R.ds = { picked: null };
     if (p.kind === "b") R.ticks = qPoints(getBoard(p.a, ch)).map(function () { return false; });
   }
@@ -2461,7 +2482,8 @@
 
     CHAPTER_LIST.forEach(function (e) {
       var ch = e.ch, prog = chapterProgress(st, ch), rs = RS(st, e.key);
-      var cleanDrills = ch.derivations.filter(function (d) { return drillClean(d.id, st); }).length;
+      var derivs = ch.derivations || [];
+      var cleanDrills = derivs.filter(function (d) { return drillClean(d.id, st); }).length;
       var g = ch.examMarks ? gaugeData(st, ch) : null;
       var doneStops = ch.stops.filter(function (s) { return isDone(s.id, st, ch); });
       var chTime = timeForChapter(e.key, st);
@@ -2469,7 +2491,8 @@
         '<div class="row"><div class="grow"><div class="bar"><i style="width:' + prog.pct + '%"></i></div></div><b>' + prog.done + "/" + prog.total + ' stops (' + prog.pct + "%)</b></div>" +
         '<p class="small muted" style="margin-top:8px">' +
         (g ? "Predicted: <b>" + g.pred + " / ~" + Math.round(g.avg) + " marks</b> · " : "") +
-        'Drills clean: <b>' + cleanDrills + "/" + ch.derivations.length + "</b> · Board round best: <b>" + (rs.bestFull ? rs.bestFull + "%" : "Not tried") + "</b>" +
+        (derivs.length ? "Drills clean: <b>" + cleanDrills + "/" + derivs.length + "</b> · " : "") +
+        "Board round best: <b>" + (rs.bestFull ? rs.bestFull + "%" : "Not tried") + "</b>" +
         (chTime ? " · Study time: <b>" + esc(fmtStudyTime(chTime)) + "</b>" : "") + "</p>" +
         (roundComplete(st, e.key) ? '<div class="cb-row">' + badgeHTML("teacher", st, ch) + "</div>" : "") +
         (rs.last ? '<p class="small muted" style="margin-top:6px">Last board round: ' + esc(MODE_NAME[rs.last.mode] || rs.last.mode) + " — <b>" + rs.last.got + "/" + rs.last.of + " (" + rs.last.pct + "%)</b> on " + esc(niceDate(rs.last.date)) + "</p>" : "");
@@ -2624,6 +2647,16 @@
       case "notes-ch":
         notesChFilter = t.getAttribute("data-ch") || "all";
         return notesView();
+      case "stop-revised": {
+        var rsid = t.getAttribute("data-stop");
+        if (rsid && !isDone(rsid)) {
+          var rst = load();
+          rst.done[K(rsid)] = today();
+          addXP(5);
+          save();
+        }
+        return stopView(rsid);
+      }
       case "card-next":
         if (Q.ci < Q.stop.quest.cards.length - 1) Q.ci++; else { Q.phase = "check"; Q.ki = 0; Q.ce = newCE(Q.stop.quest.checks[0], "quest"); }
         saveQuest(); return questRender();
