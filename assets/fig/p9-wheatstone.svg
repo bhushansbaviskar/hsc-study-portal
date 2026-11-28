@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 180" role="img" aria-label="Wheatstone bridge circuit" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+
+    <polygon points="140,25 220,90 140,155 60,90"/>
+    <line x1="140" y1="25" x2="140" y2="155"/>
+    <circle cx="140" cy="90" r="12" fill="var(--bg, #fff)"/>
+    <text x="136" y="94" fill="currentColor" stroke="none" font-family="system-ui,sans-serif" font-size="12">G</text> <text x="85" y="55" fill="currentColor" stroke="none" font-family="system-ui,sans-serif" font-size="12">P</text> <text x="185" y="55" fill="currentColor" stroke="none" font-family="system-ui,sans-serif" font-size="12">Q</text> <text x="85" y="132" fill="currentColor" stroke="none" font-family="system-ui,sans-serif" font-size="12">R</text> <text x="185" y="132" fill="currentColor" stroke="none" font-family="system-ui,sans-serif" font-size="12">S</text>
+  
+</svg>

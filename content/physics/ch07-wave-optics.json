@@ -186,6 +186,13 @@
           "text": "Fringe width β = λD/d",
           "marks": 1
         }
+      ],
+      "fig": "assets/fig/p7-ydse.svg",
+      "figLabels": [
+        "Slits S₁, S₂",
+        "Screen distance D",
+        "Central bright O",
+        "Point P(y)"
       ]
     },
     {

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 180" role="img" aria-label="Potentiometer principle circuit" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+
+    <line x1="40" y1="100" x2="240" y2="100" stroke-width="3"/>
+    <polyline points="40,100 40,40 120,40"/>
+    <polyline points="160,40 240,40 240,100"/>
+    <line x1="120" y1="30" x2="120" y2="50"/><line x1="128" y1="35" x2="128" y2="45"/>
+    <polyline points="40,100 40,145 140,145 140,100"/>
+    <circle cx="105" cy="145" r="9" fill="var(--bg, #fff)"/>
+    <text x="101" y="149" fill="currentColor" stroke="none" font-family="system-ui,sans-serif" font-size="12">G</text> <text x="32" y="115" fill="currentColor" stroke="none" font-family="system-ui,sans-serif" font-size="12">A</text> <text x="243" y="115" fill="currentColor" stroke="none" font-family="system-ui,sans-serif" font-size="12">B</text> <text x="135" y="115" fill="currentColor" stroke="none" font-family="system-ui,sans-serif" font-size="12">J (V=Kl)</text> <text x="120" y="24" fill="currentColor" stroke="none" font-family="system-ui,sans-serif" font-size="12">E</text>
+  
+</svg>

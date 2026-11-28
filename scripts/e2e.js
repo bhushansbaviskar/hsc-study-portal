@@ -366,6 +366,22 @@ async function runSuiteForViewport(browser, baseUrl, vp) {
   assert.strictEqual(await page.$$eval(".rev-sec", (els) => els.length), 6, "Maths cockpit must render 6 sections");
   console.log("PASS: P6 Exam Cockpit (#/revise/physics & #/revise/maths) with 6 sections & packing checklist");
 
+  // 13. P7: Diagram Practice Widget SVG renders cleanly with naturalWidth > 0
+  await page.goto(baseUrl + "/#/physics/ch01/board", { waitUntil: "networkidle0" });
+  await page.waitForSelector('[data-q="2023-Q31"] [data-act="reveal"]');
+  await page.$eval('[data-q="2023-Q31"] [data-act="reveal"]', (el) => el.scrollIntoView({ block: "center" }));
+  await page.click('[data-q="2023-Q31"] [data-act="reveal"]');
+  await page.waitForSelector('[data-q="2023-Q31"] .fig-box summary');
+  await page.$eval('[data-q="2023-Q31"] .fig-box summary', (el) => el.scrollIntoView({ block: "center" }));
+  await page.click('[data-q="2023-Q31"] .fig-box summary');
+  await page.waitForFunction(() => {
+    const img = document.querySelector('[data-q="2023-Q31"] .fig-img');
+    return img && img.complete && img.naturalWidth > 0;
+  });
+  await checkLayout(page, "P7 SVG Diagram Widget");
+  await snap(page, vp, "diagram-widget");
+  console.log("PASS: P7 SVG Diagram Practice Widget renders cleanly with naturalWidth > 0");
+
   assert.strictEqual(errors.length, 0, `Unexpected console/page errors: ${errors.join("; ")}`);
   await ctx.close();
 }

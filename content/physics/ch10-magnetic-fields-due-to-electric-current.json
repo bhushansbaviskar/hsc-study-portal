@@ -171,6 +171,12 @@
           "text": "Equilibrium NIAB = kθ ⇒ I ∝ θ",
           "marks": 1
         }
+      ],
+      "fig": "assets/fig/p10-mcg.svg",
+      "figLabels": [
+        "Concave N-S poles",
+        "Soft iron core",
+        "Rectangular coil"
       ]
     }
   ]

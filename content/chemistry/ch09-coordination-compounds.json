@@ -120,6 +120,12 @@
           "text": "Diamagnetic (no unpaired electrons)",
           "marks": 1
         }
+      ],
+      "fig": "assets/fig/c9-cft.svg",
+      "figLabels": [
+        "5 degenerate d-orbitals",
+        "e_g (+0.6 Δ_o)",
+        "t_2g (−0.4 Δ_o)"
       ]
     },
     {

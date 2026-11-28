@@ -256,6 +256,12 @@
           "text": "Final expression W = 2.303 nRT log₁₀(V₂/V₁)",
           "marks": 1
         }
+      ],
+      "fig": "assets/fig/p4-carnot.svg",
+      "figLabels": [
+        "Isothermal expansion T_H",
+        "Adiabatic expansion",
+        "Isothermal compression T_C"
       ]
     }
   ]

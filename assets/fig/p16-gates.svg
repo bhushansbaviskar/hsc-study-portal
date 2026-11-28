@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 180" role="img" aria-label="Logic gates AND OR NAND" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+
+    <path d="M 35 30 L 65 30 A 20 20 0 0 1 65 70 L 35 70 Z"/>
+    <path d="M 35 100 Q 50 120 35 140 Q 70 140 85 120 Q 70 100 35 100 Z"/>
+    <path d="M 165 65 L 195 65 A 20 20 0 0 1 195 105 L 165 105 Z"/>
+    <circle cx="220" cy="85" r="4"/>
+    <text x="45" y="54" fill="currentColor" stroke="none" font-family="system-ui,sans-serif" font-size="12">AND</text> <text x="48" y="124" fill="currentColor" stroke="none" font-family="system-ui,sans-serif" font-size="12">OR</text> <text x="172" y="89" fill="currentColor" stroke="none" font-family="system-ui,sans-serif" font-size="12">NAND</text>
+  
+</svg>

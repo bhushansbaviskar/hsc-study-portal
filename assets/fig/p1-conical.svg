@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 180" role="img" aria-label="Conical pendulum force diagram" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+
+    <line x1="60" y1="15" x2="220" y2="15" stroke-width="3"/>
+    <line x1="140" y1="15" x2="140" y2="140" stroke-dasharray="4 4" opacity="0.5"/>
+    <line x1="140" y1="15" x2="200" y2="125"/>
+    <ellipse cx="140" cy="125" rx="60" ry="18" stroke-dasharray="4 3"/>
+    <circle cx="200" cy="125" r="7" fill="currentColor"/>
+    <line x1="200" y1="125" x2="200" y2="168"/>
+    <line x1="200" y1="125" x2="170" y2="70" stroke-width="2.5"/>
+    <line x1="200" y1="125" x2="150" y2="125"/>
+    <text x="145" y="50" fill="currentColor" stroke="none" font-family="system-ui,sans-serif" font-size="12">θ</text> <text x="175" y="65" fill="currentColor" stroke="none" font-family="system-ui,sans-serif" font-size="12">T</text> <text x="155" y="118" fill="currentColor" stroke="none" font-family="system-ui,sans-serif" font-size="12">T sinθ</text> <text x="206" y="165" fill="currentColor" stroke="none" font-family="system-ui,sans-serif" font-size="12">mg</text> <text x="135" y="155" fill="currentColor" stroke="none" font-family="system-ui,sans-serif" font-size="12">r</text>
+  
+</svg>

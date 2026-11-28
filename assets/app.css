@@ -522,4 +522,12 @@ html[data-theme="focus"] .btip { color: var(--amber-ink); background: var(--ambe
 .const-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(165px, 1fr)); gap: 6px; margin-top: 6px; }
 .const-item { font-size: 13px; padding: 6px 8px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); }
 
+/* ---- P7: Diagram Practice Widget & Unit Picker ---- */
+.fig-box { margin-top: 10px; border: 1px dashed var(--line); border-radius: 10px; padding: 8px 10px; background: var(--bg); }
+.fig-box summary { cursor: pointer; font-weight: 600; font-size: 13.5px; color: var(--purple-ink); }
+.fig-in { margin-top: 8px; text-align: center; }
+.fig-img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 8px; }
+.fig-labels { text-align: left; margin-top: 8px; }
+.unit-box { margin: 8px 0; }
+
 

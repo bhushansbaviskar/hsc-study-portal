@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 180" role="img" aria-label="Full wave rectifier circuit" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+
+    <line x1="40" y1="45" x2="40" y2="135"/>
+    <line x1="55" y1="45" x2="55" y2="135"/>
+    <polygon points="105,40 125,50 105,60"/><line x1="125" y1="40" x2="125" y2="60"/>
+    <polygon points="105,120 125,130 105,140"/><line x1="125" y1="120" x2="125" y2="140"/>
+    <polyline points="55,50 105,50"/><polyline points="55,130 105,130"/>
+    <polyline points="125,50 170,50 170,130 125,130"/>
+    <polyline points="55,90 230,90 230,130 170,130"/>
+    <rect x="195" y="75" width="22" height="30" fill="var(--bg, #fff)"/>
+    <text x="105" y="34" fill="currentColor" stroke="none" font-family="system-ui,sans-serif" font-size="12">D₁</text> <text x="105" y="155" fill="currentColor" stroke="none" font-family="system-ui,sans-serif" font-size="12">D₂</text> <text x="198" y="94" fill="currentColor" stroke="none" font-family="system-ui,sans-serif" font-size="12">R_L</text> <text x="62" y="85" fill="currentColor" stroke="none" font-family="system-ui,sans-serif" font-size="12">CT</text>
+  
+</svg>

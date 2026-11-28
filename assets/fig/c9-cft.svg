@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 180" role="img" aria-label="Octahedral crystal field splitting" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+
+    <line x1="30" y1="90" x2="90" y2="90"/>
+    <line x1="90" y1="90" x2="150" y2="45" stroke-dasharray="3 3"/>
+    <line x1="90" y1="90" x2="150" y2="125" stroke-dasharray="3 3"/>
+    <line x1="150" y1="45" x2="220" y2="45"/><line x1="150" y1="125" x2="220" y2="125"/>
+    <text x="32" y="84" fill="currentColor" stroke="none" font-family="system-ui,sans-serif" font-size="12">5 d-orbitals</text> <text x="165" y="38" fill="currentColor" stroke="none" font-family="system-ui,sans-serif" font-size="12">e_g (+0.6 Δ_o)</text> <text x="165" y="142" fill="currentColor" stroke="none" font-family="system-ui,sans-serif" font-size="12">t_2g (−0.4 Δ_o)</text>
+  
+</svg>

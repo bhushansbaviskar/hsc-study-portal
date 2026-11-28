@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 180" role="img" aria-label="Daniell galvanic cell" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+
+    <rect x="35" y="55" width="75" height="90"/><rect x="170" y="55" width="75" height="90"/>
+    <rect x="52" y="35" width="12" height="80"/><rect x="215" y="35" width="12" height="80"/>
+    <polyline points="58,35 58,20 221,20 221,35"/>
+    <path d="M 92 75 L 92 40 L 188 40 L 188 75" stroke-width="5" opacity="0.5"/>
+    <text x="42" y="162" fill="currentColor" stroke="none" font-family="system-ui,sans-serif" font-size="12">Zn | ZnSO₄</text> <text x="175" y="162" fill="currentColor" stroke="none" font-family="system-ui,sans-serif" font-size="12">CuSO₄ | Cu</text> <text x="115" y="15" fill="currentColor" stroke="none" font-family="system-ui,sans-serif" font-size="12">e⁻ flow →</text> <text x="110" y="55" fill="currentColor" stroke="none" font-family="system-ui,sans-serif" font-size="12">Salt bridge</text>
+  
+</svg>

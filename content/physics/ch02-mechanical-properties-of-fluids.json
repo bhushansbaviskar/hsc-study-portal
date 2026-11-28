@@ -1163,7 +1163,13 @@
         }
       ],
       "page": 47,
-      "kind": "derivation"
+      "kind": "derivation",
+      "fig": "assets/fig/p2-terminal.svg",
+      "figLabels": [
+        "Downward weight F_g",
+        "Upthrust F_u",
+        "Viscous drag 6πηrv"
+      ]
     },
     {
       "id": "p2-2022-Q12",
@@ -1296,7 +1302,13 @@
           "marks": 1
         }
       ],
-      "page": 41
+      "page": 41,
+      "fig": "assets/fig/p2-capillary.svg",
+      "figLabels": [
+        "Concave meniscus",
+        "Rise h",
+        "Contact angle θ"
+      ]
     },
     {
       "id": "p2-imp-s13-bernoulli",

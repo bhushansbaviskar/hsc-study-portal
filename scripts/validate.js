@@ -57,7 +57,8 @@ function checkFig(figPath, ctx) {
   const svg = fs.readFileSync(full, "utf8");
   if (!/<svg[\s>]/i.test(svg)) err(`${ctx}: fig ${figPath} does not contain <svg`);
   if (/<script/i.test(svg)) err(`${ctx}: fig ${figPath} contains <script`);
-  if (/https?:\/\//i.test(svg)) err(`${ctx}: fig ${figPath} contains external URL`);
+  const svgNoNs = svg.replace(/xmlns=["']http:\/\/www\.w3\.org\/2000\/svg["']/gi, "");
+  if (/https?:\/\//i.test(svgNoNs)) err(`${ctx}: fig ${figPath} contains external URL`);
 }
 
 function main() {

@@ -135,6 +135,12 @@
           "text": "Reaction intermediate: NOCl₂(g)",
           "marks": 1
         }
+      ],
+      "fig": "assets/fig/c6-catalyst.svg",
+      "figLabels": [
+        "Uncatalysed E_a",
+        "Catalysed E_a'",
+        "Reactants R & Products P"
       ]
     },
     {

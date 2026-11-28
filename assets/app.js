@@ -75,8 +75,17 @@
         return "<tr>" + (Array.isArray(r) ? r.map(function (c) { return "<td>" + fm(c) + "</td>"; }).join("") : "") + "</tr>";
       }).join("") + "</tbody></table></div>";
   }
+  function figWidgetHTML(obj) {
+    if (!obj || !obj.fig) return "";
+    var lbls = Array.isArray(obj.figLabels) && obj.figLabels.length
+      ? '<div class="fig-labels"><span class="small muted">Check your sketch labels:</span><div class="err-pills">' +
+        obj.figLabels.map(function (l) { return '<span class="err-pill">' + fm(l) + "</span>"; }).join("") + "</div></div>"
+      : "";
+    return '<details class="fig-box"><summary>Sketch this diagram on paper first, then tap to inspect &amp; check labels</summary>' +
+      '<div class="fig-in"><img class="fig-img" src="' + esc(obj.fig) + '" alt="Diagram" loading="lazy">' + lbls + "</div></details>";
+  }
   function modelAnswerHTML(q) {
-    return '<div class="answer">' + boardTipHTML(q) + '<b>Model answer</b><p>' + fm(q.answer) + "</p>" + cmpTableHTML(q) + "</div>";
+    return '<div class="answer">' + boardTipHTML(q) + '<b>Model answer</b><p>' + fm(q.answer) + "</p>" + cmpTableHTML(q) + figWidgetHTML(q) + "</div>";
   }
 
   var ERR_TAGS = [
@@ -1570,23 +1579,59 @@
     for (var i = 0; i < opts.length; i++) if (ORDER_BOUND.test(String(opts[i]))) return null;
     return shuffledOrder(opts.length);
   }
-  function newCE(chk, mode) { return { chk: chk, mode: mode, attempt: 0, hint: false, sel: null, val: "", status: "ask", gain: 0, msg: "", conf: null, flag: "", order: optionOrder(chk) }; }
+  function newCE(chk, mode) {
+    return {
+      chk: chk, mode: mode, attempt: 0, hint: false, sel: null, val: "",
+      unitSel: null, unitOrder: Array.isArray(chk.unitOpts) ? shuffledOrder(chk.unitOpts.length) : null, unitWrong: false,
+      status: "ask", gain: 0, msg: "", conf: null, flag: "", order: optionOrder(chk)
+    };
+  }
   function ceOptions(chk) { return chk.type === "tf" ? ["True", "False"] : chk.options; }
   function ceAnswerIdx(chk) { return chk.type === "tf" ? (chk.answer ? 0 : 1) : chk.answer; }
   function ceAnswerText(chk) {
     if (chk.type === "num") return chk.answer + (chk.unit ? " " + chk.unit : "");
     return ceOptions(chk)[ceAnswerIdx(chk)];
   }
+  var SUP_MAP = { "⁰": "0", "¹": "1", "²": "2", "³": "3", "⁴": "4", "⁵": "5", "⁶": "6", "⁷": "7", "⁸": "8", "⁹": "9", "⁻": "-", "⁺": "+" };
+  function parseSingleTerm(t) {
+    t = t.trim();
+    if (!t) return NaN;
+    if (/^[-+]?pi$/i.test(t)) return t.charAt(0) === "-" ? -Math.PI : Math.PI;
+    var mpi = t.match(/^([-+]?(?:\d+\.?\d*|\.\d+)(?:e[-+]?\d+)?)\s*\*?\s*pi$/i);
+    if (mpi) return parseFloat(mpi[1]) * Math.PI;
+    if (/^[-+]?(\d+\.?\d*|\.\d+)(e[-+]?\d+)?$/i.test(t)) return parseFloat(t);
+    return NaN;
+  }
   function parseNum(s) {
-    s = String(s).trim().replace(/,/g, ".").replace(/\s*[x×*]\s*10\s*\^?\s*\(?\s*(-?\d+)\s*\)?/i, "e$1");
-    var m = s.match(/^[-+]?(\d+\.?\d*|\.\d+)(e[-+]?\d+)?/i);
-    return m ? parseFloat(m[0]) : NaN;
+    s = String(s == null ? "" : s).trim();
+    if (!s) return NaN;
+    s = s.replace(/[⁰¹²³⁴⁵⁶⁷⁸⁹⁻⁺]+/g, function (m) {
+      return "^" + m.split("").map(function (ch) { return SUP_MAP[ch] || ch; }).join("");
+    });
+    s = s.replace(/[×·]/g, "*").replace(/−/g, "-").replace(/π/g, "pi");
+    if (/^[-+]?\d{1,3}(,\d{3})+(\.\d+)?$/.test(s)) s = s.replace(/,/g, "");
+    s = s.replace(/\s*\*\s*10\s*\^?\s*\(?\s*([-+]?\d+)\s*\)?/gi, "e$1");
+    s = s.replace(/^([-+]?)10\s*\^\s*\(?\s*([-+]?\d+)\s*\)?$/i, "$11e$2");
+    if (s.indexOf("/") >= 0) {
+      var parts = s.split("/");
+      if (parts.length !== 2) return NaN;
+      var num = parseSingleTerm(parts[0]), den = parseSingleTerm(parts[1]);
+      if (isNaN(num) || isNaN(den) || den === 0) return NaN;
+      return num / den;
+    }
+    return parseSingleTerm(s);
   }
   function ceIsCorrect(ce) {
     var c = ce.chk;
     if (c.type === "num") {
       var v = parseNum(ce.val);
-      return !isNaN(v) && (c.answer === 0 ? Math.abs(v) <= 1e-6 : Math.abs(v - c.answer) <= TOL * Math.abs(c.answer));
+      var numOk = !isNaN(v) && (c.answer === 0 ? Math.abs(v) <= 1e-6 : Math.abs(v - c.answer) <= TOL * Math.abs(c.answer));
+      if (Array.isArray(c.unitOpts) && c.unitOpts.length) {
+        ce.unitWrong = numOk && ce.unitSel !== c.unit;
+        return numOk && ce.unitSel === c.unit;
+      }
+      ce.unitWrong = false;
+      return numOk;
     }
     return ce.sel === ceAnswerIdx(c);
   }
@@ -1609,7 +1654,17 @@
     h += '<p class="q">' + fm(c.q) + "</p>";
     var locked = st !== "ask";
     if (c.type === "num") {
-      h += '<div class="numrow"><input id="numin" class="numin" type="text" inputmode="decimal" autocomplete="off" aria-label="Your answer" placeholder="Your answer" value="' + esc(ce.val) + '"' + (locked ? " disabled" : "") + '><span class="unit">' + fm(c.unit || "") + "</span></div>";
+      var hasUOpts = Array.isArray(c.unitOpts) && c.unitOpts.length > 0;
+      h += '<div class="numrow"><input id="numin" class="numin" type="text" inputmode="decimal" autocomplete="off" aria-label="Your answer" placeholder="Your answer" value="' + esc(ce.val) + '"' + (locked ? " disabled" : "") + '>' +
+        (hasUOpts ? "" : '<span class="unit">' + fm(c.unit || "") + "</span>") + "</div>";
+      if (hasUOpts) {
+        var uOrd = Array.isArray(ce.unitOrder) && ce.unitOrder.length === c.unitOpts.length ? ce.unitOrder : c.unitOpts.map(function (_, i) { return i; });
+        h += '<div class="unit-box"><span class="small muted">Pick SI unit:</span><div class="err-pills">' +
+          uOrd.map(function (ui) {
+            var u = c.unitOpts[ui];
+            return '<button type="button" class="err-pill' + (ce.unitSel === u ? " on" : "") + '" data-act="ce-unit" data-u="' + esc(u) + '" aria-pressed="' + (ce.unitSel === u) + '"' + (locked ? " disabled" : "") + ">" + fm(u) + "</button>";
+          }).join("") + "</div></div>";
+      }
     } else {
       var allOpts = ceOptions(c), ord = Array.isArray(ce.order) && ce.order.length === allOpts.length ? ce.order : allOpts.map(function (_, n) { return n; });
       h += '<div class="opts" role="radiogroup">' + ord.map(function (i, pos) {
@@ -1632,7 +1687,7 @@
         '<button type="button" class="btn primary" data-act="ce-check">Check answer</button></div>';
       if (ce.attempt === 1) h += '<p class="small muted">Second try: worth ' + XP_SECOND + " XP.</p>";
     } else if (st === "wrong") {
-      h += '<div class="fb bad" role="status"><b>Not quite.</b> ' + (c.hint ? "Hint: " + fm(c.hint) : "Have another look.") +
+      h += '<div class="fb bad" role="status"><b>' + (ce.unitWrong ? "Number is right, but check the SI unit! Board exams deduct ½–1 mark for a wrong/missing unit." : "Not quite.") + "</b> " + (!ce.unitWrong && c.hint ? "Hint: " + fm(c.hint) : (!ce.unitWrong ? "Have another look." : "")) +
         ' <span class="small muted">Re-read textbook p. ' + esc(c.page) + ". The full working shows after your next try.</span></div>" +
         '<button type="button" class="btn primary block" data-act="ce-retry">Try again (' + XP_SECOND + " XP)</button>";
     } else if (st === "right") {
@@ -1640,7 +1695,7 @@
         (ce.flag === "guessed" ? '<div class="small">You were guessing, so this is saved to your mistake bank for tomorrow.</div>' : "") + "</div>" +
         '<button type="button" class="btn primary block" data-act="ce-next">Next</button>';
     } else {
-      h += '<div class="fb bad" role="status"><b>The answer is ' + fm(ceAnswerText(c)) + ".</b> " + fm(c.explain) + '<div class="small muted">Textbook p. ' + esc(c.page) + "</div>" +
+      h += '<div class="fb bad" role="status"><b>' + (ce.unitWrong ? "Number is right, but check the SI unit! " : "") + "The answer is " + fm(ceAnswerText(c)) + ".</b> " + fm(c.explain) + '<div class="small muted">Textbook p. ' + esc(c.page) + "</div>" +
         (ce.mode === "quest" ? '<div class="small">No XP this time. It is saved to your mistake bank for tomorrow' + (ce.flag === "sure" ? ", and comes first in review because you were sure" : "") + ".</div>" : "") + "</div>" +
         '<button type="button" class="btn primary block" data-act="ce-next">Next</button>';
     }
@@ -2819,26 +2874,29 @@
         if (Q && Q.stop.id === sid && location.hash === BASE + "/" + sid + "/quest") return questStart(sid, true);
         location.hash = BASE + "/" + sid + "/quest"; return;
       case "ce-pick": ce = ctxCE(); if (ce && ce.status === "ask") { ce.sel = dataI(t); ce.msg = ""; if (ce.mode === "quest") saveQuest(); redraw(); } return;
+      case "ce-unit": ce = ctxCE(); if (ce && ce.status === "ask") { syncNum(ce); ce.unitSel = t.getAttribute("data-u"); ce.msg = ""; if (ce.mode === "quest") saveQuest(); redraw(); } return;
       case "ce-conf": ce = ctxCE(); if (ce && ce.status === "ask") { syncNum(ce); ce.conf = t.getAttribute("data-v"); ce.msg = ""; if (ce.mode === "quest") saveQuest(); redraw(); } return;
       case "ce-hint": ce = ctxCE(); if (!ce || ce.status !== "ask") return; ce.hint = true; syncNum(ce); if (ce.mode === "quest") saveQuest(); return redraw();
       case "ce-check":
         ce = ctxCE(); if (!ce || ce.status !== "ask") return; syncNum(ce);
         if (ce.chk.type === "num" ? isNaN(parseNum(ce.val)) : ce.sel == null) { ce.msg = ce.chk.type === "num" ? "Type a number first." : "Pick an answer first."; return redraw(); }
+        if (ce.chk.type === "num" && Array.isArray(ce.chk.unitOpts) && ce.chk.unitOpts.length && !ce.unitSel) { ce.msg = "Pick an SI unit first."; return redraw(); }
         if (!ce.conf) { ce.msg = "Choose Sure or Guessing first."; return redraw(); }
         ce.msg = "";
         var okNow = ceIsCorrect(ce), cid = ce.mode === "quest" ? bankId("c", Q.stop.id, Q.ki) : R.queue[R.i];
+        var errTag = ce.unitWrong ? "units" : "";
         if (ce.mode === "quest") {
           if (ce.attempt === 0) {   // first try decides what goes to the mistake bank
-            if (!okNow) { if (bankAdd(cid, ce.conf === "sure" ? "confident mistake" : "missed")) Q.added++; ce.flag = ce.conf === "sure" ? "sure" : ""; }
+            if (!okNow) { if (bankAdd(cid, ce.conf === "sure" ? "confident mistake" : "missed", errTag)) Q.added++; ce.flag = ce.conf === "sure" ? "sure" : ""; }
             else if (ce.conf === "guess") { if (bankAdd(cid, "guessed")) Q.added++; ce.flag = "guessed"; }
           }
         } else if (!okNow && ce.conf === "sure" && load().bank[cid]) {
-          load().bank[cid].prio = true; load().bank[cid].reason = "confident mistake"; load().bank[cid].updatedAt = Date.now(); save();
+          load().bank[cid].prio = true; load().bank[cid].reason = "confident mistake"; if (errTag) load().bank[cid].err = errTag; load().bank[cid].updatedAt = Date.now(); save();
         }
         ceSubmit(ce);
         if (ce.mode === "quest") saveQuest();
         return redraw();
-      case "ce-retry": ce = ctxCE(); if (!ce || ce.status !== "wrong") return; ce.attempt = 1; ce.order = optionOrder(ce.chk); ce.sel = null; ce.val = ""; ce.status = "ask"; ce.conf = null; if (ce.mode === "quest") saveQuest(); return redraw();
+      case "ce-retry": ce = ctxCE(); if (!ce || ce.status !== "wrong") return; ce.attempt = 1; ce.order = optionOrder(ce.chk); ce.sel = null; ce.val = ""; ce.unitSel = null; ce.unitWrong = false; ce.status = "ask"; ce.conf = null; if (ce.mode === "quest") saveQuest(); return redraw();
       case "ce-next":
         if (R && location.hash.indexOf("#/review") === 0) return reviewAdvance(R.ce.status === "right");
         return questNext();

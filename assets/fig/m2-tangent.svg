@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 180" role="img" aria-label="Tangent and normal to a curve" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+
+    <line x1="35" y1="150" x2="245" y2="150"/><line x1="35" y1="20" x2="35" y2="150"/>
+    <path d="M 55 135 Q 130 115 215 35"/>
+    <line x1="75" y1="135" x2="205" y2="45"/>
+    <line x1="115" y1="40" x2="175" y2="130" stroke-dasharray="4 3"/>
+    <circle cx="145" cy="87" r="4" fill="currentColor"/>
+    <text x="152" y="84" fill="currentColor" stroke="none" font-family="system-ui,sans-serif" font-size="12">P(x₁,y₁)</text> <text x="198" y="58" fill="currentColor" stroke="none" font-family="system-ui,sans-serif" font-size="12">Tangent</text> <text x="165" y="138" fill="currentColor" stroke="none" font-family="system-ui,sans-serif" font-size="12">Normal</text>
+  
+</svg>

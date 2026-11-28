@@ -133,6 +133,13 @@
           "text": "Maximum volume = 432 cm³",
           "marks": 1
         }
+      ],
+      "fig": "assets/fig/m2-tangent.svg",
+      "figLabels": [
+        "Curve y=f(x)",
+        "Point P(x₁,y₁)",
+        "Tangent",
+        "Normal"
       ]
     }
   ]

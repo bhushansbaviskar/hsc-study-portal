@@ -72,7 +72,12 @@
             "unit": "rad/s",
             "hint": "Use ω = 2πn, where n is the frequency in revolutions per second.",
             "explain": "ω = 2πn = 2π × 3 = 18.85 rad/s.",
-            "page": 1
+            "page": 1,
+            "unitOpts": [
+              "rad/s",
+              "m/s²",
+              "N·m"
+            ]
           },
           {
             "type": "tf",
@@ -146,7 +151,13 @@
             "unit": "N",
             "hint": "Use F = mv²/r.",
             "explain": "F = mv²/r = 0.2 × 5² / 0.5 = 10 N.",
-            "page": 2
+            "page": 2,
+            "unitOpts": [
+              "N",
+              "m/s²",
+              "rad/s",
+              "N·m"
+            ]
           },
           {
             "type": "tf",
@@ -1094,7 +1105,13 @@
         }
       ],
       "page": 9,
-      "kind": "derivation"
+      "kind": "derivation",
+      "fig": "assets/fig/p1-vcm.svg",
+      "figLabels": [
+        "Top v = √(rg)",
+        "Mid v = √(3rg)",
+        "Bottom v = √(5rg)"
+      ]
     },
     {
       "id": "2023-Q2v",
@@ -1242,7 +1259,14 @@
           "marks": 1
         }
       ],
-      "page": 7
+      "page": 7,
+      "fig": "assets/fig/p1-conical.svg",
+      "figLabels": [
+        "Tension T",
+        "T cosθ = mg",
+        "T sinθ = mv²/r",
+        "Radius r"
+      ]
     },
     {
       "id": "imp-s10-parallel",
@@ -1310,7 +1334,14 @@
           "marks": 1
         }
       ],
-      "page": 4
+      "page": 4,
+      "fig": "assets/fig/p1-banking.svg",
+      "figLabels": [
+        "Normal reaction N",
+        "N cosθ",
+        "N sinθ",
+        "Weight mg"
+      ]
     }
   ],
   "derivations": [

@@ -133,6 +133,13 @@
           "text": "Higher sensitivity and adjustable accuracy",
           "marks": 1
         }
+      ],
+      "fig": "assets/fig/p9-potentiometer.svg",
+      "figLabels": [
+        "Wire AB",
+        "Driver cell E",
+        "Jockey J",
+        "Galvanometer G"
       ]
     },
     {
@@ -199,6 +206,11 @@
           "text": "Dividing to get P/Q = R/S",
           "marks": 1
         }
+      ],
+      "fig": "assets/fig/p9-wheatstone.svg",
+      "figLabels": [
+        "Resistors P, Q, R, S",
+        "Galvanometer G"
       ]
     }
   ]

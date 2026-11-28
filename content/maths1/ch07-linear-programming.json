@@ -82,6 +82,12 @@
           "text": "Evaluating Z and finding max Z = 36 at (0, 6)",
           "marks": 1
         }
+      ],
+      "fig": "assets/fig/m1-lpp.svg",
+      "figLabels": [
+        "Constraint lines",
+        "Feasible region",
+        "Corner points"
       ]
     }
   ]

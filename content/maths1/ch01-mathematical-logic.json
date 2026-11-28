@@ -865,7 +865,12 @@
         }
       ],
       "page": 21,
-      "kind": "problem"
+      "kind": "problem",
+      "fig": "assets/fig/m1-circuits.svg",
+      "figLabels": [
+        "Series S₁, S₂ (p ∧ q)",
+        "Parallel S₁, S₂ (p ∨ q)"
+      ]
     },
     {
       "id": "m1-2023-Q1i",

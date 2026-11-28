@@ -221,6 +221,13 @@
           "text": "Application 2 (spontaneity of redox reaction)",
           "marks": 1
         }
+      ],
+      "fig": "assets/fig/c5-daniell.svg",
+      "figLabels": [
+        "Zn anode",
+        "Cu cathode",
+        "Salt bridge",
+        "e⁻ flow"
       ]
     }
   ]

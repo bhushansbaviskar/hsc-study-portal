@@ -1304,6 +1304,12 @@
           "text": "Density formula ρ = (n·M)/(a³·N_A)",
           "marks": 1
         }
+      ],
+      "fig": "assets/fig/c1-unitcells.svg",
+      "figLabels": [
+        "SC (Z=1)",
+        "BCC (Z=2)",
+        "FCC (Z=4)"
       ]
     },
     {

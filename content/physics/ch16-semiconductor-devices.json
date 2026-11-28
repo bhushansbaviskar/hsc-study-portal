@@ -103,6 +103,12 @@
           "text": "Correct option: (b) AND gate",
           "marks": 1
         }
+      ],
+      "fig": "assets/fig/p16-gates.svg",
+      "figLabels": [
+        "AND gate",
+        "OR gate",
+        "NAND gate"
       ]
     },
     {
@@ -145,6 +151,12 @@
           "text": "Correct polarity and load resistor R_L labelling",
           "marks": 1
         }
+      ],
+      "fig": "assets/fig/p16-rectifier.svg",
+      "figLabels": [
+        "Centre-tapped transformer",
+        "Diodes D₁, D₂",
+        "Load R_L"
       ]
     }
   ]

@@ -199,4 +199,16 @@ test("P5: studyPhase and todayFocusPlan adapt across Learn, Weekend, Practicals 
   assert.strictEqual(App.studyPhase("physics").id, "sprint");
 });
 
+test("P7: hardened parseNum handles commas, Unicode exponents, fractions, pi, and rejects invalid inputs", () => {
+  assert.strictEqual(App.parseNum("1,000"), 1000);
+  assert.strictEqual(App.parseNum("10^-5"), 1e-5);
+  assert.strictEqual(App.parseNum("10⁻⁵"), 1e-5);
+  assert.ok(Math.abs(App.parseNum("6.28×10⁻⁵") - 6.28e-5) < 1e-10);
+  assert.strictEqual(App.parseNum("3/4"), 0.75);
+  assert.ok(Math.abs(App.parseNum("pi/2") - Math.PI / 2) < 1e-10);
+  assert.ok(Number.isNaN(App.parseNum("12abc")));
+  assert.ok(Number.isNaN(App.parseNum("1/0")));
+  assert.ok(Number.isNaN(App.parseNum("")));
+});
+
 console.log(`\nALL ${passed} CORE TESTS PASSED`);
