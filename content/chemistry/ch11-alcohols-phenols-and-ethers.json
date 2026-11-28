@@ -1,0 +1,155 @@
+{
+  "id": "ch11",
+  "file": "content/chemistry/ch11-alcohols-phenols-and-ethers.json",
+  "subject": "chemistry",
+  "book": "chem_xii",
+  "title": "Alcohols, Phenols and Ethers",
+  "lite": true,
+  "startPage": 234,
+  "endPage": 253,
+  "examMarks": 4,
+  "examMarksWithOptions": 6,
+  "stops": [
+    {
+      "id": "s01",
+      "title": "Preparation & Reactions of Alcohols",
+      "page": 234,
+      "inShort": "Hydroboration-oxidation gives anti-Markovnikov alcohol. Lucas test distinguishes 1°, 2°, 3° alcohols. Tertiary alcohols (e.g. 2-methylpropan-2-ol) resist oxidation under normal conditions.",
+      "sections": [
+        "11.4.1 Preparation of Alcohols",
+        "11.4.4 Chemical Properties of Alcohols"
+      ]
+    },
+    {
+      "id": "s02",
+      "title": "Preparation & Reactions of Phenols",
+      "page": 240,
+      "inShort": "Cumene process: cumene + O₂ → cumene hydroperoxide --(H⁺)--> phenol + acetone. Phenol + conc. HNO₃/conc. H₂SO₄ → 2,4,6-trinitrophenol (picric acid). Phenol + Zn dust (Δ) → benzene + ZnO.",
+      "sections": [
+        "11.4.2 Preparation of Phenol",
+        "11.4.4 Chemical Properties of Phenols"
+      ]
+    },
+    {
+      "id": "s03",
+      "title": "Ethers: Williamson synthesis & Reactions",
+      "page": 247,
+      "inShort": "Williamson synthesis: R-ONa + R'-X → R-O-R' + NaX (best with 1° alkyl halide). Anisole + HI → phenol + CH₃I. Anisole + Br₂/CH₃COOH → p-bromoanisole (major) + o-bromoanisole.",
+      "sections": [
+        "11.5.1 Preparation of Ethers",
+        "11.5.3 Chemical Properties of Ethers"
+      ]
+    }
+  ],
+  "formulas": [
+    {
+      "stop": "s03",
+      "items": [
+        {
+          "n": "Williamson ether synthesis",
+          "f": "R−O⁻Na⁺ + R'−X → R−O−R' + NaX",
+          "s": "R'-X must be 1° alkyl halide to avoid elimination.",
+          "p": 248
+        }
+      ]
+    }
+  ],
+  "board": [
+    {
+      "id": "c11-2025-Q7",
+      "stop": "s03",
+      "year": 2025,
+      "qno": "Q7",
+      "marks": 2,
+      "kind": "problem",
+      "page": 250,
+      "text": "What is the action of: (i) Liquid bromine in acetic acid on anisole (ii) Soda-lime on sodium acetate?",
+      "answer": "(i) Anisole + Br₂ in CH₃COOH → p-bromoanisole (major) + o-bromoanisole + HBr.\n(ii) CH₃COONa + NaOH --(CaO, Δ)--> CH₄ (methane) + Na₂CO₃.",
+      "points": [
+        {
+          "text": "(i) Formation of p-bromoanisole (major) & o-bromoanisole",
+          "marks": 1
+        },
+        {
+          "text": "(ii) Decarboxylation giving methane",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "c11-2025-Q12",
+      "stop": "s01",
+      "year": 2025,
+      "qno": "Q12",
+      "marks": 2,
+      "kind": "problem",
+      "page": 244,
+      "text": "Write the structural formula and IUPAC name of the alcohol having molecular formula C₄H₁₀O which does not undergo oxidation under normal condition.",
+      "answer": "Tertiary alcohol does not undergo oxidation under normal conditions.\nStructural formula: (CH₃)₃C−OH.\nIUPAC name: 2-Methylpropan-2-ol.",
+      "points": [
+        {
+          "text": "Structural formula (CH₃)₃C−OH",
+          "marks": 1
+        },
+        {
+          "text": "IUPAC name: 2-Methylpropan-2-ol",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "c11-2025-Q19",
+      "stop": "s02",
+      "year": 2025,
+      "qno": "Q19",
+      "marks": 3,
+      "kind": "problem",
+      "page": 245,
+      "text": "(a) Write the reactions for the action of following reagents on phenol: (i) Nitrating mixture (ii) Zinc dust. (b) What is the action of phosphorous pentachloride on ethyl methyl ether?",
+      "answer": "(a)(i) Phenol + 3 HNO₃(conc.) --(conc. H₂SO₄)--> 2,4,6-trinitrophenol (picric acid) + 3H₂O.\n(ii) C₆H₅OH + Zn --(Δ)--> C₆H₆ (benzene) + ZnO.\n(b) C₂H₅−O−CH₃ + PCl₅ --(Δ)--> C₂H₅Cl + CH₃Cl + POCl₃.",
+      "points": [
+        {
+          "text": "(a)(i) Picric acid formation",
+          "marks": 1
+        },
+        {
+          "text": "(a)(ii) Benzene + ZnO",
+          "marks": 1
+        },
+        {
+          "text": "(b) C₂H₅Cl + CH₃Cl + POCl₃",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "c11-2024-Q27",
+      "stop": "s02",
+      "year": 2024,
+      "qno": "Q27",
+      "marks": 4,
+      "kind": "problem",
+      "page": 240,
+      "text": "Convert the following: (i) acetaldehyde to isopropyl alcohol (ii) cumene to phenol (iii) anisole to phenol. Write two uses of neon.",
+      "answer": "(i) CH₃CHO + CH₃MgBr --(dry ether)--> CH₃CH(OMgBr)CH₃ --(H₂O/H⁺)--> CH₃CH(OH)CH₃ (isopropyl alcohol).\n(ii) Cumene + O₂ → Cumene hydroperoxide --(dil. H₂SO₄)--> Phenol + Acetone.\n(iii) C₆H₅OCH₃ + HI --(373 K)--> C₆H₅OH + CH₃I.\nNeon uses: (1) In neon advertising signs/discharge tubes; (2) In beacon lights for pilots.",
+      "points": [
+        {
+          "text": "(i) Acetaldehyde to isopropyl alcohol via Grignard",
+          "marks": 1
+        },
+        {
+          "text": "(ii) Cumene to phenol",
+          "marks": 1
+        },
+        {
+          "text": "(iii) Anisole to phenol with HI",
+          "marks": 1
+        },
+        {
+          "text": "Two uses of neon",
+          "marks": 1
+        }
+      ]
+    }
+  ]
+}

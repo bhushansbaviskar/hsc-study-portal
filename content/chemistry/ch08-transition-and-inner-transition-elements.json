@@ -1,0 +1,170 @@
+{
+  "id": "ch08",
+  "file": "content/chemistry/ch08-transition-and-inner-transition-elements.json",
+  "subject": "chemistry",
+  "book": "chem_xii",
+  "title": "Transition and Inner Transition Elements",
+  "lite": true,
+  "startPage": 165,
+  "endPage": 191,
+  "examMarks": 6,
+  "examMarksWithOptions": 8,
+  "stops": [
+    {
+      "id": "s01",
+      "title": "3d series: Electronic configuration, oxidation states & magnetic moment",
+      "page": 165,
+      "inShort": "General outer configuration of d-block: (n−1)d¹⁻¹⁰ ns¹⁻². Exceptions: Cr ([Ar]3d⁵4s¹), Cu ([Ar]3d¹⁰4s¹). Spin-only magnetic moment μ = √(n(n+2)) BM. Ti⁴⁺ (3d⁰) is colourless due to absence of unpaired d-electrons.",
+      "sections": [
+        "8.2 Position & Electronic Configuration",
+        "8.3 Oxidation States",
+        "8.5 Magnetic Properties & Colour"
+      ]
+    },
+    {
+      "id": "s02",
+      "title": "K₂Cr₂O₇, KMnO₄ & Metallurgy of Iron (Blast furnace)",
+      "page": 175,
+      "inShort": "K₂Cr₂O₇ is prepared from chromite ore (FeCr₂O₄) via Na₂CrO₄ → Na₂Cr₂O₇ → K₂Cr₂O₇. In blast furnace reduction zone (500–800 K), Fe₂O₃ is reduced to Fe by CO (and C at higher temp). Brass = Cu + Zn.",
+      "sections": [
+        "8.9 Compounds of Mn and Cr",
+        "8.10 Metallurgy & Blast Furnace",
+        "8.11 Alloys"
+      ]
+    },
+    {
+      "id": "s03",
+      "title": "Lanthanoids, Actinoids & Lanthanoid contraction",
+      "page": 183,
+      "inShort": "Lanthanoid contraction: steady decrease in atomic/ionic radii from La to Lu due to poor shielding by 4f electrons. Gd (Z=64): [Xe] 4f⁷ 5d¹ 6s². Transuranium elements: Z > 92 (93 to 118).",
+      "sections": [
+        "8.12 Inner Transition Elements",
+        "8.13 Lanthanoid Contraction",
+        "8.15 Actinoids vs Lanthanoids"
+      ]
+    }
+  ],
+  "formulas": [
+    {
+      "stop": "s01",
+      "items": [
+        {
+          "n": "Spin-only magnetic moment",
+          "f": "μ = √(n(n + 2)) BM",
+          "s": "n = number of unpaired electrons; BM = Bohr Magneton.",
+          "p": 171
+        }
+      ]
+    }
+  ],
+  "board": [
+    {
+      "id": "c8-2025-Q2viii",
+      "stop": "s02",
+      "year": 2025,
+      "qno": "Q2(viii)",
+      "marks": 1,
+      "kind": "vsa",
+      "page": 182,
+      "text": "Write the names of the metal elements in brass alloy.",
+      "answer": "Copper (Cu) and Zinc (Zn).",
+      "points": [
+        {
+          "text": "Copper and Zinc",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "c8-2025-Q5",
+      "stop": "s03",
+      "year": 2025,
+      "qno": "Q5",
+      "marks": 2,
+      "kind": "distinguish",
+      "page": 189,
+      "text": "Write the differences between lanthanoids and actinoids.",
+      "answer": "1. Differentiating electron enters 4f-orbital in lanthanoids, and 5f-orbital in actinoids.\n2. Lanthanoids show +3 (and +2, +4) oxidation states; actinoids show a wider range (+3 to +7).\n3. Lanthanoids (except Pm) are non-radioactive; all actinoids are radioactive.\n4. Lanthanoids have less tendency to form complexes than actinoids.",
+      "points": [
+        {
+          "text": "4f vs 5f orbital & oxidation states",
+          "marks": 1
+        },
+        {
+          "text": "Radioactivity & complex formation tendency",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "c8-2025-Q21",
+      "stop": "s01",
+      "year": 2025,
+      "qno": "Q21",
+      "marks": 3,
+      "kind": "numerical",
+      "page": 171,
+      "text": "(a) Calculate spin only magnetic moment of M²⁺ ion [atomic number of M = 26]. (b) Write condensed electronic configuration of Gadolinium [Z = 64].",
+      "answer": "(a) M (Z=26, Fe): [Ar] 3d⁶ 4s² ⇒ M²⁺: [Ar] 3d⁶ (4 unpaired electrons, n = 4).\nμ = √(4(4 + 2)) = √24 = 4.899 BM.\n(b) Gadolinium (Z=64): [Xe] 4f⁷ 5d¹ 6s².",
+      "points": [
+        {
+          "text": "n = 4 unpaired electrons for M²⁺ (3d⁶)",
+          "marks": 1
+        },
+        {
+          "text": "μ = √24 = 4.90 BM",
+          "marks": 1
+        },
+        {
+          "text": "Gd (Z=64): [Xe] 4f⁷ 5d¹ 6s²",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "c8-2024-Q1i",
+      "stop": "s01",
+      "year": 2024,
+      "qno": "Q1(i)",
+      "marks": 1,
+      "kind": "mcq",
+      "page": 171,
+      "text": "The spin only magnetic moment of Cr³⁺ cation is ____.",
+      "options": [
+        "3.742 BM",
+        "3.755 BM",
+        "3.873 BM",
+        "3.633 BM"
+      ],
+      "answerIndex": 2,
+      "answer": "(c) 3.873 BM (Cr³⁺ has 3d³ ⇒ n = 3 ⇒ μ = √(3×5) = √15 = 3.873 BM).",
+      "points": [
+        {
+          "text": "Correct option: (c) 3.873 BM",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "c8-2024-Q13",
+      "stop": "s03",
+      "year": 2024,
+      "qno": "Q13",
+      "marks": 2,
+      "kind": "theory",
+      "page": 185,
+      "text": "Define Lanthanide contraction. Write the balanced chemical equations when acidified K₂Cr₂O₇ reacts with H₂S.",
+      "answer": "Lanthanide contraction: The gradual decrease in atomic and ionic radii of lanthanoids with increasing atomic number from La (57) to Lu (71).\nReaction: K₂Cr₂O₇ + 4 H₂SO₄ + 3 H₂S → K₂SO₄ + Cr₂(SO₄)₃ + 7 H₂O + 3 S↓.",
+      "points": [
+        {
+          "text": "Definition of lanthanide contraction",
+          "marks": 1
+        },
+        {
+          "text": "Balanced equation with acidified K₂Cr₂O₇ and H₂S",
+          "marks": 1
+        }
+      ]
+    }
+  ]
+}

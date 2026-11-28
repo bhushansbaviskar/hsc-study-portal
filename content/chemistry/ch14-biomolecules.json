@@ -1,0 +1,142 @@
+{
+  "id": "ch14",
+  "file": "content/chemistry/ch14-biomolecules.json",
+  "subject": "chemistry",
+  "book": "chem_xii",
+  "title": "Biomolecules",
+  "lite": true,
+  "startPage": 298,
+  "endPage": 321,
+  "examMarks": 3,
+  "examMarksWithOptions": 4,
+  "stops": [
+    {
+      "id": "s01",
+      "title": "Carbohydrates: Glucose, Fructose & Disaccharides",
+      "page": 298,
+      "inShort": "Glucose preparation from sucrose: C₁₂H₂₂O₁₁ + H₂O --(H⁺)--> C₆H₁₂O₆ (glucose) + C₆H₁₂O₆ (fructose). Sucrose has α,β-1,2-glycosidic linkage; Maltose has α-1,4; Lactose has β-1,4-glycosidic linkage.",
+      "sections": [
+        "14.2 Carbohydrates",
+        "14.2.3 Glucose",
+        "14.2.9 Disaccharides"
+      ]
+    },
+    {
+      "id": "s02",
+      "title": "Proteins, Peptide bond, Enzymes & Nucleic acids",
+      "page": 311,
+      "inShort": "Peptide bond (−CO−NH−) links two α-amino acids with loss of H₂O. Proteins: Fibrous (keratin, myosin) and Globular (insulin, albumin). Enzymes are biological catalysts (globular proteins). DNA has A-T, G-C base pairs.",
+      "sections": [
+        "14.3 Proteins",
+        "14.3.6 Enzymes",
+        "14.4 Nucleic Acids"
+      ]
+    }
+  ],
+  "formulas": [
+    {
+      "stop": "s01",
+      "items": [
+        {
+          "n": "Hydrolysis of sucrose",
+          "f": "C₁₂H₂₂O₁₁ + H₂O --(H⁺)--> C₆H₁₂O₆ (D-glucose) + C₆H₁₂O₆ (D-fructose)",
+          "s": "Lactose has β-1,4-glycosidic linkage.",
+          "p": 300
+        }
+      ]
+    }
+  ],
+  "board": [
+    {
+      "id": "c14-2025-Q10",
+      "stop": "s01",
+      "year": 2025,
+      "qno": "Q10",
+      "marks": 2,
+      "kind": "theory",
+      "page": 300,
+      "text": "Write preparation of glucose from sucrose.",
+      "answer": "When sucrose (cane sugar) is boiled with dilute HCl or H₂SO₄ in alcoholic solution for about two hours, it hydrolyses to give equimolar mixture of D-glucose and D-fructose.\nC₁₂H₂₂O₁₁ + H₂O --(dil. HCl / Δ)--> C₆H₁₂O₆ (Glucose) + C₆H₁₂O₆ (Fructose).\nOn cooling, alcohol is added; glucose crystallizes out first while fructose remains in solution.",
+      "points": [
+        {
+          "text": "Hydrolysis conditions (dil. HCl/H₂SO₄) & separation",
+          "marks": 1
+        },
+        {
+          "text": "Balanced chemical equation",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "c14-2025-Q18",
+      "stop": "s02",
+      "year": 2025,
+      "qno": "Q18",
+      "marks": 3,
+      "kind": "theory",
+      "page": 312,
+      "text": "What is peptide bond? How is it formed? Write the name and formula of the reagent used to convert alkylhalide to nitroalkane.",
+      "answer": "Peptide bond: An amide bond (−CO−NH−) linking two α-amino acids.\nFormation: Formed by condensation of the −COOH group of one α-amino acid with the −NH₂ group of another α-amino acid with elimination of a water molecule.\nReagent for R-X → R-NO₂: Silver nitrite (AgNO₂).",
+      "points": [
+        {
+          "text": "Definition of peptide bond (−CO−NH−)",
+          "marks": 1
+        },
+        {
+          "text": "Condensation of −COOH and −NH₂ with loss of H₂O",
+          "marks": 1
+        },
+        {
+          "text": "Silver nitrite (AgNO₂)",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "c14-2024-Q1ii",
+      "stop": "s01",
+      "year": 2024,
+      "qno": "Q1(ii)",
+      "marks": 1,
+      "kind": "mcq",
+      "page": 308,
+      "text": "The linkage present in Lactose is ____.",
+      "options": [
+        "α,β-1,2-glycosidic linkage",
+        "α-1,4-glycosidic linkage",
+        "β-1,4-glycosidic linkage",
+        "α-1,6-glycosidic linkage"
+      ],
+      "answerIndex": 2,
+      "answer": "(c) β-1,4-glycosidic linkage (between β-D-galactose and β-D-glucose).",
+      "points": [
+        {
+          "text": "Correct option: (c) β-1,4-glycosidic linkage",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "c14-2024-Q6",
+      "stop": "s02",
+      "year": 2024,
+      "qno": "Q6",
+      "marks": 2,
+      "kind": "theory",
+      "page": 314,
+      "text": "Write classification of proteins with an example.",
+      "answer": "1. Fibrous proteins: Insoluble in water, thread-like molecules held by H-bonds/disulphide bonds. Example: Keratin (hair, nails) or Myosin (muscles).\n2. Globular proteins: Soluble in water, spherical/folded polypeptide chains. Example: Insulin or Haemoglobin / Albumin.",
+      "points": [
+        {
+          "text": "Fibrous proteins with example",
+          "marks": 1
+        },
+        {
+          "text": "Globular proteins with example",
+          "marks": 1
+        }
+      ]
+    }
+  ]
+}

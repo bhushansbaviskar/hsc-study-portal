@@ -354,7 +354,11 @@
           "estStops": 12,
           "marks": 4,
           "marksWithOptions": 6,
-          "prefix": "c6-"
+          "prefix": "c6-",
+          "file": "content/chemistry/ch06-chemical-kinetics.json",
+          "lite": true,
+          "stopCount": 3,
+          "boardCount": 5
         },
         {
           "id": "ch07",
@@ -363,7 +367,11 @@
           "estStops": 12,
           "marks": 6,
           "marksWithOptions": 8,
-          "prefix": "c7-"
+          "prefix": "c7-",
+          "file": "content/chemistry/ch07-elements-of-groups-16-17-and-18.json",
+          "lite": true,
+          "stopCount": 3,
+          "boardCount": 4
         },
         {
           "id": "ch08",
@@ -372,7 +380,11 @@
           "estStops": 12,
           "marks": 6,
           "marksWithOptions": 8,
-          "prefix": "c8-"
+          "prefix": "c8-",
+          "file": "content/chemistry/ch08-transition-and-inner-transition-elements.json",
+          "lite": true,
+          "stopCount": 3,
+          "boardCount": 5
         },
         {
           "id": "ch09",
@@ -381,7 +393,11 @@
           "estStops": 12,
           "marks": 5,
           "marksWithOptions": 7,
-          "prefix": "c9-"
+          "prefix": "c9-",
+          "file": "content/chemistry/ch09-coordination-compounds.json",
+          "lite": true,
+          "stopCount": 3,
+          "boardCount": 6
         },
         {
           "id": "ch10",
@@ -390,7 +406,11 @@
           "estStops": 12,
           "marks": 5,
           "marksWithOptions": 7,
-          "prefix": "c10-"
+          "prefix": "c10-",
+          "file": "content/chemistry/ch10-halogen-derivatives.json",
+          "lite": true,
+          "stopCount": 3,
+          "boardCount": 4
         },
         {
           "id": "ch11",
@@ -399,7 +419,11 @@
           "estStops": 12,
           "marks": 4,
           "marksWithOptions": 6,
-          "prefix": "c11-"
+          "prefix": "c11-",
+          "file": "content/chemistry/ch11-alcohols-phenols-and-ethers.json",
+          "lite": true,
+          "stopCount": 3,
+          "boardCount": 4
         },
         {
           "id": "ch12",
@@ -408,7 +432,11 @@
           "estStops": 12,
           "marks": 6,
           "marksWithOptions": 8,
-          "prefix": "c12-"
+          "prefix": "c12-",
+          "file": "content/chemistry/ch12-aldehydes-ketones-and-carboxylic-acids.json",
+          "lite": true,
+          "stopCount": 3,
+          "boardCount": 4
         },
         {
           "id": "ch13",
@@ -417,7 +445,11 @@
           "estStops": 12,
           "marks": 3,
           "marksWithOptions": 4,
-          "prefix": "c13-"
+          "prefix": "c13-",
+          "file": "content/chemistry/ch13-amines.json",
+          "lite": true,
+          "stopCount": 2,
+          "boardCount": 4
         },
         {
           "id": "ch14",
@@ -426,7 +458,11 @@
           "estStops": 12,
           "marks": 3,
           "marksWithOptions": 4,
-          "prefix": "c14-"
+          "prefix": "c14-",
+          "file": "content/chemistry/ch14-biomolecules.json",
+          "lite": true,
+          "stopCount": 2,
+          "boardCount": 4
         },
         {
           "id": "ch15",
@@ -435,7 +471,11 @@
           "estStops": 10,
           "marks": 3,
           "marksWithOptions": 4,
-          "prefix": "c15-"
+          "prefix": "c15-",
+          "file": "content/chemistry/ch15-introduction-to-polymer-chemistry.json",
+          "lite": true,
+          "stopCount": 2,
+          "boardCount": 4
         },
         {
           "id": "ch16",

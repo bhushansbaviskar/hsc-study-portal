@@ -1,0 +1,192 @@
+{
+  "id": "ch09",
+  "file": "content/chemistry/ch09-coordination-compounds.json",
+  "subject": "chemistry",
+  "book": "chem_xii",
+  "title": "Coordination Compounds",
+  "lite": true,
+  "startPage": 192,
+  "endPage": 209,
+  "examMarks": 5,
+  "examMarksWithOptions": 7,
+  "stops": [
+    {
+      "id": "s01",
+      "title": "Ligands, Werner's theory & IUPAC nomenclature",
+      "page": 192,
+      "inShort": "EDTA⁴⁻ is a hexadentate ligand (6 donor atoms: 2 N, 4 O). Werner's theory: primary valency (ionizable, oxidation state) and secondary valency (non-ionizable, coordination number, directional). IUPAC: cation first, ligands alphabetically, metal + (oxidation state).",
+      "sections": [
+        "9.2 Types of Ligands",
+        "9.3.5 Werner Theory",
+        "9.5 IUPAC Nomenclature"
+      ]
+    },
+    {
+      "id": "s02",
+      "title": "EAN rule & Isomerism in complexes",
+      "page": 199,
+      "inShort": "EAN = Z − X + Y (Z = atomic no., X = electrons lost to form ion, Y = electrons donated by ligands = 2 × CN). Ionization isomers give different ions in solution (e.g. [Co(NH₃)₅Br]SO₄ and [Co(NH₃)₅SO₄]Br).",
+      "sections": [
+        "9.6 Effective Atomic Number (EAN)",
+        "9.7 Isomerism in Coordination Compounds"
+      ]
+    },
+    {
+      "id": "s03",
+      "title": "Valence Bond Theory (VBT) & Crystal Field Theory (CFT)",
+      "page": 202,
+      "inShort": "[Co(NH₃)₆]³⁺: d²sp³ (inner orbital octahedral, diamagnetic). [Ni(CN)₄]²⁻: dsp² (square planar, 0 unpaired e⁻, diamagnetic). [NiCl₄]²⁻: sp³ (tetrahedral, 2 unpaired e⁻, paramagnetic).",
+      "sections": [
+        "9.9.1 Valence Bond Theory",
+        "9.9.6 Crystal Field Theory"
+      ]
+    }
+  ],
+  "formulas": [
+    {
+      "stop": "s02",
+      "items": [
+        {
+          "n": "Effective Atomic Number (EAN)",
+          "f": "EAN = Z − X + Y",
+          "s": "Z = atomic no., X = oxidation state, Y = 2 × CN.",
+          "p": 199
+        }
+      ]
+    }
+  ],
+  "board": [
+    {
+      "id": "c9-2025-Q1iv",
+      "stop": "s01",
+      "year": 2025,
+      "qno": "Q1(iv)",
+      "marks": 1,
+      "kind": "mcq",
+      "page": 195,
+      "text": "When excess of AgNO₃ is added to a complex, one mole of AgCl is precipitated. The formula of complex is ____.",
+      "options": [
+        "[CoCl₂(NH₃)₄]Cl",
+        "[CoCl(NH₃)₅]Cl₂",
+        "[CoCl₃(NH₃)₃]",
+        "[Co(NH₃)₆]Cl₃"
+      ],
+      "answerIndex": 0,
+      "answer": "(a) [CoCl₂(NH₃)₄]Cl (has 1 ionizable Cl⁻ outside the coordination sphere).",
+      "points": [
+        {
+          "text": "Correct option: (a) [CoCl₂(NH₃)₄]Cl",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "c9-2025-Q2vii",
+      "stop": "s01",
+      "year": 2025,
+      "qno": "Q2(vii)",
+      "marks": 1,
+      "kind": "vsa",
+      "page": 193,
+      "text": "Write the number of donor atoms present in EDTA during formation of complex.",
+      "answer": "6 donor atoms (hexadentate ligand: 2 nitrogen atoms and 4 oxygen atoms).",
+      "points": [
+        {
+          "text": "6 donor atoms",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "c9-2025-Q20",
+      "stop": "s03",
+      "year": 2025,
+      "qno": "Q20",
+      "marks": 3,
+      "kind": "theory",
+      "page": 203,
+      "text": "(a) Write the formula to calculate EAN. (b) Explain formation of [Co(NH₃)₆]³⁺ complex ion with respect to: (i) Type of hybridisation (ii) Magnetic property.",
+      "answer": "(a) EAN = Z − X + Y (where Z = atomic number, X = oxidation state of metal, Y = electrons donated by ligands).\n(b) For [Co(NH₃)₆]³⁺, Co³⁺ is 3d⁶. Strong field NH₃ pairs up the 3d electrons leaving two 3d orbitals empty:\n(i) Hybridisation: d²sp³ (inner orbital octahedral).\n(ii) Magnetic property: Diamagnetic (zero unpaired electrons).",
+      "points": [
+        {
+          "text": "EAN formula",
+          "marks": 1
+        },
+        {
+          "text": "d²sp³ hybridisation",
+          "marks": 1
+        },
+        {
+          "text": "Diamagnetic (no unpaired electrons)",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "c9-2024-Q1v",
+      "stop": "s01",
+      "year": 2024,
+      "qno": "Q1(v)",
+      "marks": 1,
+      "kind": "mcq",
+      "page": 198,
+      "text": "The correct structure of complex having IUPAC name sodium hexanitrocobaltate(III) is ____.",
+      "options": [
+        "Na₃[Co(NO₂)₅]",
+        "Na₄[Co(NO₂)₆]",
+        "Na₃[Co(NO₂)₆]",
+        "Na₄[Co(NO₂)₅]"
+      ],
+      "answerIndex": 2,
+      "answer": "(c) Na₃[Co(NO₂)₆].",
+      "points": [
+        {
+          "text": "Correct option: (c) Na₃[Co(NO₂)₆]",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "c9-2024-Q2iv",
+      "stop": "s02",
+      "year": 2024,
+      "qno": "Q2(iv)",
+      "marks": 1,
+      "kind": "numerical",
+      "page": 199,
+      "text": "Calculate effective atomic number of [Co(NH₃)₆]³⁺ ion.",
+      "answer": "Z(Co) = 27, X = 3, Y = 6 × 2 = 12.\nEAN = 27 − 3 + 12 = 36.",
+      "points": [
+        {
+          "text": "EAN = 27 − 3 + 12 = 36",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "c9-2024-Q22",
+      "stop": "s01",
+      "year": 2024,
+      "qno": "Q22",
+      "marks": 3,
+      "kind": "theory",
+      "page": 195,
+      "text": "Write postulates of Werner theory of co-ordination complexes. Write the name of a hexadentate ligand.",
+      "answer": "Postulates: (1) Metal shows two types of valencies: primary (ionizable, satisfied by negative ions) and secondary (non-ionizable, fixed CN, satisfied by neutral/negative ligands). (2) Secondary valencies are directed in space giving definite geometry.\nHexadentate ligand: Ethylenediaminetetraacetate ion (EDTA⁴⁻).",
+      "points": [
+        {
+          "text": "Primary and secondary valency postulates",
+          "marks": 1
+        },
+        {
+          "text": "Directional nature / fixed geometry",
+          "marks": 1
+        },
+        {
+          "text": "Hexadentate ligand: EDTA⁴⁻",
+          "marks": 1
+        }
+      ]
+    }
+  ]
+}

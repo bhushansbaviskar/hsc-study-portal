@@ -1,0 +1,134 @@
+{
+  "id": "ch15",
+  "file": "content/chemistry/ch15-introduction-to-polymer-chemistry.json",
+  "subject": "chemistry",
+  "book": "chem_xii",
+  "title": "Introduction to Polymer Chemistry",
+  "lite": true,
+  "startPage": 322,
+  "endPage": 339,
+  "examMarks": 3,
+  "examMarksWithOptions": 4,
+  "stops": [
+    {
+      "id": "s01",
+      "title": "Classification of polymers & LDPE/HDPE/Teflon/PAN",
+      "page": 322,
+      "inShort": "On intermolecular forces: Elastomers, Fibres, Thermoplastics, Thermosetting polymers. Teflon monomer: tetrafluoroethene (CF₂=CF₂). PAN monomer: acrylonitrile (CH₂=CH-CN). LDPE is used in squeeze bottles, pipes, insulation.",
+      "sections": [
+        "15.2 Classification of Polymers",
+        "15.3.2 Polythene",
+        "15.3.3 Teflon & PAN"
+      ]
+    },
+    {
+      "id": "s02",
+      "title": "Natural rubber, Nylon-6, Nylon-6,6 & Biodegradable polymers",
+      "page": 329,
+      "inShort": "Natural rubber monomer: isoprene (2-methyl-1,3-butadiene). Nylon-6 monomer: ε-caprolactam. Biodegradable polymers: PHBV, Nylon-2-nylon-6.",
+      "sections": [
+        "15.3.1 Rubber",
+        "15.3.5 Polyamides",
+        "15.5 Biodegradable Polymers"
+      ]
+    }
+  ],
+  "formulas": [
+    {
+      "stop": "s02",
+      "items": [
+        {
+          "n": "Key polymer monomers",
+          "f": "Natural rubber: isoprene;  Nylon-6: ε-caprolactam;  Teflon: CF₂=CF₂",
+          "s": "IUPAC of isoprene: 2-methylbuta-1,3-diene.",
+          "p": 330
+        }
+      ]
+    }
+  ],
+  "board": [
+    {
+      "id": "c15-2025-Q2iii",
+      "stop": "s02",
+      "year": 2025,
+      "qno": "Q2(iii)",
+      "marks": 1,
+      "kind": "vsa",
+      "page": 329,
+      "text": "Write the IUPAC name of isoprene.",
+      "answer": "2-Methylbuta-1,3-diene (or 2-methyl-1,3-butadiene).",
+      "points": [
+        {
+          "text": "2-Methylbuta-1,3-diene",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "c15-2025-Q26",
+      "stop": "s01",
+      "year": 2025,
+      "qno": "Q26",
+      "marks": 3,
+      "kind": "theory",
+      "page": 325,
+      "text": "Mention the types of polymers formed on the basis of intermolecular forces. Write any two uses of low density polyethylene.",
+      "answer": "Four types based on intermolecular forces: (1) Elastomers (2) Fibres (3) Thermoplastic polymers (4) Thermosetting polymers.\nUses of LDPE: (1) Manufacture of flexible pipes and squeeze bottles; (2) Insulation of electric cables / packaging films.",
+      "points": [
+        {
+          "text": "Four types of polymers based on intermolecular forces",
+          "marks": 2
+        },
+        {
+          "text": "Two uses of LDPE",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "c15-2024-Q1vii",
+      "stop": "s01",
+      "year": 2024,
+      "qno": "Q1(vii)",
+      "marks": 1,
+      "kind": "mcq",
+      "page": 331,
+      "text": "The monomer used in preparation of teflon is ____.",
+      "options": [
+        "ε-caprolactam",
+        "vinyl chloride",
+        "styrene",
+        "tetrafluoroethene"
+      ],
+      "answerIndex": 3,
+      "answer": "(d) tetrafluoroethene (CF₂=CF₂).",
+      "points": [
+        {
+          "text": "Correct option: (d) tetrafluoroethene",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "c15-2024-Q12",
+      "stop": "s02",
+      "year": 2024,
+      "qno": "Q12",
+      "marks": 2,
+      "kind": "problem",
+      "page": 332,
+      "text": "Write the structure and name of monomer of (a) Nylon-6 (b) Natural rubber.",
+      "answer": "(a) Nylon-6: ε-Caprolactam (7-membered cyclic amide: −NH−(CH₂)₅−CO−).\n(b) Natural rubber: Isoprene / 2-methylbuta-1,3-diene, CH₂=C(CH₃)−CH=CH₂.",
+      "points": [
+        {
+          "text": "(a) Name & structure of ε-caprolactam",
+          "marks": 1
+        },
+        {
+          "text": "(b) Name & structure of isoprene",
+          "marks": 1
+        }
+      ]
+    }
+  ]
+}

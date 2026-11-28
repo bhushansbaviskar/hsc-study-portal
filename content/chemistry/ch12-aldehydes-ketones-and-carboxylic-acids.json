@@ -1,0 +1,149 @@
+{
+  "id": "ch12",
+  "file": "content/chemistry/ch12-aldehydes-ketones-and-carboxylic-acids.json",
+  "subject": "chemistry",
+  "book": "chem_xii",
+  "title": "Aldehydes, Ketones and Carboxylic Acids",
+  "lite": true,
+  "startPage": 254,
+  "endPage": 281,
+  "examMarks": 6,
+  "examMarksWithOptions": 8,
+  "stops": [
+    {
+      "id": "s01",
+      "title": "Preparation of Aldehydes and Ketones",
+      "page": 254,
+      "inShort": "Rosenmund reduction: R-COCl + H₂ --(Pd/BaSO₄)--> R-CHO. Stephen reaction: R-CN + SnCl₂/HCl → R-CHO. Gatterman-Koch: benzene + CO + HCl --(anhy. AlCl₃)--> benzaldehyde. Ketones from acyl chloride + dialkylcadmium (R₂Cd).",
+      "sections": [
+        "12.4 Preparation of Aldehydes and Ketones"
+      ]
+    },
+    {
+      "id": "s02",
+      "title": "Reactions of Aldehydes & Ketones (Aldol, Cannizzaro, Reductions)",
+      "page": 264,
+      "inShort": "Cannizzaro reaction (aldehydes without α-H, e.g. HCHO, C₆H₅CHO + conc. NaOH → alcohol + carboxylate salt). Clemmensen reduction (Zn-Hg/conc. HCl) and Wolff-Kishner reduction (NH₂NH₂/KOH in ethylene glycol) reduce >C=O to >CH₂.",
+      "sections": [
+        "12.8 Chemical Properties of Aldehydes and Ketones",
+        "12.8.3 Oxidation & Reduction"
+      ]
+    },
+    {
+      "id": "s03",
+      "title": "Carboxylic Acids: Preparation, Acidity & Reactions",
+      "page": 274,
+      "inShort": "Cyclohexene + KMnO₄/H₂SO₄ → adipic acid. Carboxylic acids are stronger acids than phenols due to equivalent resonance stabilization of carboxylate ion. Ortho-substituted/electron-withdrawing groups enhance acidity.",
+      "sections": [
+        "12.5 Preparation of Carboxylic Acids",
+        "12.9 Chemical Properties of Carboxylic Acids"
+      ]
+    }
+  ],
+  "formulas": [
+    {
+      "stop": "s01",
+      "items": [
+        {
+          "n": "Rosenmund & Gatterman-Koch",
+          "f": "R-COCl + H₂ --(Pd/BaSO₄)--> R-CHO;  C₆H₆ + CO + HCl --(AlCl₃)--> C₆H₅CHO",
+          "s": "BaSO₄ poisons Pd to prevent over-reduction.",
+          "p": 258
+        }
+      ]
+    },
+    {
+      "stop": "s02",
+      "items": [
+        {
+          "n": "Clemmensen vs Wolff-Kishner",
+          "f": ">C=O → >CH₂ (Zn-Hg/HCl or NH₂NH₂/KOH)",
+          "s": "Reduces carbonyl to methylene group.",
+          "p": 271
+        }
+      ]
+    }
+  ],
+  "board": [
+    {
+      "id": "c12-2025-Q2ii",
+      "stop": "s02",
+      "year": 2025,
+      "qno": "Q2(ii)",
+      "marks": 1,
+      "kind": "vsa",
+      "page": 271,
+      "text": "Write the reagents used for the reduction of carbonyl group in Clemmensen's reduction.",
+      "answer": "Zinc amalgam (Zn-Hg) and concentrated HCl.",
+      "points": [
+        {
+          "text": "Zn-Hg / conc. HCl",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "c12-2025-Q14",
+      "stop": "s01",
+      "year": 2025,
+      "qno": "Q14",
+      "marks": 2,
+      "kind": "problem",
+      "page": 258,
+      "text": "Write the reaction for the preparation of: (i) acetaldehyde by Rosenmund reaction (ii) benzaldehyde by Gatterman-Koch formylation.",
+      "answer": "(i) CH₃COCl + H₂ --(Pd/BaSO₄, boiling xylene)--> CH₃CHO + HCl.\n(ii) C₆H₆ + CO + HCl --(anhy. AlCl₃/CuCl)--> C₆H₅CHO + HCl.",
+      "points": [
+        {
+          "text": "(i) Rosenmund reduction of acetyl chloride",
+          "marks": 1
+        },
+        {
+          "text": "(ii) Gatterman-Koch formylation of benzene",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "c12-2025-Q23",
+      "stop": "s02",
+      "year": 2025,
+      "qno": "Q23",
+      "marks": 3,
+      "kind": "theory",
+      "page": 270,
+      "text": "(a) Explain Cannizzaro's reaction with the help of benzaldehyde. (b) Write the reaction for the conversion of cyclohexene to adipic acid.",
+      "answer": "(a) Aldehydes without α-H undergo self oxidation-reduction with 50% NaOH:\n2 C₆H₅CHO + NaOH (50%) → C₆H₅CH₂OH (benzyl alcohol) + C₆H₅COONa (sodium benzoate).\n(b) Cyclohexene + 4[O] --(KMnO₄ / dil. H₂SO₄, Δ)--> HOOC−(CH₂)₄−COOH (adipic acid).",
+      "points": [
+        {
+          "text": "Cannizzaro explanation + balanced equation for benzaldehyde",
+          "marks": 2
+        },
+        {
+          "text": "Cyclohexene to adipic acid oxidation",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "c12-2024-Q21",
+      "stop": "s02",
+      "year": 2024,
+      "qno": "Q21",
+      "marks": 3,
+      "kind": "theory",
+      "page": 271,
+      "text": "Explain Wolff-Kishner reduction reaction. Write preparation of propanone by using ethanoyl chloride and dimethyl cadmium.",
+      "answer": "Wolff-Kishner reduction: Aldehydes or ketones heated with hydrazine (NH₂NH₂) and KOH in ethylene glycol give alkanes (>C=O → >CH₂).\nPropanone preparation: 2 CH₃COCl + (CH₃)₂Cd --(dry ether)--> 2 CH₃COCH₃ (propanone) + CdCl₂.",
+      "points": [
+        {
+          "text": "Wolff-Kishner reduction explanation/equation",
+          "marks": 2
+        },
+        {
+          "text": "Ethanoyl chloride + (CH₃)₂Cd → propanone",
+          "marks": 1
+        }
+      ]
+    }
+  ]
+}

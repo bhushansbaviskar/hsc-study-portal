@@ -1,0 +1,158 @@
+{
+  "id": "ch07",
+  "file": "content/chemistry/ch07-elements-of-groups-16-17-and-18.json",
+  "subject": "chemistry",
+  "book": "chem_xii",
+  "title": "Elements of Groups 16, 17 and 18",
+  "lite": true,
+  "startPage": 138,
+  "endPage": 164,
+  "examMarks": 6,
+  "examMarksWithOptions": 8,
+  "stops": [
+    {
+      "id": "s01",
+      "title": "Group 16: Oxygen, anomalous behaviour, oxoacids & H₂SO₄",
+      "page": 138,
+      "inShort": "Group 16 (O, S, Se, Te, Po): ns² np⁴. Oxygen shows anomalous behaviour (small size, high EN, no d-orbitals): diatomic gas O₂, −2 oxidation state, paramagnetic, H₂O is liquid due to H-bonding. Oxoacids of S: H₂SO₄, H₂S₂O₃ (thiosulphuric), H₂SO₅ (peroxymonosulphuric).",
+      "sections": [
+        "7.2 Group 16 Elements",
+        "7.4 Anomalous Behaviour of Oxygen",
+        "7.7 Oxoacids of Sulphur",
+        "7.9 Sulphuric Acid"
+      ]
+    },
+    {
+      "id": "s02",
+      "title": "Group 17: Halogens, interhalogen compounds & HCl/Cl₂",
+      "page": 150,
+      "inShort": "Group 17 (F, Cl, Br, I, At): ns² np⁵. Thermal stability of hydrides: HF > HCl > HBr > HI. Acidic strength of oxoacids: HOCl < HClO₂ < HClO₃ < HClO₄. Bleaching powder: Ca(OH)₂ + Cl₂ → CaOCl₂ + H₂O. Interhalogens: XX', XX'₃, XX'₅, XX'₇.",
+      "sections": [
+        "7.10 Group 17 Elements",
+        "7.11 Chlorine & HCl",
+        "7.12 Interhalogen Compounds"
+      ]
+    },
+    {
+      "id": "s03",
+      "title": "Group 18: Noble gases & Xenon compounds",
+      "page": 159,
+      "inShort": "Group 18 (He, Ne, Ar, Kr, Xe, Rn): ns² np⁶ (except He 1s²). Neon is used in discharge tubes/advertising signs and beacon lights. Xenon forms fluorides (XeF₂, XeF₄, XeF₆) and oxides.",
+      "sections": [
+        "7.13 Group 18 Elements",
+        "7.14 Compounds of Xenon",
+        "7.15 Uses of Noble Gases"
+      ]
+    }
+  ],
+  "formulas": [
+    {
+      "stop": "s01",
+      "items": [
+        {
+          "n": "Contact process (H₂SO₄)",
+          "f": "2SO₂ + O₂ --(V₂O₅)--> 2SO₃;  SO₃ + H₂SO₄ → H₂S₂O₇ (oleum)",
+          "s": "Oleum + H₂O → 2H₂SO₄.",
+          "p": 149
+        }
+      ]
+    },
+    {
+      "stop": "s02",
+      "items": [
+        {
+          "n": "Bleaching powder & NH₃ + Cl₂",
+          "f": "Ca(OH)₂ + Cl₂ → CaOCl₂ + H₂O;  8NH₃(excess) + 3Cl₂ → 6NH₄Cl + N₂",
+          "s": "With excess Cl₂: NH₃ + 3Cl₂ → NCl₃ + 3HCl.",
+          "p": 154
+        }
+      ]
+    }
+  ],
+  "board": [
+    {
+      "id": "c7-2025-Q2vi",
+      "stop": "s02",
+      "year": 2025,
+      "qno": "Q2(vi)",
+      "marks": 1,
+      "kind": "vsa",
+      "page": 154,
+      "text": "Write the balanced chemical equation, when excess of ammonia is treated with chlorine.",
+      "answer": "8 NH₃ (excess) + 3 Cl₂ → 6 NH₄Cl + N₂.",
+      "points": [
+        {
+          "text": "Balanced equation: 8NH₃ + 3Cl₂ → 6NH₄Cl + N₂",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "c7-2025-Q6",
+      "stop": "s01",
+      "year": 2025,
+      "qno": "Q6",
+      "marks": 2,
+      "kind": "theory",
+      "page": 141,
+      "text": "Write anomalous behaviour of oxygen with respect to: (i) Atomicity (ii) Oxidation state (iii) Magnetic property (iv) Nature of hydrides.",
+      "answer": "(i) Atomicity: Oxygen is diatomic (O₂), while S, Se, Te are polyatomic (S₈).\n(ii) Oxidation state: Oxygen shows −2 (and −1, +2 in OF₂), whereas others show +2, +4, +6.\n(iii) Magnetic property: O₂ is paramagnetic, others are diamagnetic.\n(iv) Nature of hydrides: H₂O is a liquid at room temperature due to H-bonding; H₂S, H₂Se are gases.",
+      "points": [
+        {
+          "text": "Atomicity & Oxidation state",
+          "marks": 1
+        },
+        {
+          "text": "Magnetic property & Nature of hydrides",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "c7-2024-Q4",
+      "stop": "s02",
+      "year": 2024,
+      "qno": "Q4",
+      "marks": 2,
+      "kind": "theory",
+      "page": 156,
+      "text": "What are interhalogen compounds? Write the chemical reaction, when chlorine reacts with dry slaked lime.",
+      "answer": "Interhalogen compounds are covalent compounds formed by the combination of two different halogens (general formula XX'_n, n = 1, 3, 5, 7, e.g. ClF₃, BrF₅).\nReaction with dry slaked lime: 2 Ca(OH)₂ + 2 Cl₂ → Ca(OCl)₂ + CaCl₂ + 2 H₂O (bleaching powder).",
+      "points": [
+        {
+          "text": "Definition of interhalogen compounds",
+          "marks": 1
+        },
+        {
+          "text": "Balanced reaction of Cl₂ with dry Ca(OH)₂",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "c7-2024-Q20",
+      "stop": "s02",
+      "year": 2024,
+      "qno": "Q20",
+      "marks": 3,
+      "kind": "problem",
+      "page": 152,
+      "text": "Arrange the following in the increasing order of the property mentioned: (i) HOCl, HClO₂, HClO₃, HClO₄ (acidic strength) (ii) MF, MCl, MBr, MI (ionic character) (iii) HF, HCl, HBr, HI (thermal stability).",
+      "answer": "(i) Acidic strength: HOCl < HClO₂ < HClO₃ < HClO₄.\n(ii) Ionic character: MI < MBr < MCl < MF.\n(iii) Thermal stability: HI < HBr < HCl < HF.",
+      "points": [
+        {
+          "text": "(i) HOCl < HClO₂ < HClO₃ < HClO₄",
+          "marks": 1
+        },
+        {
+          "text": "(ii) MI < MBr < MCl < MF",
+          "marks": 1
+        },
+        {
+          "text": "(iii) HI < HBr < HCl < HF",
+          "marks": 1
+        }
+      ]
+    }
+  ]
+}

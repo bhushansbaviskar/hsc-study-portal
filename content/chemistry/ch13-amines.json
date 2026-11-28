@@ -1,0 +1,139 @@
+{
+  "id": "ch13",
+  "file": "content/chemistry/ch13-amines.json",
+  "subject": "chemistry",
+  "book": "chem_xii",
+  "title": "Amines",
+  "lite": true,
+  "startPage": 282,
+  "endPage": 297,
+  "examMarks": 3,
+  "examMarksWithOptions": 4,
+  "stops": [
+    {
+      "id": "s01",
+      "title": "Classification, Nomenclature & Preparation of Amines",
+      "page": 282,
+      "inShort": "1° (R-NH₂), 2° (R₂NH), 3° (R₃N) amines. Reduction of nitriles (Mendius: R-CN + 4[H] --(Na/C₂H₅OH)--> R-CH₂NH₂). Gabriel phthalimide synthesis (1° aliphatic amines). Hofmann bromamide degradation (R-CONH₂ + Br₂ + 4NaOH → R-NH₂ + Na₂CO₃ + 2NaBr + 2H₂O, 1 carbon less).",
+      "sections": [
+        "13.1 Classification",
+        "13.3 Preparation of Amines",
+        "13.3.6 Hofmann Degradation"
+      ]
+    },
+    {
+      "id": "s02",
+      "title": "Basicity, Carbylamine, Hinsberg & Diazonium salts",
+      "page": 289,
+      "inShort": "Lower pK_b = stronger base (diethylamine pK_b 3.0 > dimethylamine pK_b 3.27). Carbylamine test (1° amines + CHCl₃ + alc. KOH → foul-smelling R-NC). Hinsberg reagent (C₆H₅SO₂Cl) distinguishes 1°, 2°, 3° amines.",
+      "sections": [
+        "13.5 Basicity of Amines",
+        "13.6.5 Carbylamine Reaction",
+        "13.7 Diazonium Salts",
+        "13.8 Hinsberg Test"
+      ]
+    }
+  ],
+  "formulas": [
+    {
+      "stop": "s01",
+      "items": [
+        {
+          "n": "Hofmann bromamide degradation",
+          "f": "R-CONH₂ + Br₂ + 4KOH → R-NH₂ + K₂CO₃ + 2KBr + 2H₂O",
+          "s": "Produces 1° amine with one carbon less.",
+          "p": 286
+        }
+      ]
+    }
+  ],
+  "board": [
+    {
+      "id": "c13-2025-Q1x",
+      "stop": "s01",
+      "year": 2025,
+      "qno": "Q1(x)",
+      "marks": 1,
+      "kind": "mcq",
+      "page": 282,
+      "text": "Which of the following is a secondary amine?",
+      "options": [
+        "Cyclohexylamine",
+        "Isopropylamine",
+        "Diphenylamine",
+        "N,N-Dimethylaniline"
+      ],
+      "answerIndex": 2,
+      "answer": "(c) Diphenylamine ((C₆H₅)₂NH has two aryl groups attached to N).",
+      "points": [
+        {
+          "text": "Correct option: (c) Diphenylamine",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "c13-2025-Q2i",
+      "stop": "s01",
+      "year": 2025,
+      "qno": "Q2(i)",
+      "marks": 1,
+      "kind": "vsa",
+      "page": 283,
+      "text": "Write the structural formula of N,N-dimethylethanamine.",
+      "answer": "CH₃−CH₂−N(CH₃)₂.",
+      "points": [
+        {
+          "text": "CH₃CH₂N(CH₃)₂",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "c13-2025-Q22",
+      "stop": "s02",
+      "year": 2025,
+      "qno": "Q22",
+      "marks": 3,
+      "kind": "problem",
+      "page": 292,
+      "text": "(a) Write the reducing agents used to convert Fe₂O₃ to 'Fe' in the reduction zone of blast furnace. (b) Write chemical equations involved in: (i) Carbylamine reaction for ethylamine (ii) Hoffmann Bromamide degradation for acetamide.",
+      "answer": "(a) Carbon monoxide (CO) and coke (C).\n(b)(i) C₂H₅NH₂ + CHCl₃ + 3 KOH (alc.) --(Δ)--> C₂H₅NC + 3 KCl + 3 H₂O.\n(ii) CH₃CONH₂ + Br₂ + 4 KOH → CH₃NH₂ + K₂CO₃ + 2 KBr + 2 H₂O.",
+      "points": [
+        {
+          "text": "(a) CO / C reducing agent",
+          "marks": 1
+        },
+        {
+          "text": "(b)(i) Carbylamine reaction for ethylamine",
+          "marks": 1
+        },
+        {
+          "text": "(b)(ii) Hofmann bromamide degradation for acetamide",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "c13-2024-Q8",
+      "stop": "s02",
+      "year": 2024,
+      "qno": "Q8",
+      "marks": 2,
+      "kind": "theory",
+      "page": 289,
+      "text": "Why amines are basic in nature? Among dimethylamine (pK_b = 3.27) and diethylamine (pK_b = 3.0), which one is more basic?",
+      "answer": "Amines are basic because the nitrogen atom has a lone pair of electrons which can be donated to a proton (H⁺) or Lewis acid.\nLower the pK_b value, stronger is the base. Therefore diethylamine (pK_b = 3.0) is more basic than dimethylamine (pK_b = 3.27).",
+      "points": [
+        {
+          "text": "Presence of lone pair on nitrogen atom",
+          "marks": 1
+        },
+        {
+          "text": "Diethylamine is more basic (lower pK_b)",
+          "marks": 1
+        }
+      ]
+    }
+  ]
+}

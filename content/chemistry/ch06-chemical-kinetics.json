@@ -1,0 +1,190 @@
+{
+  "id": "ch06",
+  "file": "content/chemistry/ch06-chemical-kinetics.json",
+  "subject": "chemistry",
+  "book": "chem_xii",
+  "title": "Chemical Kinetics",
+  "lite": true,
+  "startPage": 120,
+  "endPage": 137,
+  "examMarks": 4,
+  "examMarksWithOptions": 6,
+  "stops": [
+    {
+      "id": "s01",
+      "title": "Rate of reaction, rate law & order/molecularity",
+      "page": 120,
+      "inShort": "Average rate = −Δ[R]/Δt = +Δ[P]/Δt. Rate law: rate = k[A]^x[B]^y; overall order = x + y. Molecularity is the number of reacting species in an elementary step (always a positive integer).",
+      "sections": [
+        "6.2 Rate of Reactions",
+        "6.3 Rate Law",
+        "6.4 Order and Molecularity"
+      ]
+    },
+    {
+      "id": "s02",
+      "title": "Integrated rate laws (Zero & First order) and half-life",
+      "page": 125,
+      "inShort": "Zero order: [A]_t = [A]₀ − kt, t_½ = [A]₀/(2k), k unit: mol dm⁻³ s⁻¹. First order: k = (2.303/t) log₁₀([A]₀/[A]_t), t_½ = 0.693/k (independent of [A]₀), k unit: s⁻¹.",
+      "sections": [
+        "6.5 Integrated Rate Law",
+        "6.5.1 First Order Reaction",
+        "6.5.3 Zero Order Reaction"
+      ]
+    },
+    {
+      "id": "s03",
+      "title": "Collision theory & Arrhenius equation",
+      "page": 131,
+      "inShort": "Arrhenius equation: k = A e^(−E_a / RT), log₁₀(k₂/k₁) = (E_a / 2.303 R) (T₂ − T₁)/(T₁ T₂). A reaction occurs when colliding molecules have energy ≥ E_a and proper orientation.",
+      "sections": [
+        "6.6 Collision Theory",
+        "6.7 Temperature Dependence: Arrhenius Equation"
+      ]
+    }
+  ],
+  "formulas": [
+    {
+      "stop": "s02",
+      "items": [
+        {
+          "n": "First order rate constant & half-life",
+          "f": "k = (2.303 / t) log₁₀([A]₀ / [A]_t),  t_½ = 0.693 / k",
+          "s": "t_½ is independent of initial concentration.",
+          "p": 126
+        },
+        {
+          "n": "Zero order rate constant & half-life",
+          "f": "k = ([A]₀ − [A]_t) / t,  t_½ = [A]₀ / (2k)",
+          "s": "Unit of k is mol dm⁻³ s⁻¹.",
+          "p": 129
+        }
+      ]
+    },
+    {
+      "stop": "s03",
+      "items": [
+        {
+          "n": "Arrhenius equation",
+          "f": "log₁₀(k₂/k₁) = (E_a / 2.303 R) [(T₂ − T₁)/(T₁ T₂)]",
+          "s": "E_a is activation energy.",
+          "p": 133
+        }
+      ]
+    }
+  ],
+  "board": [
+    {
+      "id": "c6-2025-Q2iv",
+      "stop": "s01",
+      "year": 2025,
+      "qno": "Q2(iv)",
+      "marks": 1,
+      "kind": "vsa",
+      "page": 123,
+      "text": "The rate law equation for A → Product is rate = k[A]^x. What is the effect of increase in concentration of 'A' on rate of reaction, if x < 0?",
+      "answer": "If x < 0, rate = k / [A]^|x|, so increasing concentration of 'A' decreases the rate of reaction.",
+      "points": [
+        {
+          "text": "Rate of reaction decreases when [A] increases (since x < 0)",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "c6-2025-Q3",
+      "stop": "s02",
+      "year": 2025,
+      "qno": "Q3",
+      "marks": 2,
+      "kind": "derivation",
+      "page": 127,
+      "text": "Derive the relation between half life and rate constant for a first order reaction.",
+      "answer": "For a first order reaction: k = (2.303 / t) log₁₀([A]₀ / [A]_t).\nAt half-life t = t_½, [A]_t = [A]₀ / 2.\nk = (2.303 / t_½) log₁₀(2) = (2.303 × 0.3010) / t_½ = 0.693 / t_½.\nTherefore t_½ = 0.693 / k.",
+      "points": [
+        {
+          "text": "Integrated first order equation with [A]_t = [A]₀/2 at t = t_½",
+          "marks": 1
+        },
+        {
+          "text": "Simplification to t_½ = 0.693 / k",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "c6-2025-Q24",
+      "stop": "s01",
+      "year": 2025,
+      "qno": "Q24",
+      "marks": 3,
+      "kind": "theory",
+      "page": 129,
+      "text": "Define zero order reaction. A reaction takes place in two steps: (i) NO(g) + Cl₂(g) → NOCl₂(g) (ii) NOCl₂(g) + NO(g) → 2NOCl(g). Write the overall reaction and identify the reaction intermediate.",
+      "answer": "Zero order reaction: A reaction whose rate is independent of the concentration of reactants (rate = k[A]⁰ = k).\nOverall reaction (adding steps i and ii): 2NO(g) + Cl₂(g) → 2NOCl(g).\nReaction intermediate: NOCl₂(g) (formed in step 1 and consumed in step 2).",
+      "points": [
+        {
+          "text": "Definition of zero order reaction",
+          "marks": 1
+        },
+        {
+          "text": "Overall reaction: 2NO(g) + Cl₂(g) → 2NOCl(g)",
+          "marks": 1
+        },
+        {
+          "text": "Reaction intermediate: NOCl₂(g)",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "c6-2024-Q1x",
+      "stop": "s02",
+      "year": 2024,
+      "qno": "Q1(x)",
+      "marks": 1,
+      "kind": "mcq",
+      "page": 129,
+      "text": "If unit of rate constant is mol dm⁻³ s⁻¹, the order of reaction would be ____.",
+      "options": [
+        "zero",
+        "1",
+        "2",
+        "3"
+      ],
+      "answerIndex": 0,
+      "answer": "(a) zero (for nth order, unit is mol^(1−n) dm^(3(n−1)) s⁻¹; for n = 0, mol dm⁻³ s⁻¹).",
+      "points": [
+        {
+          "text": "Correct option: (a) zero",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "c6-2024-Q19",
+      "stop": "s01",
+      "year": 2024,
+      "qno": "Q19",
+      "marks": 3,
+      "kind": "numerical",
+      "page": 124,
+      "text": "For the reaction A + B → P. If [B] is doubled at constant [A], the rate of reaction doubled. If [A] is tripled and [B] is doubled, the rate of reaction increases by a factor of 6. Calculate the rate law equation.",
+      "answer": "Let rate = k [A]^x [B]^y.\n1. Doubling [B] at constant [A] doubles rate: 2^y = 2 ⇒ y = 1.\n2. Tripling [A] and doubling [B] increases rate 6 times: 3^x · 2^1 = 6 ⇒ 3^x = 3 ⇒ x = 1.\nRate law equation: rate = k [A] [B] (overall order = 2).",
+      "points": [
+        {
+          "text": "Order w.r.t. B: y = 1",
+          "marks": 1
+        },
+        {
+          "text": "Order w.r.t. A: x = 1",
+          "marks": 1
+        },
+        {
+          "text": "Rate law: rate = k [A][B]",
+          "marks": 1
+        }
+      ]
+    }
+  ]
+}

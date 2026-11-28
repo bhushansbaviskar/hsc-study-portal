@@ -1,0 +1,152 @@
+{
+  "id": "ch10",
+  "file": "content/chemistry/ch10-halogen-derivatives.json",
+  "subject": "chemistry",
+  "book": "chem_xii",
+  "title": "Halogen Derivatives",
+  "lite": true,
+  "startPage": 210,
+  "endPage": 233,
+  "examMarks": 5,
+  "examMarksWithOptions": 7,
+  "stops": [
+    {
+      "id": "s01",
+      "title": "Classification, preparation & Finkelstein/Swarts reactions",
+      "page": 210,
+      "inShort": "Vinylic halide: X attached to sp² carbon of C=C (CH₂=CH-X). Finkelstein (R-X + NaI/acetone → R-I); Swarts (R-Br + AgF/Hg₂F₂ → R-F). Sandmeyer reaction converts diazonium salts to aryl halides.",
+      "sections": [
+        "10.1 Classification",
+        "10.3 Preparation of Alkyl Halides",
+        "10.3.3 Halogen Exchange"
+      ]
+    },
+    {
+      "id": "s02",
+      "title": "Optical isomerism, SN1 & SN2 mechanisms",
+      "page": 218,
+      "inShort": "SN2: bimolecular, single-step, backside attack, 100% inversion of configuration, order 1° > 2° > 3°. SN1: unimolecular, two-step via carbocation, racemization, order 3° > 2° > 1°.",
+      "sections": [
+        "10.5 Optical Isomerism",
+        "10.6.3 Mechanism of SN1 and SN2"
+      ]
+    },
+    {
+      "id": "s03",
+      "title": "Reactions with KCN/AgCN, KNO₂/AgNO₂, Mg & Haloarenes",
+      "page": 224,
+      "inShort": "R-X + KCN → R-CN (cyanide); R-X + AgCN → R-NC (isocyanide). R-X + AgNO₂ → R-NO₂ (nitroalkane). Wurtz-Fittig: R-X + Ar-X + 2Na → Ar-R + 2NaX.",
+      "sections": [
+        "10.6.2 Nucleophilic Substitutions",
+        "10.6.5 Reaction with Active Metals",
+        "10.7 Uses & Environmental Effects"
+      ]
+    }
+  ],
+  "formulas": [
+    {
+      "stop": "s03",
+      "items": [
+        {
+          "n": "Ambident nucleophiles (CN⁻ & NO₂⁻)",
+          "f": "R-X + KCN → R-CN;  R-X + AgCN → R-NC",
+          "s": "With AgNO₂ → R-NO₂ (nitroalkane).",
+          "p": 224
+        }
+      ]
+    }
+  ],
+  "board": [
+    {
+      "id": "c10-2025-Q31",
+      "stop": "s02",
+      "year": 2025,
+      "qno": "Q31",
+      "marks": 4,
+      "kind": "theory",
+      "page": 225,
+      "text": "(a) Write salient features of SN² mechanism. (b) What is the action of following reagents on bromomethane: (i) bromobenzene (ii) mercurous fluoride.",
+      "answer": "(a) SN² mechanism: Single-step concerted bimolecular reaction (rate = k[R-X][Nu⁻]); backside attack by nucleophile; 100% inversion of configuration (Walden inversion); reactivity 1° > 2° > 3°.\n(b) (i) Wurtz-Fittig reaction: CH₃Br + C₆H₅Br + 2Na --(dry ether)--> C₆H₅-CH₃ (toluene) + 2NaBr.\n(ii) Swarts reaction: 2CH₃Br + Hg₂F₂ → 2CH₃F (fluoromethane) + Hg₂Br₂.",
+      "points": [
+        {
+          "text": "Salient features of SN² (single step, rate law, inversion, 1°>2°>3°)",
+          "marks": 2
+        },
+        {
+          "text": "Action of bromobenzene + Na (toluene)",
+          "marks": 1
+        },
+        {
+          "text": "Action of Hg₂F₂ (fluoromethane)",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "c10-2024-Q1viii",
+      "stop": "s01",
+      "year": 2024,
+      "qno": "Q1(viii)",
+      "marks": 1,
+      "kind": "mcq",
+      "page": 211,
+      "text": "Among the following vinylic halide is ____.",
+      "options": [
+        "R−CH(X)−R",
+        "CH₂=CH−X",
+        "C₆H₅−X",
+        "CH₂=CH−CH₂−X"
+      ],
+      "answerIndex": 1,
+      "answer": "(b) CH₂=CH−X (halogen directly bonded to sp² carbon of C=C).",
+      "points": [
+        {
+          "text": "Correct option: (b) CH₂=CH−X",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "c10-2024-Q2iii",
+      "stop": "s03",
+      "year": 2024,
+      "qno": "Q2(iii)",
+      "marks": 1,
+      "kind": "vsa",
+      "page": 224,
+      "text": "Complete the reaction: CH₃CH₂Cl --(AgCN, alc. Δ)--> ?",
+      "answer": "CH₃CH₂Cl + AgCN --(alc. Δ)--> CH₃CH₂NC (ethyl isocyanide) + AgCl.",
+      "points": [
+        {
+          "text": "CH₃CH₂NC + AgCl",
+          "marks": 1
+        }
+      ]
+    },
+    {
+      "id": "c10-2024-Q18",
+      "stop": "s03",
+      "year": 2024,
+      "qno": "Q18",
+      "marks": 3,
+      "kind": "problem",
+      "page": 224,
+      "text": "What is the action of following on ethyl bromide? (a) silver nitrite (b) Mg in dry ether (c) alcoholic sodium hydroxide.",
+      "answer": "(a) C₂H₅Br + AgNO₂ → C₂H₅NO₂ (nitroethane) + AgBr.\n(b) C₂H₅Br + Mg --(dry ether)--> C₂H₅MgBr (ethyl magnesium bromide).\n(c) C₂H₅Br + alc. NaOH --(Δ)--> CH₂=CH₂ (ethene) + NaBr + H₂O.",
+      "points": [
+        {
+          "text": "(a) Nitroethane formation",
+          "marks": 1
+        },
+        {
+          "text": "(b) Grignard reagent C₂H₅MgBr",
+          "marks": 1
+        },
+        {
+          "text": "(c) Dehydrohalogenation to ethene",
+          "marks": 1
+        }
+      ]
+    }
+  ]
+}
