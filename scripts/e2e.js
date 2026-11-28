@@ -7,6 +7,8 @@ const path = require("path");
 const ROOT = path.resolve(__dirname, "..");
 const SCRATCH_PUPPETEER = "/home/antigravity/.gemini/jetski/brain/v1/default/jetski_remote_agents_3p_devbox/40ee4297-6bd4-41aa-b0b1-15b5e963627e/scratch/e2e/node_modules/puppeteer-core";
 const puppeteer = require(process.env.PUPPETEER_PATH || SCRATCH_PUPPETEER);
+const SHOT_DIR = process.env.E2E_SCREENSHOT_DIR || "";
+const LIVE_URL = process.env.E2E_BASE_URL || "";
 
 const MIME = {
   ".html": "text/html; charset=utf-8",
@@ -51,6 +53,12 @@ async function checkLayout(page, label) {
   assert.ok(res.sw <= res.iw, `${label}: horizontal overflow (${res.sw} > ${res.iw})`);
 }
 
+async function snap(page, vp, name) {
+  if (!SHOT_DIR) return;
+  fs.mkdirSync(SHOT_DIR, { recursive: true });
+  await page.screenshot({ path: path.join(SHOT_DIR, `${vp.width}px-${name}.png`), fullPage: false });
+}
+
 async function runSuiteForViewport(browser, baseUrl, vp) {
   console.log(`\n--- E2E Viewport ${vp.width}x${vp.height} ---`);
   const ctx = await browser.createBrowserContext();
@@ -66,7 +74,7 @@ async function runSuiteForViewport(browser, baseUrl, vp) {
   const fetched = [];
   page.on("response", (res) => {
     const u = res.url();
-    if (u.includes("/content/")) fetched.push(u.split("/content/")[1]);
+    if (u.includes("/content/")) fetched.push(u.split("/content/")[1].split("?")[0]);
   });
 
   await page.goto(baseUrl + "/", { waitUntil: "networkidle0" });
@@ -86,12 +94,28 @@ async function runSuiteForViewport(browser, baseUrl, vp) {
   assert.ok(homeText.includes("Mechanical Properties of Fluids"), "Unloaded live chapter must render");
   assert.ok(homeText.includes("0 of 14 stops"), "Unloaded live chapter must show stop count");
   assert.ok(homeText.includes("Physics, Chemistry, Maths I, Maths II"), "planInfo must count all 4 active subjects");
-  console.log("PASS: Home renders unloaded live chapters & counts all 4 active subjects");
-
-  // Home shows /70, /70, /80 full-paper predictions
   assert.ok(homeText.includes("of 70"), "Home must show /70 prediction");
   assert.ok(homeText.includes("of 80"), "Home must show /80 prediction");
-  console.log("PASS: Home shows /70, /70, /80 full-paper predictions");
+  console.log("PASS: Home renders unloaded live chapters, 4 active subjects, and /70, /70, /80 predictions");
+
+  // Subject filter pills & Theme toggle
+  await page.click('[data-act="home-subj"][data-subj="maths1"]');
+  const m1Text = await page.$eval(".gauge-card", (el) => el.textContent);
+  assert.ok(m1Text.includes("of 40") && m1Text.includes("Combined Maths paper"), "Maths I filter must show /40 + Combined Maths pill");
+  await page.click('[data-act="home-subj"][data-subj="all"]');
+
+  await page.click("#th-focus");
+  assert.strictEqual(await page.$eval("html", (el) => el.getAttribute("data-theme")), "focus");
+  await checkLayout(page, "Exam focus theme");
+  await page.click("#th-quest");
+  assert.strictEqual(await page.$eval("html", (el) => el.getAttribute("data-theme")), "quest");
+  console.log("PASS: Subject filter pills & Exam focus / Quest theme toggle");
+
+  // #/sync hides Teacher card for students
+  await page.goto(baseUrl + "/#/sync", { waitUntil: "networkidle0" });
+  const syncTxt = await page.$eval("#app", (el) => el.textContent);
+  assert.ok(!syncTxt.includes("Parent / Teacher view"), "Student #/sync must not show Teacher view card");
+  console.log("PASS: Teacher view hidden on #/sync for students");
 
   // 2. Seed due bank item in unloaded maths2:ch01 -> #due-badge shows 1 -> #/review lazy-loads it
   const today = todayStr();
@@ -103,6 +127,7 @@ async function runSuiteForViewport(browser, baseUrl, vp) {
     localStorage.setItem("hscPrep.v2", JSON.stringify(st));
   }, today);
 
+  await page.evaluate(() => { history.replaceState(null, "", "#/"); });
   await page.reload({ waitUntil: "networkidle0" });
   await page.waitForSelector(".plan-card");
   const badgeTxt = await page.$eval("#due-badge", (el) => el.hidden ? "" : el.textContent.trim());
@@ -122,6 +147,15 @@ async function runSuiteForViewport(browser, baseUrl, vp) {
   await page.waitForFunction(() => document.querySelector("#app").textContent.includes("Unit cell packing efficiency note"));
   await checkLayout(page, "Notes lazy-loaded");
   console.log("PASS: #/notes lazy-loads chemistry/ch01");
+
+  // Open #/formulas -> All chapters lazy-loads all 5 live chapters
+  await page.goto(baseUrl + "/#/formulas", { waitUntil: "networkidle0" });
+  await page.waitForSelector('[data-act="formula-ch"][data-ch="all"]');
+  await page.click('[data-act="formula-ch"][data-ch="all"]');
+  await page.waitForFunction(() => document.querySelectorAll(".fchap").length === 5);
+  await checkLayout(page, "Formulas all chapters");
+  await snap(page, vp, "formulas-all");
+  console.log("PASS: #/formulas All chapters lazy-loads all 5 live chapters");
 
   // 3. Direct deep-link #/maths2/ch01/s03/quest on cold load
   const page2 = await ctx.newPage();
@@ -149,6 +183,8 @@ async function runSuiteForViewport(browser, baseUrl, vp) {
   await page.click(`.bq[data-q="${multiQ}"] [data-act="bq-tick"][data-i="0"]`);
   await page.waitForSelector(`.bq[data-q="${multiQ}"] [data-act="bq-err"][data-err="units"]`);
   await page.click(`.bq[data-q="${multiQ}"] [data-act="bq-err"][data-err="units"]`);
+  await page.$eval(`.bq[data-q="${multiQ}"] [data-act="bq-save"]`, (el) => el.scrollIntoView({ block: "center" }));
+  await snap(page, vp, "board-card");
   await page.click(`.bq[data-q="${multiQ}"] [data-act="bq-save"]`);
   const savedP1 = await page.evaluate((qid) => {
     const st = JSON.parse(localStorage.getItem("hscPrep.v2"));
@@ -180,6 +216,7 @@ async function runSuiteForViewport(browser, baseUrl, vp) {
     await page.click('[data-act="round-next"]');
   }
   await page.waitForSelector(".rres");
+  await snap(page, vp, "round-result");
   const histCheck = await page.evaluate(() => {
     const st = JSON.parse(localStorage.getItem("hscPrep.v2"));
     return st.roundHist && st.roundHist["physics/ch01"];
@@ -194,6 +231,8 @@ async function runSuiteForViewport(browser, baseUrl, vp) {
   const errCardText = await page.$eval(".err-card", (el) => el.textContent);
   assert.ok(errCardText.includes("Units / Cond.") && errCardText.includes("Calculation"), "Error Breakdown card must show logged errors");
   await checkLayout(page, "Home with Error Breakdown");
+  await page.$eval(".gauge-card", (el) => el.scrollIntoView({ block: "start" }));
+  await snap(page, vp, "home-predictions-errors");
   console.log("PASS: P1 1-mark round updates slim roundHist & Error Breakdown card renders on Home");
 
   assert.strictEqual(errors.length, 0, `Unexpected console/page errors: ${errors.join("; ")}`);
@@ -201,19 +240,19 @@ async function runSuiteForViewport(browser, baseUrl, vp) {
 }
 
 async function main() {
-  const { srv, url } = await startServer();
+  const srvInfo = LIVE_URL ? { srv: null, url: LIVE_URL.replace(/\/+$/, "") } : await startServer();
   const browser = await puppeteer.launch({
     executablePath: "/usr/bin/google-chrome",
     headless: "new",
     args: ["--no-sandbox", "--disable-setuid-sandbox"]
   });
   try {
-    await runSuiteForViewport(browser, url, { width: 390, height: 844 });
-    await runSuiteForViewport(browser, url, { width: 820, height: 1180 });
+    await runSuiteForViewport(browser, srvInfo.url, { width: 390, height: 844 });
+    await runSuiteForViewport(browser, srvInfo.url, { width: 820, height: 1180 });
     console.log("\nALL E2E TESTS PASSED");
   } finally {
     await browser.close();
-    srv.close();
+    if (srvInfo.srv) srvInfo.srv.close();
   }
 }
 
