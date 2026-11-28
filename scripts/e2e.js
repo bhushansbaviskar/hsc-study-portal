@@ -235,6 +235,55 @@ async function runSuiteForViewport(browser, baseUrl, vp) {
   await snap(page, vp, "home-predictions-errors");
   console.log("PASS: P1 1-mark round updates slim roundHist & Error Breakdown card renders on Home");
 
+  // 6. P2: Active Formula Recall (#/formulas -> Test yourself -> reveal -> Missed -> Missed only)
+  await page.goto(baseUrl + "/#/formulas", { waitUntil: "networkidle0" });
+  await page.waitForSelector('[data-act="formula-quiz"]');
+  await page.click('[data-act="formula-quiz"]');
+  await page.waitForSelector('[data-act="formula-reveal"]');
+  const hiddenCheck = await page.evaluate(() => ({
+    hasFn: !!document.querySelector(".frm .fn"),
+    hasCover: !!document.querySelector(".frm .fq-cover")
+  }));
+  assert.ok(hiddenCheck.hasFn && hiddenCheck.hasCover, "Formula quiz must hide formula while keeping name visible");
+  await snap(page, vp, "formula-quiz");
+  await page.click('[data-act="formula-reveal"]');
+  await page.waitForSelector('[data-act="formula-mark"][data-ok="0"]');
+  await page.click('[data-act="formula-mark"][data-ok="0"]');
+  await page.waitForSelector('[data-act="formula-miss"]');
+  await page.click('[data-act="formula-miss"]');
+  assert.strictEqual(await page.$$eval(".frm", (els) => els.length), 1, "Missed only filter must show 1 missed formula");
+  await page.click('[data-act="formula-quiz"]'); // exit quiz
+  console.log("PASS: P2 Active Formula Recall mode");
+
+  // 7. P2: ArrowDown moves focus across radio buttons
+  await page.goto(baseUrl + "/#/physics/ch01/s01/quest", { waitUntil: "networkidle0" });
+  await page.waitForSelector('[data-act="card-next"]');
+  while (await page.$('[data-act="card-next"]')) {
+    await page.click('[data-act="card-next"]');
+  }
+  await page.waitForSelector('.opts[role="radiogroup"] [role="radio"]');
+  await page.focus('.opts[role="radiogroup"] [role="radio"]');
+  const firstText = await page.evaluate(() => document.activeElement.textContent);
+  await page.keyboard.press("ArrowDown");
+  const secondText = await page.evaluate(() => document.activeElement.textContent);
+  assert.notStrictEqual(firstText, secondText, "ArrowDown must move focus to next radio option");
+  console.log("PASS: P2 ArrowDown radiogroup keyboard navigation");
+
+  // 8. P2: Manifest 200 OK, Service Worker controls page, and Offline reload renders cleanly
+  const manifestRes = await page.evaluate(async () => {
+    const r = await fetch("./manifest.webmanifest");
+    return { status: r.status, ok: r.ok };
+  });
+  assert.strictEqual(manifestRes.status, 200, "manifest.webmanifest must return 200 OK");
+  await page.goto(baseUrl + "/#/", { waitUntil: "networkidle0" });
+  await page.evaluate(() => navigator.serviceWorker.ready);
+  await page.waitForFunction(() => navigator.serviceWorker.controller !== null);
+  await page.setOfflineMode(true);
+  await page.reload({ waitUntil: "domcontentloaded" });
+  await page.waitForSelector(".plan-card");
+  await page.setOfflineMode(false);
+  console.log("PASS: P2 manifest 200 OK, SW controls page, and offline reload renders");
+
   assert.strictEqual(errors.length, 0, `Unexpected console/page errors: ${errors.join("; ")}`);
   await ctx.close();
 }

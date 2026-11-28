@@ -146,4 +146,10 @@ test("P1: nextReviewDate enforces >=7d gap for confident mistakes and uses subje
   assert.strictEqual(App.subjectExamDate("physics/ch01"), "2027-02-15");
 });
 
+test("P2: fm() converts newlines to <br> and escapes <script>", () => {
+  const out = App.fm("Line 1\n<script>x_{2}</script>");
+  assert.ok(out.includes("Line 1<br>&lt;script&gt;x<sub>2</sub>&lt;/script&gt;"));
+  assert.ok(!out.includes("<script>"));
+});
+
 console.log(`\nALL ${passed} CORE TESTS PASSED`);

@@ -53,6 +53,32 @@
   };
   function kindLabel(k) { return KIND_LABEL[k] || String(k || ""); }
 
+  var formulaQuiz = false, formulaQuizRev = {}, formulaQuizRes = {}, formulaMissOnly = false, offlineMsg = "";
+  var BOARD_TIPS = {
+    numerical: "Board tip: Given → Formula → Substitution → Final value + SI unit.",
+    derivation: "Board tip: Neat labelled diagram → Statement → Steps → Box final formula.",
+    proof: "Board tip: State theorem/formula clearly, show every substitution, conclude LHS = RHS.",
+    distinguish: "Board tip: Draw a 2-column table with matching points (½ mark per correct pair).",
+    define: "Board tip: Include exact Balbharati keywords and SI unit/formula if applicable.",
+    problem: "Board tip: Write formula & each step clearly; rough sketch where needed (no graph paper in Maths)."
+  };
+  function boardTipHTML(q) {
+    var tip = q && q.kind && BOARD_TIPS[q.kind];
+    return tip ? '<p class="btip">' + esc(tip) + "</p>" : "";
+  }
+  function cmpTableHTML(q) {
+    if (!q || !isObj(q.table) || !Array.isArray(q.table.headers) || !Array.isArray(q.table.rows)) return "";
+    return '<div class="cmp-wrap"><table class="cmp-table"><thead><tr>' +
+      q.table.headers.map(function (h) { return "<th>" + fm(h) + "</th>"; }).join("") +
+      "</tr></thead><tbody>" +
+      q.table.rows.map(function (r) {
+        return "<tr>" + (Array.isArray(r) ? r.map(function (c) { return "<td>" + fm(c) + "</td>"; }).join("") : "") + "</tr>";
+      }).join("") + "</tbody></table></div>";
+  }
+  function modelAnswerHTML(q) {
+    return '<div class="answer">' + boardTipHTML(q) + '<b>Model answer</b><p>' + fm(q.answer) + "</p>" + cmpTableHTML(q) + "</div>";
+  }
+
   var ERR_TAGS = [
     { id: "concept", label: "Concept", tip: "Re-read the textbook section and In-short summary before retrying." },
     { id: "calc", label: "Calculation", tip: "Write intermediate values clearly and double-check powers of 10." },
@@ -292,9 +318,9 @@
       return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
     });
   }
-  /* escape, then turn _{x} into subscript and ^{x} into superscript */
+  /* escape, turn _{x}/^{x} into sub/sup, and newlines into <br> */
   function fm(s) {
-    return esc(s).replace(/_\{([^}]*)\}/g, "<sub>$1</sub>").replace(/\^\{([^}]*)\}/g, "<sup>$1</sup>");
+    return esc(s).replace(/_\{([^}]*)\}/g, "<sub>$1</sub>").replace(/\^\{([^}]*)\}/g, "<sup>$1</sup>").replace(/\n/g, "<br>");
   }
   function plain(s) { return String(s == null ? "" : s).replace(/_\{([^}]*)\}/g, "$1").replace(/\^\{([^}]*)\}/g, "^$1"); }
   function pad(n) { return String(n).padStart(2, "0"); }
@@ -1319,7 +1345,7 @@
       var allOn = draft.ticks.every(Boolean);
       h += '<div class="rate"><button type="button" class="btn ghost" data-act="reveal" aria-expanded="true">Hide model answer</button>' +
         '<button type="button" class="btn ghost sm" data-act="bq-all" aria-pressed="' + allOn + '">' + (allOn ? "Clear ticks" : "All correct ✓") + "</button></div>";
-      h += '<div class="answer"><b>Model answer</b><p>' + fm(q.answer) + "</p></div>";
+      h += modelAnswerHTML(q);
       h += pointsHTML(q, draft.ticks, "bq-tick");
       if (got < q.marks) h += errPillsHTML(draft.err, "bq-err", q.id);
       h += '<div class="rate"><button type="button" class="btn primary" data-act="bq-save">Save score (' + got + " / " + q.marks + " marks)</button>" +
@@ -1812,7 +1838,7 @@
     } else {
       var rGot = 0;
       qPoints(q).forEach(function (x, k) { if (run.ticks[k]) rGot += +x.marks || 0; });
-      h += '<div class="answer"><b>Model answer</b><p>' + fm(q.answer) + "</p></div>" + pointsHTML(q, run.ticks, "round-tick") +
+      h += modelAnswerHTML(q) + pointsHTML(q, run.ticks, "round-tick") +
         (rGot < q.marks ? errPillsHTML(run.err || "", "round-err") : "") +
         '<button type="button" class="btn primary block" data-act="round-next">' + (run.i < n - 1 ? "Next question" : "See result") + "</button>";
     }
@@ -1922,14 +1948,44 @@
   }
 
   /* ---------- formula card (multi-chapter) ---------- */
+  function formulaItemId(chKey, gIdx, iIdx) { return chKey + "|" + gIdx + "|" + iIdx; }
+  function formulaQuizStats(chList) {
+    var total = 0, recalled = 0, marked = 0, missed = 0;
+    chList.forEach(function (ch) {
+      var ck = chKeyFor(ch);
+      (ch.formulas || []).forEach(function (g, gi) {
+        (g.items || []).forEach(function (f, ii) {
+          total++;
+          var fid = formulaItemId(ck, gi, ii);
+          if (formulaQuizRes[fid] === true) { recalled++; marked++; }
+          else if (formulaQuizRes[fid] === false) { missed++; marked++; }
+        });
+      });
+    });
+    return { total: total, recalled: recalled, marked: marked, missed: missed };
+  }
   function formulaGroupsHTML(ch) {
-    return ch.formulas.map(function (g) {
+    var ck = chKeyFor(ch);
+    return (ch.formulas || []).map(function (g, gi) {
       var s = stopById(g.stop, ch);
+      var itemsHTML = (g.items || []).map(function (f, ii) {
+        var fid = formulaItemId(ck, gi, ii);
+        if (formulaQuiz && formulaMissOnly && formulaQuizRes[fid] !== false) return "";
+        var rev = !formulaQuiz || !!formulaQuizRev[fid];
+        var res = formulaQuizRes[fid];
+        return '<div class="frm' + (formulaQuiz && !rev ? " fq-hidden" : "") + (res === true ? " fq-ok" : res === false ? " fq-miss" : "") + '">' +
+          '<div class="fn">' + esc(f.n) + '<span class="fp">p. ' + esc(f.p) + "</span></div>" +
+          (rev ? '<div class="ff">' + fm(f.f) + "</div>" : '<div class="fq-cover noprint"><button type="button" class="btn ghost sm" data-act="formula-reveal" data-fid="' + esc(fid) + '">Tap to recall</button></div><div class="ff print-only">' + fm(f.f) + "</div>") +
+          (f.s ? '<div class="fs">' + fm(f.s) + "</div>" : "") +
+          (formulaQuiz && rev ? '<div class="fq-ctrl noprint">' +
+            '<button type="button" class="btn sm ' + (res === true ? "ok" : "ok ghost") + '" data-act="formula-mark" data-fid="' + esc(fid) + '" data-ok="1" aria-pressed="' + (res === true) + '">Knew it ✓</button>' +
+            '<button type="button" class="btn sm ' + (res === false ? "warn" : "warn ghost") + '" data-act="formula-mark" data-fid="' + esc(fid) + '" data-ok="0" aria-pressed="' + (res === false) + '">Missed</button>' +
+            "</div>" : "") +
+          "</div>";
+      }).join("");
+      if (!itemsHTML) return "";
       return '<section class="card fgroup"><h2><a href="' + chBase(ch) + "/" + g.stop + '">' + (stopIndex(g.stop, ch) + 1) + ". " + esc(s ? s.title : g.stop) + "</a></h2>" +
-        g.items.map(function (f) {
-          return '<div class="frm"><div class="fn">' + esc(f.n) + '<span class="fp">p. ' + esc(f.p) + "</span></div><div class=\"ff\">" + fm(f.f) + "</div>" +
-            (f.s ? '<div class="fs">' + fm(f.s) + "</div>" : "") + "</div>";
-        }).join("") + "</section>";
+        itemsHTML + "</section>";
     }).join("");
   }
   function formulasView() {
@@ -1946,18 +2002,30 @@
           return '<button type="button" class="pill-btn" data-act="formula-ch" data-ch="' + esc(e.key) + '" aria-pressed="' + (!showAll && e.key === fKey) + '">' + esc(chShortFromMeta(e)) + "</button>";
         }).join("") + "</div>";
     }
+    var targetChs = showAll ? CHAPTER_LIST.filter(function (e) { return e.ch.formulas && e.ch.formulas.length; }).map(function (e) { return e.ch; }) : [ch];
+    var fStats = formulaQuiz ? formulaQuizStats(targetChs) : null;
+    var quizBtn = '<button type="button" class="btn ' + (formulaQuiz ? "primary" : "ghost") + ' sm noprint" data-act="formula-quiz" aria-pressed="' + formulaQuiz + '">' + (formulaQuiz ? "Exit quiz" : "Test yourself (hide formulas)") + "</button>";
+    var quizBar = formulaQuiz ? '<div class="fq-bar noprint"><span class="pill ok">Recalled ' + fStats.recalled + " / " + fStats.total + "</span>" +
+      (fStats.missed > 0 || formulaMissOnly ? '<button type="button" class="pill-btn" data-act="formula-miss" aria-pressed="' + formulaMissOnly + '">Show missed only (' + fStats.missed + ")</button>" : "") +
+      "</div>" : "";
+
     if (showAll) {
       h += '<div class="card fhead"><div class="row"><p class="grow"><b>Formula sheet: all live chapters</b><br><span class="small muted">For last-week revision. Each chapter starts on a new printed page.</span></p>' +
-        '<button type="button" class="btn ghost noprint" data-act="print">Print all</button></div></div>';
-      h += CHAPTER_LIST.filter(function (e) { return e.ch.formulas && e.ch.formulas.length; }).map(function (e, i) {
-        return '<div class="fchap' + (i ? " pbreak" : "") + '"><h2 class="fchap-h">' + esc(chShortLabel(e.ch)) + ": " + esc(e.ch.title) + "</h2>" + formulaGroupsHTML(e.ch) + "</div>";
+        '<button type="button" class="btn ghost sm noprint" data-act="print">Print all</button></div>' +
+        '<div class="fhead-acts">' + quizBtn + "</div>" + quizBar + "</div>";
+      var bodyAll = targetChs.map(function (c, i) {
+        var grp = formulaGroupsHTML(c);
+        return grp ? '<div class="fchap' + (i ? " pbreak" : "") + '"><h2 class="fchap-h">' + esc(chShortLabel(c)) + ": " + esc(c.title) + "</h2>" + grp + "</div>" : "";
       }).join("");
+      h += bodyAll || '<div class="card center"><p class="muted">No missed formulas in this filter.</p></div>';
       app.innerHTML = h;
       return;
     }
     h += '<div class="card fhead"><div class="row"><p class="grow"><b>' + esc(chShortLabel(ch)) + ": " + esc(ch.title) + '</b><br><span class="small muted">Grouped by stop, with textbook pages. Balbharati notation.</span></p>' +
-      '<button type="button" class="btn ghost noprint" data-act="print">Print</button></div></div>';
-    h += formulaGroupsHTML(ch);
+      '<button type="button" class="btn ghost sm noprint" data-act="print">Print</button></div>' +
+      '<div class="fhead-acts">' + quizBtn + "</div>" + quizBar + "</div>";
+    var bodyOne = formulaGroupsHTML(ch);
+    h += bodyOne || '<div class="card center"><p class="muted">No missed formulas in this filter.</p></div>';
     app.innerHTML = h;
   }
 
@@ -2052,14 +2120,14 @@
       else {
         var rvGot = 0;
         qPoints(q).forEach(function (x, k) { if (R.ticks[k]) rvGot += +x.marks || 0; });
-        h += '<div class="answer"><b>Model answer</b><p>' + fm(q.answer) + "</p></div>" + pointsHTML(q, R.ticks, "rv-tick") +
+        h += modelAnswerHTML(q) + pointsHTML(q, R.ticks, "rv-tick") +
           (rvGot < q.marks ? errPillsHTML(R.err || "", "rv-err") : "") +
           '<button type="button" class="btn primary block" data-act="rv-score">Done</button>';
       }
       return h + "</div>";
     }
     if (!R.shown) h += '<button type="button" class="btn primary block" data-act="rv-show">Show model answer</button>';
-    else h += '<div class="answer"><b>Model answer</b><p>' + fm(q.answer) + '</p></div><p class="small muted">How did you do without looking?</p><div class="rate"><button type="button" class="btn ok" data-act="rv-got">Got it</button><button type="button" class="btn warn ghost" data-act="rv-need">Need practice</button></div>';
+    else h += modelAnswerHTML(q) + '<p class="small muted">How did you do without looking?</p><div class="rate"><button type="button" class="btn ok" data-act="rv-got">Got it</button><button type="button" class="btn warn ghost" data-act="rv-need">Need practice</button></div>';
     return h + "</div>";
   }
   function reviewKeep() { var y = window.scrollY; reviewRender(); window.scrollTo(0, y); }
@@ -2194,6 +2262,9 @@
         '<div class="field"><label for="sync-code">Student code</label><div class="pw-row"><input id="sync-code" class="fin" type="password" autocomplete="off" spellcheck="false" placeholder="Enter student code" value="' + esc(c.code || "") + '"><button type="button" class="btn ghost sm" data-act="pw-toggle" data-target="sync-code">Show</button></div></div>' +
         '<button type="button" class="btn primary block" data-act="sync-save">Save &amp; Sync</button></div>';
     }
+    h += '<div class="card"><div class="row"><div class="grow"><h2>Offline access</h2><p class="small muted">Cache all ' + LIVE_LIST.length + ' live chapters on this device so you can study without internet.</p></div>' +
+      '<button type="button" class="btn ghost sm" data-act="sync-offline">Save all chapters offline</button></div>' +
+      (offlineMsg ? '<p class="small muted" role="status" style="margin-top:8px">' + esc(offlineMsg) + "</p>" : "") + "</div>";
     // Teacher entry is shown only on a device that already holds the teacher key (owner's device).
     // Students never see a link to it; the owner uses the private one-tap teacher link to connect.
     if (SYNC.hasTeacherConfig()) h += '<div class="card"><div class="row"><div class="grow"><h2>Parent / Teacher view</h2><p class="small muted">Check live study progress, predicted marks, and mistake bank.</p></div><a class="btn ghost sm" href="#/teacher">Open</a></div></div>';
@@ -2524,6 +2595,32 @@
         formulaChKey = t.getAttribute("data-ch") || curChKey();
         if (formulaChKey === "all") return withChapters(LIVE_LIST.map(function (x) { return x.key; }), formulasView);
         return withChapters([formulaChKey], formulasView);
+      case "formula-quiz":
+        formulaQuiz = !formulaQuiz;
+        if (!formulaQuiz) formulaMissOnly = false;
+        return formulasView();
+      case "formula-reveal": {
+        var fid1 = t.getAttribute("data-fid");
+        if (fid1) formulaQuizRev[fid1] = true;
+        var sy1 = window.scrollY;
+        formulasView();
+        window.scrollTo(0, sy1);
+        return;
+      }
+      case "formula-mark": {
+        var fid2 = t.getAttribute("data-fid");
+        if (fid2) {
+          formulaQuizRev[fid2] = true;
+          formulaQuizRes[fid2] = t.getAttribute("data-ok") === "1";
+        }
+        var sy2 = window.scrollY;
+        formulasView();
+        window.scrollTo(0, sy2);
+        return;
+      }
+      case "formula-miss":
+        formulaMissOnly = !formulaMissOnly;
+        return formulasView();
       case "notes-ch":
         notesChFilter = t.getAttribute("data-ch") || "all";
         return notesView();
@@ -2697,6 +2794,17 @@
         if (!SYNC) return;
         SYNC.unlinkStudent(); syncMsg = "Device unlinked. Local progress was kept.";
         return syncView();
+      case "sync-offline":
+        offlineMsg = "Saving chapters for offline use…";
+        syncView();
+        ensureAllChapters().then(function () {
+          offlineMsg = "All " + LIVE_LIST.length + " live chapters saved for offline use.";
+          if (location.hash === "#/sync") syncView();
+        }, function (err) {
+          offlineMsg = "Could not save all chapters (" + err.message + ").";
+          if (location.hash === "#/sync") syncView();
+        });
+        return;
       case "t-connect":
         if (!SYNC) return;
         SYNC.clearNotice();
@@ -2841,7 +2949,17 @@
     if (t.classList && t.classList.contains("note-ta")) onNoteInput(t);
   });
   app.addEventListener("keydown", function (e) {
-    if (e.key === "Enter" && e.target.id === "numin") { var b = app.querySelector('[data-act="ce-check"]'); if (b) b.click(); }
+    if (e.key === "Enter" && e.target.id === "numin") { var b = app.querySelector('[data-act="ce-check"]'); if (b) b.click(); return; }
+    var rg = e.target.closest && e.target.closest('.opts[role="radiogroup"]');
+    if (!rg) return;
+    var step = (e.key === "ArrowDown" || e.key === "ArrowRight") ? 1 : (e.key === "ArrowUp" || e.key === "ArrowLeft") ? -1 : 0;
+    if (!step) return;
+    var items = Array.prototype.slice.call(rg.querySelectorAll('[role="radio"]:not([disabled])'));
+    if (!items.length) return;
+    var idx = items.indexOf(e.target);
+    if (idx < 0) return;
+    e.preventDefault();
+    items[(idx + step + items.length) % items.length].focus();
   });
   app.addEventListener("focusout", function (e) { if (e.target.classList && e.target.classList.contains("note-ta")) flushNote(true); });
   window.addEventListener("pagehide", function () { flushNote(true); saveRound(false); flushTimer(); });
@@ -2998,6 +3116,9 @@
       startStudyTimer();
       window.addEventListener("hashchange", function () { route(false); });
       route(false);
+      if (typeof navigator !== "undefined" && "serviceWorker" in navigator) {
+        navigator.serviceWorker.register("./sw.js").catch(function () { /* ignore */ });
+      }
     }).catch(function (e) {
       errorView("Could not load the portal (" + e.message + "). Check your connection and refresh.");
     });
